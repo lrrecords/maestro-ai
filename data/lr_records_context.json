@@ -1,0 +1,160 @@
+{
+  "label_info": {
+    "name": "LRRecords",
+    "founded": "2002",
+    "years_operating": 23,
+    "owner": "Brett Caporn",
+    "location": "Rockingham, Western Australia",
+    "mission": "Creative music and arts community label, and music studio building through quality releases",
+    "services": [
+      "Recording",
+      "Mixing", 
+      "Mastering",
+      "Artist Development",
+      "Distribution",
+      "Drum Tracks",
+      "Drumming Tutor"
+    ]
+  },
+  
+  "artists": [
+    {
+      "name": "Brendananis Monster",
+      "status": "active",
+      "current_project": "Vinyl release via ElasticStage platform",
+      "genre": "electronic drum and bass",
+      "relationship_status": "medium",
+      "last_contact": "2025-11-01",
+      "notes": "Working on dj career, and music production, very engaged. Also likes doom metal and has a good vinyl collection. Has joined us on Rascal Radio a few times, spinning doom vinyl"
+    },
+    {
+      "name": "Jerry Mane", 
+      "status": "active",
+      "current_project": "EP mastering",
+      "genre": "Electronic drum and bass house dubstep",
+      "relationship_status": "needs_attention",
+      "last_contact": "2024-11-15",
+      "notes": "Haven't heard from them in a few weeks"
+    }
+  ],
+  
+  "upcoming_releases": [
+    {
+      "artist": "Brendananis Monster",
+      "project_name": "Oonagii Vinyl Release",
+      "type": "LP",
+      "target_date": "2025-01-15",
+      "distribution_status": "pending_metadata - upload error of artwork, need to refresh and retry",
+      "tracks": 5
+    }
+  ],
+  
+  "content_channels": [
+    {
+      "platform": "Instagram",
+      "handle": "@little_rascal_records",
+      "followers": 1200,
+      "engagement_rate": "3.5%"
+    },
+    {
+      "platform": "Facebook",
+      "page": "LRRecords",
+      "followers": 800
+    },
+    {
+      "platform": "YouTube",
+      "channel": "LRRecords Studio",
+      "subscribers": 500
+    },
+    {
+      "platform": "Website",
+      "name": "LRRecords",
+      "url": "http://lrrecords.com.au/",
+      "host": "Easy Funnels",
+      "subscribers": 209
+    }
+  ],
+  
+  "business_metrics": {
+    "monthly_revenue_target": 10000,
+    "active_projects": 3,
+    "completed_releases_2024": 8,
+    "streaming_platforms": [
+      "Spotify",
+      "Apple Music", 
+      "YouTube Music",
+      "Tidal",
+      "Bandcamp"
+    ],
+    "distribution_partner": "The Orchard"
+  },
+  
+  "tools_and_systems": [
+    {
+      "name": "The Orchard",
+      "purpose": "Digital distribution",
+      "login": "Has credentials",
+      "api_access": true
+    },
+    {
+      "name": "Dify",
+      "purpose": "AI app building",
+      "status": "exploring"
+    },
+    {
+      "name": "n8n",
+      "purpose": "Workflow automation",
+      "status": "learning"
+    },
+    {
+      "name": "ChatGPT",
+      "purpose": "Daily AI assistant",
+      "status": "power user"
+    }
+  ],
+  
+  "personal_interests": {
+    "trading": {
+      "types": ["Forex", "Crypto"],
+      "platforms": ["AvaTrade", "Coinbase", "Binance", "OKX", "MT4", "Trading View"],
+      "groups": "forexplatinumtrading",
+      "goal": "Build passive income streams, freedom, wealth, charity, legacy"
+    },
+    "gardening": {
+      "focus": "Permaculture principles",
+      "projects": ["Home garden", "Food forest concepts"]
+    },
+    "learning": {
+      "current_focus": ["AI automation", "Business systems", "Trading strategies"],
+      "style": "Hands-on, practical implementation, mentor groups"
+    }
+  },
+  
+  "important_dates": [
+    {
+      "event": "Nanna's 90th birthday",
+      "date": "2025-03-15",
+      "priority": "high",
+      "action_needed": "Find meaningful gift"
+    }
+  ],
+  
+  "pain_points": [
+    "Artist relationship management - keeping in regular contact",
+    "Release coordination - tracking all moving parts",
+    "Content creation - consistent social media presence",
+    "Time management - wearing too many hats",
+    "vibe-coding and deploying apps"
+  ],
+  
+  "goals_2025": [
+    "Strengthen artist relationships through better communication",
+    "Streamline release processes with automation",
+    "Grow label profile and artist roster",
+    "Build relevant products and services for our audience",
+    "Develop MAESTRO into a high ticket offer",
+    "Onboard label to web 3",
+    "Build MAESTRO into fully operational business OS",
+    "Potentially productize MAESTRO for other labels"
+  ]
+}

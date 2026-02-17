@@ -1,0 +1,49 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Sensitive Data
+.env
+*.key
+*_secrets.json
+credentials/
+
+# Personal/Private
+data/ai_conversations/chatgpt_export.zip
+data/ai_conversations/*_conversations.txt
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Ollama models (too large)
+*.gguf
+models/

@@ -1,0 +1,144 @@
+{
+  "artist_info": {
+    "name": "Jerry Mane",
+    "real_name": "Brett",
+    "status": "active",
+    "relationship_since": "2004",
+    "relationship_strength": "medium",
+    "preferred_contact_method": "Facebook / Email",
+    "response_time": "Usually replies within 24 hours / few days / etc",
+    "timezone": "Costa Rica"
+  },
+  
+  "musical_identity": {
+    "primary_genre": "Electronic / Drum and Bass",
+    "influences": ["List their influences if you know them"],
+    "sound_description": "mainly really dubby bass music like jungle / drum and bass, dub, and the occasional bit of house and techno vibes",
+    "stage_of_career": "Established",
+    "goals": [
+      "DJ career growth",
+      "Music production skills",
+      "Vinyl releases",
+      "Add their actual goals"
+    ]
+  },
+  
+  "current_projects": [
+    {
+      "project_name": "Oonagii Vinyl Release",
+      "type": "LP",
+      "status": "In distribution - metadata pending",
+      "platform": "ElasticStage",
+      "target_date": "2025-01-15",
+      "tracks": 5,
+      "blockers": [
+        "Artwork upload error - need to refresh and retry"
+      ],
+      "next_actions": [
+        "Fix artwork upload",
+        "Confirm metadata",
+        "Set release date"
+      ]
+    }
+  ],
+  
+  "past_releases": [
+    {
+      "title": "[Previous release name if any]",
+      "date": "2024-XX-XX",
+      "performance": "Good reception / X streams / etc"
+    }
+  ],
+  
+  "communication_history": [
+    {
+      "date": "2025-11-01",
+      "channel": "Instagram / Email / WhatsApp",
+      "topic": "Vinyl release discussion",
+      "outcome": "Confirmed ElasticStage upload",
+      "follow_up_needed": false
+    },
+    {
+      "date": "2025-10-15",
+      "channel": "In person / phone / etc",
+      "topic": "Add your actual conversations",
+      "outcome": "What happened",
+      "follow_up_needed": true,
+      "follow_up_action": "Check in about X"
+    }
+  ],
+  
+  "engagement_level": {
+    "current": "High - very engaged in music production",
+    "trend": "Increasing / Stable / Declining",
+    "signs": [
+      "Active on social media",
+      "Joins Rascal Radio sessions",
+      "Responsive to messages"
+    ]
+  },
+  
+  "interests_beyond_music": {
+    "doom_metal": "Has vinyl collection, spins on Rascal Radio",
+    "vinyl_collecting": "Active collector",
+    "other": ["Add anything else you know"]
+  },
+  
+  "relationship_notes": {
+    "strengths": [
+      "Passionate about music",
+      "Good communicator",
+      "Engaged with label community"
+    ],
+    "areas_for_growth": [
+      "Marketing his releases",
+      "Building social media presence",
+      "Add your observations"
+    ],
+    "how_brett_can_support": [
+      "Help with release strategy",
+      "Introduce to other artists",
+      "Technical production advice",
+      "Add your specific support plans"
+    ]
+  },
+  
+  "important_dates": [
+    {
+      "date": "2025-01-15",
+      "event": "Oonagii vinyl release",
+      "action": "Promote and celebrate"
+    }
+  ],
+  
+  "action_items": [
+    {
+      "priority": "high",
+      "action": "Fix ElasticStage artwork upload",
+      "deadline": "2025-01-10",
+      "owner": "Brett to guide / Brendan to execute"
+    },
+    {
+      "priority": "medium",
+      "action": "Plan release day promotion",
+      "deadline": "2025-01-12",
+      "owner": "Brett + ECHO"
+    }
+  ],
+  
+  "red_flags": {
+    "watch_for": [
+      "Decreased engagement",
+      "Missed deadlines",
+      "Communication gaps"
+    ],
+    "current_status": "All good / No concerns"
+  },
+  
+  "success_metrics": {
+    "release_count": 1,
+    "engagement_score": "7/10",
+    "relationship_health": "Strong",
+    "next_milestone": "Successful vinyl launch"
+  }
+}

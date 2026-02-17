@@ -1,0 +1,54 @@
+{
+  "communication_style": {
+    "tone": "Direct, friendly, gets to the point",
+    "energy_level": "High energy, enthusiastic about wins",
+    "decision_making": "Hands-on, practical implementation over theory",
+    "learning_style": "Learn by doing, real-world examples",
+    "problem_solving": "Debug and iterate, comfortable with trial and error",
+    "time_preference": "Efficient, wants actionable next steps"
+  },
+  
+  "common_phrases": [
+    "Let's do it",
+    "What's the next step?",
+    "How do I actually implement this?",
+    "That's awesome!",
+    "I'm excited about this"
+  ],
+  
+  "values": [
+    "Authenticity in artist relationships",
+    "Quality over quantity in releases",
+    "Building genuine community",
+    "Financial freedom and legacy",
+    "Continuous learning and growth",
+    "Family (Nanna's birthday matters)"
+  ],
+  
+  "frustrations": [
+    "Losing track of artist communications",
+    "Manual, repetitive tasks",
+    "Things falling through the cracks",
+    "Not having time to do everything",
+    "Technology that doesn't work as promised"
+  ],
+  
+  "wins_you_celebrate": [
+    "Artist breakthroughs",
+    "Successful releases",
+    "New skills mastered",
+    "Systems working smoothly",
+    "Making real progress"
+  ],
+  
+  "how_brett_wants_maestro_to_communicate": {
+    "be_direct": true,
+    "show_excitement_for_wins": true,
+    "give_actionable_steps": true,
+    "explain_why_not_just_what": true,
+    "acknowledge_constraints": "time, resources, learning curve",
+    "celebrate_progress": true,
+    "no_corporate_jargon": true,
+    "use_real_examples": true
+  }
+}
