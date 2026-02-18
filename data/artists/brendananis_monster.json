@@ -7,12 +7,14 @@
     "relationship_strength": "medium",
     "preferred_contact_method": "Instagram DM / WhatsApp / Email",
     "response_time": "Usually replies within 24 hours / few days / etc",
-    "timezone": "AWST (same as you) / other"
+    "timezone": "AWST (same as you) / other",
+    "last_interaction": "2026-02-18"
   },
-  
   "musical_identity": {
     "primary_genre": "Electronic / Drum and Bass",
-    "influences": ["List their influences if you know them"],
+    "influences": [
+      "List their influences if you know them"
+    ],
     "sound_description": "Describe their sound in your words",
     "stage_of_career": "Emerging / Developing / Established",
     "goals": [
@@ -22,7 +24,6 @@
       "Add their actual goals"
     ]
   },
-  
   "current_projects": [
     {
       "project_name": "Oonagii Vinyl Release",
@@ -41,7 +42,6 @@
       ]
     }
   ],
-  
   "past_releases": [
     {
       "title": "[Previous release name if any]",
@@ -49,7 +49,6 @@
       "performance": "Good reception / X streams / etc"
     }
   ],
-  
   "communication_history": [
     {
       "date": "2025-11-01",
@@ -65,9 +64,36 @@
       "outcome": "What happened",
       "follow_up_needed": true,
       "follow_up_action": "Check in about X"
+    },
+    {
+      "date": "2026-02-18",
+      "channel": "Email",
+      "topic": "Check-in via MAESTRO",
+      "message_sent": "G'day Brendananis Monster! How's it going? Sorry for the massive delays, but still keen to put a version of Oonagii to the ElasticStage platform for a vinyl release. Will get this done soon for a Q1 2026 release. What dya rekon?",
+      "outcome": "Sent successfully",
+      "follow_up_needed": false,
+      "automated": true
+    },
+    {
+      "date": "2026-02-18",
+      "type": "RESPONSE_RECEIVED",
+      "channel": "Email",
+      "response_text": "Ok lets do this and test if this reply gets logged!",
+      "sentiment": "NEUTRAL",
+      "key_points": [
+        "artist is ready to test the logging system"
+      ],
+      "action_items": [
+        "Set up a test scenario for Brendananis Monster's reply to log correctly",
+        "Verify that the reply gets logged in the system"
+      ],
+      "suggested_follow_up": "Confirm with Brendananis Monster if the test was successful and if they have any further questions or concerns",
+      "priority": "LOW",
+      "follow_up_by": "Not specified, but ideally within 24 hours to ensure timely resolution of the issue",
+      "follow_up_needed": true,
+      "notes": ""
     }
   ],
-  
   "engagement_level": {
     "current": "High - very engaged in music production",
     "trend": "Increasing / Stable / Declining",
@@ -77,13 +103,13 @@
       "Responsive to messages"
     ]
   },
-  
   "interests_beyond_music": {
     "doom_metal": "Has vinyl collection, spins on Rascal Radio",
     "vinyl_collecting": "Active collector",
-    "other": ["Add anything else you know"]
+    "other": [
+      "Add anything else you know"
+    ]
   },
-  
   "relationship_notes": {
     "strengths": [
       "Passionate about music",
@@ -102,7 +128,6 @@
       "Add your specific support plans"
     ]
   },
-  
   "important_dates": [
     {
       "date": "2025-01-15",
@@ -110,7 +135,6 @@
       "action": "Promote and celebrate"
     }
   ],
-  
   "action_items": [
     {
       "priority": "high",
@@ -125,7 +149,6 @@
       "owner": "Brett + ECHO"
     }
   ],
-  
   "red_flags": {
     "watch_for": [
       "Decreased engagement",
@@ -134,7 +157,6 @@
     ],
     "current_status": "All good / No concerns"
   },
-  
   "success_metrics": {
     "release_count": 1,
     "engagement_score": "7/10",
