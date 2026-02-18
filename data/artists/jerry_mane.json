@@ -1,144 +1,80 @@
 {
   "artist_info": {
     "name": "Jerry Mane",
-    "real_name": "Brett",
+    "real_name": "Jerry [Last name]",
     "status": "active",
     "relationship_since": "2004",
     "relationship_strength": "medium",
-    "preferred_contact_method": "Facebook / Email",
-    "response_time": "Usually replies within 24 hours / few days / etc",
-    "timezone": "Costa Rica"
+    "preferred_contact_method": "Instagram DM / Email",
+    "response_time": "Usually replies within a few days",
+    "timezone": "AWST",
+    "last_interaction": "2026-02-18"
   },
-  
   "musical_identity": {
-    "primary_genre": "Electronic / Drum and Bass",
-    "influences": ["List their influences if you know them"],
-    "sound_description": "mainly really dubby bass music like jungle / drum and bass, dub, and the occasional bit of house and techno vibes",
-    "stage_of_career": "Established",
+    "primary_genre": "Electronic / Drum and Bass / House / Dubstep",
+    "influences": [
+      "Add influences"
+    ],
+    "sound_description": "Describe Jerry's sound",
+    "stage_of_career": "Developing",
     "goals": [
-      "DJ career growth",
-      "Music production skills",
-      "Vinyl releases",
-      "Add their actual goals"
+      "Finish new EP",
+      "Play more local shows",
+      "Grow streaming numbers"
     ]
   },
-  
   "current_projects": [
     {
-      "project_name": "Oonagii Vinyl Release",
-      "type": "LP",
-      "status": "In distribution - metadata pending",
-      "platform": "ElasticStage",
-      "target_date": "2025-01-15",
-      "tracks": 5,
+      "project_name": "New EP (working title)",
+      "type": "EP",
+      "status": "In mastering",
+      "platform": "The Orchard",
+      "target_date": "2025-03-01",
+      "tracks": 4,
       "blockers": [
-        "Artwork upload error - need to refresh and retry"
+        "Need final approval on masters",
+        "Artwork not confirmed"
       ],
       "next_actions": [
-        "Fix artwork upload",
-        "Confirm metadata",
-        "Set release date"
+        "Approve masters",
+        "Lock in artwork",
+        "Confirm release date"
       ]
     }
   ],
-  
-  "past_releases": [
-    {
-      "title": "[Previous release name if any]",
-      "date": "2024-XX-XX",
-      "performance": "Good reception / X streams / etc"
-    }
-  ],
-  
   "communication_history": [
     {
-      "date": "2025-11-01",
-      "channel": "Instagram / Email / WhatsApp",
-      "topic": "Vinyl release discussion",
-      "outcome": "Confirmed ElasticStage upload",
-      "follow_up_needed": false
-    },
-    {
-      "date": "2025-10-15",
-      "channel": "In person / phone / etc",
-      "topic": "Add your actual conversations",
-      "outcome": "What happened",
+      "date": "2025-11-15",
+      "channel": "Instagram",
+      "topic": "EP mastering",
+      "outcome": "Agreed to final tweaks",
       "follow_up_needed": true,
-      "follow_up_action": "Check in about X"
-    }
-  ],
-  
-  "engagement_level": {
-    "current": "High - very engaged in music production",
-    "trend": "Increasing / Stable / Declining",
-    "signs": [
-      "Active on social media",
-      "Joins Rascal Radio sessions",
-      "Responsive to messages"
-    ]
-  },
-  
-  "interests_beyond_music": {
-    "doom_metal": "Has vinyl collection, spins on Rascal Radio",
-    "vinyl_collecting": "Active collector",
-    "other": ["Add anything else you know"]
-  },
-  
-  "relationship_notes": {
-    "strengths": [
-      "Passionate about music",
-      "Good communicator",
-      "Engaged with label community"
-    ],
-    "areas_for_growth": [
-      "Marketing his releases",
-      "Building social media presence",
-      "Add your observations"
-    ],
-    "how_brett_can_support": [
-      "Help with release strategy",
-      "Introduce to other artists",
-      "Technical production advice",
-      "Add your specific support plans"
-    ]
-  },
-  
-  "important_dates": [
-    {
-      "date": "2025-01-15",
-      "event": "Oonagii vinyl release",
-      "action": "Promote and celebrate"
-    }
-  ],
-  
-  "action_items": [
-    {
-      "priority": "high",
-      "action": "Fix ElasticStage artwork upload",
-      "deadline": "2025-01-10",
-      "owner": "Brett to guide / Brendan to execute"
+      "follow_up_action": "Check in on final master approval"
     },
     {
-      "priority": "medium",
-      "action": "Plan release day promotion",
-      "deadline": "2025-01-12",
-      "owner": "Brett + ECHO"
+      "date": "2026-02-18",
+      "channel": "Email",
+      "topic": "Check-in via MAESTRO",
+      "message_sent": "4 Yo Jerry! How's it going? Let's get your release sorted for Q1 2026!?!",
+      "outcome": "Sent successfully",
+      "follow_up_needed": false,
+      "automated": true
+    },
+    {
+      "date": "2026-02-18",
+      "type": "RESPONSE_RECEIVED",
+      "channel": "Email",
+      "response_text": "going good, and this is a test\u001a",
+      "sentiment": "POSITIVE",
+      "key_points": [
+        "test of communication"
+      ],
+      "action_items": [],
+      "suggested_follow_up": "Wait for a more substantial message from Jerry Mane before taking any further action.",
+      "priority": "LOW",
+      "follow_up_by": "",
+      "follow_up_needed": false,
+      "notes": ""
     }
-  ],
-  
-  "red_flags": {
-    "watch_for": [
-      "Decreased engagement",
-      "Missed deadlines",
-      "Communication gaps"
-    ],
-    "current_status": "All good / No concerns"
-  },
-  
-  "success_metrics": {
-    "release_count": 1,
-    "engagement_score": "7/10",
-    "relationship_health": "Strong",
-    "next_milestone": "Successful vinyl launch"
-  }
+  ]
 }

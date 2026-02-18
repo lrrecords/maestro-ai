@@ -24,6 +24,11 @@ wheels/
 
 # Sensitive Data
 .env
+*.pyc
+__pycache__/
+.vscode/
+data/artists/*.json
+!data/artists/example_artist.json
 *.key
 *_secrets.json
 credentials/
