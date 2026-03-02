@@ -1,6 +1,11 @@
 {
   "artist_info": {
     "name": "Brendananis Monster",
+    "genres": [
+      "Electronic",
+      "Drum and Bass",
+      "Doom Metal"
+    ],
     "real_name": "Brendan [Last name if you want]",
     "status": "active",
     "relationship_since": "2023",
@@ -8,8 +13,9 @@
     "preferred_contact_method": "Instagram DM / WhatsApp / Email",
     "response_time": "Usually replies within 24 hours / few days / etc",
     "timezone": "AWST (same as you) / other",
-    "last_interaction": "2026-02-18"
-  },
+    "last_interaction": "2026-02-18",
+    "email": "brett@lrrecords.com.au"
+     },
   "musical_identity": {
     "primary_genre": "Electronic / Drum and Bass",
     "influences": [
@@ -24,6 +30,21 @@
       "Add their actual goals"
     ]
   },
+  "current_project": {
+    "name": "Oonagii",
+    "type": "Vinyl Release",
+    "target_date": "2025-01-15",
+    "status": "Active",
+    "blockers": [
+      "ElasticStage artwork upload error"
+    ]
+  },
+  "platforms": {
+    "instagram": "@little_rascal_records",
+    "facebook": "LRRecords",
+    "youtube": "LRRecords Studio"
+  },
+  "distribution": "The Orchard",
   "current_projects": [
     {
       "project_name": "Oonagii Vinyl Release",

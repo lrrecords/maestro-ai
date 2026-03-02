@@ -1,0 +1,176 @@
+{
+  "artist": "Brendananis Monster",
+  "project": "Oonagii",
+  "period": "2026-03-02 to 2026-03-15",
+  "generated": "2026-03-02",
+  "strategy_summary": "Focus on celebrating the vinyl release's anniversary with behind-the-scenes content and community engagement. Leverage the unique fusion of electronic and doom metal to create intrigue and drive catalog sales. Balance nostalgia with forward momentum for future releases.",
+  "posting_cadence": "3-4 posts per week across all platforms",
+  "content_pillars": [
+    "Vinyl Culture & Collectors",
+    "Genre-Bending Artistry",
+    "Rockingham Music Scene"
+  ],
+  "content_plan": [
+    {
+      "date": "2026-03-02",
+      "day_theme": "Vinyl Anniversary Celebration",
+      "posts": [
+        {
+          "platform": "Instagram",
+          "content_type": "Reel",
+          "caption": "One year ago today, Brendananis Monster dropped Oonagii on wax and our minds were officially melted 🔥 This album still hits different on vinyl - those doom-laden basslines need that analog warmth. Who's still spinning this masterpiece?",
+          "hashtags": [
+            "#oonagii",
+            "#brendananismonster",
+            "#vinylanniversary",
+            "#drumandbass",
+            "#doommetal",
+            "#lrrecords",
+            "#rockinghammusic"
+          ],
+          "call_to_action": "Drop your favorite track from Oonagii in the comments",
+          "visual_direction": "Close-up shots of the Oonagii vinyl spinning, needle drop, album artwork details",
+          "best_time_awst": "7:00 PM"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-04",
+      "day_theme": "Studio Memories",
+      "posts": [
+        {
+          "platform": "Facebook",
+          "content_type": "BTS Photo Album",
+          "caption": "Throwback to the Oonagii sessions... Remember when Brendananis Monster brought that modular synth setup that looked like NASA mission control? The marriage of electronic chaos and crushing doom riffs happening in these photos still gives us chills. Independent music at its finest, right here in Rockingham.",
+          "hashtags": [
+            "#behindthescenes",
+            "#oonagii",
+            "#recordingstudio",
+            "#brendananismonster",
+            "#independentmusic"
+          ],
+          "call_to_action": "Share your favorite home studio setup pics",
+          "visual_direction": "Behind-the-scenes photos from recording sessions, equipment shots, candid artist moments",
+          "best_time_awst": "12:00 PM"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-06",
+      "day_theme": "Sound Exploration",
+      "posts": [
+        {
+          "platform": "YouTube",
+          "content_type": "Track Breakdown",
+          "caption": "Ever wondered how electronic and doom metal actually work together? We break down the sonic madness of Oonagii with isolated stems and producer commentary. This is what happens when genres collide in the best possible way.",
+          "hashtags": [
+            "#oonagii",
+            "#trackbreakdown",
+            "#electronic",
+            "#doommetal",
+            "#musicproduction"
+          ],
+          "call_to_action": "Subscribe for more production insights",
+          "visual_direction": "Screen recording of DAW with track stems, waveform visualizations, album artwork overlay",
+          "best_time_awst": "8:00 PM"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-09",
+      "day_theme": "Community Spotlight",
+      "posts": [
+        {
+          "platform": "Instagram",
+          "content_type": "Story Series",
+          "caption": "Shoutout to everyone who grabbed Oonagii on vinyl and made it part of their collection 🙌 Your turntable setups are absolutely fire. Keep tagging us - we love seeing where this music lives!",
+          "hashtags": [
+            "#vinylcommunity",
+            "#oonagii",
+            "#collectors",
+            "#lrrecords"
+          ],
+          "call_to_action": "Tag us in your vinyl setup photos",
+          "visual_direction": "Repost user-generated content of vinyl collections, turntable setups, listening sessions",
+          "best_time_awst": "6:30 PM"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-11",
+      "day_theme": "Label Philosophy",
+      "posts": [
+        {
+          "platform": "Facebook",
+          "content_type": "Discussion Post",
+          "caption": "This is why we do vinyl releases. Oonagii sounds massive on streaming, but there's something about dropping the needle on that opening track that just hits different. The crackle, the warmth, the ritual of it all. Physical media isn't dead - it's thriving in our community. What's your take on vinyl vs digital?",
+          "hashtags": [
+            "#vinylvsdigital",
+            "#physicalmedia",
+            "#musiccommunity",
+            "#lrrecords"
+          ],
+          "call_to_action": "Tell us why you choose vinyl",
+          "visual_direction": "Comparison shots of vinyl vs streaming setup, hands holding the Oonagii record",
+          "best_time_awst": "11:00 AM"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-13",
+      "day_theme": "Artist Appreciation",
+      "posts": [
+        {
+          "platform": "Instagram",
+          "content_type": "Teaser",
+          "caption": "Brendananis Monster really created something special with Oonagii. One year later and we're still discovering new layers in these tracks. Electronic music that crushes, doom metal that glitches - this is what boundary-pushing sounds like 🤘",
+          "hashtags": [
+            "#brendananismonster",
+            "#oonagii",
+            "#electronic",
+            "#drumandbass",
+            "#doommetal",
+            "#boundaryless"
+          ],
+          "call_to_action": "Stream or spin your copy this weekend",
+          "visual_direction": "Artistic shots of the album artwork, moody lighting, close-ups of vinyl grooves",
+          "best_time_awst": "5:00 PM"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-15",
+      "day_theme": "Looking Forward",
+      "posts": [
+        {
+          "platform": "YouTube",
+          "content_type": "Mini Documentary",
+          "caption": "The story of Oonagii, one year later. From concept to pressing plant to your record collection. This 5-minute journey shows why independent labels and fearless artists are keeping music interesting. Here's to the next chapter.",
+          "hashtags": [
+            "#oonagii",
+            "#independentmusic",
+            "#documentary",
+            "#lrrecords",
+            "#brendananismonster"
+          ],
+          "call_to_action": "Subscribe and hit the bell for our next release announcement",
+          "visual_direction": "Documentary-style edit with studio footage, vinyl pressing process, fan reactions, artist interviews",
+          "best_time_awst": "7:30 PM"
+        }
+      ]
+    }
+  ],
+  "key_dates": [
+    {
+      "date": "2026-03-02",
+      "event": "Oonagii vinyl release anniversary",
+      "content_note": "Celebrate the milestone with nostalgic but forward-looking content"
+    },
+    {
+      "date": "2026-03-15",
+      "event": "End of campaign period",
+      "content_note": "Wrap up with a retrospective piece that builds anticipation for future releases"
+    }
+  ],
+  "content_notes": "Focus on authentic storytelling rather than hard selling. The album has been out for a year, so this is about celebrating its impact and building long-term artist/label brand equity. Use this period to strengthen community engagement and showcase LRRecords' commitment to innovative, genre-defying music."
+}

@@ -1,0 +1,159 @@
+==================================================================
+START_HERE.txt – MAESTRO AI
+==================================================================
+
+You (or future you) already built something powerful.
+This file tells you EXACTLY where to start next.
+
+--------------------------------------------
+1. WHICH HANDOVER TO READ FIRST
+--------------------------------------------
+
+Step 1: Read THIS file (done ✅)
+
+Step 2: Open and read:
+   MAESTRO_HANDOVER.txt
+
+That file gives you:
+   - Current system status (as of Feb 28, 2026)
+   - How to run MAESTRO (commands + scripts)
+   - What’s working, what’s pending
+   - Next steps before going to production
+
+Step 3: When you want the bigger picture (vision, agents, product idea), read:
+   MAESTRO_Full_context_HANDOVER.txt
+
+That file gives you:
+   - The origin story of MAESTRO
+   - The 6-agent architecture (BRIDGE, VINYL, ECHO, ATLAS, FORGE, SAGE)
+   - LRRecords business context
+   - Productization and roadmap
+
+--------------------------------------------
+2. WHERE THE CODE LIVES
+--------------------------------------------
+
+Project root:
+   maestro-ai/
+
+Important folders and files:
+
+   maestro-ai/
+   ├── scripts/
+   │   ├── command_center.py        ← Main dashboard interface
+   │   ├── maestro_autopilot.py     ← Autonomous engine (autopilot)
+   │   └── bridge_intelligence.py   ← BRIDGE AI brain
+   │
+   ├── data/
+   │   ├── artists/                 ← Artist JSON files (emails go here)
+   │   ├── briefings/               ← Daily briefing files
+   │   ├── autopilot_config.json    ← Autopilot settings
+   │   ├── autopilot_queue.json     ← Pending actions
+   │   └── autopilot_actions.log    ← Activity log
+   │
+   ├── .env                         ← Email + API credentials (private)
+   └── requirements.txt             ← Python dependencies
+
+--------------------------------------------
+3. QUICK COMMANDS TO REMEMBER
+--------------------------------------------
+
+Run from the project root: maestro-ai/
+
+Start Command Center (manual control):
+   python scripts\command_center.py
+
+Start Autopilot (automatic monitoring):
+   python scripts\maestro_autopilot.py run
+
+Check the action queue:
+   python scripts\maestro_autopilot.py queue
+
+Generate/test a daily briefing (and email):
+   python scripts\maestro_autopilot.py briefing
+
+View autopilot log:
+   type data\autopilot_actions.log
+
+Edit autopilot settings:
+   notepad data\autopilot_config.json
+
+--------------------------------------------
+4. YOUR VERY NEXT PRACTICAL STEP
+--------------------------------------------
+
+BEFORE YOU GO LIVE WITH REAL ARTISTS:
+
+1) Check artist email fields:
+   - Open each file in data/artists/
+   - Make sure each has an "email" field, e.g.:
+
+     "artist_info": {
+       "name": "Example Artist",
+       "email": "artist@example.com",
+       "priority": "HIGH"
+     }
+
+2) Confirm email credentials:
+   - Open .env (DO NOT SHARE THIS FILE)
+   - Check:
+       EMAIL_ADDRESS=
+       EMAIL_PASSWORD=
+       EMAIL_SMTP_SERVER=
+       EMAIL_SMTP_PORT=
+
+3) Test email sending safely:
+   - Temporarily set one artist's email to YOUR email address
+   - Then run:
+       python scripts\maestro_autopilot.py briefing
+   - Check your inbox for the test email
+
+Once that works, you’re safe to:
+   - Put real artist emails back
+   - Let Autopilot run and start approving check-ins
+
+--------------------------------------------
+5. IF YOU FEEL LOST OR OVERWHELMED
+--------------------------------------------
+
+If you’re asking “where was I up to?” or “what do I do next?”:
+
+1) Read MAESTRO_HANDOVER.txt
+2) Follow the “NEXT STEPS BEFORE PRODUCTION” section in that file
+3) Start with:
+     python scripts\command_center.py
+   and just explore the dashboard.
+
+Remember:
+- The system is already functional.
+- You’re in TESTING phase, not square one.
+- The only critical blocker for real-world use is: VERIFIED ARTIST EMAILS.
+
+--------------------------------------------
+6. MENTAL MODEL REMINDER
+--------------------------------------------
+
+MAESTRO is:
+- BRIDGE + Autopilot + Command Center working together
+- An assistant for artist relationships and operations
+- Not just a chatbot – it can watch, decide, and act (safely)
+
+Your job now is:
+- Verify emails
+- Tune thresholds
+- Let it help you consistently maintain artist relationships.
+
+--------------------------------------------
+7. ONE-LINE REBOOT COMMAND
+--------------------------------------------
+
+When you return after a break and don’t remember anything, run:
+
+   python scripts\command_center.py
+
+Look at the dashboard.
+It will tell you the truth about your roster and what needs attention.
+
+==================================================================
+END OF START_HERE.txt
+==================================================================

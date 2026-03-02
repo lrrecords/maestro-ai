@@ -1,316 +1,586 @@
 """
-MAESTRO Command Center
-Your mission control for LRRecords artist relations
+🎛️ MAESTRO COMMAND CENTER 2.0
+Mission Control Dashboard with BRIDGE Intelligence Integration
+
+Now powered by 5-layer AI intelligence system
 """
 
 import json
-import ollama
+import os
 from datetime import datetime, timedelta
-from pathlib import Path
-from collections import defaultdict
+from typing import Dict, List
+import sys
 
-class CommandCenter:
-    def __init__(self):
-        self.artists = []
-        self.artist_files = []
-        self.load_artists()
-        
-    def load_artists(self):
-        """Load all artist profiles"""
-        artists_dir = Path(__file__).parent.parent / 'data' / 'artists'
-        for file in artists_dir.glob('*.json'):
-            with open(file, 'r') as f:
-                artist_data = json.load(f)
-                self.artists.append(artist_data)
-                self.artist_files.append(file)
+# Import BRIDGE Intelligence
+from bridge_intelligence import (
+    BridgeIntelligence,
+    HealthScorer,
+    PatternDetector,
+    Predictor,
+    LearningMemory
+)
+
+# ============================================================================
+# CONFIGURATION
+# ============================================================================
+
+ARTIST_FOLDER = "data/artists"
+
+# ============================================================================
+# DATA LOADING
+# ============================================================================
+
+def load_all_artists() -> List[Dict]:
+    """Load all artist profiles"""
+    artists = []
+    for filename in os.listdir(ARTIST_FOLDER):
+        if filename.endswith(".json"):
+            filepath = os.path.join(ARTIST_FOLDER, filename)
+            with open(filepath, "r") as f:
+                artists.append(json.load(f))
+    return artists
+
+
+def get_pending_followups(artists: List[Dict]) -> List[Dict]:
+    """Extract all pending follow-ups across roster"""
+    followups = []
     
-    def get_artist_name(self, artist):
-        """Extract artist name"""
-        return artist.get('artist_info', {}).get('name', 'Unknown Artist')
-    
-    def get_last_interaction(self, artist):
-        """Get date of last interaction"""
-        history = artist.get('communication_history', [])
-        if history:
-            dates = [h.get('date') for h in history if h.get('date')]
-            if dates:
-                return max(dates)
-        return None
-    
-    def days_since_contact(self, last_contact):
-        """Calculate days since last contact"""
-        if not last_contact:
-            return 999  # No contact ever
-        try:
-            last_date = datetime.strptime(last_contact, '%Y-%m-%d')
-            return (datetime.now() - last_date).days
-        except:
-            return 999
-    
-    def get_pending_followups(self):
-        """Get all artists with pending follow-ups"""
-        followups = []
+    for artist_data in artists:
+        artist_name = artist_data["artist_info"]["name"]
+        comm_history = artist_data.get("communication_history", [])
         
-        for artist in self.artists:
-            history = artist.get('communication_history', [])
-            
-            for entry in history:
-                if entry.get('follow_up_needed', False):
-                    followups.append({
-                        'artist': self.get_artist_name(artist),
-                        'priority': entry.get('priority', 'MEDIUM'),
-                        'follow_up_by': entry.get('follow_up_by', 'No deadline'),
-                        'action': entry.get('suggested_follow_up', 'No action specified'),
-                        'date': entry.get('date', 'Unknown'),
-                        'sentiment': entry.get('sentiment', 'NEUTRAL')
-                    })
-        
-        # Sort by priority
-        priority_order = {'HIGH': 0, 'URGENT': 0, 'MEDIUM': 1, 'LOW': 2, 'NEUTRAL': 1, 'POSITIVE': 2, 'NEGATIVE': 0}
-        followups.sort(key=lambda x: priority_order.get(x['priority'], 1))
-        
-        return followups
-    
-    def get_recent_activity(self, days=7):
-        """Get recent communications"""
-        cutoff_date = datetime.now() - timedelta(days=days)
-        recent = []
-        
-        for artist in self.artists:
-            history = artist.get('communication_history', [])
-            artist_name = self.get_artist_name(artist)
-            
-            for entry in history:
-                try:
-                    entry_date = datetime.strptime(entry.get('date', ''), '%Y-%m-%d')
-                    if entry_date >= cutoff_date:
-                        recent.append({
-                            'artist': artist_name,
-                            'date': entry.get('date'),
-                            'type': entry.get('type', 'MESSAGE'),
-                            'channel': entry.get('channel', 'Unknown'),
-                            'topic': entry.get('topic', 'Unknown'),
-                            'sentiment': entry.get('sentiment')
-                        })
-                except:
-                    continue
-        
-        recent.sort(key=lambda x: x['date'], reverse=True)
-        return recent
-    
-    def get_action_items(self):
-        """Get all pending action items across all artists"""
-        actions = []
-        
-        for artist in self.artists:
-            history = artist.get('communication_history', [])
-            artist_name = self.get_artist_name(artist)
-            
-            for entry in history:
-                if entry.get('type') == 'RESPONSE_RECEIVED':
-                    action_items = entry.get('action_items', [])
-                    for action in action_items:
-                        actions.append({
-                            'artist': artist_name,
-                            'action': action,
-                            'priority': entry.get('priority', 'MEDIUM'),
-                            'date_received': entry.get('date', 'Unknown')
-                        })
-        
-        return actions
-    
-    def get_artist_health(self):
-        """Analyze which artists need attention"""
-        health = []
-        
-        for artist in self.artists:
-            artist_name = self.get_artist_name(artist)
-            last_contact = self.get_last_interaction(artist)
-            days_since = self.days_since_contact(last_contact)
-            
-            # Determine health status
-            if days_since > 60:
-                status = "🔴 CRITICAL"
-            elif days_since > 30:
-                status = "🟡 WARNING"
-            elif days_since > 14:
-                status = "🟢 OK"
-            else:
-                status = "✅ RECENT"
-            
-            health.append({
-                'artist': artist_name,
-                'last_contact': last_contact or 'Never',
-                'days_since': days_since if days_since < 999 else 'Never',
-                'status': status,
-                'projects': len(artist.get('current_projects', []))
-            })
-        
-        health.sort(key=lambda x: x['days_since'] if isinstance(x['days_since'], int) else 999, reverse=True)
-        return health
-    
-    def display_summary(self):
-        """Display summary stats"""
-        print("\n" + "=" * 80)
-        print("🎛️  MAESTRO COMMAND CENTER")
-        print("=" * 80)
-        
-        # Overall stats
-        total_artists = len(self.artists)
-        followups = self.get_pending_followups()
-        high_priority = [f for f in followups if f['priority'] in ['HIGH', 'URGENT']]
-        actions = self.get_action_items()
-        
-        print(f"\n📊 OVERVIEW:")
-        print(f"   Total Artists: {total_artists}")
-        print(f"   Pending Follow-ups: {len(followups)}")
-        print(f"   High Priority: {len(high_priority)}")
-        print(f"   Total Action Items: {len(actions)}")
-    
-    def display_high_priority_alerts(self):
-        """Display urgent items"""
-        followups = self.get_pending_followups()
-        high_priority = [f for f in followups if f['priority'] in ['HIGH', 'URGENT']]
-        
-        if high_priority:
-            print("\n" + "=" * 80)
-            print("🚨 HIGH PRIORITY ALERTS")
-            print("=" * 80)
-            
-            for item in high_priority:
-                print(f"\n🔥 {item['artist']}")
-                print(f"   Priority: {item['priority']}")
-                print(f"   Follow-up by: {item['follow_up_by']}")
-                print(f"   Action: {item['action']}")
-                print(f"   Sentiment: {item['sentiment']}")
-        else:
-            print("\n✅ No high priority alerts!")
-    
-    def display_followups(self):
-        """Display all pending follow-ups"""
-        followups = self.get_pending_followups()
-        
-        if followups:
-            print("\n" + "=" * 80)
-            print("📋 PENDING FOLLOW-UPS")
-            print("=" * 80)
-            
-            for item in followups:
-                priority_emoji = {"HIGH": "🔴", "MEDIUM": "🟡", "LOW": "🟢"}.get(item['priority'], "⚪")
-                print(f"\n{priority_emoji} {item['artist']} - {item['priority']}")
-                print(f"   Deadline: {item['follow_up_by']}")
-                print(f"   Action: {item['action']}")
-        else:
-            print("\n✅ No pending follow-ups!")
-    
-    def display_recent_activity(self):
-        """Display recent communications"""
-        recent = self.get_recent_activity(days=7)
-        
-        print("\n" + "=" * 80)
-        print("📅 RECENT ACTIVITY (Last 7 Days)")
-        print("=" * 80)
-        
-        if recent:
-            for item in recent[:10]:  # Show top 10
-                sentiment_emoji = {
-                    "POSITIVE": "😊",
-                    "NEGATIVE": "😟",
-                    "NEUTRAL": "😐",
-                    "URGENT": "🚨"
-                }.get(item.get('sentiment'), "📝")
+        for comm in comm_history:
+            if comm.get("follow_up_needed") and comm.get("follow_up_date"):
+                followup_date = datetime.fromisoformat(comm["follow_up_date"])
+                days_until = (followup_date - datetime.now()).days
                 
-                print(f"\n{sentiment_emoji} {item['date']} - {item['artist']}")
-                print(f"   {item['channel']}: {item['topic']}")
-        else:
-            print("\n⚠️ No recent activity in the last 7 days")
+                followups.append({
+                    "artist": artist_name,
+                    "date": comm["follow_up_date"],
+                    "days_until": days_until,
+                    "reason": comm.get("follow_up_reason", "Check-in"),
+                    "original_date": comm["date"]
+                })
     
-    def display_action_items(self):
-        """Display all action items"""
-        actions = self.get_action_items()
+    # Sort by urgency
+    return sorted(followups, key=lambda x: x["days_until"])
+
+
+def get_all_action_items(artists: List[Dict]) -> List[Dict]:
+    """Extract all open action items"""
+    action_items = []
+    
+    for artist_data in artists:
+        artist_name = artist_data["artist_info"]["name"]
+        items = artist_data.get("open_action_items", [])
         
-        if actions:
-            print("\n" + "=" * 80)
-            print("✅ ACTION ITEMS")
-            print("=" * 80)
-            
-            for item in actions:
-                priority_emoji = {"HIGH": "🔴", "MEDIUM": "🟡", "LOW": "🟢"}.get(item['priority'], "⚪")
-                print(f"\n{priority_emoji} {item['artist']}")
-                print(f"   → {item['action']}")
-                print(f"   (From: {item['date_received']})")
-        else:
-            print("\n✅ No pending action items!")
-    
-    def display_artist_health(self):
-        """Display artist relationship health"""
-        health = self.get_artist_health()
-        
-        print("\n" + "=" * 80)
-        print("💚 ARTIST RELATIONSHIP HEALTH")
-        print("=" * 80)
-        
-        for item in health:
-            print(f"\n{item['status']} {item['artist']}")
-            print(f"   Last Contact: {item['last_contact']} ({item['days_since']} days ago)")
-            print(f"   Active Projects: {item['projects']}")
-    
-    def display_menu(self):
-        """Display interactive menu"""
-        print("\n" + "=" * 80)
-        print("📋 COMMAND CENTER OPTIONS")
-        print("=" * 80)
-        print("  [1] Show Summary Dashboard")
-        print("  [2] Show High Priority Alerts Only")
-        print("  [3] Show All Follow-ups")
-        print("  [4] Show Recent Activity")
-        print("  [5] Show Action Items")
-        print("  [6] Show Artist Health")
-        print("  [7] Full Report (Everything)")
-        print("  [R] Refresh Data")
-        print("  [Q] Quit")
-        
-        return input("\nSelect option: ").strip().lower()
-    
-    def run_full_report(self):
-        """Display complete dashboard"""
-        self.display_summary()
-        self.display_high_priority_alerts()
-        self.display_followups()
-        self.display_recent_activity()
-        self.display_action_items()
-        self.display_artist_health()
-        print("\n" + "=" * 80)
-    
-    def run_interactive(self):
-        """Interactive command center"""
-        while True:
-            choice = self.display_menu()
-            
-            if choice == '1':
-                self.display_summary()
-            elif choice == '2':
-                self.display_high_priority_alerts()
-            elif choice == '3':
-                self.display_followups()
-            elif choice == '4':
-                self.display_recent_activity()
-            elif choice == '5':
-                self.display_action_items()
-            elif choice == '6':
-                self.display_artist_health()
-            elif choice == '7':
-                self.run_full_report()
-            elif choice == 'r':
-                print("\n🔄 Refreshing data...")
-                self.load_artists()
-                print("✅ Data refreshed!")
-            elif choice == 'q':
-                print("\n👋 Closing Command Center...")
-                break
+        for item in items:
+            due_date = item.get("due_date")
+            if due_date:
+                due = datetime.fromisoformat(due_date)
+                days_until = (due - datetime.now()).days
+                is_overdue = days_until < 0
             else:
-                print("\n❌ Invalid option. Try again.")
+                days_until = None
+                is_overdue = False
+            
+            action_items.append({
+                "artist": artist_name,
+                "description": item.get("description", "No description"),
+                "assigned_to": item.get("assigned_to", "Unknown"),
+                "due_date": due_date,
+                "days_until": days_until,
+                "is_overdue": is_overdue
+            })
+    
+    # Sort: overdue first, then by due date
+    return sorted(action_items, key=lambda x: (not x["is_overdue"], x["days_until"] if x["days_until"] is not None else 999))
+
+
+def get_recent_activity(artists: List[Dict], days: int = 7) -> List[Dict]:
+    """Get recent communication activity"""
+    activities = []
+    cutoff_date = datetime.now() - timedelta(days=days)
+    
+    for artist_data in artists:
+        artist_name = artist_data["artist_info"]["name"]
+        comm_history = artist_data.get("communication_history", [])
+        
+        for comm in comm_history:
+            comm_date = datetime.fromisoformat(comm["date"])
+            if comm_date >= cutoff_date:
+                activities.append({
+                    "artist": artist_name,
+                    "date": comm["date"],
+                    "type": comm.get("type", "Unknown"),
+                    "channel": comm.get("channel", "Unknown"),
+                    "sentiment": comm.get("sentiment", "N/A")
+                })
+    
+    return sorted(activities, key=lambda x: x["date"], reverse=True)
+
+
+# ============================================================================
+# DISPLAY FUNCTIONS
+# ============================================================================
+
+def print_header():
+    """Print dashboard header"""
+    print("\n" + "="*70)
+    print("🎛️  MAESTRO COMMAND CENTER 2.0 - BRIDGE INTELLIGENCE INTEGRATED")
+    print("="*70)
+    print(f"📅 {datetime.now().strftime('%A, %B %d, %Y at %I:%M %p')}")
+    print("="*70 + "\n")
+
+
+def print_bridge_briefing(briefing: Dict):
+    """Display BRIDGE daily briefing at top of dashboard"""
+    print("🌉 BRIDGE DAILY BRIEFING")
+    print("-" * 70)
+    
+    summary = briefing["roster_summary"]
+    
+    # Roster health overview
+    print(f"\n📊 ROSTER HEALTH:")
+    print(f"   Total Artists: {summary['total_artists']}")
+    
+    health_bar = ""
+    if summary['healthy'] > 0:
+        health_bar += "🟢" * summary['healthy']
+    if summary['at_risk'] > 0:
+        health_bar += "🟡" * summary['at_risk']
+    if summary['critical'] > 0:
+        health_bar += "🔴" * summary['critical']
+    
+    print(f"   {health_bar}")
+    print(f"   🟢 Healthy: {summary['healthy']}  |  🟡 At Risk: {summary['at_risk']}  |  🔴 Critical: {summary['critical']}")
+    
+    # Critical alerts
+    if briefing["critical_artists"]:
+        print(f"\n🚨 CRITICAL ATTENTION NEEDED:")
+        for artist in briefing["critical_artists"]:
+            print(f"   • {artist['name']}: {artist['health_status']} ({artist['health_score']}/100)")
+    
+    # At risk
+    if briefing["at_risk_artists"]:
+        print(f"\n⚠️  AT RISK:")
+        for artist in briefing["at_risk_artists"][:3]:  # Top 3
+            print(f"   • {artist['name']}: {artist['health_status']} ({artist['health_score']}/100)")
+    
+    # Top opportunities
+    if briefing["opportunities"]:
+        print(f"\n✨ OPPORTUNITIES:")
+        for opp in briefing["opportunities"][:2]:  # Top 2
+            print(f"   • {opp['artist']}: {opp['opportunity']}")
+            print(f"     → {opp['action']}")
+    
+    # Top predictions
+    if briefing["predictions"]:
+        print(f"\n🔮 TOP PREDICTIONS:")
+        for pred in briefing["predictions"][:3]:  # Top 3
+            conf_emoji = {"HIGH": "🎯", "MEDIUM": "🤔", "LOW": "💭"}
+            print(f"   {conf_emoji.get(pred['confidence'], '💭')} {pred['artist']}: {pred['prediction']}")
+            print(f"     → {pred['action']}")
+    
+    print()
+
+
+def print_health_summary(artists: List[Dict], bridge: BridgeIntelligence):
+    """Display artist health scores"""
+    print("\n💚 ARTIST HEALTH OVERVIEW")
+    print("-" * 70)
+    
+    # Calculate health for all artists
+    health_data = []
+    for artist_data in artists:
+        name = artist_data["artist_info"]["name"]
+        score, status, _ = HealthScorer.calculate_health(artist_data)
+        health_data.append({
+            "name": name,
+            "score": score,
+            "status": status
+        })
+    
+    # Sort by health score (lowest first = needs attention)
+    health_data.sort(key=lambda x: x["score"])
+    
+    for artist in health_data:
+        status_color = artist["status"]
+        bar_length = int(artist["score"] / 5)  # 20 chars max
+        bar = "█" * bar_length + "░" * (20 - bar_length)
+        print(f"   {status_color} {artist['name']:20} [{bar}] {artist['score']}/100")
+    
+    print()
+
+
+def print_followups(followups: List[Dict]):
+    """Display pending follow-ups"""
+    print("\n📅 PENDING FOLLOW-UPS")
+    print("-" * 70)
+    
+    if not followups:
+        print("   ✅ No pending follow-ups\n")
+        return
+    
+    overdue = [f for f in followups if f["days_until"] < 0]
+    upcoming = [f for f in followups if f["days_until"] >= 0]
+    
+    if overdue:
+        print("   🚨 OVERDUE:")
+        for f in overdue:
+            print(f"      • {f['artist']}: {f['reason']} ({abs(f['days_until'])} days overdue)")
+    
+    if upcoming:
+        print("   📆 UPCOMING:")
+        for f in upcoming[:5]:  # Show next 5
+            if f["days_until"] == 0:
+                urgency = "TODAY"
+            elif f["days_until"] == 1:
+                urgency = "TOMORROW"
+            else:
+                urgency = f"in {f['days_until']} days"
+            print(f"      • {f['artist']}: {f['reason']} ({urgency})")
+    
+    print()
+
+
+def print_action_items(action_items: List[Dict]):
+    """Display open action items"""
+    print("\n✅ ACTION ITEMS")
+    print("-" * 70)
+    
+    if not action_items:
+        print("   🎉 No open action items\n")
+        return
+    
+    overdue = [a for a in action_items if a["is_overdue"]]
+    upcoming = [a for a in action_items if not a["is_overdue"]]
+    
+    if overdue:
+        print("   🚨 OVERDUE:")
+        for item in overdue:
+            print(f"      • [{item['assigned_to']}] {item['artist']}: {item['description']}")
+            print(f"        ({abs(item['days_until'])} days overdue)")
+    
+    if upcoming:
+        print("   📋 OPEN:")
+        for item in upcoming[:5]:  # Show next 5
+            due_text = f"Due in {item['days_until']} days" if item["days_until"] else "No due date"
+            print(f"      • [{item['assigned_to']}] {item['artist']}: {item['description']}")
+            print(f"        ({due_text})")
+    
+    print()
+
+
+def print_recent_activity(activities: List[Dict]):
+    """Display recent activity"""
+    print("\n📊 RECENT ACTIVITY (Last 7 Days)")
+    print("-" * 70)
+    
+    if not activities:
+        print("   No recent activity\n")
+        return
+    
+    for activity in activities[:10]:  # Show last 10
+        date = datetime.fromisoformat(activity["date"]).strftime("%b %d")
+        sentiment_emoji = {
+            "POSITIVE": "😊",
+            "NEUTRAL": "😐",
+            "NEGATIVE": "😟",
+            "N/A": "📧"
+        }
+        emoji = sentiment_emoji.get(activity["sentiment"], "📧")
+        
+        print(f"   {emoji} {date} - {activity['artist']}: {activity['type']} via {activity['channel']}")
+    
+    print()
+
+
+def print_menu():
+    """Display interactive menu"""
+    print("\n" + "="*70)
+    print("🎮 ACTIONS")
+    print("="*70)
+    print("   [1] 📊 Analyze Artist (Deep Intelligence)")
+    print("   [2] 📧 Generate Check-In Message")
+    print("   [3] 🔄 Refresh Dashboard")
+    print("   [4] 🌉 Full BRIDGE Briefing")
+    print("   [5] 📈 Artist Health Details")
+    print("   [6] 🧠 View Learning Insights")
+    print("   [Q] Quit")
+    print("="*70)
+
+
+def show_artist_analysis(bridge: BridgeIntelligence, artist_name: str):
+    """Show detailed BRIDGE analysis for an artist"""
+    print(f"\n{'='*70}")
+    print(f"🌉 BRIDGE INTELLIGENCE: {artist_name}")
+    print(f"{'='*70}")
+    
+    analysis = bridge.analyze_artist(artist_name)
+    
+    if "error" in analysis:
+        print(f"\n❌ {analysis['error']}\n")
+        return
+    
+    # Health breakdown
+    health = analysis["health"]
+    print(f"\n📊 HEALTH: {health['status']} ({health['score']}/100)")
+    print("\nBreakdown:")
+    for category, data in health["breakdown"].items():
+        score_bar = "█" * int(data['score'] / 10) + "░" * (10 - int(data['score'] / 10))
+        print(f"  • {category.capitalize():20} [{score_bar}] {data['detail']}")
+    
+    # Patterns
+    if analysis["patterns"]:
+        print(f"\n🔍 DETECTED PATTERNS:")
+        for pattern in analysis["patterns"]:
+            severity_emoji = {
+                "HIGH": "🚨",
+                "MEDIUM": "⚠️",
+                "OPPORTUNITY": "✨",
+                "POSITIVE": "✅"
+            }.get(pattern["severity"], "ℹ️")
+            print(f"\n  {severity_emoji} {pattern['type']}")
+            print(f"     {pattern['signal']}")
+            print(f"     → Action: {pattern['action']}")
+    
+    # Predictions
+    if analysis["predictions"]:
+        print(f"\n🔮 PREDICTIONS:")
+        for pred in analysis["predictions"]:
+            conf_emoji = {"HIGH": "🎯", "MEDIUM": "🤔", "LOW": "💭"}
+            print(f"\n  {conf_emoji.get(pred['confidence'], '💭')} {pred['prediction']} ({pred['confidence']} confidence)")
+            print(f"     Why: {pred['reasoning']}")
+            print(f"     → Action: {pred['suggested_action']}")
+    
+    # Learning insights
+    recs = analysis["learned_recommendations"]
+    print(f"\n🧠 LEARNED INSIGHTS:")
+    print(f"  • Best channel: {recs['best_channel']}")
+    print(f"  • Best message type: {recs['best_message_type']}")
+    print(f"  • Avg response time: {recs['avg_response_time']}")
+    
+    if recs["successful_tactics"]:
+        print(f"  • What works: {', '.join(recs['successful_tactics'][:3])}")
+    if recs["avoid_tactics"]:
+        print(f"  • Avoid: {', '.join(recs['avoid_tactics'][:2])}")
+    
+    print()
+
+
+def show_crafted_message(bridge: BridgeIntelligence, artist_name: str):
+    """Generate and show context-aware message"""
+    print(f"\n{'='*70}")
+    print(f"📧 CONTEXT-AWARE MESSAGE: {artist_name}")
+    print(f"{'='*70}\n")
+    
+    print("Analyzing artist context and crafting message...\n")
+    
+    message = bridge.craft_check_in(artist_name)
+    
+    print("="*70)
+    print(message)
+    print("="*70)
+    
+    print("\n💡 This message was crafted based on:")
+    print("   • Artist's communication style")
+    print("   • Current relationship health")
+    print("   • Detected patterns")
+    print("   • Predictive intelligence")
+    print("   • What's worked before")
+    
+    print()
+
+
+def show_full_briefing(bridge: BridgeIntelligence):
+    """Show comprehensive BRIDGE briefing"""
+    briefing = bridge.daily_briefing()
+    
+    print(f"\n{'='*70}")
+    print(f"🌉 FULL BRIDGE INTELLIGENCE BRIEFING")
+    print(f"{'='*70}")
+    print(f"📅 {briefing['date']}\n")
+    
+    summary = briefing["roster_summary"]
+    print(f"📊 ROSTER SUMMARY:")
+    print(f"   Total Artists: {summary['total_artists']}")
+    print(f"   🟢 Healthy: {summary['healthy']}")
+    print(f"   🟡 At Risk: {summary['at_risk']}")
+    print(f"   🔴 Critical: {summary['critical']}\n")
+    
+    if briefing["critical_artists"]:
+        print(f"🚨 CRITICAL ATTENTION ({len(briefing['critical_artists'])} artists):")
+        for artist in briefing["critical_artists"]:
+            print(f"   • {artist['name']}: {artist['health_status']} ({artist['health_score']}/100)")
+        print()
+    
+    if briefing["at_risk_artists"]:
+        print(f"⚠️  AT RISK ({len(briefing['at_risk_artists'])} artists):")
+        for artist in briefing["at_risk_artists"]:
+            print(f"   • {artist['name']}: {artist['health_status']} ({artist['health_score']}/100)")
+        print()
+    
+    if briefing["opportunities"]:
+        print(f"✨ OPPORTUNITIES ({len(briefing['opportunities'])}):")
+        for opp in briefing["opportunities"]:
+            print(f"\n   • {opp['artist']}")
+            print(f"     Signal: {opp['opportunity']}")
+            print(f"     → {opp['action']}")
+        print()
+    
+    if briefing["predictions"]:
+        print(f"🔮 PREDICTIONS ({len(briefing['predictions'])}):")
+        for pred in briefing["predictions"]:
+            conf_emoji = {"HIGH": "🎯", "MEDIUM": "🤔", "LOW": "💭"}
+            print(f"\n   {conf_emoji.get(pred['confidence'], '💭')} {pred['artist']}: {pred['prediction']}")
+            print(f"     → {pred['action']}")
+        print()
+
+
+def show_health_details(artists: List[Dict], bridge: BridgeIntelligence):
+    """Show detailed health breakdown for all artists"""
+    print(f"\n{'='*70}")
+    print(f"📈 DETAILED HEALTH ANALYSIS")
+    print(f"{'='*70}\n")
+    
+    for artist_data in artists:
+        name = artist_data["artist_info"]["name"]
+        score, status, breakdown = HealthScorer.calculate_health(artist_data)
+        
+        print(f"\n{status} {name} ({score}/100)")
+        print("-" * 50)
+        
+        for category, data in breakdown.items():
+            penalty_text = f"-{data['penalty']:.1f}" if data['penalty'] > 0 else "✓"
+            print(f"  {category.capitalize():20} {penalty_text:>6}  |  {data['detail']}")
+    
+    print()
+
+
+def show_learning_insights(artists: List[Dict]):
+    """Show what BRIDGE has learned about each artist"""
+    print(f"\n{'='*70}")
+    print(f"🧠 LEARNING INSIGHTS - What Works With Each Artist")
+    print(f"{'='*70}\n")
+    
+    for artist_data in artists:
+        name = artist_data["artist_info"]["name"]
+        recs = LearningMemory.get_recommendations(name)
+        
+        print(f"\n{name}")
+        print("-" * 50)
+        print(f"  Best Channel: {recs['best_channel']}")
+        print(f"  Best Message Type: {recs['best_message_type']}")
+        print(f"  Avg Response Time: {recs['avg_response_time']}")
+        
+        if recs["successful_tactics"]:
+            print(f"  ✅ Works: {', '.join(recs['successful_tactics'][:3])}")
+        if recs["avoid_tactics"]:
+            print(f"  ❌ Avoid: {', '.join(recs['avoid_tactics'][:2])}")
+    
+    print()
+
+
+# ============================================================================
+# MAIN DASHBOARD
+# ============================================================================
+
+def run_dashboard():
+    """Main dashboard loop"""
+    
+    # Initialize BRIDGE
+    bridge = BridgeIntelligence()
+    
+    while True:
+        # Load fresh data
+        artists = load_all_artists()
+        followups = get_pending_followups(artists)
+        action_items = get_all_action_items(artists)
+        recent = get_recent_activity(artists)
+        
+        # Get BRIDGE briefing
+        briefing = bridge.daily_briefing()
+        
+        # Display dashboard
+        print_header()
+        print_bridge_briefing(briefing)
+        print_health_summary(artists, bridge)
+        print_followups(followups)
+        print_action_items(action_items)
+        print_recent_activity(recent)
+        print_menu()
+        
+        # Get user input
+        choice = input("\n👉 Select action: ").strip().lower()
+        
+        if choice == "q":
+            print("\n👋 Closing command center. Stay sharp! 🎵\n")
+            break
+        
+        elif choice == "1":
+            # Analyze artist
+            print("\nAvailable artists:")
+            for i, artist_data in enumerate(artists, 1):
+                print(f"   [{i}] {artist_data['artist_info']['name']}")
+            
+            artist_choice = input("\n👉 Select artist number: ").strip()
+            try:
+                idx = int(artist_choice) - 1
+                if 0 <= idx < len(artists):
+                    artist_name = artists[idx]["artist_info"]["name"]
+                    show_artist_analysis(bridge, artist_name)
+                    input("\nPress Enter to continue...")
+                else:
+                    print("Invalid selection")
+            except ValueError:
+                print("Invalid input")
+        
+        elif choice == "2":
+            # Generate message
+            print("\nAvailable artists:")
+            for i, artist_data in enumerate(artists, 1):
+                print(f"   [{i}] {artist_data['artist_info']['name']}")
+            
+            artist_choice = input("\n👉 Select artist number: ").strip()
+            try:
+                idx = int(artist_choice) - 1
+                if 0 <= idx < len(artists):
+                    artist_name = artists[idx]["artist_info"]["name"]
+                    show_crafted_message(bridge, artist_name)
+                    input("\nPress Enter to continue...")
+                else:
+                    print("Invalid selection")
+            except ValueError:
+                print("Invalid input")
+        
+        elif choice == "3":
+            # Refresh (loop continues)
+            print("\n🔄 Refreshing dashboard...\n")
+            continue
+        
+        elif choice == "4":
+            # Full briefing
+            show_full_briefing(bridge)
+            input("\nPress Enter to continue...")
+        
+        elif choice == "5":
+            # Health details
+            show_health_details(artists, bridge)
+            input("\nPress Enter to continue...")
+        
+        elif choice == "6":
+            # Learning insights
+            show_learning_insights(artists)
+            input("\nPress Enter to continue...")
+        
+        else:
+            print("\n❌ Invalid choice. Try again.")
+            input("\nPress Enter to continue...")
+
 
 if __name__ == "__main__":
-    center = CommandCenter()
-    center.run_interactive()
+    try:
+        run_dashboard()
+    except KeyboardInterrupt:
+        print("\n\n👋 Command center closed. 🎵\n")
