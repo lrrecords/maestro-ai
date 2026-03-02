@@ -1,0 +1,181 @@
+{
+  "artist": "Jerry Mane",
+  "project": "New EP (working title)",
+  "period": "2026-03-02 to 2026-03-15",
+  "generated": "2026-03-02",
+  "strategy_summary": "Post-release momentum building through fan engagement and behind-the-scenes content, celebrating the EP's one-year anniversary milestone. Focus on community building and showcasing Jerry's creative process while highlighting standout tracks from the project.",
+  "posting_cadence": "3-4 posts per week across all platforms",
+  "content_pillars": [
+    "Behind-the-Scenes Content",
+    "Community Engagement",
+    "Music Showcases"
+  ],
+  "content_plan": [
+    {
+      "date": "2026-03-02",
+      "day_theme": "Anniversary Celebration",
+      "posts": [
+        {
+          "platform": "Instagram",
+          "content_type": "Anniversary Post",
+          "caption": "One year ago today we dropped Jerry Mane's EP and honestly, we're still not over these tracks 🔥 Which one's been on repeat for you? Drop your fave in the comments 👇",
+          "hashtags": [
+            "#JerryMane",
+            "#DrumAndBass",
+            "#Electronic",
+            "#LRRecords",
+            "#Anniversary",
+            "#IndependentMusic",
+            "#Rockingham",
+            "#WA"
+          ],
+          "call_to_action": "Comment your favorite track from the EP",
+          "visual_direction": "Collage of EP artwork with 'One Year Later' text overlay, maybe some fan comments or streaming stats",
+          "best_time_awst": "18:00"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-04",
+      "day_theme": "Studio Flashback",
+      "posts": [
+        {
+          "platform": "YouTube",
+          "content_type": "BTS Video",
+          "caption": "Found this gem in the archives - Jerry Mane laying down the bassline that became the backbone of track 3. The magic happens in the smallest moments ✨",
+          "hashtags": [
+            "#StudioLife",
+            "#JerryMane",
+            "#BehindTheScenes",
+            "#Dubstep",
+            "#MusicProduction",
+            "#LRRecords"
+          ],
+          "call_to_action": "Subscribe for more studio footage",
+          "visual_direction": "Raw studio footage of Jerry working on synths/production setup, low lighting, intimate feel",
+          "best_time_awst": "19:30"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-06",
+      "day_theme": "Track Spotlight",
+      "posts": [
+        {
+          "platform": "Facebook",
+          "content_type": "Track Feature",
+          "caption": "Friday feeling calls for some Jerry Mane house vibes. This track still hits different every single time we play it in the office. What's everyone's weekend soundtrack looking like?",
+          "hashtags": [
+            "#House",
+            "#JerryMane",
+            "#FridayVibes",
+            "#Electronic",
+            "#IndieLabel",
+            "#WeekendMusic"
+          ],
+          "call_to_action": "Share what you're listening to this weekend",
+          "visual_direction": "Animated waveform visualization with EP artwork, vibrant colors matching the house vibe",
+          "best_time_awst": "16:00"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-09",
+      "day_theme": "Fan Love",
+      "posts": [
+        {
+          "platform": "Instagram",
+          "content_type": "Story Highlight",
+          "caption": "Your messages about Jerry's EP still make our day every time. This community is everything 💙 Keep the love coming, we see you and we appreciate you",
+          "hashtags": [
+            "#Community",
+            "#JerryMane",
+            "#FanLove",
+            "#LRRecords",
+            "#Grateful",
+            "#IndependentMusic"
+          ],
+          "call_to_action": "DM us your thoughts on the EP",
+          "visual_direction": "Screenshot compilation of positive fan messages and comments, warm color palette",
+          "best_time_awst": "17:00"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-11",
+      "day_theme": "Production Insights",
+      "posts": [
+        {
+          "platform": "YouTube",
+          "content_type": "Educational Content",
+          "caption": "Jerry breaks down the drum pattern that drives the main DnB track. Sometimes the simplest ideas create the biggest impact 🥁",
+          "hashtags": [
+            "#DrumAndBass",
+            "#MusicProduction",
+            "#JerryMane",
+            "#Tutorial",
+            "#ElectronicMusic",
+            "#ProducerTips"
+          ],
+          "call_to_action": "Try this technique in your own productions",
+          "visual_direction": "Close-up shots of drum machine/software, Jerry explaining the process, split screen showing waveforms",
+          "best_time_awst": "20:00"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-13",
+      "day_theme": "Throwback Thursday",
+      "posts": [
+        {
+          "platform": "Facebook",
+          "content_type": "Memory Post",
+          "caption": "Throwback to the late nights and coffee runs that fueled this EP. Jerry's dedication to getting every sound just right was unreal. The grind was worth every moment 🌙☕",
+          "hashtags": [
+            "#ThrowbackThursday",
+            "#StudioLife",
+            "#JerryMane",
+            "#LateNights",
+            "#MusicMaking",
+            "#Dedication"
+          ],
+          "call_to_action": "Share your own late-night creative moments",
+          "visual_direction": "Moody nighttime studio shots, empty coffee cups, Jerry working late with soft lighting",
+          "best_time_awst": "18:30"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-15",
+      "day_theme": "Weekend Energy",
+      "posts": [
+        {
+          "platform": "Instagram",
+          "content_type": "Reel",
+          "caption": "When Jerry Mane's dubstep drop hits and you remember why you fell in love with electronic music in the first place 🔊💥",
+          "hashtags": [
+            "#Dubstep",
+            "#JerryMane",
+            "#WeekendVibes",
+            "#Drop",
+            "#Electronic",
+            "#LRRecords",
+            "#Bass",
+            "#Energy"
+          ],
+          "call_to_action": "Tag someone who needs to hear this",
+          "visual_direction": "Quick cuts synced to the dubstep drop, bass visualization effects, high energy transitions",
+          "best_time_awst": "15:30"
+        }
+      ]
+    }
+  ],
+  "key_dates": [
+    {
+      "date": "2026-03-02",
+      "event": "One year anniversary of EP release",
+      "content_note": "Celebrate milestone with community engagement focus"
+    }
+  ],
+  "content_notes": "Focus on authentic storytelling and community building during this post-release period. Use the anniversary as a natural hook for nostalgia content while keeping Jerry Mane top-of-mind for fans. Mix technical production content with emotional behind-the-scenes moments to appeal to both music producers and casual listeners."
+}

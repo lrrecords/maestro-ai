@@ -51,4 +51,7 @@ desktop.ini
 
 # Ollama models (too large)
 *.gguf
-models/
+models/venv/
+__pycache__/
+.DS_Store
+*.csv
