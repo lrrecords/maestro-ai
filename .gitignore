@@ -33,6 +33,22 @@ data/artists/*.json
 *_secrets.json
 credentials/
 
+# Environment
+.env
+*.env
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# All data — financial + personal, never commit
+data/
+
+# OS
+.DS_Store
+Thumbs.db
+
 # Personal/Private
 data/ai_conversations/chatgpt_export.zip
 data/ai_conversations/*_conversations.txt
