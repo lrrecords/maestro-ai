@@ -49,6 +49,10 @@ data/
 .DS_Store
 Thumbs.db
 
+data/*
+!data/artists/
+!data/artists/*.json
+
 # Personal/Private
 data/ai_conversations/chatgpt_export.zip
 data/ai_conversations/*_conversations.txt
