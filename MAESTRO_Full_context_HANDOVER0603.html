@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MAESTRO AI — Handover — March 2026</title>
+  <style>
+    @media print {
+      .no-print { display: none; }
+      h2 { page-break-before: always; }
+      h2:first-of-type { page-break-before: avoid; }
+      body { padding: 32px; }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 48px 56px;
+      color: #1a1a1a;
+      line-height: 1.65;
+      font-size: 14px;
+    }
+    .print-btn {
+      position: fixed;
+      top: 20px; right: 20px;
+      background: #1a1a1a; color: white;
+      border: none; padding: 12px 20px;
+      border-radius: 6px; cursor: pointer;
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .print-btn:hover { background: #333; }
+
+    /* Cover */
+    .cover {
+      text-align: center;
+      padding: 60px 0 48px;
+      border-bottom: 3px solid #1a1a1a;
+      margin-bottom: 48px;
+    }
+    .cover h1 { font-size: 38px; letter-spacing: 5px; font-weight: 900; margin-bottom: 10px; }
+    .cover .subtitle { font-size: 14px; color: #666; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 32px; }
+    .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 32px; }
+    .meta-item { background: #f5f5f5; padding: 16px 12px; border-radius: 6px; text-align: center; }
+    .meta-item .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #888; margin-bottom: 6px; }
+    .meta-item .value { font-size: 13px; font-weight: 700; }
+
+    /* Section headings */
+    h2 {
+      font-size: 13px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 2.5px;
+      margin: 44px 0 18px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #1a1a1a;
+    }
+    h3 { font-size: 15px; font-weight: 700; margin: 24px 0 10px; color: #222; }
+    p { margin-bottom: 12px; color: #333; font-size: 13px; }
+
+    /* Agent cards */
+    .agent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+    .agent-grid.single { grid-template-columns: 1fr; }
+    .agent-card { border: 2px solid #1a1a1a; border-radius: 8px; padding: 20px; }
+    .agent-card .emoji { font-size: 26px; margin-bottom: 8px; }
+    .agent-card .name { font-size: 17px; font-weight: 900; letter-spacing: 2px; margin-bottom: 8px; }
+    .agent-card .detail { font-size: 12px; color: #444; line-height: 1.55; }
+    .badge {
+      display: inline-block;
+      font-size: 9px; font-weight: 800;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 3px;
+      margin-bottom: 10px;
+      background: #1a1a1a; color: white;
+    }
+    .badge.pending { background: #999; }
+
+    /* Code */
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #ddd;
+      border-left: 4px solid #1a1a1a;
+      padding: 14px 18px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      margin: 12px 0 20px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+    code {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #efefef;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 14px 0 22px; font-size: 13px; }
+    th {
+      background: #1a1a1a; color: white;
+      padding: 9px 14px; text-align: left;
+      font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+    }
+    td { padding: 9px 14px; border-bottom: 1px solid #e5e5e5; color: #333; }
+    tr:nth-child(even) td { background: #fafafa; }
+
+    /* Callout boxes */
+    .box {
+      padding: 13px 16px; border-radius: 4px;
+      margin: 10px 0; font-size: 13px; line-height: 1.55;
+    }
+    .box.warn  { background: #fffbea; border: 1px solid #e8d060; border-left: 4px solid #c8a000; }
+    .box.note  { background: #f4f4ff; border: 1px solid #c0c8f0; border-left: 4px solid #5060cc; }
+    .box.ok    { background: #f0fff4; border: 1px solid #90d8a8; border-left: 4px solid #2a8a50; }
+
+    ul { margin: 8px 0 16px 22px; }
+    li { margin-bottom: 6px; font-size: 13px; color: #333; }
+
+    .footer {
+      margin-top: 64px; padding-top: 18px;
+      border-top: 2px solid #1a1a1a;
+      text-align: center;
+      font-size: 11px; color: #888; letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">⬇ Save as PDF</button>
+
+<!-- ── COVER ───────────────────────────────────────── -->
+<div class="cover">
+  <h1>🎶 MAESTRO AI</h1>
+  <div class="subtitle">Orchestrator System — Handover Document</div>
+  <div class="meta-grid">
+    <div class="meta-item">
+      <div class="label">Date</div>
+      <div class="value">6 March 2026</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Status</div>
+      <div class="value">✅ All Agents Live</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Agents Built</div>
+      <div class="value">3 of 4</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Repository</div>
+      <div class="value">lrrecords/maestro-ai</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 1. OVERVIEW ────────────────────────────────── -->
+<h2>1 — Project Overview</h2>
+
+<p>MAESTRO AI is an agentic orchestration system built for LR Records. It routes CLI commands to specialist AI agents, each responsible for a distinct area of label operations. All agents are powered by the Anthropic Claude API and operate on structured artist profile data stored as JSON files.</p>
+
+<p>The system is intentionally modular — new agents are added to <code>scripts/agents/</code> and registered in <code>maestro.py</code> without touching existing agents. The orchestrator handles artist discovery, command routing, output saving, and the unified <code>full</code> run.</p>
+
+<!-- ── 2. AGENTS ───────────────────────────────────── -->
+<h2>2 — Agents</h2>
+
+<div class="agent-grid">
+  <div class="agent-card">
+    <div class="emoji">🎵</div>
+    <div class="name">VINYL</div>
+    <div class="badge">Live</div>
+    <p class="detail">Release checklist generator. Takes an artist profile and produces a structured, phased checklist covering pre-release, release day, and post-release tasks. Output saved to <code>data/vinyl/</code> as JSON.</p>
+  </div>
+  <div class="agent-card">
+    <div class="emoji">📣</div>
+    <div class="name">ECHO</div>
+    <div class="badge">Live</div>
+    <p class="detail">2-week social media content planner. Generates platform-specific posts accounting for artist voice, genre, and release timing. Output saved to <code>data/echo/</code> as JSON.</p>
+  </div>
+  <div class="agent-card">
+    <div class="emoji">📊</div>
+    <div class="name">ATLAS</div>
+    <div class="badge">Live</div>
+    <p class="detail">Analytics agent. Ingests sales CSVs from Labelgrid, Orchard, and Bandcamp, normalizes to a common schema, runs Python-side trend calculations, then passes a structured summary to Claude for strategic insights. Output saved to <code>data/atlas/</code>.</p>
+  </div>
+</div>
+
+<div class="agent-grid single" style="margin-top:8px;">
+  <div class="agent-card">
+    <div class="emoji">🧭</div>
+    <div class="name">SAGE</div>
+    <div class="badge pending">Planned — Next</div>
+    <p class="detail">Weekly priority planner and PA layer. Will ingest the most recent outputs from VINYL, ECHO, and ATLAS and synthesise them into a ranked weekly action list — one focused brief per artist, with blocked items flagged for human decision.</p>
+  </div>
+</div>
+
+<!-- ── 3. ARCHITECTURE ────────────────────────────── -->
+<h2>3 — Architecture</h2>
+
+<h3>Orchestrator — maestro.py</h3>
+<p>The CLI entry point. Discovers artists by matching a slug against <code>data/artists/*.json</code> filenames and name fields, routes to the correct agent, and handles the <code>full</code> run sequence (VINYL → ECHO → ATLAS).</p>
+
+<h3>All Commands</h3>
+<table>
+  <tr><th>Command</th><th>Agent</th><th>Output location</th></tr>
+  <tr><td><code>artists</code></td><td>—</td><td>Prints roster to terminal</td></tr>
+  <tr><td><code>vinyl "Artist"</code></td><td>VINYL</td><td><code>data/vinyl/</code></td></tr>
+  <tr><td><code>echo "Artist"</code></td><td>ECHO</td><td><code>data/echo/</code></td></tr>
+  <tr><td><code>atlas "Artist"</code></td><td>ATLAS</td><td><code>data/atlas/</code></td></tr>
+  <tr><td><code>full "Artist"</code></td><td>ALL THREE</td><td>All three folders</td></tr>
+</table>
+
+<h3>File Structure</h3>
+<pre>maestro-ai/
+├── scripts/
+│   ├── maestro.py              ← CLI orchestrator / router
+│   └── agents/
+│       ├── vinyl.py            ← Release checklist agent
+│       ├── echo.py             ← Content plan agent
+│       └── atlas.py            ← Analytics agent
+├── data/
+│   ├── artists/                ← Artist JSON profiles  [gitignored]
+│   ├── metrics/
+│   │   ├── bandcamp/           ← Drop Bandcamp CSVs here
+│   │   ├── orchard/            ← Drop Orchard CSVs here
+│   │   └── labelgrid/          ← Drop Labelgrid CSVs here
+│   ├── vinyl/                  ← Generated checklists  [gitignored]
+│   ├── echo/                   ← Generated content plans  [gitignored]
+│   └── atlas/                  ← Generated analytics reports  [gitignored]
+├── .env                        ← ANTHROPIC_API_KEY  [gitignored]
+├── .gitignore
+└── requirements.txt</pre>
+
+<!-- ── 4. ATLAS ─────────────────────────────────────── -->
+<h2>4 — ATLAS: Data Sources &amp; Schema</h2>
+
+<p>ATLAS normalizes three different CSV formats into a single internal schema before any calculations or Claude prompting occurs. All revenue figures are treated as USD; Bandcamp non-USD rows are included at face value (see limitations).</p>
+
+<table>
+  <tr><th>Source</th><th>Revenue field</th><th>Date field</th><th>Notes</th></tr>
+  <tr><td>Labelgrid</td><td><code>subtotal_usd</code></td><td><code>dsp_transaction_date</code></td><td>May contain blank territory rows (YouTube-CIDAR)</td></tr>
+  <tr><td>Orchard</td><td><code>Royalty</code></td><td><code>Date/Time</code></td><td>Generally clean</td></tr>
+  <tr><td>Bandcamp</td><td><code>net amount</code></td><td><code>date</code></td><td>Multi-currency — non-USD at face value</td></tr>
+</table>
+
+<h3>What ATLAS calculates in Python (before Claude)</h3>
+<ul>
+  <li>Total revenue per source</li>
+  <li>Monthly revenue breakdown across all sources</li>
+  <li>Top performing tracks by revenue</li>
+  <li>Month-on-month trend percentage</li>
+  <li>Record count per source (used in <code>full</code> run summary)</li>
+</ul>
+
+<h3>What Claude contributes</h3>
+<p>Strategic interpretation — anomaly flags, release impact analysis, platform health assessment, and prioritised recommendations. Claude receives the pre-calculated summary only, not raw CSV data.</p>
+
+<!-- ── 5. ARTIST PROFILES ──────────────────────────── -->
+<h2>5 — Artist Profile Structure</h2>
+
+<p>Each artist is stored as a JSON file in <code>data/artists/</code>. The orchestrator matches by filename slug or the <code>artist_info.name</code> field. Key sections expected by agents:</p>
+
+<table>
+  <tr><th>Key</th><th>Used by</th><th>Contents</th></tr>
+  <tr><td><code>artist_info</code></td><td>All</td><td>Name, bio, socials, label</td></tr>
+  <tr><td><code>musical_identity</code></td><td>VINYL, ECHO, ATLAS</td><td>Genre, influences, sound description</td></tr>
+  <tr><td><code>release_history</code></td><td>VINYL, ATLAS</td><td>Past releases with dates and platforms</td></tr>
+  <tr><td><code>upcoming_release</code></td><td>VINYL, ECHO</td><td>Title, type, target date, assets status</td></tr>
+  <tr><td><code>social_presence</code></td><td>ECHO</td><td>Active platforms, posting frequency, tone</td></tr>
+</table>
+
+<!-- ── 6. KNOWN LIMITATIONS ───────────────────────── -->
+<h2>6 — Known Limitations</h2>
+
+<div class="box warn">
+  <strong>⚠️ Bandcamp multi-currency</strong><br>
+  Non-USD revenue (GBP, EUR, AUD) is included at face value. ATLAS logs a warning but does not apply FX conversion. Any cross-source total revenue figure is approximate when Bandcamp non-USD rows are present.
+</div>
+
+<div class="box note">
+  <strong>📋 Blank territory rows — Labelgrid</strong><br>
+  YouTube-CIDAR exports often contain rows with no territory value. ATLAS flags these but does not exclude or auto-resolve them. They are included in revenue totals.
+</div>
+
+<div class="box note">
+  <strong>📋 No data recency concept</strong><br>
+  ATLAS has no understanding of expected export recency. A -70% month-on-month drop could mean catalog decline or simply that recent data hasn't been exported yet. Both scenarios look identical to the agent.
+</div>
+
+<div class="box note">
+  <strong>📋 Deferred items</strong><br>
+  Three improvements discussed but not yet implemented: VINYL mode switching (single/EP/album modes), unified <code>built_at_utc</code> timestamp field across all agent outputs, and a manifest writer to track all generated files per run.
+</div>
+
+<!-- ── 7. ENVIRONMENT ──────────────────────────────── -->
+<h2>7 — Environment &amp; Dependencies</h2>
+
+<h3>Setup from scratch</h3>
+<pre>python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt</pre>
+
+<h3>.env file (project root)</h3>
+<pre>ANTHROPIC_API_KEY=sk-ant-...</pre>
+
+<h3>Key dependencies</h3>
+<table>
+  <tr><th>Package</th><th>Purpose</th></tr>
+  <tr><td><code>anthropic</code></td><td>Claude API client</td></tr>
+  <tr><td><code>pandas</code></td><td>CSV ingestion and normalization in ATLAS</td></tr>
+  <tr><td><code>python-dotenv</code></td><td>Loads .env API key at runtime</td></tr>
+  <tr><td><code>pathlib</code></td><td>Cross-platform paths (stdlib)</td></tr>
+</table>
+
+<!-- ── 8. GITHUB ───────────────────────────────────── -->
+<h2>8 — GitHub</h2>
+
+<div class="box ok">
+  ✅ &nbsp;<strong>Repository live:</strong> &nbsp;<a href="https://github.com/lrrecords/maestro-ai">https://github.com/lrrecords/maestro-ai</a>
+</div>
+
+<h3>What is committed</h3>
+<ul>
+  <li><code>scripts/</code> — all agent and orchestrator code</li>
+  <li><code>.gitignore</code></li>
+  <li><code>requirements.txt</code></li>
+</ul>
+
+<h3>What is permanently gitignored</h3>
+<ul>
+  <li><code>.env</code> — API key</li>
+  <li><code>data/artists/</code> — artist profiles</li>
+  <li><code>data/metrics/</code> — all sales CSVs</li>
+  <li><code>data/atlas/</code> — generated reports containing financial data</li>
+  <li><code>venv/</code> and <code>__pycache__/</code></li>
+</ul>
+
+<!-- ── 9. NEXT SESSION ─────────────────────────────── -->
+<h2>9 — Next Session: SAGE Agent</h2>
+
+<p>SAGE is the fourth and final core agent. It acts as the weekly PA layer, pulling the most recent outputs from VINYL, ECHO, and ATLAS and synthesising them into a single prioritised action list for the working week.</p>
+
+<h3>Planned inputs</h3>
+<ul>
+  <li>Most recent VINYL checklist — what release tasks are outstanding</li>
+  <li>Most recent ECHO plan — which posts are due this week</li>
+  <li>Most recent ATLAS report — any revenue anomalies or urgent flags</li>
+</ul>
+
+<h3>Planned output</h3>
+<ul>
+  <li>Ranked weekly action list with urgency tags (NOW / THIS WEEK / MONITOR)</li>
+  <li>One-paragraph weekly brief per active artist</li>
+  <li>Blocked items surfaced for human decision</li>
+</ul>
+
+<h3>CLI commands to add</h3>
+<pre>python scripts\maestro.py sage "Artist Name"   # single artist
+python scripts\maestro.py sage --all           # full roster</pre>
+
+<!-- ── FOOTER ──────────────────────────────────────── -->
+<div class="footer">
+  MAESTRO AI &nbsp;·&nbsp; LR Records &nbsp;·&nbsp; Handover Document &nbsp;·&nbsp; March 2026 &nbsp;·&nbsp; github.com/lrrecords/maestro-ai
+</div>
+
+</body>
+</html>
