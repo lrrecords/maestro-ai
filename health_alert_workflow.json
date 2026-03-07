@@ -1,0 +1,111 @@
+{
+  "name": "MAESTRO — Health Score Alert",
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Health Update Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "parameters": {
+        "path": "health-update",
+        "httpMethod": "POST",
+        "responseMode": "onReceived",
+        "responseData": "firstEntryJson"
+      }
+    },
+    {
+      "id": "2",
+      "name": "Is Critical?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [480, 300],
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.score }}",
+              "operation": "smaller",
+              "value2": 40
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "3",
+      "name": "Is At Risk?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [720, 420],
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.score }}",
+              "operation": "smaller",
+              "value2": 60
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "4",
+      "name": "Critical Alert Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [960, 180],
+      "parameters": {
+        "fromEmail": "brett@lrrecords.com.au",
+        "toEmail": "brett@lrrecords.com.au",
+        "subject": "=[CRITICAL] {{ $('Health Update Webhook').item.json.artist }} — Health Score {{ $('Health Update Webhook').item.json.score }}/100",
+        "emailType": "html",
+        "message": "=<h2 style='color:#c0392b'>CRITICAL — Artist Health Alert</h2><table style='border-collapse:collapse;width:100%'><tr><td style='padding:8px;border:1px solid #ddd'><strong>Artist</strong></td><td style='padding:8px;border:1px solid #ddd'>{{ $('Health Update Webhook').item.json.artist }}</td></tr><tr><td style='padding:8px;border:1px solid #ddd'><strong>Health Score</strong></td><td style='padding:8px;border:1px solid #ddd'>{{ $('Health Update Webhook').item.json.score }}/100 — CRITICAL</td></tr><tr><td style='padding:8px;border:1px solid #ddd'><strong>Days Since Contact</strong></td><td style='padding:8px;border:1px solid #ddd'>{{ $('Health Update Webhook').item.json.days_since_contact }}</td></tr><tr><td style='padding:8px;border:1px solid #ddd'><strong>Trend</strong></td><td style='padding:8px;border:1px solid #ddd'>{{ $('Health Update Webhook').item.json.trend }}</td></tr><tr><td style='padding:8px;border:1px solid #ddd'><strong>Top Action</strong></td><td style='padding:8px;border:1px solid #ddd'>{{ $('Health Update Webhook').item.json.top_action }}</td></tr><tr><td style='padding:8px;border:1px solid #ddd'><strong>Suggested Check-in</strong></td><td style='padding:8px;border:1px solid #ddd'>{{ $('Health Update Webhook').item.json.check_in_message }}</td></tr></table><p style='color:#888;font-size:12px'>Sent by MAESTRO BRIDGE — {{ $('Health Update Webhook').item.json.timestamp }}</p>",
+        "options": {}
+      }
+    },
+    {
+      "id": "5",
+      "name": "At Risk Alert Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [960, 420],
+      "parameters": {
+        "fromEmail": "brett@lrrecords.com.au",
+        "toEmail": "brett@lrrecords.com.au",
+        "subject": "=[AT RISK] {{ $('Health Update Webhook').item.json.artist }} — Health Score {{ $('Health Update Webhook').item.json.score }}/100",
+        "emailType": "html",
+        "message": "=<h2 style='color:#e67e22'>AT RISK — Artist Health Warning</h2><table style='border-collapse:collapse;width:100%'><tr><td style='padding:8px;border:1px solid #ddd'><strong>Artist</strong></td><td style='padding:8px;border:1px solid #ddd'>{{ $('Health Update Webhook').item.json.artist }}</td></tr><tr><td style='padding:8px;border:1px solid #ddd'><strong>Health Score</strong></td><td style='padding:8px;border:1px solid #ddd'>{{ $('Health Update Webhook').item.json.score }}/100 — AT RISK</td></tr><tr><td style='padding:8px;border:1px solid #ddd'><strong>Days Since Contact</strong></td><td style='padding:8px;border:1px solid #ddd'>{{ $('Health Update Webhook').item.json.days_since_contact }}</td></tr><tr><td style='padding:8px;border:1px solid #ddd'><strong>Trend</strong></td><td style='padding:8px;border:1px solid #ddd'>{{ $('Health Update Webhook').item.json.trend }}</td></tr><tr><td style='padding:8px;border:1px solid #ddd'><strong>Top Action</strong></td><td style='padding:8px;border:1px solid #ddd'>{{ $('Health Update Webhook').item.json.top_action }}</td></tr><tr><td style='padding:8px;border:1px solid #ddd'><strong>Suggested Check-in</strong></td><td style='padding:8px;border:1px solid #ddd'>{{ $('Health Update Webhook').item.json.check_in_message }}</td></tr></table><p style='color:#888;font-size:12px'>Sent by MAESTRO BRIDGE — {{ $('Health Update Webhook').item.json.timestamp }}</p>",
+        "options": {}
+      }
+    },
+    {
+      "id": "6",
+      "name": "Healthy — No Action",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [960, 620],
+      "parameters": {}
+    }
+  ],
+  "connections": {
+    "Health Update Webhook": {
+      "main": [
+        [{ "node": "Is Critical?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Is Critical?": {
+      "main": [
+        [{ "node": "Critical Alert Email", "type": "main", "index": 0 }],
+        [{ "node": "Is At Risk?",          "type": "main", "index": 0 }]
+      ]
+    },
+    "Is At Risk?": {
+      "main": [
+        [{ "node": "At Risk Alert Email", "type": "main", "index": 0 }],
+        [{ "node": "Healthy — No Action", "type": "main", "index": 0 }]
+      ]
+    }
+  }
+}
