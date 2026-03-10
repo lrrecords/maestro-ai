@@ -1,0 +1,34 @@
+{
+  "agent": "ATLAS",
+  "artist": "Nova Saint",
+  "slug": "nova_saint",
+  "generated_at": "2026-03-10T12:00:00Z",
+  "demo": true,
+  "report": {
+    "summary": "Nova Saint shows steady growth across Bandcamp with a notable spike in single sales in early March. Album sales remain consistent at 9-21 units per reporting period. The track 'Flicker' is gaining momentum as a potential gateway track, with unit sales trending upward week over week. Merch attachment rate is healthy at approximately 1 merch sale per 3 album sales.",
+    "metrics": {
+      "total_revenue": 920.57,
+      "total_units": 257,
+      "top_item": "Flicker (track)",
+      "top_market": "United States",
+      "secondary_markets": ["United Kingdom", "Canada", "Australia", "Germany"],
+      "merch_revenue": 200.00,
+      "avg_weekly_album_sales": 11.2
+    },
+    "trends": [
+      "Single 'Flicker' unit sales increased 155% from January to March",
+      "Album sales show consistent baseline with upward trend",
+      "International markets represent 28% of total revenue",
+      "Merch sales emerging as meaningful revenue stream"
+    ],
+    "anomalies": [
+      "March 8 spike: 56 units of 'Flicker' in single reporting period — likely playlist placement or social moment"
+    ],
+    "recommendations": [
+      "Investigate source of March 8 spike — replicate if driven by a specific campaign",
+      "Consider 'Flicker' as the sonic template for lead single 'Glass Horizon'",
+      "Expand merch offerings ahead of EP release given healthy attachment rate",
+      "Target German and Australian markets with localised social content"
+    ]
+  }
+}

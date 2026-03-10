@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAESTRO AI — Dashboard</title>
+  <style>
+    /* ── Reset & Variables ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0d0d;
+      --surface:  #141414;
+      --surface2: #1c1c1c;
+      --border:   #2a2a2a;
+      --cyan:     #00c8d4;
+      --cyan-dim: #007a82;
+      --green:    #00c97a;
+      --yellow:   #f5c842;
+      --red:      #e84545;
+      --white:    #f0f0f0;
+      --muted:    #555;
+      --text:     #d8d8d8;
+      --label:    #888;
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Segoe UI", system-ui, sans-serif;
+      --sidebar:  240px;
+      --topbar:   56px;
+    }
+
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; }
+    button { cursor: pointer; font-family: var(--sans); }
+
+    /* ── App shell ──────────────────────────────────────────────────── */
+    #app {
+      display: grid;
+      grid-template-columns: var(--sidebar) 1fr;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════════════════════════════════ */
+    #sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .sb-logo {
+      padding: 18px 16px 14px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .sb-logo-mark {
+      font-family: var(--mono);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--cyan);
+    }
+
+    .sb-logo-mark span { color: var(--white); }
+
+    .sb-logo-sub {
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .sb-nav {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 9px 12px;
+      background: none;
+      border: none;
+      border-radius: 6px;
+      color: var(--label);
+      font-size: 0.82rem;
+      text-align: left;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-btn:hover { background: var(--surface2); color: var(--text); }
+    .nav-btn.active { background: rgba(0,200,212,0.1); color: var(--cyan); }
+
+    .sb-roster-label {
+      padding: 12px 16px 6px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .sb-artists {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 8px;
+    }
+
+    .sb-artists::-webkit-scrollbar { width: 4px; }
+    .sb-artists::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .artist-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 8px 12px;
+      background: none;
+      border: none;
+      border-radius: 6px;
+      color: var(--label);
+      font-size: 0.82rem;
+      text-align: left;
+      transition: background 0.15s, color 0.15s;
+      margin-bottom: 2px;
+    }
+
+    .artist-item:hover { background: var(--surface2); color: var(--text); }
+
+    .artist-item.active {
+      background: rgba(0,200,212,0.08);
+      color: var(--cyan);
+      border-left: 2px solid var(--cyan);
+      padding-left: 10px;
+    }
+
+    .sb-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--cyan-dim);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .artist-item.active .sb-avatar { background: var(--cyan); color: var(--bg); }
+
+    .sb-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .sb-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--muted);
+    }
+
+    .sb-dot.good     { background: var(--green); }
+    .sb-dot.monitor  { background: var(--yellow); }
+    .sb-dot.critical { background: var(--red); box-shadow: 0 0 4px var(--red); }
+
+    .sb-footer {
+      padding: 10px 8px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 9px 12px;
+      background: none;
+      border: none;
+      border-radius: 6px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .logout-btn:hover { background: rgba(232,69,69,0.08); color: var(--red); }
+
+    /* ══════════════════════════════════════════════════════════════════
+       MAIN
+    ══════════════════════════════════════════════════════════════════ */
+    #main {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: var(--topbar);
+      background: rgba(13,13,13,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      z-index: 5;
+    }
+
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-title { font-size: 0.9rem; font-weight: 600; color: var(--white); }
+
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+    .clock {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .btn-sm {
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-family: var(--mono);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      text-transform: uppercase;
+      transition: all 0.15s;
+    }
+
+    .btn-sm:hover { border-color: var(--cyan-dim); color: var(--cyan); }
+    .btn-sm.cyan { background: rgba(0,200,212,0.1); border-color: var(--cyan-dim); color: var(--cyan); }
+
+    /* Hamburger (mobile only) */
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.2rem;
+      padding: 4px 8px;
+    }
+
+    /* Scrollable content */
+    #content {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    #content::-webkit-scrollbar { width: 6px; }
+    #content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       VIEWS
+    ══════════════════════════════════════════════════════════════════ */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── Dashboard ── */
+    #view-dashboard { padding: 24px; }
+
+    .dash-heading { margin-bottom: 20px; }
+    .dash-title { font-size: 1.35rem; font-weight: 700; color: var(--white); }
+    .dash-sub { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-family: var(--mono);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .stat-val.red    { color: var(--red); }
+    .stat-val.yellow { color: var(--yellow); }
+    .stat-val.green  { color: var(--green); }
+    .stat-val.cyan   { color: var(--cyan); }
+
+    .stat-lbl {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      gap: 14px;
+    }
+
+    /* Artist card */
+    .artist-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .artist-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .artist-card.status-critical { border-left-color: var(--red); }
+    .artist-card.status-monitor  { border-left-color: var(--yellow); }
+    .artist-card.status-good     { border-left-color: var(--green); }
+
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+
+    .card-av {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .status-critical .card-av { border-color: var(--red);    color: var(--red); }
+    .status-monitor  .card-av { border-color: var(--yellow);  color: var(--yellow); }
+    .status-good     .card-av { border-color: var(--green);   color: var(--green); }
+
+    .card-badge {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+
+    .card-badge.critical { background: rgba(232,69,69,0.1); color: var(--red);    border: 1px solid rgba(232,69,69,0.3); }
+    .card-badge.monitor  { background: rgba(245,200,66,0.1); color: var(--yellow); border: 1px solid rgba(245,200,66,0.3); }
+    .card-badge.good     { background: rgba(0,201,122,0.1);  color: var(--green);  border: 1px solid rgba(0,201,122,0.3); }
+    .card-badge.no-data  { background: rgba(85,85,85,0.1);   color: var(--muted);  border: 1px solid rgba(85,85,85,0.3); }
+
+    .card-name  { font-size: 0.98rem; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+    .card-genre { font-size: 0.72rem; color: var(--muted); margin-bottom: 14px; }
+
+    .card-score-row { display: flex; align-items: baseline; gap: 5px; margin-bottom: 12px; }
+
+    .score-big { font-family: var(--mono); font-size: 2.2rem; font-weight: 700; line-height: 1; }
+    .score-big.critical { color: var(--red); }
+    .score-big.monitor  { color: var(--yellow); }
+    .score-big.good     { color: var(--green); }
+    .score-big.no-data  { color: var(--muted); }
+
+    .score-denom { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); }
+    .trend-pill  { margin-left: auto; font-size: 1.1rem; }
+
+    .card-foot { display: flex; flex-direction: column; gap: 3px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .card-meta { display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--muted); }
+
+    /* ── Artist view ── */
+    .artist-hdr { padding: 22px 24px 0; }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 0.78rem;
+      padding: 0;
+      margin-bottom: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s;
+    }
+
+    .back-btn:hover { color: var(--cyan); }
+
+    .hero { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; }
+
+    .hero-av {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    .hero-info { flex: 1; }
+    .hero-name { font-size: 1.5rem; font-weight: 700; color: var(--white); line-height: 1.2; }
+    .hero-meta { font-size: 0.76rem; color: var(--muted); margin-top: 4px; }
+
+    .hero-score-blk { text-align: right; flex-shrink: 0; }
+    .hero-score { font-family: var(--mono); font-size: 2.8rem; font-weight: 700; line-height: 1; }
+    .hero-score.critical { color: var(--red); }
+    .hero-score.monitor  { color: var(--yellow); }
+    .hero-score.good     { color: var(--green); }
+    .hero-score.no-data  { color: var(--muted); }
+    .hero-score-lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-top: 4px; }
+
+    /* Tabs */
+    .tabs-bar {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      overflow-x: auto;
+    }
+
+    .tabs-bar::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      padding: 12px 18px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
+      font-size: 0.8rem;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+      margin-bottom: -1px;
+    }
+
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+
+    .tab-panel { display: none; padding: 22px 24px; }
+    .tab-panel.active { display: block; }
+
+    /* Utility layout */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .card-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .block-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(42,42,42,0.6);
+      font-size: 0.8rem;
+      gap: 10px;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+    .info-key { color: var(--muted); flex-shrink: 0; }
+    .info-val { color: var(--text); font-weight: 500; text-align: right; }
+
+    /* ── Agent buttons ── */
+    .pipeline-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, rgba(0,200,212,0.12), rgba(0,122,130,0.1));
+      border: 1px solid var(--cyan-dim);
+      border-radius: 8px;
+      color: var(--cyan);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.15s;
+      margin-bottom: 12px;
+    }
+
+    .pipeline-btn:hover { background: linear-gradient(135deg, rgba(0,200,212,0.22), rgba(0,122,130,0.18)); box-shadow: 0 0 20px rgba(0,200,212,0.15); }
+    .pipeline-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .agent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+
+    .agent-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 14px 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--label);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: all 0.15s;
+    }
+
+    .agent-btn:hover { border-color: var(--cyan-dim); color: var(--cyan); background: rgba(0,200,212,0.05); }
+
+    .agent-btn.running {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0,200,212,0.08);
+      animation: border-pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes border-pulse { 0%,100% { border-color: var(--cyan); } 50% { border-color: var(--cyan-dim); } }
+
+    .agent-btn.done-ok  { border-color: var(--green); color: var(--green); background: rgba(0,201,122,0.05); }
+    .agent-btn.done-err { border-color: var(--red);   color: var(--red);   background: rgba(232,69,69,0.05); }
+
+    .agent-icon  { font-size: 1.3rem; }
+    .agent-lbl   { font-weight: 700; }
+    .agent-desc  { font-size: 0.62rem; color: var(--muted); }
+
+    /* ── Terminal ── */
+    .terminal-wrap { background: #090909; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .t-dots { display: flex; gap: 6px; }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot.r { background: #e84545; }
+    .t-dot.y { background: #f5c842; }
+    .t-dot.g { background: #00c97a; }
+
+    .t-label { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); }
+
+    .t-actions { display: flex; gap: 6px; }
+
+    .t-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--muted);
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      font-family: var(--mono);
+      transition: all 0.15s;
+    }
+
+    .t-btn:hover { border-color: var(--cyan-dim); color: var(--cyan); }
+
+    .terminal-out {
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      line-height: 1.65;
+      color: #9ab;
+      padding: 14px 16px;
+      height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .terminal-out::-webkit-scrollbar { width: 4px; }
+    .terminal-out::-webkit-scrollbar-thumb { background: var(--border); }
+
+    .t-cyan { color: var(--cyan); }
+    .t-green { color: var(--green); }
+    .t-red   { color: var(--red); }
+    .t-dim   { color: var(--muted); }
+
+    .t-cursor {
+      display: inline-block;
+      width: 7px;
+      height: 13px;
+      background: var(--cyan);
+      border-radius: 1px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── Chart ── */
+    .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 14px; }
+    .chart-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+    .chart-box { position: relative; height: 240px; }
+
+    /* ── Outputs accordion ── */
+    .accordion { display: flex; flex-direction: column; gap: 8px; }
+
+    .acc-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.84rem;
+      text-align: left;
+      transition: background 0.15s;
+    }
+
+    .acc-toggle:hover { background: var(--surface2); }
+    .acc-toggle.open  { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom-color: transparent; }
+
+    .acc-tag {
+      font-family: var(--mono);
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--cyan);
+      background: rgba(0,200,212,0.08);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .acc-chevron { color: var(--muted); transition: transform 0.2s; font-size: 0.75rem; }
+    .acc-toggle.open .acc-chevron { transform: rotate(180deg); }
+
+    .acc-body {
+      display: none;
+      background: #090909;
+      border: 1px solid var(--border);
+      border-top: none;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      padding: 14px 16px;
+      font-family: var(--mono);
+      font-size: 0.73rem;
+      color: #9ab;
+      line-height: 1.6;
+      max-height: 340px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .acc-body.open { display: block; }
+
+    /* ── Check-in tab ── */
+    .checkin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .field-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      resize: vertical;
+      min-height: 100px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    textarea:focus { border-color: var(--cyan-dim); }
+
+    .btn-row { display: flex; gap: 10px; margin-top: 14px; }
+
+    .btn-primary {
+      flex: 1;
+      padding: 11px;
+      background: linear-gradient(135deg, var(--cyan-dim), #005f65);
+      border: 1px solid var(--cyan-dim);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 0.15s;
+    }
+
+    .btn-primary:hover { opacity: 0.88; box-shadow: 0 0 20px rgba(0,200,212,0.18); }
+
+    .btn-secondary {
+      flex: 1;
+      padding: 11px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover { border-color: var(--cyan-dim); color: var(--cyan); }
+
+    .webhook-preview {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+      line-height: 1.7;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    .result-box {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-family: var(--mono);
+      white-space: pre-wrap;
+      display: none;
+    }
+
+    .result-box.ok  { background: rgba(0,201,122,0.08); border: 1px solid rgba(0,201,122,0.25); color: var(--green); }
+    .result-box.err { background: rgba(232,69,69,0.08);  border: 1px solid rgba(232,69,69,0.25);  color: var(--red); }
+
+    /* ── Shared utils ── */
+        .no-data {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      gap: 10px;
+      text-align: center;
+    }
+    .no-data-icon { font-size: 2rem; opacity: 0.3; }
+
+    /* Spinner */
+    .spinner {
+      width: 20px; height: 20px;
+      border: 2px solid var(--border);
+      border-top-color: var(--cyan);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 40px auto;
+      display: block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Toast */
+    #toast-container {
+      position: fixed; bottom: 20px; right: 20px;
+      z-index: 1000; display: flex; flex-direction: column; gap: 8px;
+    }
+    .toast {
+      padding: 10px 16px; border-radius: 8px; font-size: 0.8rem;
+      display: flex; align-items: center; gap: 8px;
+      animation: slideIn 0.2s ease; max-width: 320px;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(40px); opacity: 0; }
+      to   { transform: translateX(0);    opacity: 1; }
+    }
+    .toast.ok  { background: #1a3d2e; border: 1px solid var(--green); color: var(--green); }
+    .toast.err { background: #3d1a1a; border: 1px solid var(--red);   color: var(--red);   }
+    .toast.inf { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
+
+    /* History table */
+    .hist-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 14px; }
+    .hist-table th {
+      text-align: left; padding: 8px 12px; color: var(--muted);
+      font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em;
+      border-bottom: 1px solid var(--border);
+    }
+    .hist-table td { padding: 8px 12px; border-bottom: 1px solid rgba(42,42,42,0.5); color: var(--text); }
+    .hist-table tr:last-child td { border-bottom: none; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      #app { grid-template-columns: 1fr; }
+      #sidebar {
+        position: fixed; left: -100%; top: 0; bottom: 0;
+        width: var(--sidebar); z-index: 100; transition: left 0.25s;
+      }
+      #sidebar.open { left: 0; }
+      .hamburger { display: block; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .agent-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-col, .checkin-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ══ SIDEBAR ══════════════════════════════════════════════════ -->
+  <aside id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-mark">MAESTRO <span>AI</span></div>
+      <div class="sb-logo-sub">LR Records · Intelligence Platform</div>
+    </div>
+    <nav class="sb-nav">
+      <button class="nav-btn active" id="nav-dash" onclick="showDashboard()">
+        📊 &nbsp;Dashboard
+      </button>
+    </nav>
+    <div class="sb-roster-label">Roster</div>
+    <div class="sb-artists" id="sb-artists">
+      <div class="spinner"></div>
+    </div>
+    <div class="sb-footer">
+      <button class="logout-btn" onclick="location.href='/logout'">🚪 &nbsp;Log out</button>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ═════════════════════════════════════════════════════ -->
+  <main id="main">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <span class="topbar-title" id="topbar-title">Dashboard</span>
+      </div>
+      <div class="topbar-right">
+        <span class="clock" id="clock"></span>
+        <button class="btn-sm cyan" onclick="refresh()">↺ Refresh</button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div id="content">
+
+      <!-- VIEW: Dashboard -->
+      <div class="view active" id="view-dashboard">
+        <div id="dash-inner" style="padding:24px;">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <!-- VIEW: Artist -->
+      <div class="view" id="view-artist">
+        <div class="artist-hdr">
+          <button class="back-btn" onclick="showDashboard()">← Back to Dashboard</button>
+          <div class="hero" id="artist-hero"></div>
+        </div>
+        <div class="tabs-bar" id="tabs-bar" style="display:none;">
+          <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+          <button class="tab-btn"        data-tab="agents"   onclick="switchTab('agents')">Run Agents</button>
+          <button class="tab-btn"        data-tab="history"  onclick="switchTab('history')">History</button>
+          <button class="tab-btn"        data-tab="outputs"  onclick="switchTab('outputs')">Outputs</button>
+          <button class="tab-btn"        data-tab="checkin"  onclick="switchTab('checkin')">Check-in</button>
+        </div>
+        <div class="tab-panel active" id="tab-overview"></div>
+        <div class="tab-panel"        id="tab-agents"></div>
+        <div class="tab-panel"        id="tab-history"></div>
+        <div class="tab-panel"        id="tab-outputs"></div>
+        <div class="tab-panel"        id="tab-checkin"></div>
+      </div>
+
+    </div><!-- /content -->
+  </main>
+</div><!-- /app -->
+
+<div id="toast-container"></div>
+<div id="sb-overlay"
+     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99;"
+     onclick="toggleSidebar()"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   STATE & CONSTANTS
+══════════════════════════════════════════════════════════════════ */
+const STATE = { slug: null, tab: "overview", data: null, es: null, chart: null };
+
+const AGENT_META = [
+  { id:"vinyl",  icon:"🎵", lbl:"VINYL",  desc:"Streaming"  },
+  { id:"echo",   icon:"📣", lbl:"ECHO",   desc:"Social"     },
+  { id:"atlas",  icon:"🌍", lbl:"ATLAS",  desc:"Press"      },
+  { id:"forge",  icon:"🔨", lbl:"FORGE",  desc:"Releases"   },
+  { id:"sage",   icon:"🧠", lbl:"SAGE",   desc:"Strategy"   },
+  { id:"bridge", icon:"🌉", lbl:"BRIDGE", desc:"Health"     },
+];
+
+/* ══════════════════════════════════════════════════════════════════
+   UTILITIES
+══════════════════════════════════════════════════════════════════ */
+const apiFetch = (url, opts = {}) =>
+  fetch(url, { credentials: "include", ...opts }).then(r => r.json());
+
+function initials(n = "") {
+  return n.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase() || "?";
+}
+
+function trendIcon(t = "") {
+  const s = String(t).toLowerCase();
+  if (s.includes("up")   || s.includes("improv")) return "▲";
+  if (s.includes("down") || s.includes("declin")) return "▼";
+  return "→";
+}
+
+function scoreColor(score) {
+  if (score == null) return "no-data";
+  if (score >= 70)   return "good";
+  if (score >= 40)   return "monitor";
+  return "critical";
+}
+
+function statusLabel(s) {
+  return { good: "Good", monitor: "Monitor", critical: "Critical", "no-data": "No Data" }[s] || "—";
+}
+
+function fmtScore(score) { return score != null ? score : "—"; }
+
+function toast(msg, type = "inf", ms = 3500) {
+  const c  = document.getElementById("toast-container");
+  const el = document.createElement("div");
+  el.className = "toast " + type;
+  const icon = { ok: "✓", err: "✗", inf: "ℹ" }[type] || "ℹ";
+  el.innerHTML = `<span>${icon}</span><span>${msg}</span>`;
+  c.appendChild(el);
+  setTimeout(() => el.remove(), ms);
+}
+
+function stopStream() {
+  if (STATE.es) { STATE.es.close(); STATE.es = null; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════════════ */
+document.addEventListener("DOMContentLoaded", () => {
+  updateClock();
+  setInterval(updateClock, 1000);
+  loadSidebar();
+  loadDashboard();
+});
+
+function updateClock() {
+  document.getElementById("clock").textContent =
+    new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit", second:"2-digit" });
+}
+
+function refresh() { STATE.slug ? loadArtist(STATE.slug) : loadDashboard(); }
+
+function toggleSidebar() {
+  const sb   = document.getElementById("sidebar");
+  const ov   = document.getElementById("sb-overlay");
+  const open = sb.classList.toggle("open");
+  ov.style.display = open ? "block" : "none";
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════════════════════════════════ */
+async function loadSidebar() {
+  const rows = await apiFetch("/api/dashboard").catch(() => []);
+  const el   = document.getElementById("sb-artists");
+  if (!rows.length) {
+    el.innerHTML = `<div style="padding:12px 16px;color:var(--muted);font-size:.75rem;">No artists found</div>`;
+    return;
+  }
+  el.innerHTML = rows.map(r => `
+    <button class="artist-item" id="sb-${r.slug}" onclick="showArtist('${r.slug}')">
+      <div class="sb-avatar">${initials(r.name)}</div>
+      <span class="sb-name">${r.name}</span>
+      <span class="sb-dot ${r.status}"></span>
+    </button>`).join("");
+}
+
+function highlightSidebar(slug) {
+  document.querySelectorAll(".artist-item").forEach(b => b.classList.remove("active"));
+  const el = document.getElementById("sb-" + slug);
+  if (el) el.classList.add("active");
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   DASHBOARD VIEW
+══════════════════════════════════════════════════════════════════ */
+function showDashboard() {
+  STATE.slug = null;
+  stopStream();
+  document.getElementById("nav-dash").classList.add("active");
+  document.querySelectorAll(".artist-item").forEach(b => b.classList.remove("active"));
+  document.getElementById("topbar-title").textContent = "Dashboard";
+  document.getElementById("view-dashboard").classList.add("active");
+  document.getElementById("view-artist").classList.remove("active");
+  loadDashboard();
+}
+
+async function loadDashboard() {
+  const inner = document.getElementById("dash-inner");
+  inner.innerHTML = `<div class="spinner"></div>`;
+
+  const rows = await apiFetch("/api/dashboard").catch(() => null);
+  if (!rows) {
+    inner.innerHTML = `<div style="color:var(--red);padding:24px;">Failed to load dashboard.</div>`;
+    return;
+  }
+
+  const total    = rows.length;
+  const good     = rows.filter(r => r.status === "good").length;
+  const monitor  = rows.filter(r => r.status === "monitor").length;
+  const critical = rows.filter(r => r.status === "critical").length;
+
+  // Build cards HTML separately to avoid deep nesting issues
+  const cards = rows.map(r => {
+    const ti     = trendIcon(r.trend);
+    const tEmoji = ti === "▲" ? "🟢" : ti === "▼" ? "🔴" : "⚪";
+    return `
+      <div class="artist-card status-${r.status}" onclick="showArtist('${r.slug}')">
+        <div class="card-top">
+          <div class="card-av">${initials(r.name)}</div>
+          <span class="card-badge ${r.status}">${statusLabel(r.status)}</span>
+        </div>
+        <div class="card-name">${r.name}</div>
+        <div class="card-genre">${r.genre}</div>
+        <div class="card-score-row">
+          <span class="score-big ${r.status}">${fmtScore(r.score)}</span>
+          <span class="score-denom">${r.score != null ? "/100" : ""}</span>
+          <span class="trend-pill">${r.score != null ? tEmoji : ""}</span>
+        </div>
+        <div class="card-foot">
+          <div class="card-meta">🎵 ${r.genre}</div>
+          <div class="card-meta">📀 ${r.release}</div>
+          <div class="card-meta">🕒 ${r.last_run}</div>
+        </div>
+      </div>`;
+  }).join("");
+
+  inner.innerHTML = `
+    <div class="dash-heading">
+      <div class="dash-title">Roster Health Dashboard</div>
+      <div class="dash-sub">Updated ${new Date().toLocaleString()}</div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-val cyan">${total}</div><div class="stat-lbl">Artists</div></div>
+      <div class="stat-card"><div class="stat-val green">${good}</div><div class="stat-lbl">Healthy</div></div>
+      <div class="stat-card"><div class="stat-val yellow">${monitor}</div><div class="stat-lbl">Monitor</div></div>
+      <div class="stat-card"><div class="stat-val red">${critical}</div><div class="stat-lbl">Critical</div></div>
+    </div>
+    <div class="cards-grid">${cards}</div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ARTIST VIEW
+══════════════════════════════════════════════════════════════════ */
+function showArtist(slug) {
+  STATE.slug = slug;
+  STATE.tab  = "overview";
+  stopStream();
+  document.getElementById("nav-dash").classList.remove("active");
+  highlightSidebar(slug);
+  document.getElementById("view-dashboard").classList.remove("active");
+  document.getElementById("view-artist").classList.add("active");
+  document.getElementById("artist-hero").innerHTML = `<div class="spinner"></div>`;
+  document.getElementById("tabs-bar").style.display = "none";
+
+  ["overview","agents","history","outputs","checkin"].forEach(t => {
+    const p = document.getElementById("tab-" + t);
+    p.innerHTML = "";
+    p.classList.toggle("active", t === "overview");
+  });
+  document.querySelectorAll(".tab-btn").forEach(b =>
+    b.classList.toggle("active", b.dataset.tab === "overview")
+  );
+
+  loadArtist(slug);
+}
+
+async function loadArtist(slug) {
+  const data = await apiFetch("/api/artist/" + slug).catch(() => null);
+  if (!data || data.error) { toast("Failed to load artist", "err"); return; }
+  STATE.data = data;
+  document.getElementById("topbar-title").textContent =
+    data.profile?.artist_info?.name || slug;
+  renderHero(data);
+  document.getElementById("tabs-bar").style.display = "flex";
+  // Re-render active tab with fresh data
+  const panel = document.getElementById("tab-" + STATE.tab);
+  panel.innerHTML = "";
+  renderTab(STATE.tab, data);
+}
+
+function renderHero(d) {
+  const name   = d.profile?.artist_info?.name || d.slug;
+  const genre  = d.profile?.musical_identity?.primary_genre || "—";
+  const label  = d.profile?.artist_info?.label || "—";
+  const sc     = d.score;
+  const status = d.status;
+
+  document.getElementById("artist-hero").innerHTML = `
+    <div class="hero-av">${initials(name)}</div>
+    <div class="hero-info">
+      <div class="hero-name">${name}</div>
+      <div class="hero-meta">${genre} &nbsp;·&nbsp; ${label}</div>
+    </div>
+    <div class="hero-score-blk">
+      <div class="hero-score ${status}">${fmtScore(sc)}</div>
+      <div class="hero-score-lbl">${sc != null ? "/ 100 &nbsp; " + statusLabel(status) : "No Score Yet"}</div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════════════════════════ */
+function switchTab(tab) {
+  STATE.tab = tab;
+  document.querySelectorAll(".tab-btn").forEach(b =>
+    b.classList.toggle("active", b.dataset.tab === tab)
+  );
+  document.querySelectorAll(".tab-panel").forEach(p =>
+    p.classList.toggle("active", p.id === "tab-" + tab)
+  );
+  const panel = document.getElementById("tab-" + tab);
+  if (!panel.innerHTML.trim()) renderTab(tab, STATE.data);
+}
+
+function renderTab(tab, d) {
+  if (!d) return;
+  const fns = {
+    overview: renderOverview,
+    agents:   renderAgents,
+    history:  renderHistory,
+    outputs:  renderOutputs,
+    checkin:  renderCheckin,
+  };
+  if (fns[tab]) fns[tab](d);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   TAB: OVERVIEW
+══════════════════════════════════════════════════════════════════ */
+function renderOverview(d) {
+  const ai     = d.profile?.artist_info      || {};
+  const mi     = d.profile?.musical_identity || {};
+  const ur     = d.profile?.upcoming_release || {};
+  const mgmt   = d.profile?.management       || {};
+  const bridge = d.outputs?.bridge;
+  const health = bridge?.health_assessment   || bridge?.health || {};
+
+  const infoRows = [
+    ["Artist",          ai.name                           || "—"],
+    ["Label",           ai.label                          || "—"],
+    ["Genre",           mi.primary_genre                  || "—"],
+    ["Subgenres",       (mi.subgenres || []).join(", ")   || "—"],
+    ["Home City",       ai.home_city                      || "—"],
+    ["Manager",         mgmt.name                         || "—"],
+    ["Email",           ai.email                          || "—"],
+    ["Instagram",       ai.instagram                      || "—"],
+    ["Upcoming Release",ur.title                          || "—"],
+    ["Release Date",    ur.release_date                   || "—"],
+  ];
+
+  const bridgeRows = bridge ? [
+    ["Overall Score",   health.overall_score ?? health.score ?? "—"],
+    ["Trend",           health.trend          || "—"],
+    ["Streaming",       health.streaming      || "—"],
+    ["Social",          health.social         || "—"],
+    ["Press",           health.press          || "—"],
+    ["Recommendation",  health.recommendation || "—"],
+  ] : null;
+
+  const infoHTML = infoRows.map(([k, v]) => `
+    <div class="info-row">
+      <span class="info-key">${k}</span>
+      <span class="info-val">${v}</span>
+    </div>`).join("");
+
+  const bridgeHTML = bridgeRows
+    ? bridgeRows.map(([k, v]) => `
+        <div class="info-row">
+          <span class="info-key">${k}</span>
+          <span class="info-val">${v}</span>
+        </div>`).join("")
+    : `<div class="no-data"><span class="no-data-icon">🌉</span>BRIDGE not yet run for this artist.</div>`;
+
+  document.getElementById("tab-overview").innerHTML = `
+    <div class="two-col">
+      <div class="card-block">
+        <div class="block-title">Artist Profile</div>
+        ${infoHTML}
+      </div>
+      <div class="card-block">
+        <div class="block-title">Latest BRIDGE Assessment</div>
+        ${bridgeHTML}
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   TAB: RUN AGENTS
+══════════════════════════════════════════════════════════════════ */
+function renderAgents(d) {
+  const name = d.profile?.artist_info?.name || d.slug;
+
+  const agentBtns = AGENT_META.map(a => `
+    <button class="agent-btn" id="btn-${a.id}" onclick="runAgent('${a.id}')">
+      <span class="agent-icon">${a.icon}</span>
+      <span class="agent-lbl">${a.lbl}</span>
+      <span class="agent-desc">${a.desc}</span>
+    </button>`).join("");
+
+  document.getElementById("tab-agents").innerHTML = `
+    <button class="pipeline-btn" id="btn-full" onclick="runAgent('full')">
+      ▶▶ &nbsp; RUN FULL PIPELINE — ALL AGENTS — ${name.toUpperCase()}
+    </button>
+    <div class="agent-grid">${agentBtns}</div>
+    <div class="terminal-wrap">
+      <div class="terminal-bar">
+        <div class="t-dots">
+          <div class="t-dot r"></div>
+          <div class="t-dot y"></div>
+          <div class="t-dot g"></div>
+        </div>
+        <span class="t-label" id="t-label">— ready —</span>
+        <div class="t-actions">
+          <button class="t-btn" onclick="clearTerminal()">Clear</button>
+        </div>
+      </div>
+      <div class="terminal-out" id="terminal">
+        <span class="t-dim">▸ Select an agent or click RUN FULL PIPELINE to begin</span>
+      </div>
+    </div>`;
+}
+
+function runAgent(agentId) {
+  stopStream();
+  const slug    = STATE.slug;
+  const name    = STATE.data?.profile?.artist_info?.name || slug;
+  const fullBtn = document.getElementById("btn-full");
+  const label   = document.getElementById("t-label");
+  const term    = document.getElementById("terminal");
+
+  // Reset button states
+  AGENT_META.forEach(a => {
+    const b = document.getElementById("btn-" + a.id);
+    if (b) b.className = "agent-btn";
+  });
+
+  if (agentId === "full") {
+    if (fullBtn) { fullBtn.disabled = true; fullBtn.textContent = "⏳  RUNNING FULL PIPELINE..."; }
+  } else {
+    const b = document.getElementById("btn-" + agentId);
+    if (b) b.className = "agent-btn running";
+  }
+
+  if (label) label.textContent = agentId.toUpperCase() + " running...";
+  term.innerHTML = "";
+
+  // Blinking cursor
+  const cursor = document.createElement("span");
+  cursor.className = "t-cursor";
+  term.appendChild(cursor);
+
+  const addLine = (txt, cls = "") => {
+    const line = document.createElement("div");
+    if (cls) line.className = cls;
+    line.textContent = txt;
+    term.insertBefore(line, cursor);
+    term.scrollTop = term.scrollHeight;
+  };
+
+  // Classify line for colour
+  const lineClass = txt => {
+    const t = txt.toLowerCase();
+    if (txt.startsWith("▶") || txt.startsWith("─")) return "t-cyan";
+    if (txt.startsWith("✓") || t.includes("success")) return "t-green";
+    if (txt.startsWith("✗") || t.includes("error") || t.includes("failed")) return "t-red";
+    if (txt.startsWith("#") || t.startsWith("//")) return "t-dim";
+    return "";
+  };
+
+  STATE.es = new EventSource("/api/stream/" + agentId + "/" + slug);
+
+  STATE.es.onmessage = e => {
+    const msg = JSON.parse(e.data);
+    const txt = msg.line || "";
+    addLine(txt, lineClass(txt));
+
+    if (msg.done) {
+      STATE.es.close();
+      STATE.es = null;
+      if (cursor.parentNode) cursor.remove();
+      if (label) label.textContent = msg.ok ? "✓ Completed" : "✗ Failed";
+
+      if (agentId === "full") {
+        if (fullBtn) {
+          fullBtn.disabled    = false;
+          fullBtn.textContent = `▶▶  RUN FULL PIPELINE — ALL AGENTS — ${name.toUpperCase()}`;
+        }
+      } else {
+        const b = document.getElementById("btn-" + agentId);
+        if (b) b.className = "agent-btn " + (msg.ok ? "done-ok" : "done-err");
+      }
+
+      toast(agentId.toUpperCase() + " " + (msg.ok ? "completed" : "failed"), msg.ok ? "ok" : "err");
+
+      // Refresh artist data if health-related agent ran
+      if (agentId === "bridge" || agentId === "full") {
+        setTimeout(() => loadArtist(slug), 1200);
+      }
+    }
+  };
+
+  STATE.es.onerror = () => {
+    addLine("Connection error — check server logs", "t-red");
+    if (cursor.parentNode) cursor.remove();
+    STATE.es.close();
+    STATE.es = null;
+    if (label) label.textContent = "✗ Connection lost";
+    toast("Stream disconnected", "err");
+  };
+}
+
+function clearTerminal() {
+  const term = document.getElementById("terminal");
+  if (term) term.innerHTML = `<span class="t-dim">▸ Terminal cleared</span>`;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   TAB: HISTORY
+══════════════════════════════════════════════════════════════════ */
+function renderHistory(d) {
+  const hist  = d.history || [];
+  const panel = document.getElementById("tab-history");
+
+  if (!hist.length) {
+    panel.innerHTML = `<div class="no-data">
+      <span class="no-data-icon">📊</span>
+      No BRIDGE history yet. Run BRIDGE to start tracking health over time.
+    </div>`;
+    return;
+  }
+
+  const tableRows = [...hist].reverse().map((h, i) => {
+    const st  = scoreColor(h.score);
+    const col = st === "good" ? "var(--green)" : st === "monitor" ? "var(--yellow)" : "var(--red)";
+    return `<tr>
+      <td class="t-dim">${i + 1}</td>
+      <td>${h.timestamp}</td>
+      <td style="color:${col};font-family:var(--mono);font-weight:700;">${h.score}</td>
+      <td><span class="card-badge ${st}">${statusLabel(st)}</span></td>
+    </tr>`;
+  }).join("");
+
+  panel.innerHTML = `
+    <div class="chart-wrap">
+      <div class="chart-title">Health Score Over Time (BRIDGE History)</div>
+      <div class="chart-box"><canvas id="health-chart"></canvas></div>
+    </div>
+    <div class="card-block">
+      <div class="block-title">Score Log</div>
+      <table class="hist-table">
+        <thead>
+          <tr><th>#</th><th>Date / Time</th><th>Score</th><th>Status</th></tr>
+        </thead>
+        <tbody>${tableRows}</tbody>
+      </table>
+    </div>`;
+
+  // Destroy old chart before creating a new one
+  if (STATE.chart) { STATE.chart.destroy(); STATE.chart = null; }
+
+  const labels = hist.map(h => h.timestamp);
+  const scores = hist.map(h => h.score);
+  const ptColors = scores.map(s =>
+    s >= 70 ? "rgba(0,201,122,0.9)" : s >= 40 ? "rgba(245,200,66,0.9)" : "rgba(232,69,69,0.9)"
+  );
+
+  const ctx = document.getElementById("health-chart").getContext("2d");
+  STATE.chart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Health Score",
+        data: scores,
+        borderColor: "rgba(0,200,212,0.6)",
+        backgroundColor: "rgba(0,200,212,0.05)",
+        pointBackgroundColor: ptColors,
+        pointBorderColor: ptColors,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        tension: 0.35,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          min: 0, max: 100,
+          grid:  { color: "rgba(42,42,42,0.8)" },
+          ticks: { color: "#555", font: { family: "Courier New" } },
+        },
+        x: {
+          grid:  { color: "rgba(42,42,42,0.4)" },
+          ticks: { color: "#555", font: { family: "Courier New", size: 10 }, maxRotation: 45 },
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` Score: ${ctx.raw}/100 — ${statusLabel(scoreColor(ctx.raw))}`
+          }
+        }
+      }
+    }
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   TAB: OUTPUTS
+══════════════════════════════════════════════════════════════════ */
+function renderOutputs(d) {
+  const outputs = d.outputs || {};
+  const panel   = document.getElementById("tab-outputs");
+  const agents  = AGENT_META.filter(a => outputs[a.id]);
+
+  if (!agents.length) {
+    panel.innerHTML = `<div class="no-data">
+      <span class="no-data-icon">📄</span>
+      No agent outputs found yet. Run some agents first.
+    </div>`;
+    return;
+  }
+
+  const items = agents.map(a => `
+    <div>
+      <button class="acc-toggle" onclick="toggleAcc('acc-${a.id}', this)">
+        <span>${a.icon} &nbsp; ${a.lbl}</span>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="acc-tag">Latest Output</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+      </button>
+      <div class="acc-body" id="acc-${a.id}">${JSON.stringify(outputs[a.id], null, 2)}</div>
+    </div>`).join("");
+
+  panel.innerHTML = `<div class="accordion">${items}</div>`;
+}
+
+function toggleAcc(id, btn) {
+  const body = document.getElementById(id);
+  const open = body.classList.toggle("open");
+  btn.classList.toggle("open", open);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   TAB: CHECK-IN
+══════════════════════════════════════════════════════════════════ */
+function renderCheckin(d) {
+  const name   = d.profile?.artist_info?.name || d.slug;
+  const slug   = d.slug;
+  const payload = {
+    artist:    name,
+    slug,
+    score:     d.score,
+    status:    d.status,
+    trend:     d.trend,
+    timestamp: new Date().toISOString(),
+    source:    "maestro-web-ui",
+  };
+
+  document.getElementById("tab-checkin").innerHTML = `
+    <div class="checkin-grid">
+
+      <div class="card-block">
+        <div class="block-title">Log Check-in — ${name}</div>
+        <div class="field-label" style="margin-top:10px;">Notes (optional)</div>
+        <textarea id="checkin-note"
+          placeholder="Call notes, meeting summary, follow-up actions..."></textarea>
+        <div class="btn-row">
+          <button class="btn-primary" onclick="doCheckin('${slug}')">
+            📋 &nbsp;Log Check-in
+          </button>
+        </div>
+        <div class="result-box" id="checkin-result"></div>
+      </div>
+
+      <div class="card-block">
+        <div class="block-title">Fire Webhook — Health Update</div>
+        <p style="font-size:.76rem;color:var(--muted);margin-bottom:12px;line-height:1.7;">
+          Sends current health data to your configured webhook endpoint
+          (n8n, Zapier, Make, etc.)
+        </p>
+        <div class="field-label">Payload Preview</div>
+        <div class="webhook-preview">${JSON.stringify(payload, null, 2)}</div>
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="doWebhook('${slug}')">
+            🔗 &nbsp;Fire Webhook
+          </button>
+        </div>
+        <div class="result-box" id="webhook-result"></div>
+      </div>
+
+    </div>`;
+}
+
+async function doCheckin(slug) {
+  const note = document.getElementById("checkin-note")?.value.trim() || "";
+  const res  = document.getElementById("checkin-result");
+  res.style.display = "none";
+
+  const result = await apiFetch("/api/checkin/" + slug, {
+    method:  "POST",
+    headers: { "Content-Type": "application/json" },
+    body:    JSON.stringify({ note }),
+  }).catch(e => ({ success: false, error: String(e) }));
+
+  res.className   = "result-box " + (result.success ? "ok" : "err");
+  res.textContent = result.success
+    ? "✓ Check-in logged\n\n" + (result.output || "")
+    : "✗ " + (result.error || "Failed");
+  res.style.display = "block";
+  toast(result.success ? "Check-in logged" : "Check-in failed", result.success ? "ok" : "err");
+}
+
+async function doWebhook(slug) {
+  const res = document.getElementById("webhook-result");
+  res.style.display = "none";
+
+  const result = await apiFetch("/api/webhook/" + slug, { method: "POST" })
+    .catch(e => ({ sent: false, error: String(e) }));
+
+  res.className   = "result-box " + (result.sent ? "ok" : "err");
+  res.textContent = result.sent
+    ? "✓ Webhook fired — HTTP " + result.http_status
+    : "✗ " + (result.error || "Failed");
+  res.style.display = "block";
+  toast(result.sent ? "Webhook sent" : "Webhook failed", result.sent ? "ok" : "err");
+}
+</script>
+</body>
+</html>

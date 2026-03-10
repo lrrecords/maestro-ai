@@ -1,0 +1,27 @@
+{
+  "agent": "ECHO",
+  "artist": "Nova Saint",
+  "slug": "nova_saint",
+  "generated_at": "2026-03-10T12:00:00Z",
+  "demo": true,
+  "content_plan": {
+    "period": "2026-04-07 to 2026-04-20",
+    "context": "Lead single 'Glass Horizon' drops April 10. Content builds anticipation, delivers the release, and sustains engagement.",
+    "posts": [
+      {"day": 1, "date": "2026-04-07", "platform": "Instagram", "type": "Carousel", "copy": "something is coming through the glass. 04.10.", "notes": "Teaser artwork — cropped, mysterious. Lowercase caption."},
+      {"day": 2, "date": "2026-04-08", "platform": "TikTok", "type": "Video", "copy": "pov: you wrote a song about the moment right before everything changes", "notes": "15-sec clip of studio session with track preview. Trending audio optional."},
+      {"day": 3, "date": "2026-04-09", "platform": "Instagram Stories", "type": "Countdown", "copy": "Glass Horizon. Tomorrow.", "notes": "Use countdown sticker. Link to pre-save."},
+      {"day": 4, "date": "2026-04-10", "platform": "All", "type": "Release Post", "copy": "glass horizon is yours now. link in bio.", "notes": "Release day. Static artwork post + story burst. Pin to grid."},
+      {"day": 5, "date": "2026-04-11", "platform": "TikTok", "type": "Video", "copy": "the synth sound that started this whole EP", "notes": "Behind-the-scenes production clip. Show the DAW. 30 sec."},
+      {"day": 6, "date": "2026-04-12", "platform": "Instagram", "type": "Reel", "copy": "making the video for glass horizon today", "notes": "Music video BTS. Raw footage, no polish."},
+      {"day": 7, "date": "2026-04-13", "platform": "Bandcamp", "type": "Fan Update", "copy": "Writing about what Glass Horizon means to me", "notes": "Long-form Bandcamp blog post. Personal, emotional."},
+      {"day": 8, "date": "2026-04-14", "platform": "Instagram Stories", "type": "Poll", "copy": "which lyric hit different?", "notes": "Engagement driver. Screenshot lyrics, run poll."},
+      {"day": 9, "date": "2026-04-15", "platform": "TikTok", "type": "Video", "copy": "replying to a comment about the bridge in glass horizon", "notes": "Reply format performs well. Pick a genuine comment."},
+      {"day": 10, "date": "2026-04-16", "platform": "Instagram", "type": "Photo", "copy": "between singles", "notes": "Aesthetic lifestyle photo. Keep presence without overselling."},
+      {"day": 11, "date": "2026-04-17", "platform": "TikTok", "type": "Video", "copy": "songs that sound like driving through fog at 2am — starting with mine", "notes": "Trend format: curated list with own track featured."},
+      {"day": 12, "date": "2026-04-18", "platform": "Instagram", "type": "Carousel", "copy": "soft machines. 05.15. five tracks.", "notes": "EP announcement. Reveal artwork, tracklist, date."},
+      {"day": 13, "date": "2026-04-19", "platform": "TikTok", "type": "Video", "copy": "the five moods of soft machines, explained in 30 seconds", "notes": "Quick-cut montage. One visual per track."},
+      {"day": 14, "date": "2026-04-20", "platform": "Instagram Stories", "type": "Link", "copy": "pre-save soft machines. it means everything.", "notes": "Direct CTA with pre-save link. Simple."}
+    ]
+  }
+}

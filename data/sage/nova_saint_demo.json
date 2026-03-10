@@ -1,0 +1,48 @@
+{
+  "agent": "SAGE",
+  "artist": "Nova Saint",
+  "slug": "nova_saint",
+  "generated_at": "2026-03-10T12:00:00Z",
+  "demo": true,
+  "weekly_plan": {
+    "week_of": "2026-03-10",
+    "summary": "Nova Saint is in strong pre-release position with 66 days until EP launch. Bandcamp metrics are trending up, relationship health is solid, and the release checklist is on track. This week's priority is locking down artwork and kicking off the distributor submission for the lead single. Secondary focus on planning the content ramp-up for April.",
+    "priorities": [
+      {
+        "rank": 1,
+        "action": "Confirm EP artwork with artist — hard deadline March 20",
+        "source_agent": "VINYL",
+        "urgency": "high",
+        "reasoning": "Artwork is the critical path blocker for distributor submission, pre-save page, and all social content. Everything downstream depends on this."
+      },
+      {
+        "rank": 2,
+        "action": "Schedule check-in call with Nova this week",
+        "source_agent": "BRIDGE",
+        "urgency": "medium",
+        "reasoning": "18 days since last contact. Score is 72 (Good) but will decay if left unattended. Use the call to cover artwork, video plans, and pre-release alignment."
+      },
+      {
+        "rank": 3,
+        "action": "Investigate March 8 Bandcamp spike for 'Flicker'",
+        "source_agent": "ATLAS",
+        "urgency": "medium",
+        "reasoning": "56 units in a single period is a 155% increase. If this was driven by a playlist or social moment, the same channel should be targeted for 'Glass Horizon' launch."
+      },
+      {
+        "rank": 4,
+        "action": "Draft press release for EP announcement",
+        "source_agent": "VINYL",
+        "urgency": "low",
+        "reasoning": "Due April 1 per release checklist. Starting the draft now avoids a bottleneck when single promotion ramps up in late March."
+      },
+      {
+        "rank": 5,
+        "action": "Set up weekly metrics automation in n8n",
+        "source_agent": "FORGE",
+        "urgency": "low",
+        "reasoning": "Automated Bandcamp pulls and ATLAS runs will save 30 minutes per week and ensure data is always current heading into release."
+      }
+    ]
+  }
+}

@@ -1,10 +1,10 @@
-# Python
-venv/
+# ── Python ────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+venv/
 env/
 build/
 develop-eggs/
@@ -22,56 +22,51 @@ wheels/
 .installed.cfg
 *.egg
 
-# Sensitive Data
+# ── Secrets / Config ─────────────────────────
 .env
-*.pyc
-__pycache__/
-.vscode/
-data/artists/*.json
-!data/artists/example_artist.json
+*.env
 *.key
 *_secrets.json
 credentials/
 
-# Environment
-.env
-*.env
+# ── Data (ignore everything, whitelist demos) ─
+data/**
+!data/**/
+!data/**/*_demo*
+!data/artists/nova_saint.json
 
-# Python
-venv/
-__pycache__/
-*.pyc
+# Keep one example artist for demo
+!data/**/*_demo*
+!data/artists/nova_saint.json
+!data/metrics/bandcamp/nova_saint_demo.csv
 
-# All data — financial + personal, never commit
-data/
+# Keep directory structure in repo
+!data/**/.gitkeep
 
-# OS
-.DS_Store
-Thumbs.db
+# ── Internal documents ───────────────────────
+*.pdf
+*.html
+!templates/*.html
 
-data/*
-!data/artists/
-!data/artists/*.json
+# ── .env.example is safe to commit ───────────
+!.env.example
 
-# Personal/Private
-data/ai_conversations/chatgpt_export.zip
-data/ai_conversations/*_conversations.txt
-
-# OS
+# ── OS ────────────────────────────────────────
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# IDE
+# ── IDE ───────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# Ollama models (too large)
+# ── Large files ──────────────────────────────
 *.gguf
-models/venv/
-__pycache__/
-.DS_Store
-*.csv
+models/
+
+# ── Logs ─────────────────────────────────────
+*.log
+logs/
