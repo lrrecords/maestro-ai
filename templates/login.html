@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAESTRO AI — Login</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0d0d;
+      --surface:  #141414;
+      --border:   #2a2a2a;
+      --cyan:     #00c8d4;
+      --cyan-dim: #007a82;
+      --green:    #00c97a;
+      --red:      #e84545;
+      --white:    #f0f0f0;
+      --muted:    #555;
+      --text:     #d8d8d8;
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Segoe UI", system-ui, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+    }
+
+    /* ── Animated grid background ── */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,200,212,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,200,212,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Glow orb ── */
+    body::after {
+      content: "";
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0,200,212,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    /* ── Card ── */
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 0 60px rgba(0,200,212,0.05);
+    }
+
+    /* ── Logo ── */
+    .logo-wrap {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .logo-icon {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+      display: block;
+      filter: drop-shadow(0 0 12px rgba(0,200,212,0.5));
+    }
+
+    .logo-text {
+      font-family: var(--mono);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+    }
+
+    .logo-text span { color: var(--white); }
+
+    .logo-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin-bottom: 28px;
+    }
+
+    /* ── Form ── */
+    .field { margin-bottom: 20px; }
+
+    label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      font-size: 0.95rem;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 44px 12px 40px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      letter-spacing: 0.12em;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="password"]:focus {
+      border-color: var(--cyan-dim);
+      box-shadow: 0 0 0 3px rgba(0,200,212,0.08);
+    }
+
+    /* Toggle visibility button */
+    .toggle-vis {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      opacity: 0.4;
+      padding: 4px;
+      color: var(--text);
+      transition: opacity 0.2s;
+    }
+
+    .toggle-vis:hover { opacity: 0.9; }
+
+    /* ── Error ── */
+    .error-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(232,69,69,0.08);
+      border: 1px solid rgba(232,69,69,0.25);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+      font-size: 0.82rem;
+      color: var(--red);
+      animation: shake 0.3s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25%       { transform: translateX(-6px); }
+      75%       { transform: translateX(6px); }
+    }
+
+    /* ── Submit button ── */
+    .btn-login {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, var(--cyan-dim), #005f65);
+      border: 1px solid var(--cyan-dim);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+      margin-top: 4px;
+    }
+
+    .btn-login:hover {
+      background: linear-gradient(135deg, #00a0aa, var(--cyan-dim));
+      box-shadow: 0 0 20px rgba(0,200,212,0.2);
+    }
+
+    .btn-login:active { transform: scale(0.98); }
+
+    .btn-login.loading {
+      opacity: 0.7;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* ── Status indicator ── */
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      line-height: 1.8;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .card { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+
+      <!-- Logo -->
+      <div class="logo-wrap">
+        <span class="logo-icon">🎛️</span>
+        <div class="logo-text">MAESTRO <span>AI</span></div>
+        <div class="logo-sub">LR Records · Artist Intelligence Platform</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Error -->
+      {% if error %}
+      <div class="error-box">
+        <span>⚠</span>
+        <span>{{ error }}</span>
+      </div>
+      {% endif %}
+
+      <!-- Form -->
+      <form method="POST" action="/login" id="loginForm">
+
+        <div class="field">
+          <label for="token">Access Token</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔑</span>
+            <input
+              type="password"
+              id="token"
+              name="token"
+              placeholder="Enter your token"
+              autocomplete="current-password"
+              autofocus
+            />
+            <button type="button" class="toggle-vis" id="toggleBtn" title="Show/hide token">
+              👁
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-login" id="submitBtn">
+          ▶ &nbsp; AUTHENTICATE
+        </button>
+
+      </form>
+
+      <!-- System status -->
+      <div class="status-row">
+        <div class="status-dot"></div>
+        <span>All systems operational</span>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      MAESTRO AI &nbsp;·&nbsp; v1.0.0 &nbsp;·&nbsp; commit 4290067<br>
+      &copy; 2026 LR Records
+    </div>
+  </div>
+
+  <script>
+    // Toggle password visibility
+    const tokenInput = document.getElementById("token");
+    const toggleBtn  = document.getElementById("toggleBtn");
+
+    toggleBtn.addEventListener("click", () => {
+      const isHidden = tokenInput.type === "password";
+      tokenInput.type  = isHidden ? "text" : "password";
+      toggleBtn.textContent = isHidden ? "🙈" : "👁";
+    });
+
+    // Loading state on submit
+    document.getElementById("loginForm").addEventListener("submit", () => {
+      const btn  = document.getElementById("submitBtn");
+      btn.textContent = "⏳  AUTHENTICATING...";
+      btn.classList.add("loading");
+    });
+
+    // Keyboard shortcut: Enter submits
+    tokenInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        document.getElementById("loginForm").submit();
+      }
+    });
+  </script>
+</body>
+</html>

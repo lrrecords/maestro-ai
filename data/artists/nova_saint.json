@@ -1,0 +1,70 @@
+{
+  "artist_info": {
+    "name": "Nova Saint",
+    "slug": "nova_saint",
+    "email": "nova@example.com",
+    "location": "Portland, OR",
+    "signed_date": "2025-06-15",
+    "label": {
+      "name": "Demo Label",
+      "slug": "demo_label"
+    }
+  },
+  "musical_identity": {
+    "primary_genre": "Indie Electronic",
+    "subgenres": ["Synth Pop", "Dream Pop", "Chillwave"],
+    "influences": ["Washed Out", "Toro y Moi", "Japanese Breakfast"],
+    "voice_description": "Warm, introspective, visually driven. Speaks in metaphors. Prefers lowercase aesthetic on social media."
+  },
+  "audience": {
+    "age_range": "22-35",
+    "platforms": ["Instagram", "TikTok", "Bandcamp"],
+    "listener_profile": "College-educated creatives, playlist curators, vinyl collectors"
+  },
+  "upcoming_release": {
+    "title": "Soft Machines",
+    "type": "EP",
+    "track_count": 5,
+    "release_date": "2026-05-15",
+    "single_1": {
+      "title": "Glass Horizon",
+      "release_date": "2026-04-10"
+    },
+    "single_2": {
+      "title": "Neon Therapy",
+      "release_date": "2026-04-28"
+    },
+    "distributor": "The Orchard",
+    "format": ["Digital", "Limited Vinyl"]
+  },
+  "social_media": {
+    "instagram": "@novasaintmusic",
+    "tiktok": "@novasaint",
+    "bandcamp": "novasaint.bandcamp.com",
+    "spotify": "spotify:artist:demo123"
+  },
+  "communication_history": [
+    {
+      "date": "2026-02-20",
+      "type": "email",
+      "subject": "EP mastering approved",
+      "direction": "inbound"
+    },
+    {
+      "date": "2026-01-15",
+      "type": "call",
+      "subject": "Q1 release strategy discussion",
+      "direction": "outbound"
+    },
+    {
+      "date": "2025-12-01",
+      "type": "email",
+      "subject": "Contract renewal signed",
+      "direction": "inbound"
+    }
+  ],
+  "_meta": {
+    "demo": true,
+    "description": "This is a fictional artist included for demonstration purposes."
+  }
+}

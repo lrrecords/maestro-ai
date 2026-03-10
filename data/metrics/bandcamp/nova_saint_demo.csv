@@ -1,0 +1,15 @@
+date,item_type,title,artist,currency,item_price,quantity,net_revenue,country
+2026-01-05,album,Lucid Architecture,Nova Saint,USD,9.99,12,95.88,United States
+2026-01-05,album,Lucid Architecture,Nova Saint,USD,9.99,3,23.97,United Kingdom
+2026-01-12,track,Flicker,Nova Saint,USD,1.29,45,46.05,United States
+2026-01-12,track,Flicker,Nova Saint,USD,1.29,8,8.32,Germany
+2026-01-19,album,Lucid Architecture,Nova Saint,USD,9.99,7,55.93,Canada
+2026-01-26,track,Flicker,Nova Saint,USD,1.29,22,22.66,United States
+2026-02-02,album,Lucid Architecture,Nova Saint,USD,9.99,15,119.85,United States
+2026-02-02,merch,Lucid Architecture Tee,Nova Saint,USD,25.00,6,120.00,United States
+2026-02-09,track,Flicker,Nova Saint,USD,1.29,31,31.99,United States
+2026-02-16,album,Lucid Architecture,Nova Saint,USD,9.99,9,71.91,Australia
+2026-02-23,track,Flicker,Nova Saint,USD,1.29,18,18.54,United States
+2026-03-01,album,Lucid Architecture,Nova Saint,USD,9.99,21,167.79,United States
+2026-03-01,merch,Lucid Architecture Tee,Nova Saint,USD,25.00,4,80.00,Canada
+2026-03-08,track,Flicker,Nova Saint,USD,1.29,56,57.68,United States

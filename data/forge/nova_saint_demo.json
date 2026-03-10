@@ -1,0 +1,44 @@
+{
+  "agent": "FORGE",
+  "artist": "Nova Saint",
+  "slug": "nova_saint",
+  "generated_at": "2026-03-10T12:00:00Z",
+  "demo": true,
+  "workflows": [
+    {
+      "name": "Release Day Notification Chain",
+      "tool": "n8n",
+      "trigger": "Cron — 2026-05-15 00:01 UTC",
+      "steps": [
+        {"node": "Gmail", "action": "Send release announcement to mailing list"},
+        {"node": "HTTP Request", "action": "Post to Instagram via Meta API"},
+        {"node": "HTTP Request", "action": "Post to TikTok via scheduled draft"},
+        {"node": "Slack", "action": "Notify #releases channel with streaming links"},
+        {"node": "Google Sheets", "action": "Log release event with timestamp"}
+      ]
+    },
+    {
+      "name": "Weekly Metrics Collector",
+      "tool": "n8n",
+      "trigger": "Cron — Every Monday 08:00 UTC",
+      "steps": [
+        {"node": "HTTP Request", "action": "Pull Bandcamp sales CSV via API"},
+        {"node": "Move Binary Data", "action": "Save CSV to data/metrics/bandcamp/"},
+        {"node": "Execute Command", "action": "Run ATLAS agent for nova_saint"},
+        {"node": "IF", "action": "Check if revenue delta exceeds 20%"},
+        {"node": "Slack", "action": "Alert #analytics if threshold triggered"}
+      ]
+    },
+    {
+      "name": "Health Check Automation",
+      "tool": "n8n",
+      "trigger": "Cron — Every Friday 10:00 UTC",
+      "steps": [
+        {"node": "Execute Command", "action": "Run BRIDGE agent for nova_saint"},
+        {"node": "IF", "action": "Check if score below 40"},
+        {"node": "Gmail", "action": "Send check-in email using BRIDGE generated message"},
+        {"node": "Google Sheets", "action": "Log health snapshot to tracking sheet"}
+      ]
+    }
+  ]
+}
