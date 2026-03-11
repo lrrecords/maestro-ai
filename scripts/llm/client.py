@@ -36,6 +36,7 @@ def call_llm(prompt: str, max_tokens: int = 2048) -> str:
       ollama     — Local Ollama server
 
     Raises:
+        ImportError  — anthropic package not installed (LLM_PROVIDER=anthropic)
         ValueError   — unknown provider value or missing credentials
         RuntimeError — provider unreachable (Ollama not running, wrong model, etc.)
     """
