@@ -142,6 +142,20 @@ def write_manifest(run_id: str, artist_slug: str, commands_run: list[str]):
     print(f"\n  Manifest saved -> {path.relative_to(BASE_DIR)}")
 
 
+# ── Helpers ───────────────────────────────────────────────────────────────────
+
+def _print_error(exc: Exception) -> None:
+    """Print an exception message with consistent indentation.
+
+    Multi-line messages (e.g. the Ollama timeout guidance) are indented so
+    every line lines up with the first, keeping the terminal output readable.
+    """
+    lines = str(exc).splitlines()
+    print(f"  ERROR: {lines[0]}")
+    for line in lines[1:]:
+        print(f"         {line}")
+
+
 # ── Agent runners ─────────────────────────────────────────────────────────────
 
 def run_vinyl(artist_data: dict, slug: str):
@@ -154,7 +168,7 @@ def run_vinyl(artist_data: dict, slug: str):
         print(f"  Saved -> {saved}")
         return checklist
     except Exception as e:
-        print(f"  ERROR: {e}")
+        _print_error(e)
         return None
 
 
@@ -168,7 +182,7 @@ def run_echo(artist_data: dict, slug: str):
         print(f"  Saved -> {saved}")
         return plan
     except Exception as e:
-        print(f"  ERROR: {e}")
+        _print_error(e)
         return None
 
 
@@ -203,7 +217,7 @@ def run_atlas(artist_data: dict, slug: str):
         return report
 
     except Exception as e:
-        print(f"  ERROR: {e}")
+        _print_error(e)
         return None
 
 
@@ -216,7 +230,7 @@ def run_forge(artist_data: dict, slug: str):
     try:
         return _forge.run(artist_data, slug)
     except Exception as e:
-        print(f"  ERROR: {e}")
+        _print_error(e)
         return None
 
 
@@ -229,7 +243,7 @@ def run_sage(artist_data: dict, slug: str):
     try:
         return _sage.run(artist_data, slug)
     except Exception as e:
-        print(f"  ERROR: {e}")
+        _print_error(e)
         return None
 
 
@@ -242,7 +256,7 @@ def run_bridge(artist_data: dict, slug: str):
     try:
         return _bridge.run(artist_data, slug)
     except Exception as e:
-        print(f"  ERROR: {e}")
+        _print_error(e)
         return None
 
 
@@ -253,7 +267,7 @@ def run_bridge_all(artists: list[tuple[dict, str]]):
     try:
         return _bridge.run_roster_briefing(artists)
     except Exception as e:
-        print(f"  ERROR: {e}")
+        _print_error(e)
         return None
 
 
