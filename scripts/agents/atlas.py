@@ -3,8 +3,9 @@ import json
 import csv
 from datetime import datetime
 from collections import defaultdict
-from anthropic import Anthropic
 from dotenv import load_dotenv
+
+from llm.client import call_llm
 
 load_dotenv()
 
@@ -15,11 +16,8 @@ class Atlas:
 
     def __init__(self, artist_data: dict):
         self.artist   = artist_data
-        self.client   = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
         self.records  = []
         self.built_at = datetime.utcnow().strftime("%Y-%m-%d")
-        if not os.getenv("ANTHROPIC_API_KEY"):
-            raise ValueError("ANTHROPIC_API_KEY not found in .env")
 
     # ── NORMALIZERS ─────────────────────────────────────────────────────────
 
@@ -225,13 +223,7 @@ Be specific. Reference actual figures from the data.
 DATA:
 {json.dumps(summary, indent=2)}"""
 
-        response = self.client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=1500,
-            messages=[{"role": "user", "content": prompt}]
-        )
-
-        raw = response.content[0].text.strip()
+        raw = call_llm(prompt, max_tokens=1500).strip()
         if raw.startswith("```"):
             parts = raw.split("```")
             raw = parts[1].lstrip("json").strip() if len(parts) > 1 else raw
