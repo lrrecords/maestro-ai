@@ -113,6 +113,9 @@ MAESTRO_TOKEN=your_secure_dashboard_token
 > ℹ️ **Hardware note for CPU-only machines:** on a machine without a discrete GPU (e.g.
 > Ryzen 5 with integrated Vega graphics), `qwen2.5:3b` or `llama3.2:3b` run comfortably
 > in 16 GB RAM. Larger models (7B+) will work but will be noticeably slower.
+> Because CPU inference can be slow, the default request timeout is **900 s (15 min)**.
+> If you run long pipeline steps and hit a timeout error, set
+> `OLLAMA_TIMEOUT_SECONDS=1800` in your `.env` file.
 
 > ⚠️ Never commit your `.env` file. It is excluded by `.gitignore`.
 
@@ -366,6 +369,7 @@ Payload sent on each BRIDGE run:
 | `OLLAMA_MODEL`      | When `LLM_PROVIDER=ollama` | Model to use (default: `qwen2.5:3b`)   |
 | `OLLAMA_TEMPERATURE`| No (default: `0.7`)  | Generation temperature                         |
 | `OLLAMA_NUM_CTX`    | No (default: `8192`) | Context window size in tokens                  |
+| `OLLAMA_TIMEOUT_SECONDS` | No (default: `900`) | HTTP timeout for Ollama requests (seconds). Increase to `1800` on slow CPU-only machines or for large prompts. |
 | `MAESTRO_TOKEN`     | Yes               | Dashboard access token                             |
 | `WEBHOOK_URL`       | No                | Override default n8n webhook endpoint              |
 | `PORT`              | No                | Dashboard port (default: `8080`)                   |
