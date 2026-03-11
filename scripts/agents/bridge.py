@@ -7,7 +7,7 @@ Python-side calculations (no API needed):
   - Health scoring 0-100 (contact recency, frequency, momentum)
   - Pattern detection (improving / stable / declining)
 
-Claude handles:
+LLM handles:
   - Relationship interpretation
   - Predictions and opportunity identification
   - Draft check-in message in the label owner's voice
@@ -22,10 +22,11 @@ from math import floor
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 
-import anthropic
+from llm.client import call_llm, get_provider
 from dotenv import load_dotenv
 
 load_dotenv()
+
 
 def post_health_webhook(artist_name: str, health: dict, patterns: dict, result: dict | None):
     """POST health score data to n8n webhook. Fails silently if not configured."""
@@ -34,9 +35,9 @@ def post_health_webhook(artist_name: str, health: dict, patterns: dict, result: 
         return
 
     try:
-        import requests
+        import requests as _req
 
-        # Pull top action item from Claude result if available
+        # Pull top action item from LLM result if available
         actions    = (result or {}).get("action_items", [])
         top_action = actions[0].get("action", "Review artist profile") if actions else "Review artist profile"
 
@@ -55,15 +56,14 @@ def post_health_webhook(artist_name: str, health: dict, patterns: dict, result: 
             "timestamp":          datetime.now(timezone.utc).isoformat(),
         }
 
-        response = requests.post(webhook_url, json=payload, timeout=5)
+        response = _req.post(webhook_url, json=payload, timeout=5)
         print(f"  Webhook -> n8n  [{response.status_code}]")
 
     except Exception as e:
         print(f"  Webhook skipped: {e}")
 
-# ── Config ─────────────────────────────────────────────────────────────────────
 
-MODEL = "claude-sonnet-4-20250514"
+
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 
@@ -404,16 +404,8 @@ def run(artist_profile: dict, artist_slug: str) -> dict | None:
         health, patterns, atlas_data, sage_data,
     )
 
-    client  = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-    print(f"  Calling Claude ({MODEL})...")
-
-    message = client.messages.create(
-        model=MODEL,
-        max_tokens=4096,
-        messages=[{"role": "user", "content": prompt}],
-    )
-
-    response_text = message.content[0].text.strip()
+    print(f"  Calling {get_provider().upper()}...")
+    response_text = call_llm(prompt, max_tokens=4096).strip()
     if response_text.startswith("```"):
         lines = response_text.split("\n")
         response_text = "\n".join(lines[1:-1]).strip()
@@ -458,20 +450,12 @@ def run_roster_briefing(all_artists: list[tuple[dict, str]]) -> dict | None:
         })
         print(f"  {health['status_emoji']} {name}: {health['score']}/100 ({health['status']})")
 
-    # Worst first so Claude prioritises correctly
+    # Worst first so LLM prioritises correctly
     roster_health.sort(key=lambda x: x["health"]["score"])
 
     prompt  = build_briefing_prompt(today_str, roster_health)
-    client  = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-    print(f"\n  Calling Claude for roster briefing ({MODEL})...")
-
-    message = client.messages.create(
-        model=MODEL,
-        max_tokens=4096,
-        messages=[{"role": "user", "content": prompt}],
-    )
-
-    response_text = message.content[0].text.strip()
+    print(f"\n  Calling {get_provider().upper()} for roster briefing...")
+    response_text = call_llm(prompt, max_tokens=4096).strip()
     if response_text.startswith("```"):
         lines = response_text.split("\n")
         response_text = "\n".join(lines[1:-1]).strip()

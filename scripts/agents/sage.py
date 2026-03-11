@@ -19,14 +19,10 @@ import os
 from pathlib import Path
 from datetime import datetime, timezone
 
-import anthropic
+from llm.client import call_llm, get_provider
 from dotenv import load_dotenv
 
 load_dotenv()
-
-# ── Config ─────────────────────────────────────────────────────────────────────
-
-MODEL = "claude-sonnet-4-20250514"
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 
@@ -204,16 +200,8 @@ def run(artist_profile: dict, artist_slug: str) -> dict | None:
         sources_used, missing,
     )
 
-    client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-    print(f"  🤖 Calling Claude ({MODEL})...")
-
-    message = client.messages.create(
-        model=MODEL,
-        max_tokens=4096,
-        messages=[{"role": "user", "content": prompt}],
-    )
-
-    response_text = message.content[0].text.strip()
+    print(f"  🤖 Calling {get_provider().upper()}...")
+    response_text = call_llm(prompt, max_tokens=4096).strip()
     if response_text.startswith("```"):
         lines = response_text.split("\n")
         response_text = "\n".join(lines[1:-1]).strip()
