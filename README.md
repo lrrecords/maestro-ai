@@ -44,7 +44,9 @@ No cloud account required — everything runs locally.
 ## System Requirements
 
 - Python 3.11+
-- Anthropic API key
+- **One of:**
+  - Anthropic API key (cloud, paid), **or**
+  - [Ollama](https://ollama.com) running locally (free, no API key needed)
 - Virtual environment (recommended)
 
 ---
@@ -69,18 +71,48 @@ pip install -r requirements.txt
 
 ### 3. Configure environment
 
-Copy the example environment file and add your keys:
+Copy the example environment file and fill in your values:
 
 ```bash
 cp .env.example .env
 ```
 
-Then edit `.env`:
+#### Option A — Anthropic Claude (cloud, requires API key)
 
 ```env
+LLM_PROVIDER=anthropic
 ANTHROPIC_API_KEY=sk-ant-api03-...
 MAESTRO_TOKEN=your_secure_dashboard_token
 ```
+
+#### Option B — Ollama (free, runs locally — no API key needed)
+
+1. **Install Ollama** from [https://ollama.com](https://ollama.com)
+
+2. **Pull a model** (choose one):
+
+```bash
+ollama pull qwen2.5:3b       # recommended — fast, CPU-friendly (~2 GB)
+ollama pull llama3.2:3b      # alternative
+ollama pull qwen2.5:7b       # better quality, needs ~6 GB RAM free
+```
+
+3. **Set your `.env`:**
+
+```env
+LLM_PROVIDER=ollama
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+OLLAMA_MODEL=qwen2.5:3b
+MAESTRO_TOKEN=your_secure_dashboard_token
+```
+
+4. **Make sure Ollama is running** before starting MAESTRO:
+   - Windows: start Ollama from the system tray, or run `ollama serve` in a terminal
+   - Mac/Linux: run `ollama serve` in a terminal
+
+> ℹ️ **Hardware note for CPU-only machines:** on a machine without a discrete GPU (e.g.
+> Ryzen 5 with integrated Vega graphics), `qwen2.5:3b` or `llama3.2:3b` run comfortably
+> in 16 GB RAM. Larger models (7B+) will work but will be noticeably slower.
 
 > ⚠️ Never commit your `.env` file. It is excluded by `.gitignore`.
 
@@ -325,19 +357,27 @@ Payload sent on each BRIDGE run:
 
 ## Environment Variables
 
-| Variable            | Required | Description                          |
-|--------------------|----------|--------------------------------------|
-| ANTHROPIC_API_KEY  | Yes      | Anthropic Claude API key             |
-| MAESTRO_TOKEN      | Yes      | Dashboard access token               |
-| WEBHOOK_URL        | No       | Override default webhook endpoint    |
-| PORT               | No       | Dashboard port (default: 8080)       |
-| DEBUG              | No       | Flask debug mode (default: False)    |
+| Variable             | Required          | Description                                        |
+|---------------------|-------------------|----------------------------------------------------|
+| `LLM_PROVIDER`      | No (default: `anthropic`) | `anthropic` or `ollama`                |
+| `ANTHROPIC_API_KEY` | When `LLM_PROVIDER=anthropic` | Anthropic Claude API key           |
+| `ANTHROPIC_MODEL`   | No (default: `claude-sonnet-4-20250514`) | Override the Claude model  |
+| `OLLAMA_BASE_URL`   | When `LLM_PROVIDER=ollama` | Ollama server URL (default: `http://127.0.0.1:11434`) |
+| `OLLAMA_MODEL`      | When `LLM_PROVIDER=ollama` | Model to use (default: `qwen2.5:3b`)   |
+| `OLLAMA_TEMPERATURE`| No (default: `0.7`)  | Generation temperature                         |
+| `OLLAMA_NUM_CTX`    | No (default: `8192`) | Context window size in tokens                  |
+| `MAESTRO_TOKEN`     | Yes               | Dashboard access token                             |
+| `WEBHOOK_URL`       | No                | Override default n8n webhook endpoint              |
+| `PORT`              | No                | Dashboard port (default: `8080`)                   |
+| `DEBUG`             | No                | Flask debug mode (default: `False`)                |
 
 ---
 
 ## Model
 
-All agents use: `claude-sonnet-4-20250514`
+Default models:
+- **Anthropic:** `claude-sonnet-4-20250514` (override with `ANTHROPIC_MODEL`)
+- **Ollama:** `qwen2.5:3b` (override with `OLLAMA_MODEL`)
 
 ---
 
@@ -366,6 +406,7 @@ web dashboard, and local file-based output system.
 - [x] Web dashboard with live streaming
 - [x] Health scoring and relationship tracking
 - [x] n8n webhook integration
+- [x] Ollama support (free local inference, no API key required)
 - [ ] Demo mode with sample artist data
 - [ ] Versioned output schemas
 - [ ] Run history and audit logs

@@ -2,12 +2,13 @@
 # VINYL - Music Operations Agent
 # Detail-oriented, systematic, process-driven
 
-import anthropic
 import json
 import os
 from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
+
+from llm.client import call_llm
 
 load_dotenv()
 
@@ -22,10 +23,6 @@ class VinylAgent:
     DESCRIPTION = "Music Operations Specialist"
 
     def __init__(self):
-        api_key = os.getenv("ANTHROPIC_API_KEY")
-        if not api_key:
-            raise ValueError("ANTHROPIC_API_KEY not found in .env")
-        self.client = anthropic.Anthropic(api_key=api_key)
         self.output_dir = Path("data/vinyl")
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -108,13 +105,7 @@ Marketing & Promo, Release Day, Post-Release.
 Be specific to this release type and genres. Flag known blockers immediately.
 Return ONLY valid JSON — no other text, no markdown fences."""
 
-        response = self.client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=2500,
-            messages=[{"role": "user", "content": prompt}],
-        )
-
-        checklist = self._parse_json(response.content[0].text)
+        checklist = self._parse_json(call_llm(prompt, max_tokens=2500))
 
         # Save
         slug = info["artist_name"].lower().replace(" ", "_")
