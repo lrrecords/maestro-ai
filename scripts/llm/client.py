@@ -88,6 +88,7 @@ def _call_ollama(prompt: str, max_tokens: int) -> str:
     model       = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
     temperature = float(os.getenv("OLLAMA_TEMPERATURE", "0.7"))
     num_ctx     = int(os.getenv("OLLAMA_NUM_CTX", "8192"))
+    timeout     = int(os.getenv("OLLAMA_TIMEOUT_SECONDS", "900"))
 
     url = f"{base_url}/api/chat"
     payload = {
@@ -103,7 +104,7 @@ def _call_ollama(prompt: str, max_tokens: int) -> str:
     }
 
     try:
-        resp = requests.post(url, json=payload, timeout=300)
+        resp = requests.post(url, json=payload, timeout=timeout)
     except requests.exceptions.ConnectionError:
         raise RuntimeError(
             f"Cannot connect to Ollama at {base_url}.\n"
@@ -114,8 +115,10 @@ def _call_ollama(prompt: str, max_tokens: int) -> str:
         )
     except requests.exceptions.Timeout:
         raise RuntimeError(
-            "Ollama request timed out after 300 s.\n"
-            "Try a smaller model — e.g. set OLLAMA_MODEL=qwen2.5:3b in your .env file."
+            f"Ollama request timed out after {timeout} s.\n"
+            "Options to fix this:\n"
+            "  1. Increase the timeout:  set OLLAMA_TIMEOUT_SECONDS=1800 in your .env file\n"
+            "  2. Use a smaller model:   set OLLAMA_MODEL=qwen2.5:3b in your .env file"
         )
 
     if resp.status_code == 404:
