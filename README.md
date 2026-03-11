@@ -7,6 +7,12 @@ executive decision-making — from the command line or a live web dashboard.
 
 Built for real label workflows. Not a demo.
 
+## Screenshots
+
+![MAESTRO Dashboard](docs/assets/Screenshot%20MAESTRO_Dashboard.jpg)
+
+![Demo Artist — Nova Saint](docs/assets/Screenshot%20Demo_Artist_Nova_Saint.jpg)
+
 ---
 
 ## What MAESTRO Does
