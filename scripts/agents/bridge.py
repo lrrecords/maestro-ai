@@ -67,8 +67,13 @@ def post_health_webhook(artist_name: str, health: dict, patterns: dict, result: 
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 
-BASE_DIR   = Path(__file__).resolve().parent.parent.parent
-DATA_DIR   = BASE_DIR / "data"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+# Allow private/local data dir override (keeps public repo demo-safe)
+DATA_DIR = Path(os.getenv("MAESTRO_DATA_DIR", str(BASE_DIR / "data")))
+if not DATA_DIR.is_absolute():
+    DATA_DIR = (BASE_DIR / DATA_DIR).resolve()
+
 BRIDGE_DIR = DATA_DIR / "bridge"
 ATLAS_DIR  = DATA_DIR / "atlas"
 SAGE_DIR   = DATA_DIR / "sage"
@@ -471,7 +476,6 @@ def run_roster_briefing(all_artists: list[tuple[dict, str]]) -> dict | None:
 
     result["built_at_utc"]  = datetime.now(timezone.utc).isoformat()
     result["roster_detail"] = roster_health
-
     BRIDGE_DIR.mkdir(parents=True, exist_ok=True)
     ts   = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     path = BRIDGE_DIR / f"roster_briefing_{ts}.json"
@@ -480,3 +484,4 @@ def run_roster_briefing(all_artists: list[tuple[dict, str]]) -> dict | None:
 
     print(f"  Saved -> {path.relative_to(BASE_DIR)}")
     return result
+    
