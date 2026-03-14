@@ -3,11 +3,18 @@ from datetime import datetime, timezone
 from pathlib import Path
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from anthropic import Anthropic
 from dotenv import load_dotenv
 
 load_dotenv()
-client = Anthropic()
+# ── Data directory override (demo vs private) ────────────────────────────────
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = Path(os.getenv("MAESTRO_DATA_DIR", str(BASE_DIR / "data")))
+if not DATA_DIR.is_absolute():
+    DATA_DIR = (BASE_DIR / DATA_DIR).resolve()
+
+ARTISTS_DIR = DATA_DIR / "artists"
+BRIDGE_DIR  = DATA_DIR / "bridge"
+CHECKIN_DIR = DATA_DIR / "checkin"
 
 THRESHOLDS = {
     "critical": 0,
@@ -18,9 +25,9 @@ THRESHOLDS = {
 # ── Artist loader ─────────────────────────────────────────────────────────────
 
 def load_artist(key: str) -> dict:
-    path = f"data/artists/{key}.json"
-    if os.path.exists(path):
-        with open(path) as f:
+    path = ARTISTS_DIR / f"{key}.json"
+    if path.exists():
+        with open(path, encoding="utf-8") as f:
             data = json.load(f)
         data["_key"] = key
         return data
@@ -29,7 +36,7 @@ def load_artist(key: str) -> dict:
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def get_latest_bridge(artist_key: str) -> str | None:
-    files = glob.glob(f"data/bridge/{artist_key}_*.json")
+    files = glob.glob(str(BRIDGE_DIR / f"{artist_key}_*.json"))
     return max(files, key=os.path.getmtime) if files else None
 
 def needs_checkin(health: dict) -> bool:
@@ -51,6 +58,18 @@ def display_draft(artist_name: str, health: dict, channel: str, subject: str, bo
     print("="*52)
 
 def refine_with_claude(artist: dict, bridge_data: dict, draft_body: str, instruction: str = "") -> str:
+    try:
+        from anthropic import Anthropic
+    except ModuleNotFoundError as e:
+        raise RuntimeError(
+            "Anthropic SDK not installed. Install it with `pip install anthropic` "
+            "or disable rewrite."
+        ) from e
+    if not os.getenv("ANTHROPIC_API_KEY"):
+        raise RuntimeError("ANTHROPIC_API_KEY is not set; cannot use rewrite.")
+    # Anthropic client (reads ANTHROPIC_API_KEY from env)
+    client = Anthropic()
+
     health   = bridge_data.get("health", {})
     patterns = bridge_data.get("patterns", {})
 
@@ -81,7 +100,7 @@ Return only the refined message text, no explanation."""
     response = client.messages.create(
         model="claude-sonnet-4-20250514",
         max_tokens=500,
-        messages=[{"role": "user", "content": prompt}]
+        messages=[{"role": "user", "content": prompt}],
     )
     return response.content[0].text.strip()
 
@@ -102,12 +121,12 @@ def send_email(subject: str, body: str, to_email: str):
         server.sendmail(msg["From"], to_email, msg.as_string())
 
 def save_draft(artist_key: str, payload: dict) -> str:
-    Path("data/checkin").mkdir(parents=True, exist_ok=True)
+    CHECKIN_DIR.mkdir(parents=True, exist_ok=True)
     ts   = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    path = f"data/checkin/{artist_key}_{ts}.json"
-    with open(path, "w") as f:
-        json.dump(payload, f, indent=2)
-    return path
+    path = CHECKIN_DIR / f"{artist_key}_{ts}.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2, ensure_ascii=False)
+    return str(path)
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
@@ -116,13 +135,22 @@ def run(args: list):
     print("      MAESTRO AI  -  Check-in Drafter")
     print("="*52)
 
+    # Non-interactive mode for web/dashboard use
+    draft_only = False
+    if "--draft-only" in args:
+        draft_only = True
+        args = [a for a in args if a != "--draft-only"]
+
+    # Initialize counters ALWAYS
+    drafted = sent = skipped = 0
+
     # Resolve artist key(s)
     if args and args[0]:
-        raw  = args[0].lower().replace(" ", "_").replace("-", "_")
-        keys = [raw]
+        raw   = args[0].lower().replace(" ", "_").replace("-", "_")
+        keys  = [raw]
         batch = False
     else:
-        files = glob.glob("data/bridge/*.json")
+        files = glob.glob(str(BRIDGE_DIR / "*.json"))
         seen, keys = set(), []
         for f in sorted(files, key=os.path.getmtime, reverse=True):
             stem = Path(f).stem
@@ -130,16 +158,19 @@ def run(args: list):
             if key and key not in seen:
                 keys.append(key)
                 seen.add(key)
+
         batch = True
         print(f"  Scanning {len(keys)} artists with BRIDGE data...\n")
 
-    drafted = sent = skipped = 0
-
     for key in keys:
         try:
-            artist      = load_artist(key)
-            artist_name = artist.get("name", key)
-            artist_key  = artist.get("_key", key)
+            artist = load_artist(key)
+            artist_name = (
+                artist.get("artist_info", {}).get("name")
+                or artist.get("name")
+                or key
+            )
+            artist_key = artist.get("_key", key)
 
             bridge_file = get_latest_bridge(artist_key)
             if not bridge_file:
@@ -147,23 +178,70 @@ def run(args: list):
                 skipped += 1
                 continue
 
-            with open(bridge_file) as f:
+            with open(bridge_file, encoding="utf-8") as f:
                 bridge_data = json.load(f)
+        
 
             health = bridge_data.get("health", {})
 
             if batch and not needs_checkin(health):
-                print(f"  [skip] {artist_name} — "
-                      f"{health.get('status')} / "
-                      f"{health.get('days_since_contact', 0)}d "
-                      f"(threshold not met)")
+                print(
+                    f"  [skip] {artist_name} — "
+                    f"{health.get('status')} / "
+                    f"{health.get('days_since_contact', 0)}d "
+                    f"(threshold not met)"
+                )
                 skipped += 1
                 continue
 
-            check_in = bridge_data.get("check_in_message", {})
-            channel  = check_in.get("channel", "email")
-            subject  = check_in.get("subject", f"Checking in — {artist_name}")
-            body     = check_in.get("message", "")
+            # check_in_message can live at top-level (older format)
+            # or under health (current BRIDGE demo format)
+            check_in = bridge_data.get("check_in_message")
+            if check_in is None:
+                health_obj = bridge_data.get("health", {})
+                if isinstance(health_obj, dict):
+                    check_in = health_obj.get("check_in_message")
+
+            # Normalize to channel/subject/body
+            if isinstance(check_in, str):
+                channel = "email"
+                subject = f"Checking in — {artist_name}"
+                body    = check_in.strip()
+            elif isinstance(check_in, dict):
+                channel = (check_in.get("channel") or "email")
+                subject = (check_in.get("subject") or f"Checking in — {artist_name}")
+                body    = (check_in.get("message") or "").strip()
+            else:
+                channel = "email"
+                subject = f"Checking in — {artist_name}"
+                body    = ""
+
+            demo_obj = bridge_data.get("demo")
+            if check_in is None and isinstance(demo_obj, dict):
+                check_in = demo_obj.get("check_in_message")
+
+            output_obj = bridge_data.get("output")
+            if check_in is None and isinstance(output_obj, dict):
+                check_in = output_obj.get("check_in_message")
+
+            if check_in is None:
+                check_in = {}
+
+            # Support both formats:
+            # - dict: {"channel": "...", "subject": "...", "message": "..."}
+            # - str:  "message text..."
+            if isinstance(check_in, str):
+                channel = "email"
+                subject = f"Checking in — {artist_name}"
+                body    = check_in.strip()
+            elif isinstance(check_in, dict):
+                channel = (check_in.get("channel") or "email")
+                subject = (check_in.get("subject") or f"Checking in — {artist_name}")
+                body    = (check_in.get("message") or "").strip()
+            else:
+                channel = "email"
+                subject = f"Checking in — {artist_name}"
+                body    = ""
 
             if not body:
                 print(f"  [skip] {artist_name} — BRIDGE has no check-in message")
@@ -172,6 +250,19 @@ def run(args: list):
 
             drafted += 1
             display_draft(artist_name, health, channel, subject, body)
+
+            if draft_only:
+                path = save_draft(artist_key, {
+                    "artist":    artist_name,
+                    "health":    health,
+                    "channel":   channel,
+                    "subject":   subject,
+                    "body":      body,
+                    "status":    "draft",
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                })
+                print(f"  Saved  -> {path}")
+                continue
 
             # Approval loop
             while True:
@@ -182,17 +273,17 @@ def run(args: list):
                     print(f"\n  Stopped — {drafted} drafted, {sent} sent, {skipped} skipped\n")
                     return
 
-                elif choice == "n":
+                if choice == "n":
                     break
 
-                elif choice == "r":
+                if choice == "r":
                     note = input("  Rewrite instruction (or Enter for general): ").strip()
                     print("  Refining with Claude...")
                     body = refine_with_claude(artist, bridge_data, body, note)
                     display_draft(artist_name, health, channel, subject, body)
                     continue
 
-                elif choice == "d":
+                if choice == "d":
                     path = save_draft(artist_key, {
                         "artist":    artist_name,
                         "health":    health,
@@ -205,11 +296,13 @@ def run(args: list):
                     print(f"  Saved  -> {path}")
                     break
 
-                elif choice == "s":
+                if choice == "s":
                     email = (
-                        artist.get("email") or
-                        artist.get("contact", {}).get("email")
+                        artist.get("artist_info", {}).get("email")
+                        or artist.get("email")
+                        or artist.get("contact", {}).get("email")
                     )
+
                     status_key = "sent"
                     if not email:
                         print("  [!] No email in artist profile — saving as draft")

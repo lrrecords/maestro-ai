@@ -1,0 +1,45 @@
+{
+  "artist": "King Juno",
+  "health": {
+    "score": 85,
+    "status": "Healthy",
+    "interpretation": "<The score is robust, indicating a strong and healthy relationship. The recent contacts show steady improvement in communication patterns>"
+  },
+  "pattern_analysis": {
+    "trend": "improving",
+    "summary": "<King Juno has had multiple productive interactions over the past few months, including calls about tour routing and content capture plans. This trend suggests a positive outlook for continued progress>",
+    "key_concern": null
+  },
+  "predictions": [
+    {
+      "timeframe": "This week",
+      "prediction": "<King Juno's upcoming EP 'Satellites & Side Streets' will see successful promotion in playlists and social media platforms like TikTok and Instagram>",
+      "recommended_action": "<Encourage King Juno to provide additional assets for playlist pitching by the end of this week>"
+    }
+  ],
+  "opportunities": [
+    {
+      "opportunity": "<Collaborate with a local indie rock festival to secure a spot on their bill, providing both visibility and exposure for 'Satellites & Side Streets'>"
+    }
+  ],
+  "check_in_message": {
+    "channel": "Email",
+    "subject": null,
+    "message": "<Hi King Juno,\n\nGreat news! Your EP 'Satellites & Side Streets' is almost here, and we're excited about the upcoming launch. We had a quick call yesterday to finalize some details for your tour routing. How's everything going with the EP artwork? Looking forward to seeing it come together.\n\nBest,\nThe Label Team>",
+    "tone_notes": "<Warm and direct, referencing specific project details and scheduled interactions>"
+  },
+  "action_items": [
+    {
+      "priority": 2,
+      "action": "Confirm EP artwork direction (photography vs illustration)",
+      "deadline": "Before the end of this week",
+      "owner": "King Juno"
+    }
+  ],
+  "risk_assessment": {
+    "churn_risk": "LOW",
+    "churn_risk_reason": "<No significant red flags or issues identified, and King Juno's health score is robust>",
+    "intervention_needed": false
+  },
+  "built_at_utc": "2026-03-14T16:58:56.376303+00:00"
+}

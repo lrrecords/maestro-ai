@@ -5,6 +5,9 @@
     "email": "aria.velvet@example.com",
     "location": "Los Angeles, CA",
     "signed_date": "2025-09-12",
+    "last_contact_date": "2026-03-14T18:00:00+00:00",
+    "last_interaction": "2026-03-14",
+    "status": "active",
     "label": {
       "name": "Demo Label",
       "slug": "demo_label"
@@ -57,8 +60,26 @@
       "type": "email",
       "subject": "TikTok teaser concepts",
       "direction": "inbound"
-    }
-  ],
+    },
+    {
+      "date": "2026-02-27",
+      "type": "email",
+      "subject": "Playlist pitching assets request",
+      "direction": "outbound"
+    },
+    {
+      "date": "2026-02-11",
+      "type": "text",
+      "subject": "Studio update + rough mix check-in",
+      "direction": "inbound"
+    },
+    {
+      "date": "2026-01-29",
+      "type": "call",
+      "subject": "Release calendar + content capture plan",
+      "direction": "outbound"
+ }
+],
   "open_action_items": [
     {
       "description": "Pick final cover (Option A vs B) and confirm typography.",
