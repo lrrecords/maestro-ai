@@ -1,0 +1,48 @@
+{
+  "artist": "King Juno",
+  "health": {
+    "score": 29,
+    "status": "Critical",
+    "interpretation": "<With a score of 29 out of 30, King Juno's health is critical. The last contact date is missing, and there are only three interactions in the past ninety days. This suggests that while he has an active upcoming release (Satellites & Side Streets), consistent communication is needed to keep him engaged and on track.",
+    "score_details": {
+      "score": 29,
+      "status": "Critical",
+      "interpretation": "<1-2 sentences: what this score means for THIS relationship right now>"
+    }
+  },
+  "pattern_analysis": {
+    "trend": "stable",
+    "summary": "<The communication pattern indicates a stable interaction frequency with King Juno. However, the absence of any contact date in the last ninety days is a significant concern as it shows a lack of recent engagement.",
+    "key_concern": "Absence of recent contact and need for consistent follow-up."
+  },
+  "predictions": [
+    {
+      "timeframe": "Next 30 days",
+      "prediction": "<King Juno's upcoming EP artwork direction and vinyl quantity confirmation will be key to maintaining his engagement and ensuring a successful release. Confirming these details will help us stay ahead of any potential issues that may arise.",
+      "recommended_action": "<Label owner, please confirm the EP artwork direction with King Juno by March 20th. Also, ensure the vinyl quantity and deposit date are finalized with the plant supplier by March 22nd. This will keep him informed and engaged throughout this critical period of his release cycle."
+    }
+  ],
+  "opportunities": [
+    "<Specific, actionable opportunity for this artist — achievable in next 30 days>"
+  ],
+  "check_in_message": {
+    "channel": "Email",
+    "subject": null,
+    "message": "Hi King Juno,\n\nI hope you're doing well. I wanted to check in on the progress of your EP, 'Satellites & Side Streets'. It's exciting to see it approaching its release date on June 6th. Have you had any new developments or questions about the artwork direction? Let me know if you need anything from my end.\n\nLooking forward to hearing more!",
+    "tone_notes": "<Warm and supportive, reminding him of his upcoming EP release and offering help with any concerns he may have.>"
+  },
+  "action_items": [
+    {
+      "priority": 2,
+      "action": "Confirm the artwork direction for King Juno's EP by March 20th",
+      "deadline": "Before March 20th",
+      "owner": "Label"
+    }
+  ],
+  "risk_assessment": {
+    "churn_risk": "MEDIUM",
+    "churn_risk_reason": "<While the score is critical, there are still active releases and upcoming events that can keep King Juno engaged. However, if these issues persist, it could lead to a potential dip in engagement.",
+    "intervention_needed": true
+  },
+  "built_at_utc": "2026-03-14T15:57:21.490112+00:00"
+}

@@ -1,0 +1,45 @@
+{
+  "artist": "Nova Saint",
+  "health": {
+    "score": 29,
+    "status": "Critical",
+    "interpretation": "<1-2 sentences: This score indicates a critical need for proactive engagement to address the artist's needs and ensure they are not overlooked.>"
+  },
+  "pattern_analysis": {
+    "trend": "stable",
+    "summary": "<The stable communication pattern suggests that while Nova Saint has been actively engaged, there is no recent contact date recorded. This could be a missed opportunity for immediate support or feedback due to the critical score.>",
+    "key_concern": "<Single most important thing to address: The lack of a recent contact date necessitates reaching out promptly to keep the relationship strong and ensure alignment on upcoming projects.>"
+  },
+  "predictions": [
+    {
+      "timeframe": "This week",
+      "prediction": "Nova Saint's audience is showing signs of engagement with their latest single 'Glass Horizon'. This could be a good time for a strategic update or a content push related to the EP launch.",
+      "recommended_action": "<Action: Schedule a check-in call this week>"
+    }
+  ],
+  "opportunities": [
+    {
+      "specific actionable opportunity": "<Opportunity: Consider creating a social media series around the EP release, featuring behind-the-scenes looks and artist insights. This can help build anticipation and engagement while aligning with your marketing strategy.>"
+    }
+  ],
+  "check_in_message": {
+    "channel": "Email",
+    "subject": "Check-In on Nova Saint's Upcoming Release: Soft Machines",
+    "message": "<1-2 sentences: Here is a warm, direct message to keep the relationship strong and ensure alignment with upcoming projects.>",
+    "tone_notes": "<Why this tone and approach for this artist right now: Warm and action-oriented to convey genuine support while keeping the conversation focused on their project progress and future plans.>"
+  },
+  "action_items": [
+    {
+      "priority": 1,
+      "action": "Schedule a check-in call with Nova Saint",
+      "deadline": "This week",
+      "owner": "LABEL"
+    }
+  ],
+  "risk_assessment": {
+    "churn_risk": "MEDIUM",
+    "churn_risk_reason": "<Reason: The critical score and lack of recent contact could lead to the artist feeling overlooked or neglected, increasing the risk of a potential shift in their focus from your label.>",
+    "intervention_needed": true
+  },
+  "built_at_utc": "2026-03-14T15:48:10.720790+00:00"
+}
