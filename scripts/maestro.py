@@ -17,6 +17,11 @@ Commands:
 """
 
 import sys
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+import os
 import json
 from pathlib import Path
 from datetime import datetime, timezone
@@ -27,8 +32,13 @@ init(autoreset=False)
 # ── Path setup ────────────────────────────────────────────────────────────────
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-BASE_DIR    = Path(__file__).resolve().parent.parent
-DATA_DIR    = BASE_DIR / "data"
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Allow private/local data dir override (keeps public repo demo-safe)
+DATA_DIR = Path(os.getenv("MAESTRO_DATA_DIR", str(BASE_DIR / "data")))
+if not DATA_DIR.is_absolute():
+    DATA_DIR = (BASE_DIR / DATA_DIR).resolve()
+
 ARTISTS_DIR = DATA_DIR / "artists"
 
 # ── Class-based agents ────────────────────────────────────────────────────────

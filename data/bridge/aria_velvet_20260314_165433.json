@@ -1,0 +1,43 @@
+{
+  "artist": "Aria Velvet",
+  "health": {
+    "score": 85,
+    "status": "Healthy",
+    "interpretation": "<The score of 85 indicates that Aria is in a good state and we are on the right track.>"
+  },
+  "pattern_analysis": {
+    "trend": "improving",
+    "summary": "<Aria has had six interactions within the last ninety days, which is excellent for building strong relationships with artists.>",
+    "key_concern": null
+  },
+  "predictions": [
+    {
+      "timeframe": "Next 30 days",
+      "prediction": "We will finalize the cover art and ensure everything aligns well before the release of 'Neon Letters'.",
+      "recommended_action": "Confirm final cover options with Aria by March 18th."
+    }
+  ],
+  "opportunities": [
+    "<Specific, actionable opportunity for this artist — achievable in next 30 days> - Collaborate on a TikTok teaser concept that focuses on the vibrant energy of 'Neon Letters' and showcases Aria's unique style. "
+  ],
+  "check_in_message": {
+    "channel": "Email",
+    "subject": null,
+    "message": "<Hi Aria,\n\nI hope this message finds you well! I wanted to check in on the progress of our 'Neon Letters' single and make sure everything is coming together smoothly. We're just days away from the release, so it's crucial that we finalize any last touches. Can you confirm your preferences for the cover art by March 18th? Looking forward to seeing how it all comes together!\n\nBest,\nThe Label Owner>",
+    "tone_notes": "<Warm and direct message, emphasizing the importance of the final touches and setting a clear deadline>"
+  },
+  "action_items": [
+    {
+      "priority": 2,
+      "action": "Send final mastered WAV + ISRC confirmation to Aria",
+      "deadline": "Before release",
+      "owner": "Label"
+    }
+  ],
+  "risk_assessment": {
+    "churn_risk": "LOW",
+    "churn_risk_reason": "<Aria is not at any risk of leaving the label as she has multiple projects and a strong connection with our team.>",
+    "intervention_needed": false
+  },
+  "built_at_utc": "2026-03-14T16:54:33.851428+00:00"
+}

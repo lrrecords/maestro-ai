@@ -1,0 +1,51 @@
+{
+  "artist": "Nova Saint",
+  "health": {
+    "score": 85,
+    "status": "Healthy",
+    "interpretation": "<The relationship is strong, with a healthy score of 85. It's important to maintain and celebrate these positive interactions, as Nova's upcoming release 'Soft Machines' is about to launch.>"
+  },
+  "pattern_analysis": {
+    "trend": "improving",
+    "summary": "<Nova Saint has had six communication interactions in the last ninety days, with a healthy score of 85 and an improving trend. The relationship is strong and active, showing consistent engagement.",
+    "key_concern": "<null>"
+  },
+  "predictions": [
+    {
+      "timeframe": "This week",
+      "prediction": "Nova's upcoming single 'Glass Horizon' will perform well on Bandcamp, with the potential to generate a spike similar to the March 8th release of 'Flicker'. This could be a result of positive reviews or social moments.",
+      "recommended_action": "<Schedule a content review call to ensure all platforms are aligned for 'Glass Horizon' and to prepare for any necessary adjustments.>"
+    }
+  ],
+  "opportunities": [
+    "<Specific, actionable opportunity for this artist — achievable in next 30 days>",
+    {
+      "opportunity": "Offer Nova an exclusive interview with a prominent electronic music publication before her EP release.",
+      "achievable_in_30_days": true
+    },
+    {
+      "opportunity": "Launch a cross-platform social media campaign to promote 'Flicker' and 'Glass Horizon' in anticipation of their respective releases.",
+      "achievable_in_30_days": true
+    }
+  ],
+  "check_in_message": {
+    "channel": "Email",
+    "subject": "Congratulations on the Upcoming EP Release!",
+    "message": "<Hello Nova,>\n\nJust wanted to send a quick message to congratulate you on your upcoming EP release titled 'Soft Machines'. We've been thrilled by your work and are excited to see how this new collection of tracks unfolds. Looking forward to staying connected and celebrating every step with you. Here's hoping for an incredible journey ahead!\n\nBest,\n[Your Name] - Demo Label",
+    "tone_notes": "<This message is warm, celebratory, and specific about the upcoming release. It references the artist by name and their project details, encouraging continued engagement>"
+  },
+  "action_items": [
+    {
+      "priority": 1,
+      "action": "Confirm EP artwork with Nova Saint",
+      "deadline": "Before March 20th",
+      "owner": "VINYL"
+    }
+  ],
+  "risk_assessment": {
+    "churn_risk": "LOW",
+    "churn_risk_reason": "<Nova's relationship score is healthy and improving, with no signs of churn. The artist has a strong foundation in the market for their genre.",
+    "intervention_needed": false
+  },
+  "built_at_utc": "2026-03-14T16:51:19.261785+00:00"
+}

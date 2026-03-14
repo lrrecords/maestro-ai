@@ -22,26 +22,43 @@ wheels/
 .installed.cfg
 *.egg
 
-# ── Secrets / Config ─────────────────────────
-.env
-*.env
-*.key
-*_secrets.json
-credentials/
+# ── Local/private roster (never commit) ─────────────────────────────────────
+data_private/
 
-# ── Data (ignore everything, whitelist demos) ─
+# ── Data (public-safe) ─────────────────────────────────────────────────────
+# Ignore everything under data/ by default, then allow only curated demo inputs.
 data/**
 !data/**/
-!data/**/*_demo*
-!data/artists/nova_saint.json
-
-# Keep one example artist for demo
-!data/**/*_demo*
-!data/artists/nova_saint.json
-!data/metrics/bandcamp/nova_saint_demo.csv
-
-# Keep directory structure in repo
 !data/**/.gitkeep
+
+# Allow demo artist profiles + demo BRIDGE snapshots
+!data/artists/*.json
+!data/bridge/*.json
+
+# Optional: allow demo metrics
+!data/metrics/**
+!data/metrics/**/
+
+# Always ignore drafts / personal outputs even if under allowed dirs
+data/checkin/
+
+# Explicitly ignore sensitive context/config even if someone tries to add it
+data/lr_records_context.json
+data/brett_communication_profile.json
+data/bridge_learnings.json
+data/autopilot_config.json
+data/autopilot_actions.log
+
+# Ignore common generated output folders
+data/atlas/
+data/echo/
+data/forge/
+data/sage/
+data/vinyl/
+data/ai_conversations/
+data/briefings/
+data/manifests/
+data/workflows/
 
 # ── Internal documents ───────────────────────
 *.pdf

@@ -5,9 +5,13 @@
     "email": "nova@example.com",
     "location": "Portland, OR",
     "signed_date": "2025-06-15",
+    "last_contact_date": "2026-03-14T18:00:00+00:00",
+    "last_interaction": "2026-03-14",
+    "status": "active",
     "label": {
       "name": "Demo Label",
       "slug": "demo_label"
+      
     }
   },
   "musical_identity": {
@@ -45,23 +49,41 @@
   },
   "communication_history": [
     {
-      "date": "2026-02-20",
+      "date": "2026-03-14",
       "type": "email",
       "subject": "EP mastering approved",
       "direction": "inbound"
     },
     {
-      "date": "2026-01-15",
+      "date": "2026-03-11",
       "type": "call",
       "subject": "Q1 release strategy discussion",
       "direction": "outbound"
     },
     {
-      "date": "2025-12-01",
+      "date": "2026-03-14",
       "type": "email",
       "subject": "Contract renewal signed",
       "direction": "inbound"
-    }
+    },
+    {
+      "date": "2026-02-27",
+      "type": "email",
+      "subject": "Playlist pitching assets request",
+      "direction": "outbound"
+    },
+    {
+      "date": "2026-02-11",
+      "type": "text",
+      "subject": "Studio update + rough mix check-in",
+      "direction": "inbound"
+   },
+   {
+     "date": "2026-01-29",
+     "type": "call",
+     "subject": "Release calendar + content capture plan",
+     "direction": "outbound"
+}
   ],
   "_meta": {
     "demo": true,

@@ -1,0 +1,101 @@
+{
+  "artist_info": {
+    "name": "Aria Velvet",
+    "slug": "aria_velvet",
+    "email": "aria.velvet@example.com",
+    "location": "Los Angeles, CA",
+    "signed_date": "2025-09-12",
+    "last_contact_date": "2026-03-14T18:00:00+00:00",
+    "last_interaction": "2026-03-14",
+    "status": "active",
+    "label": {
+      "name": "Demo Label",
+      "slug": "demo_label"
+    }
+  },
+  "musical_identity": {
+    "primary_genre": "Alt Pop",
+    "subgenres": ["Synthpop", "Electropop", "Indie Pop"],
+    "influences": ["CHVRCHES", "Caroline Polachek", "Magdalena Bay", "MUNA"],
+    "voice_description": "Bright, direct, slightly playful. Writes in short sentences. Uses tasteful humor and a confident tone. Appreciates clarity and deadlines."
+  },
+  "audience": {
+    "age_range": "18-34",
+    "platforms": ["Instagram", "TikTok", "Spotify", "YouTube"],
+    "listener_profile": "Pop-forward playlist listeners, indie-pop fans, dance-pop crowd, visual-first social audience."
+  },
+  "upcoming_release": {
+    "title": "Neon Letters",
+    "type": "Single",
+    "track_count": 1,
+    "release_date": "2026-04-18",
+    "single_1": {
+      "title": "Neon Letters",
+      "release_date": "2026-04-18"
+    },
+    "distributor": "AWAL",
+    "format": ["Digital"]
+  },
+  "social_media": {
+    "instagram": "@ariavelvetmusic",
+    "tiktok": "@ariavelvet",
+    "youtube": "@ariavelvet",
+    "spotify": "spotify:artist:demo_ariavelvet_001"
+  },
+  "communication_history": [
+    {
+      "date": "2026-03-14",
+      "type": "email",
+      "subject": "Final mix notes + cover options",
+      "direction": "inbound"
+    },
+    {
+      "date": "2026-03-12",
+      "type": "call",
+      "subject": "Release plan lock + pre-save strategy",
+      "direction": "outbound"
+    },
+    {
+      "date": "2026-03-12",
+      "type": "email",
+      "subject": "TikTok teaser concepts",
+      "direction": "inbound"
+    },
+    {
+      "date": "2026-02-27",
+      "type": "email",
+      "subject": "Playlist pitching assets request",
+      "direction": "outbound"
+    },
+    {
+      "date": "2026-02-11",
+      "type": "text",
+      "subject": "Studio update + rough mix check-in",
+      "direction": "inbound"
+    },
+    {
+      "date": "2026-01-29",
+      "type": "call",
+      "subject": "Release calendar + content capture plan",
+      "direction": "outbound"
+ }
+],
+  "open_action_items": [
+    {
+      "description": "Pick final cover (Option A vs B) and confirm typography.",
+      "assigned_to": "Aria",
+      "due_date": "2026-03-18",
+      "priority": "medium"
+    },
+    {
+      "description": "Send final mastered WAV + ISRC confirmation.",
+      "assigned_to": "Label",
+      "due_date": "2026-03-19",
+      "priority": "high"
+    }
+  ],
+  "_meta": {
+    "demo": true,
+    "description": "Fictional demo artist for public repo screenshots and examples."
+  }
+}

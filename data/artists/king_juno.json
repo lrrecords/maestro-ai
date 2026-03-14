@@ -1,0 +1,105 @@
+{
+  "artist_info": {
+    "name": "King Juno",
+    "slug": "king_juno",
+    "email": "king.juno@example.com",
+    "location": "Perth, WA",
+    "signed_date": "2025-07-03",
+    "last_contact_date": "2026-03-14T18:00:00+00:00",
+    "last_interaction": "2026-03-14",
+    "status": "active",
+    "label": {
+      "name": "Demo Label",
+      "slug": "demo_label"
+    }
+  },
+  "musical_identity": {
+    "primary_genre": "Indie Rock",
+    "subgenres": ["Psych Pop", "Garage Rock", "Alternative"],
+    "influences": ["Tame Impala", "The Strokes", "Khurangbin", "Pond"],
+    "voice_description": "Warm, appreciative, a little poetic. Likes bullet points and clear next steps. Prefers texts/DMs but is responsive by email."
+  },
+  "audience": {
+    "age_range": "20-40",
+    "platforms": ["Instagram", "Spotify", "Bandcamp", "YouTube"],
+    "listener_profile": "Festival-goers, guitar-band fans, vinyl buyers, indie-rock playlist listeners."
+  },
+  "upcoming_release": {
+    "title": "Satellites & Side Streets",
+    "type": "EP",
+    "track_count": 6,
+    "release_date": "2026-06-06",
+    "single_1": {
+      "title": "Paper Halo",
+      "release_date": "2026-04-25"
+    },
+    "single_2": {
+      "title": "Side Streets",
+      "release_date": "2026-05-16"
+    },
+    "distributor": "The Orchard",
+    "format": ["Digital", "Limited Vinyl"]
+  },
+  "social_media": {
+    "instagram": "@kingjunoband",
+    "tiktok": "@kingjuno",
+    "bandcamp": "kingjuno.bandcamp.com",
+    "spotify": "spotify:artist:demo_kingjuno_001"
+  },
+  "communication_history": [
+    {
+      "date": "2026-03-10",
+      "type": "text",
+      "subject": "Merch mockups + EP title confirmation",
+      "direction": "inbound"
+    },
+    {
+      "date": "2026-03-12",
+      "type": "email",
+      "subject": "Vinyl quote + timeline",
+      "direction": "outbound"
+    },
+    {
+      "date": "2026-03-12",
+      "type": "call",
+      "subject": "Tour routing + content capture plan",
+      "direction": "outbound"
+    },
+    {
+      "date": "2026-02-27",
+      "type": "email",
+      "subject": "Playlist pitching assets request",
+      "direction": "outbound"
+    },
+    {
+      "date": "2026-02-11",
+      "type": "text",
+      "subject": "Studio update + rough mix check-in",
+      "direction": "inbound"
+   },
+   {
+     "date": "2026-01-29",
+     "type": "call",
+     "subject": "Release calendar + content capture plan",
+     "direction": "outbound"
+}
+  ],
+  "open_action_items": [
+    {
+      "description": "Confirm EP artwork direction (photography vs illustration).",
+      "assigned_to": "King Juno",
+      "due_date": "2026-03-20",
+      "priority": "medium"
+    },
+    {
+      "description": "Lock vinyl quantity + deposit date with plant.",
+      "assigned_to": "Label",
+      "due_date": "2026-03-22",
+      "priority": "high"
+    }
+  ],
+  "_meta": {
+    "demo": true,
+    "description": "Fictional demo artist for public repo screenshots and examples."
+  }
+}
