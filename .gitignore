@@ -66,6 +66,7 @@ data/ai_conversations/
 data/briefings/
 data/manifests/
 data/workflows/
+data/metrics/labelgrid/
 
 # ── Internal documents ───────────────────────
 *.pdf
