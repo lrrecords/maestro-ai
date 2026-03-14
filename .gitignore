@@ -22,6 +22,13 @@ wheels/
 .installed.cfg
 *.egg
 
+# Local-only / not part of public demo
+examples/
+scripts/security/
+
+# If you do not intend to make scripts a package:
+scripts/__init__.py
+
 # ── Local/private roster (never commit) ─────────────────────────────────────
 data_private/
 
