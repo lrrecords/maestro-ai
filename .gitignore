@@ -22,59 +22,39 @@ wheels/
 .installed.cfg
 *.egg
 
-# Ignore generated agent outputs (keep repo clean/public-safe)
+# ── Local/private roster (never commit) ─────────────────────────────────────
+data_private/
+
+# ── Data (public-safe) ─────────────────────────────────────────────────────
+# Ignore everything under data/ by default, then allow only curated demo inputs.
+data/**
+!data/**/
+!data/**/.gitkeep
+
+# Allow demo artist profiles + demo BRIDGE snapshots
+!data/artists/*.json
+!data/bridge/*.json
+
+# Optional: allow demo metrics
+!data/metrics/**
+!data/metrics/**/
+
+# Always ignore drafts / personal outputs even if under allowed dirs
+data/checkin/
+
+# Explicitly ignore sensitive context/config even if someone tries to add it
+data/lr_records_context.json
+data/brett_communication_profile.json
+data/bridge_learnings.json
+data/autopilot_config.json
+data/autopilot_actions.log
+
+# Ignore common generated output folders
 data/atlas/
 data/echo/
 data/forge/
 data/sage/
 data/vinyl/
-data/manifests/
-data/briefings/
-data/workflows/
-data/metrics/labelgrid/
-data/autopilot_config.json
-data/autopilot_actions.log
-data/bridge_learnings.json
-data/lr_records_context.json
-data/brett_communication_profile.json
-data/maestro_build_progress.md
-data/FULL_CONTEXT_HANDOFF.md
-
-# Local/private roster (never commit)
-data_private/
-data/checkin/
-
-# ── Secrets / Config ─────────────────────────
-.env
-*.env
-*.key
-*_secrets.json
-credentials/
-
-# ── Data ─────────────────────────────────────
-# Keep demo artist profiles and demo BRIDGE snapshots in the repo.
-# Ignore generated drafts/outputs that are personal or noisy.
-
-data_private/
-data/checkin/
-
-# Keep these demo inputs/outputs tracked:
-!data/artists/
-!data/artists/*.json
-!data/bridge/
-!data/bridge/*.json
-
-# Keep optional demo metrics if you want them in public repo:
-!data/metrics/
-!data/metrics/**
-
-# Keep directory structure placeholders (if you use them)
-!data/**/.gitkeep
-
-# Sensitive/private context (keep out of public repo)
-data/lr_records_context.json
-data/brett_communication_profile.json
-data/bridge_learnings.json
 data/ai_conversations/
 data/briefings/
 data/manifests/
