@@ -1,7 +1,6 @@
 """
 # Run from repo root:
 #   python -m dashboard.app
-dashboard/app.py
 
 Unified MAESTRO ecosystem dashboard entrypoint.
 
