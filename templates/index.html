@@ -928,6 +928,8 @@ const AGENT_META = [
   { id:"bridge", icon:"🌉", lbl:"BRIDGE", desc:"Health"     },
 ];
 
+const API_PREFIX = {{ (api_prefix or "") | tojson }};
+
 /* ══════════════════════════════════════════════════════════════════
    UTILITIES
 ══════════════════════════════════════════════════════════════════ */
@@ -1000,7 +1002,7 @@ function toggleSidebar() {
    SIDEBAR
 ══════════════════════════════════════════════════════════════════ */
 async function loadSidebar() {
-  const rows = await apiFetch("/api/dashboard").catch(() => []);
+  const rows = await apiFetch(API_PREFIX + "/api/dashboard").catch(() => []);
   const el   = document.getElementById("sb-artists");
   if (!rows.length) {
     el.innerHTML = `<div style="padding:12px 16px;color:var(--muted);font-size:.75rem;">No artists found</div>`;
@@ -1038,7 +1040,7 @@ async function loadDashboard() {
   const inner = document.getElementById("dash-inner");
   inner.innerHTML = `<div class="spinner"></div>`;
 
-  const rows = await apiFetch("/api/dashboard").catch(() => null);
+  const rows = await apiFetch(API_PREFIX + "/api/dashboard").catch(() => null);
   if (!rows) {
     inner.innerHTML = `<div style="color:var(--red);padding:24px;">Failed to load dashboard.</div>`;
     return;
@@ -1115,7 +1117,7 @@ function showArtist(slug) {
 }
 
 async function loadArtist(slug) {
-  const data = await apiFetch("/api/artist/" + slug).catch(() => null);
+  const data = await apiFetch(API_PREFIX + "/api/artist/" + slug).catch(() => null);
   if (!data || data.error) { toast("Failed to load artist", "err"); return; }
   STATE.data = data;
   document.getElementById("topbar-title").textContent =
@@ -1317,7 +1319,7 @@ function runAgent(agentId) {
     return "";
   };
 
-  STATE.es = new EventSource("/api/stream/" + agentId + "/" + slug);
+  STATE.es = new EventSource(API_PREFIX + "/api/stream/" + agentId + "/" + slug);
 
   STATE.es.onmessage = e => {
     const msg = JSON.parse(e.data);
@@ -1551,7 +1553,7 @@ async function doCheckin(slug) {
   const res  = document.getElementById("checkin-result");
   res.style.display = "none";
 
-  const result = await apiFetch("/api/checkin/" + slug, {
+  const result = await apiFetch(API_PREFIX + "/api/checkin/" + slug, {
     method:  "POST",
     headers: { "Content-Type": "application/json" },
     body:    JSON.stringify({ note }),
@@ -1569,7 +1571,7 @@ async function doWebhook(slug) {
   const res = document.getElementById("webhook-result");
   res.style.display = "none";
 
-  const result = await apiFetch("/api/webhook/" + slug, { method: "POST" })
+  const result = await apiFetch(API_PREFIX + "/api/webhook/" + slug, { method: "POST" })
     .catch(e => ({ sent: false, error: String(e) }));
 
   res.className   = "result-box " + (result.sent ? "ok" : "err");
