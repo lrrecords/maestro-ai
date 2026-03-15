@@ -9,9 +9,26 @@ Built for real label workflows. Not a demo.
 
 ## Screenshots
 
-![MAESTRO Dashboard](docs/assets/Screenshot%20MAESTRO_Dashboard.jpg)
+### Roster Health Dashboard
+![Roster Health Dashboard](docs/assets/Screenshot%20MAESTRO_Dashboard.jpg)
 
-![Demo Artist — Nova Saint](docs/assets/Screenshot%20Demo_Artist_Nova_Saint.jpg)
+### Artist Overview — King Juno
+![Artist Overview — King Juno](docs/assets/Screenshot%20Demo_Artist_King_Juno.jpg)
+
+### Artist Overview — Nova Saint
+![Artist Overview — Nova Saint](docs/assets/Screenshot%20Demo_Artist_Nova_Saint.jpg)
+
+### Run Agents
+![Run Agents](docs/assets/MAESTRO_Run_Agents.jpg)
+
+### Agent Outputs
+![Agent Outputs](docs/assets/MAESTRO_Outputs_Example.jpg)
+
+### Check-in Tab
+![Check-in Tab](docs/assets/MAESTRO_Checkin_Example.jpg)
+
+### Check-in Drafter Output
+![Check-in Drafter Output](docs/assets/MAESTRO_Checkin.jpg)
 
 ---
 
