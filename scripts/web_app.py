@@ -12,8 +12,8 @@ from pathlib import Path
 from datetime import datetime
 from functools import wraps
 from flask import (
-    Flask, render_template, request, session,
-    redirect, url_for, jsonify, Response, stream_with_context
+    Flask, Blueprint, render_template, request, session,
+    redirect, url_for, jsonify, Response, stream_with_context, current_app,
 )
 from dotenv import load_dotenv
 
@@ -36,8 +36,37 @@ PORT          = int(os.getenv("WEB_PORT", 8080))
 SECRET_KEY    = os.getenv("SECRET_KEY", os.urandom(24).hex())
 
 # ── Flask App ─────────────────────────────────────────────────────────────────
-app            = Flask(__name__, template_folder=str(TEMPLATES), static_folder=str(STATIC))
-app.secret_key = SECRET_KEY
+bp = Blueprint("maestro", __name__)
+
+def create_app(url_prefix: str = "") -> Flask:
+    app = Flask(__name__, template_folder=str(TEMPLATES), static_folder=str(STATIC))
+    app.secret_key = SECRET_KEY
+    app.MAESTRO_URL_PREFIX = url_prefix or ""
+
+    app.register_blueprint(bp, url_prefix=url_prefix)
+
+    # ── Global auth routes (shared across departments) ─────────────────────────
+    @app.route("/login", methods=["GET", "POST"])
+    def login_page():
+        ...
+        error = None
+        if request.method == "POST":
+            token = request.form.get("token", "").strip()
+            if token == MAESTRO_TOKEN:
+                session["authenticated"] = True
+                # If user came from a prefixed department, let Flask redirect back.
+                return redirect(request.args.get("next") or url_for("maestro.index"))
+            error = "Invalid token. Try again."
+        return render_template("login.html", error=error)
+
+    @app.route("/logout")
+    def logout():
+        session.clear()
+        return redirect(url_for("login_page"))
+
+    return app
+
+
 
 # ── ANSI stripping (colorama output → clean text) ─────────────────────────────
 ANSI_RE = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
@@ -52,7 +81,7 @@ def login_required(f):
         if not session.get("authenticated"):
             if request.path.startswith("/api/"):
                 return jsonify({"error": "Unauthorized"}), 401
-            return redirect(url_for("login_page"))
+            return redirect(url_for("login_page", next=request.path))
         return f(*args, **kwargs)
     return decorated
 
@@ -179,34 +208,19 @@ def build_dashboard_rows() -> list:
     return rows
 
 # ── Page routes ───────────────────────────────────────────────────────────────
-@app.route("/login", methods=["GET", "POST"])
-def login_page():
-    error = None
-    if request.method == "POST":
-        token = request.form.get("token", "").strip()
-        if token == MAESTRO_TOKEN:
-            session["authenticated"] = True
-            return redirect(url_for("index"))
-        error = "Invalid token. Try again."
-    return render_template("login.html", error=error)
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("login_page"))
-
-@app.route("/")
+@bp.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    prefix = getattr(current_app, "MAESTRO_URL_PREFIX", "")
+    return render_template("index.html", api_prefix=prefix)
 
 # ── API routes ────────────────────────────────────────────────────────────────
-@app.route("/api/dashboard")
+@bp.route("/api/dashboard")
 @login_required
 def api_dashboard():
     return jsonify(build_dashboard_rows())
 
-@app.route("/api/artists")
+@bp.route("/api/artists")
 @login_required
 def api_artists():
     out = []
@@ -219,7 +233,7 @@ def api_artists():
             })
     return jsonify(out)
 
-@app.route("/api/artist/<slug>")
+@bp.route("/api/artist/<slug>")
 @login_required
 def api_artist(slug):
     artist = load_artist(slug)
@@ -247,7 +261,7 @@ def api_artist(slug):
         "history": history,
     })
 
-@app.route("/api/stream/<agent>/<slug>")
+@bp.route("/api/stream/<agent>/<slug>")
 @login_required
 def api_stream(agent, slug):
     """SSE endpoint — streams live agent output to browser."""
@@ -301,7 +315,7 @@ def api_stream(agent, slug):
         },
     )
 
-@app.route("/api/webhook/<slug>", methods=["POST"])
+@bp.route("/api/webhook/<slug>", methods=["POST"])
 @login_required
 def api_webhook(slug):
     """Fire a health-update webhook for this artist."""
@@ -331,7 +345,7 @@ def api_webhook(slug):
     except Exception as e:
         return jsonify({"sent": False, "error": str(e), "payload": payload})
 
-@app.route("/api/checkin/<slug>", methods=["POST"])
+@bp.route("/api/checkin/<slug>", methods=["POST"])
 @login_required
 def api_checkin(slug):
     name = slug_to_name(slug)
@@ -353,6 +367,9 @@ def api_checkin(slug):
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
+    
+# Legacy entrypoint still works: python scripts/web_app.py
+app = create_app("")
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 if __name__ == "__main__":
