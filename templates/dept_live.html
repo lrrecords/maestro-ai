@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>LIVE — MAESTRO Ecosystem</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0d0d0d; color: #d8d8d8; font-family: system-ui, "Segoe UI", sans-serif; }
+
+    /* ── Header ── */
+    .header {
+      background: #141414; border-bottom: 1px solid #2a2a2a;
+      padding: 14px 32px; display: flex; align-items: center; gap: 14px;
+    }
+    .back { color: #555; text-decoration: none; font-size: .82rem; }
+    .back:hover { color: #00e5b0; }
+    .dept-name  { font-size: 1rem; font-weight: 700; color: #f0f0f0; }
+    .dept-badge {
+      font-size: .65rem; letter-spacing: .12em; text-transform: uppercase;
+      color: #00e5b0; border: 1px solid rgba(0,229,176,.3);
+      padding: 2px 8px; border-radius: 999px;
+    }
+
+    /* ── Layout ── */
+    .main { max-width: 1100px; margin: 0 auto; padding: 28px 32px; }
+
+    /* ── Stats ── */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 32px; }
+    .stat  { background: #141414; border: 1px solid #2a2a2a; border-radius: 10px; padding: 16px; }
+    .stat-label { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: #555; margin-bottom: 8px; }
+    .stat-value { font-size: 1.8rem; font-weight: 700; color: #f0f0f0; line-height: 1; }
+    .stat-sub   { font-size: .76rem; color: #555; margin-top: 6px; }
+
+    /* ── Section ── */
+    .section       { margin-bottom: 36px; }
+    .section-title {
+      font-size: .78rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: #888; margin-bottom: 12px;
+    }
+
+    /* ── Table ── */
+    .table-wrap { background: #141414; border: 1px solid #2a2a2a; border-radius: 10px; overflow: hidden; }
+    table       { width: 100%; border-collapse: collapse; }
+    thead th    {
+      background: #1a1a1a; color: #555; font-size: .7rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 10px 16px; text-align: left; font-weight: 500;
+    }
+    td          { padding: 12px 16px; border-top: 1px solid #1e1e1e; font-size: .87rem; color: #c8c8c8; }
+    tr:hover td { background: #181818; }
+
+    /* ── Badges ── */
+    .badge           { display: inline-block; font-size: .68rem; padding: 2px 9px; border-radius: 999px; font-weight: 500; }
+    .badge-confirmed { background: rgba(0,200,100,.10);  color: #00c864; border: 1px solid rgba(0,200,100,.25); }
+    .badge-hold      { background: rgba(255,180,0,.10);  color: #ffb400; border: 1px solid rgba(255,180,0,.25); }
+    .badge-pending   { background: rgba(120,120,255,.10);color: #8888ff; border: 1px solid rgba(120,120,255,.25); }
+    .badge-cancelled { background: rgba(255,80,80,.10);  color: #ff6060; border: 1px solid rgba(255,80,80,.25); }
+    .badge-stub      { background: rgba(255,180,0,.10);  color: #ffb400; border: 1px solid rgba(255,180,0,.25); }
+    .badge-ok        { background: rgba(0,200,100,.10);  color: #00c864; border: 1px solid rgba(0,200,100,.25); }
+    .badge-error     { background: rgba(255,80,80,.10);  color: #ff6060; border: 1px solid rgba(255,80,80,.25); }
+
+    /* ── Agent grid ── */
+    .agents { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 10px; }
+    .agent  {
+      background: #141414; border: 1px solid #2a2a2a; border-radius: 8px;
+      padding: 14px; display: flex; flex-direction: column; gap: 6px;
+    }
+    .agent-code { font-weight: 700; font-size: .9rem; color: #f0f0f0; }
+    .agent-desc { font-size: .78rem; color: #666; line-height: 1.4; flex: 1; }
+    .run-btn {
+      margin-top: 10px; width: 100%; padding: 7px 0;
+      background: transparent; border: 1px solid #2a2a2a;
+      border-radius: 6px; color: #00e5b0;
+      font-size: .78rem; font-weight: 600; letter-spacing: .06em;
+      cursor: pointer; transition: background .12s, border-color .12s;
+    }
+    .run-btn:hover    { background: rgba(0,229,176,.07); border-color: #00e5b0; }
+    .run-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* ── Modal shell ── */
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.75); z-index: 100;
+      align-items: center; justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: #141414; border: 1px solid #2a2a2a; border-radius: 14px;
+      width: min(540px, 92vw); max-height: 88vh;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+
+    /* ── Shared panel pieces ── */
+    .modal-panel { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+    .modal-head  {
+      display: flex; align-items: center; gap: 10px;
+      padding: 15px 18px; border-bottom: 1px solid #1e1e1e; flex-shrink: 0;
+    }
+    .modal-agent-name { font-weight: 700; font-size: 1rem; color: #f0f0f0; flex: 1; }
+    .modal-ts         { font-size: .7rem; color: #444; }
+    .modal-close {
+      background: none; border: none; color: #555;
+      font-size: 1.1rem; cursor: pointer; padding: 2px 6px; line-height: 1;
+    }
+    .modal-close:hover { color: #d8d8d8; }
+    .modal-body  { flex: 1; overflow-y: auto; }
+    .modal-foot  {
+      display: flex; gap: 8px; justify-content: flex-end;
+      padding: 12px 18px; border-top: 1px solid #1e1e1e; flex-shrink: 0;
+    }
+
+    /* ── Form panel ── */
+    .form-desc  {
+      font-size: .82rem; color: #666; line-height: 1.5;
+      padding: 14px 18px 14px; border-bottom: 1px solid #1a1a1a;
+    }
+    .field-group { padding: 14px 18px 0; }
+    .field-group:last-child { padding-bottom: 6px; }
+    .field-label {
+      display: block; font-size: .7rem; font-weight: 600;
+      letter-spacing: .07em; text-transform: uppercase;
+      color: #666; margin-bottom: 6px;
+    }
+    .req { color: #ff5555; margin-left: 2px; }
+    .field-input {
+      display: block; width: 100%;
+      background: #0a0a0a; border: 1px solid #242424;
+      border-radius: 6px; color: #d8d8d8;
+      padding: 8px 11px; font-size: .87rem; font-family: inherit;
+      outline: none; transition: border-color .15s;
+    }
+    .field-input:focus       { border-color: #00e5b0; }
+    .field-input.field-error { border-color: #ff5555; }
+    .field-ta   { min-height: 78px; resize: vertical; line-height: 1.5; }
+    .field-hint { display: block; font-size: .7rem; color: #3a3a3a; margin-top: 5px; }
+    .no-fields  { padding: 20px 18px; color: #555; font-size: .85rem; }
+
+    /* ── Result panel ── */
+    .modal-pre {
+      background: #0a0a0a; border: 1px solid #1e1e1e; border-radius: 8px;
+      padding: 14px; margin: 14px 18px;
+      font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+      font-size: .77rem; color: #c0c0c0;
+      white-space: pre-wrap; word-break: break-all;
+      overflow-y: auto; max-height: 52vh;
+    }
+
+    /* ── Buttons ── */
+    .btn-ghost {
+      background: transparent; border: 1px solid #2a2a2a;
+      border-radius: 6px; color: #888; padding: 6px 14px;
+      font-size: .8rem; cursor: pointer; transition: border-color .12s, color .12s;
+    }
+    .btn-ghost:hover { border-color: #555; color: #d8d8d8; }
+    .btn-primary {
+      background: rgba(0,229,176,.1); border: 1px solid #00e5b0;
+      border-radius: 6px; color: #00e5b0; padding: 6px 18px;
+      font-size: .82rem; font-weight: 600; letter-spacing: .04em;
+      cursor: pointer; transition: background .12s;
+    }
+    .btn-primary:hover    { background: rgba(0,229,176,.2); }
+    .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* ── Empty ── */
+    .empty { padding: 36px; text-align: center; color: #444; font-size: .85rem; }
+    .empty code { color: #555; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <a class="back" href="/">← Departments</a>
+    <span class="dept-name">LIVE</span>
+    <span class="dept-badge">Live Music Ops</span>
+  </div>
+
+  <div class="main">
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Total Shows</div>
+        <div class="stat-value">{{ shows | length }}</div>
+        <div class="stat-sub">all dates</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Confirmed</div>
+        <div class="stat-value">{{ confirmed }}</div>
+        <div class="stat-sub">locked in</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">On Hold</div>
+        <div class="stat-value">{{ on_hold }}</div>
+        <div class="stat-sub">pending confirmation</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Active Tours</div>
+        <div class="stat-value">{{ tours | length }}</div>
+        <div class="stat-sub">in routing</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Shows</div>
+      <div class="table-wrap">
+        {% if shows %}
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Artist</th><th>Venue</th><th>City</th><th>Country</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            {% for s in shows %}
+            <tr>
+              <td>{{ s.get("date","—") }}</td>
+              <td>{{ s.get("artist","—") }}</td>
+              <td>{{ s.get("venue","—") }}</td>
+              <td>{{ s.get("city","—") }}</td>
+              <td>{{ s.get("country","—") }}</td>
+              <td><span class="badge badge-{{ s.get('status','pending') }}">{{ s.get("status","pending") | capitalize }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="empty">No shows yet — add data to <code>live/data/shows.json</code></div>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if tours %}
+    <div class="section">
+      <div class="section-title">Tours</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Tour</th><th>Artist</th><th>Start</th><th>End</th><th>Shows</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            {% for t in tours %}
+            <tr>
+              <td>{{ t.get("name","—") }}</td>
+              <td>{{ t.get("artist","—") }}</td>
+              <td>{{ t.get("start","—") }}</td>
+              <td>{{ t.get("end","—") }}</td>
+              <td>{{ t.get("show_count","—") }}</td>
+              <td><span class="badge badge-{{ t.get('status','pending') }}">{{ t.get("status","pending") | capitalize }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="section">
+      <div class="section-title">Agents</div>
+      <div class="agents">
+        {% for code, desc in [
+          ("BOOK",   "Venues, holds, deal negotiation, contract tracking."),
+          ("MERCH",  "Merchandise planning, inventory, and settlement."),
+          ("PROMO",  "Marketing and promotional strategy."),
+          ("ROUTE",  "Tour routing and travel optimisation."),
+          ("SETTLE", "Financial settlement and reconciliation."),
+          ("RIDER",  "Technical and hospitality rider management."),
+          ("TOUR",   "Strategy synthesiser — coordinates all agents."),
+        ] %}
+        <div class="agent">
+          <div class="agent-code">{{ code }}</div>
+          <div class="agent-desc">{{ desc }}</div>
+          <button
+            class="run-btn"
+            data-agent="{{ code | lower }}"
+            onclick="openAgentForm('{{ code | lower }}', '{{ code }}')"
+          >▶ Run</button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div><!-- /main -->
+
+
+  <!-- ═══════════════════════════════════════════════════════ MODAL ══ -->
+  <div class="modal-backdrop" id="agent-modal">
+    <div class="modal" role="dialog" aria-modal="true">
+
+      <!-- ── FORM PANEL ── -->
+      <div class="modal-panel" id="modal-form">
+        <div class="modal-head">
+          <span class="modal-agent-name" id="form-agent-name"></span>
+          <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-desc" id="form-agent-desc"></div>
+          <div id="form-fields"></div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+          <button class="btn-primary" id="run-btn" onclick="submitCurrentForm()">▶ Run Agent</button>
+        </div>
+      </div>
+
+      <!-- ── RESULT PANEL ── -->
+      <div class="modal-panel" id="modal-result" style="display:none">
+        <div class="modal-head">
+          <span class="modal-agent-name" id="result-agent-name"></span>
+          <span class="badge" id="result-status"></span>
+          <span class="modal-ts" id="result-ts"></span>
+          <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+        </div>
+        <div class="modal-body">
+          <pre class="modal-pre" id="modal-json"></pre>
+        </div>
+        <div class="modal-foot">
+          <button class="btn-ghost" onclick="showFormPanel()">← Back</button>
+          <button class="btn-ghost" id="copy-btn" onclick="copyResult()">Copy JSON</button>
+          <button class="btn-ghost" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /modal -->
+
+
+  <script>
+    const DEPT         = 'live';
+    const AGENT_FIELDS = {{ agent_fields | tojson }};
+
+    let _cur = null;  // { slug, displayName }
+
+    /* ── Open form ─────────────────────────────────────── */
+    function openAgentForm(slug, displayName) {
+      _cur = { slug, displayName };
+
+      const info   = AGENT_FIELDS[slug] || {};
+      const fields = info.fields || [];
+      const desc   = info.description || '';
+
+      document.getElementById('form-agent-name').textContent = displayName;
+      document.getElementById('form-agent-desc').textContent = desc;
+      document.getElementById('form-fields').innerHTML = fields.length
+        ? fields.map(buildFieldHtml).join('')
+        : '<p class="no-fields">No context required — click Run Agent to continue.</p>';
+
+      showPanel('form');
+      document.getElementById('agent-modal').classList.add('open');
+    }
+
+    /* ── Build one field's HTML ─────────────────────────── */
+    function buildFieldHtml(f) {
+      const id  = 'field-' + f.key;
+      const req = f.required ? '<span class="req">*</span>' : '';
+      let   ctrl;
+
+      if (f.type === 'select') {
+        const opts = (f.options || [])
+          .map(o => `<option value="${o}">${o}</option>`)
+          .join('');
+        ctrl = `<select id="${id}" class="field-input">
+          <option value="">— choose —</option>${opts}
+        </select>`;
+      } else if (f.type === 'textarea') {
+        ctrl = `<textarea id="${id}" class="field-input field-ta"
+          placeholder="${esc(f.placeholder || '')}"></textarea>`;
+      } else {
+        const t = f.type === 'number' ? 'number' : 'text';
+        ctrl = `<input type="${t}" id="${id}" class="field-input"
+          placeholder="${esc(f.placeholder || '')}">`;
+      }
+
+      const hint = f.type === 'tags'
+        ? '<span class="field-hint">Comma-separated list</span>' : '';
+
+      return `<div class="field-group">
+        <label class="field-label" for="${id}">${f.label}${req}</label>
+        ${ctrl}${hint}
+      </div>`;
+    }
+
+    function esc(s) {
+      return s.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    /* ── Collect + submit form ──────────────────────────── */
+    function submitCurrentForm() {
+      if (!_cur) return;
+      const { slug, displayName } = _cur;
+      const fields  = (AGENT_FIELDS[slug] || {}).fields || [];
+      const context = {};
+      let   hasErr  = false;
+
+      for (const f of fields) {
+        const el = document.getElementById('field-' + f.key);
+        if (!el) continue;
+        el.classList.remove('field-error');
+        const raw = el.value.trim();
+
+        if (f.required && !raw) {
+          el.classList.add('field-error');
+          el.focus();
+          hasErr = true;
+          break;
+        }
+        if (!raw) continue;
+
+        if      (f.type === 'number') context[f.key] = parseFloat(raw) || 0;
+        else if (f.type === 'tags')   context[f.key] = raw.split(',').map(s => s.trim()).filter(Boolean);
+        else                          context[f.key] = raw;
+      }
+
+      if (hasErr) return;
+      _execAgent(slug, displayName, context);
+    }
+
+    /* ── POST to run endpoint ───────────────────────────── */
+    async function _execAgent(slug, displayName, context) {
+      const btn = document.getElementById('run-btn');
+      btn.disabled    = true;
+      btn.textContent = '…';
+
+      try {
+        const res  = await fetch(`/${DEPT}/run/${slug}`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(context),
+        });
+        const data = await res.json();
+        showResultPanel(displayName, data, res.ok);
+      } catch (err) {
+        showResultPanel(displayName, { ok: false, error: err.message }, false);
+      } finally {
+        btn.disabled    = false;
+        btn.textContent = '▶ Run Agent';
+      }
+    }
+
+    /* ── Populate + show result panel ───────────────────── */
+    function showResultPanel(name, envelope, httpOk) {
+      document.getElementById('result-agent-name').textContent = name;
+
+      const status   = envelope.result?.status ?? (httpOk ? 'ok' : 'error');
+      const statusEl = document.getElementById('result-status');
+      statusEl.textContent = status;
+      statusEl.className   = 'badge badge-' + status;
+
+      const ts = envelope.timestamp || '';
+      document.getElementById('result-ts').textContent =
+        ts ? new Date(ts).toLocaleTimeString() : '';
+
+      document.getElementById('modal-json').textContent =
+        JSON.stringify(envelope, null, 2);
+
+      showPanel('result');
+    }
+
+    /* ── Panel switching ────────────────────────────────── */
+    function showPanel(which) {
+      document.getElementById('modal-form').style.display   = which === 'form'   ? '' : 'none';
+      document.getElementById('modal-result').style.display = which === 'result' ? '' : 'none';
+    }
+    function showFormPanel() { showPanel('form'); }
+    function closeModal()    { document.getElementById('agent-modal').classList.remove('open'); }
+
+    /* ── Copy JSON ──────────────────────────────────────── */
+    function copyResult() {
+      navigator.clipboard.writeText(
+        document.getElementById('modal-json').textContent
+      ).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy JSON'; }, 1500);
+      });
+    }
+
+    /* ── Dismiss on backdrop / Escape ───────────────────── */
+    const _backdrop = document.getElementById('agent-modal');
+    _backdrop.addEventListener('click', e => { if (e.target === _backdrop) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,324 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   renderers.css — Agent result card styles for MAESTRO
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Design tokens ───────────────────────────────────────────────────────── */
+:root {
+    --rc-bg:      #1a1a2e;
+    --rc-surface: #252540;
+    --rc-border:  #35355a;
+    --rc-accent:  #7c6af7;
+    --rc-hi:      #a99ff8;
+    --rc-text:    #ddddf0;
+    --rc-muted:   #7777aa;
+    --rc-green:   #4caf7d;
+    --rc-red:     #e06c75;
+    --rc-r:       8px;
+    --rc-rsm:     4px;
+}
+
+/* ── Modal: widen when showing a result card ─────────────────────────────── */
+.modal-wide .modal-box {
+    max-width: min(860px, 95vw);
+}
+
+/* ── THE SCROLL FIX ──────────────────────────────────────────────────────── */
+/*
+   #modalResultPanel must be a flex column so its child .result-body
+   can actually be constrained. Without this, max-height on .result-body
+   has nothing to push against and overflow-y never fires.
+*/
+#modalResultPanel {
+    display:        flex;
+    flex-direction: column;
+    flex:           1;
+    min-height:     0;          /* critical — allows flex child to shrink */
+    overflow:       hidden;
+}
+
+.result-body {
+    flex:       1;
+    min-height: 0;              /* critical — allows scroll to engage */
+    overflow-y: auto;
+    padding:    0;              /* quote-card handles its own padding */
+    /* Fallback max-height for non-flex contexts */
+    max-height: calc(88vh - 130px);
+}
+
+/* Footer row inside the result panel */
+.result-footer {
+    display:     flex;
+    gap:         0.5rem;
+    flex-shrink: 0;
+}
+
+/* ── Saved path + timestamp bar (shown above the quote card) ─────────────── */
+.saved-info {
+    padding:        0.6rem 1.25rem;
+    background:     var(--rc-surface);
+    border-bottom:  1px solid var(--rc-border);
+    font-size:      0.72rem;
+    line-height:    1.7;
+}
+
+.saved-info-label {
+    font-size:      0.62rem;
+    font-weight:    700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color:          var(--rc-muted);
+}
+
+.saved-info-path {
+    color:      var(--rc-hi);
+    word-break: break-all;
+}
+
+.saved-info-ts {
+    color: var(--rc-muted);
+}
+
+/* ── Quote card shell ────────────────────────────────────────────────────── */
+.quote-card {
+    display:        flex;
+    flex-direction: column;
+    gap:            0;
+    background:     var(--rc-bg);
+    border-radius:  0;          /* modal box handles outer radius */
+    overflow:       visible;
+    color:          var(--rc-text);
+    font-size:      0.88rem;
+    line-height:    1.5;
+}
+
+/* ── Quote header ────────────────────────────────────────────────────────── */
+.quote-header {
+    display:         flex;
+    justify-content: space-between;
+    align-items:     flex-start;
+    padding:         1.25rem 1.5rem;
+    background:      var(--rc-surface);
+    border-bottom:   1px solid var(--rc-border);
+}
+
+.quote-badge {
+    font-size:      0.63rem;
+    font-weight:    700;
+    letter-spacing: 0.14em;
+    color:          var(--rc-hi);
+    text-transform: uppercase;
+    margin-bottom:  0.3rem;
+}
+
+.quote-client {
+    font-size:   1.25rem;
+    font-weight: 700;
+    color:       var(--rc-text);
+}
+
+.quote-meta {
+    font-size:  0.75rem;
+    color:      var(--rc-muted);
+    margin-top: 0.2rem;
+}
+
+/* Grand total pill (top-right of header) */
+.quote-total-pill   { text-align: right; }
+.quote-total-label  {
+    font-size:      0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color:          var(--rc-muted);
+    margin-bottom:  0.2rem;
+}
+.quote-total-amount {
+    font-size:   1.4rem;
+    font-weight: 800;
+    color:       var(--rc-text);
+}
+
+/* ── Download button (inside header) ─────────────────────────────────────── */
+.btn-download {
+    background:    transparent;
+    border:        1px solid var(--rc-border);
+    color:         var(--rc-muted);
+    padding:       0.35rem 0.8rem;
+    border-radius: var(--rc-rsm);
+    font-size:     0.75rem;
+    cursor:        pointer;
+    transition:    border-color 0.15s, color 0.15s;
+    white-space:   nowrap;
+    margin-top:    0.4rem;
+    display:       block;
+}
+.btn-download:hover { border-color: var(--rc-accent); color: var(--rc-hi); }
+
+/* ── Line items table ────────────────────────────────────────────────────── */
+.line-items-table {
+    width:           100%;
+    border-collapse: collapse;
+}
+
+.line-items-table th {
+    padding:        0.55rem 1.5rem;
+    font-size:      0.65rem;
+    font-weight:    600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color:          var(--rc-muted);
+    border-bottom:  1px solid var(--rc-border);
+    background:     var(--rc-surface);
+    text-align:     left;
+}
+
+.line-items-table td {
+    padding:       0.7rem 1.5rem;
+    border-bottom: 1px solid var(--rc-border);
+    color:         var(--rc-text);
+}
+
+.line-items-table tbody tr:last-child td { border-bottom: none; }
+.line-items-table tbody tr:hover td      { background: rgba(124,106,247,0.05); }
+
+.li-desc  { width: 45%; }
+.li-num   { text-align: right; }
+.li-unit  { color: var(--rc-muted); font-size: 0.8rem; }
+.li-total { font-weight: 600; text-align: right; }
+
+/* ── Totals block ────────────────────────────────────────────────────────── */
+.totals-block {
+    padding:       0.75rem 1.5rem;
+    background:    var(--rc-surface);
+    border-top:    1px solid var(--rc-border);
+    border-bottom: 1px solid var(--rc-border);
+}
+
+.totals-row {
+    display:         flex;
+    justify-content: flex-end;
+    gap:             4rem;
+    padding:         0.28rem 0;
+    color:           var(--rc-muted);
+    font-size:       0.86rem;
+}
+
+.totals-row span:last-child { min-width: 7rem; text-align: right; }
+
+.totals-row.grand-total {
+    color:       var(--rc-text);
+    font-size:   1.05rem;
+    font-weight: 700;
+    padding-top: 0.55rem;
+    margin-top:  0.3rem;
+    border-top:  1px solid var(--rc-border);
+}
+
+/* ── Payment block ───────────────────────────────────────────────────────── */
+.payment-block { padding: 1.1rem 1.5rem; }
+
+.block-label {
+    font-size:      0.63rem;
+    font-weight:    700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color:          var(--rc-hi);
+    margin-bottom:  0.6rem;
+}
+
+.payment-row {
+    display:         flex;
+    justify-content: space-between;
+    padding:         0.38rem 0;
+    border-bottom:   1px solid var(--rc-border);
+    font-size:       0.88rem;
+}
+.payment-row:last-of-type { border-bottom: none; }
+
+.deposit-amount { color: var(--rc-green); font-weight: 600; }
+
+.payment-terms,
+.quote-validity {
+    margin-top: 0.6rem;
+    font-size:  0.78rem;
+    color:      var(--rc-muted);
+}
+.payment-terms { font-style: italic; }
+
+/* ── Recommendations block ───────────────────────────────────────────────── */
+.recs-block {
+    padding:    1.1rem 1.5rem 1.4rem;
+    background: var(--rc-surface);
+    border-top: 1px solid var(--rc-border);
+}
+
+/* Grid layout — used when recommendations are objects {description, suggested_action} */
+.recs-grid {
+    display:               grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap:                   0.65rem;
+    margin-top:            0.6rem;
+}
+
+.rec-card {
+    background:    var(--rc-bg);
+    border:        1px solid var(--rc-border);
+    border-radius: var(--rc-rsm);
+    padding:       0.85rem 1rem;
+    transition:    border-color 0.15s;
+}
+.rec-card:hover { border-color: var(--rc-accent); }
+
+.rec-title  { font-size: 0.83rem; font-weight: 600; margin-bottom: 0.35rem; color: var(--rc-text); }
+.rec-detail { font-size: 0.78rem; color: var(--rc-muted); line-height: 1.4; }
+
+/* List layout — used when recommendations are plain strings */
+.recs-list {
+    list-style:     none;
+    margin-top:     0.6rem;
+    padding:        0;
+    display:        flex;
+    flex-direction: column;
+    gap:            0.45rem;
+}
+.recs-list li {
+    font-size:     0.86rem;
+    color:         var(--rc-muted);
+    padding:       0.55rem 0.8rem;
+    background:    var(--rc-bg);
+    border:        1px solid var(--rc-border);
+    border-radius: var(--rc-rsm);
+    line-height:   1.45;
+}
+.recs-list li::before {
+    content: '→  ';
+    color:   var(--rc-accent);
+}
+
+/* Plain string fallback (single paragraph) */
+.recs-text { font-size: 0.86rem; color: var(--rc-muted); margin-top: 0.4rem; line-height: 1.5; }
+
+/* ── JSON fallback (agents without a dedicated renderer) ─────────────────── */
+.json-fallback {
+    background:    var(--rc-surface);
+    border:        1px solid var(--rc-border);
+    padding:       1rem 1.25rem;
+    font-size:     0.75rem;
+    color:         var(--rc-text);
+    white-space:   pre-wrap;
+    word-break:    break-all;
+    max-height:    55vh;
+    overflow-y:    auto;
+    border-radius: var(--rc-rsm);
+    font-family:   "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+}
+
+/* ── Error message ───────────────────────────────────────────────────────── */
+.error-msg {
+    background:    rgba(224,108,117,0.1);
+    border:        1px solid var(--rc-red);
+    border-radius: var(--rc-rsm);
+    color:         var(--rc-red);
+    padding:       1rem 1.25rem;
+    font-size:     0.88rem;
+    line-height:   1.5;
+}
