@@ -367,7 +367,7 @@ def api_checkin(slug):
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
-    
+
 # Legacy entrypoint still works: python scripts/web_app.py
 app = create_app("")
 

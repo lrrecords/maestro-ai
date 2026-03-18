@@ -1,0 +1,1 @@
+# STUDIO department package

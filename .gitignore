@@ -67,6 +67,8 @@ data/briefings/
 data/manifests/
 data/workflows/
 data/metrics/labelgrid/
+studio/data/
+live/data/
 
 # ── Internal documents ───────────────────────
 *.pdf

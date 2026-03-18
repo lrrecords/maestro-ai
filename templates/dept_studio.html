@@ -1,0 +1,1018 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>STUDIO — MAESTRO Ecosystem</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0d0d0d; color: #d8d8d8; font-family: system-ui, "Segoe UI", sans-serif; }
+
+    /* ── Header ── */
+    .header {
+      background: #141414; border-bottom: 1px solid #2a2a2a;
+      padding: 14px 32px; display: flex; align-items: center; gap: 14px;
+    }
+    .back { color: #555; text-decoration: none; font-size: .82rem; }
+    .back:hover { color: #b388ff; }
+    .dept-name  { font-size: 1rem; font-weight: 700; color: #f0f0f0; }
+    .dept-badge {
+      font-size: .65rem; letter-spacing: .12em; text-transform: uppercase;
+      color: #b388ff; border: 1px solid rgba(179,136,255,.3);
+      padding: 2px 8px; border-radius: 999px;
+    }
+
+    /* ── Layout ── */
+    .main { max-width: 1100px; margin: 0 auto; padding: 28px 32px; }
+
+    /* ── Stats ── */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 32px; }
+    .stat  { background: #141414; border: 1px solid #2a2a2a; border-radius: 10px; padding: 16px; }
+    .stat-label { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: #555; margin-bottom: 8px; }
+    .stat-value { font-size: 1.8rem; font-weight: 700; color: #f0f0f0; line-height: 1; }
+    .stat-sub   { font-size: .76rem; color: #555; margin-top: 6px; }
+
+    /* ── Section ── */
+    .section       { margin-bottom: 36px; }
+    .section-title {
+      font-size: .78rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: #888; margin-bottom: 12px;
+    }
+
+    /* ── Table ── */
+    .table-wrap { background: #141414; border: 1px solid #2a2a2a; border-radius: 10px; overflow: hidden; }
+    table       { width: 100%; border-collapse: collapse; }
+    thead th    {
+      background: #1a1a1a; color: #555; font-size: .7rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 10px 16px; text-align: left; font-weight: 500;
+    }
+    td          { padding: 12px 16px; border-top: 1px solid #1e1e1e; font-size: .87rem; color: #c8c8c8; }
+    tr:hover td { background: #181818; }
+
+    /* ── Badges ── */
+    .badge           { display: inline-block; font-size: .68rem; padding: 2px 9px; border-radius: 999px; font-weight: 500; }
+    .badge-booked    { background: rgba(0,200,100,.10);   color: #00c864; border: 1px solid rgba(0,200,100,.25); }
+    .badge-confirmed { background: rgba(0,200,100,.10);   color: #00c864; border: 1px solid rgba(0,200,100,.25); }
+    .badge-tentative { background: rgba(255,180,0,.10);   color: #ffb400; border: 1px solid rgba(255,180,0,.25); }
+    .badge-pending   { background: rgba(120,120,255,.10); color: #8888ff; border: 1px solid rgba(120,120,255,.25); }
+    .badge-completed { background: rgba(100,100,100,.15); color: #888;   border: 1px solid rgba(100,100,100,.25); }
+    .badge-cancelled { background: rgba(255,80,80,.10);   color: #ff6060; border: 1px solid rgba(255,80,80,.25); }
+    .badge-active    { background: rgba(179,136,255,.10); color: #b388ff; border: 1px solid rgba(179,136,255,.25); }
+    .badge-stub      { background: rgba(255,180,0,.10);   color: #ffb400; border: 1px solid rgba(255,180,0,.25); }
+    .badge-ok        { background: rgba(0,200,100,.10);   color: #00c864; border: 1px solid rgba(0,200,100,.25); }
+    .badge-error     { background: rgba(255,80,80,.10);   color: #ff6060; border: 1px solid rgba(255,80,80,.25); }
+
+    /* ── Agent grid ── */
+    .agents { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 10px; }
+    .agent  {
+      background: #141414; border: 1px solid #2a2a2a; border-radius: 8px;
+      padding: 14px; display: flex; flex-direction: column; gap: 6px;
+    }
+    .agent-code { font-weight: 700; font-size: .9rem; color: #f0f0f0; }
+    .agent-desc { font-size: .78rem; color: #666; line-height: 1.4; flex: 1; }
+    .run-btn {
+      margin-top: 10px; width: 100%; padding: 7px 0;
+      background: transparent; border: 1px solid #2a2a2a;
+      border-radius: 6px; color: #b388ff;
+      font-size: .78rem; font-weight: 600; letter-spacing: .06em;
+      cursor: pointer; transition: background .12s, border-color .12s;
+    }
+    .run-btn:hover    { background: rgba(179,136,255,.07); border-color: #b388ff; }
+    .run-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.75); z-index: 100;
+      align-items: center; justify-content: center;
+      padding: 18px;
+    }
+    .modal-box {
+      background: #141414; border: 1px solid #2a2a2a; border-radius: 14px;
+      width: min(820px, 96vw);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; padding: 15px 18px;
+      border-bottom: 1px solid #1e1e1e;
+      flex-shrink: 0;
+    }
+    .modal-dept  { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: #555; }
+    .modal-title { font-weight: 800; font-size: 1rem; color: #f0f0f0; margin-top: 2px; }
+    .modal-close {
+      background: none; border: none; color: #555;
+      font-size: 1.2rem; cursor: pointer; padding: 2px 6px; line-height: 1;
+    }
+    .modal-close:hover { color: #d8d8d8; }
+
+    /* ── Panels ── */
+    #modalFormPanel,
+    #modalResultPanel {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .modal-body {
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+      padding: 14px 18px;
+    }
+    .modal-desc { color: #666; font-size: .86rem; line-height: 1.5; margin-bottom: 10px; }
+    .modal-footer {
+      display: flex; gap: 8px; justify-content: flex-end; align-items: center;
+      padding: 12px 18px; border-top: 1px solid #1e1e1e;
+      flex-shrink: 0;
+    }
+
+    /* ── Fields ── */
+    .field-group { margin-bottom: 12px; }
+    .field-group label {
+      display: block; font-size: .7rem; font-weight: 700;
+      letter-spacing: .07em; text-transform: uppercase;
+      color: #666; margin-bottom: 6px;
+    }
+    .req { color: #ff5555; margin-left: 2px; }
+    .field-input {
+      width: 100%; background: #0a0a0a; border: 1px solid #242424;
+      border-radius: 6px; color: #d8d8d8; padding: 8px 11px;
+      font-size: .9rem; font-family: inherit; outline: none;
+    }
+    .field-input:focus { border-color: #b388ff; }
+    textarea.field-input { min-height: 90px; resize: vertical; line-height: 1.5; }
+
+    /* ── Buttons ── */
+    .btn {
+      border-radius: 6px; padding: 7px 14px; font-size: .85rem;
+      cursor: pointer; border: 1px solid #2a2a2a;
+      background: transparent; color: #c8c8c8;
+    }
+    .btn:hover { border-color: #555; color: #f0f0f0; }
+    .btn-primary {
+      background: rgba(179,136,255,.10); border-color: #b388ff;
+      color: #b388ff; font-weight: 700;
+    }
+    .btn-primary:hover { background: rgba(179,136,255,.20); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* ── Saved path / timestamp bar ── */
+    #resultMeta { margin-bottom: 12px; }
+    .saved-bar {
+      background: #101010; border: 1px solid #1e1e1e;
+      border-radius: 8px; padding: 8px 12px;
+      font-size: .78rem; line-height: 1.8;
+    }
+    .saved-label {
+      font-size: .62rem; font-weight: 700; letter-spacing: .09em;
+      text-transform: uppercase; color: #444; margin-right: 6px;
+    }
+    .saved-value {
+      color: #b388ff;
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: .76rem; word-break: break-all;
+    }
+    .saved-ts { color: #555; }
+
+    /* ── Quote Card ── */
+    .ma-quote {
+      border: 1px solid #2a2a2a; border-radius: 12px;
+      padding: 14px; background: #101010;
+    }
+    .ma-quote-header {
+      display: flex; justify-content: space-between;
+      gap: 14px; align-items: flex-start; margin-bottom: 12px;
+    }
+    .ma-quote-title { font-size: 18px; font-weight: 800; color: #f0f0f0; }
+    .ma-quote-sub   { color: #777; font-size: 13px; margin-top: 4px; line-height: 1.5; }
+    .ma-dot { margin: 0 8px; color: #444; }
+
+    .ma-quote-grand {
+      text-align: right; padding: 10px 12px; border-radius: 10px;
+      background: rgba(179,136,255,.08); border: 1px solid rgba(179,136,255,.22);
+      min-width: 160px; flex-shrink: 0;
+    }
+    .ma-quote-grand-label { font-size: 12px; color: #777; }
+    .ma-quote-grand-value { font-size: 20px; font-weight: 900; margin-top: 2px; color: #f0f0f0; }
+
+    .ma-quote-table-wrap {
+      overflow-x: auto; border: 1px solid #242424;
+      border-radius: 10px; background: #0a0a0a;
+    }
+    .ma-quote-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 500px; }
+    .ma-quote-table thead th {
+      text-align: left; background: #0f0f0f;
+      border-bottom: 1px solid #1e1e1e; padding: 10px;
+      white-space: nowrap; color: #777; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase; font-size: 11px;
+    }
+    .ma-quote-table tbody td {
+      padding: 10px; border-bottom: 1px solid #141414;
+      vertical-align: top; color: #d0d0d0;
+    }
+    .ma-quote-table tbody tr:last-child td { border-bottom: 0; }
+
+    .ma-quote-bottom {
+      display: grid; grid-template-columns: 1.35fr 0.85fr;
+      gap: 14px; margin-top: 12px;
+    }
+    @media (max-width: 640px) { .ma-quote-bottom { grid-template-columns: 1fr; } }
+
+    .ma-quote-section-title {
+      font-weight: 800; font-size: 12px; margin: 10px 0 6px;
+      letter-spacing: .06em; text-transform: uppercase; color: #777;
+    }
+    .ma-quote-terms p { margin: 0 0 8px; color: #cfcfcf; line-height: 1.5; }
+
+    .ma-quote-totals {
+      border: 1px solid #242424; border-radius: 10px;
+      padding: 12px; background: #0a0a0a; align-self: start;
+    }
+    .ma-quote-totals-row {
+      display: flex; justify-content: space-between;
+      padding: 6px 0; border-bottom: 1px dashed #1d1d1d;
+      color: #d0d0d0; font-size: 13px;
+    }
+    .ma-quote-totals-row:last-child { border-bottom: 0; }
+    .ma-quote-totals-grand { font-weight: 900; color: #f0f0f0; }
+
+    .ma-quote ul { margin-left: 18px; }
+    .ma-quote li { margin: 6px 0; color: #cfcfcf; line-height: 1.5; }
+
+    /* ── MIX / Recommendations Card ── */
+    .ma-mix {
+      border: 1px solid #2a2a2a; border-radius: 12px;
+      padding: 16px; background: #101010;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .ma-mix-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 12px;
+    }
+    .ma-mix-title { font-size: 18px; font-weight: 800; color: #f0f0f0; }
+    .ma-mix-sub   { color: #777; font-size: 13px; margin-top: 4px; line-height: 1.5; }
+    .ma-mix-badge {
+      font-size: .68rem; padding: 3px 10px; border-radius: 999px;
+      font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      background: rgba(179,136,255,.12); color: #b388ff;
+      border: 1px solid rgba(179,136,255,.3); white-space: nowrap;
+      align-self: flex-start;
+    }
+    .ma-mix-overview {
+      background: rgba(179,136,255,.06);
+      border: 1px solid rgba(179,136,255,.18);
+      border-radius: 10px; padding: 12px 14px;
+      color: #ccc; font-size: .88rem; line-height: 1.65;
+    }
+    .ma-mix-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .ma-mix-section {
+      background: #0d0d0d; border: 1px solid #222;
+      border-radius: 10px; padding: 12px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .ma-mix-section-label {
+      font-size: .65rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: #555; margin-bottom: 2px;
+    }
+    .ma-mix-section-label.session { color: #4db8ff; }
+    .ma-mix-section-label.rate    { color: #00c864; }
+    .ma-mix-section-label.signal  { color: #ff9f43; }
+    .ma-mix-point {
+      display: flex; gap: 8px; align-items: flex-start;
+      font-size: .82rem; color: #c0c0c0; line-height: 1.5;
+    }
+    .ma-mix-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      margin-top: 7px; flex-shrink: 0; background: #444;
+    }
+    .ma-mix-dot.session { background: #4db8ff; }
+    .ma-mix-dot.rate    { background: #00c864; }
+    .ma-mix-dot.signal  { background: #ff9f43; }
+    .ma-mix-actions {
+      background: #0d0d0d; border: 1px solid #222;
+      border-radius: 10px; padding: 12px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .ma-mix-actions-label {
+      font-size: .65rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: #555; margin-bottom: 4px;
+    }
+    .ma-mix-action-row {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: .83rem; color: #c0c0c0; line-height: 1.5;
+    }
+    .ma-mix-action-num {
+      font-size: .72rem; font-weight: 800; color: #b388ff;
+      background: rgba(179,136,255,.1); border: 1px solid rgba(179,136,255,.25);
+      border-radius: 4px; padding: 1px 6px; flex-shrink: 0;
+      margin-top: 2px; font-variant-numeric: tabular-nums;
+    }
+    .ma-mix-raw {
+      white-space: pre-wrap; border: 1px solid #2a2a2a;
+      background: #0a0a0a; border-radius: 10px; padding: 12px;
+      color: #cfcfcf; font-size: 12px; overflow: auto;
+    }
+
+    /* ── Misc ── */
+    .muted     { color: #666; font-size: .82rem; }
+    .error-msg { color: #ff6060; font-size: .9rem; padding: 12px; }
+    .empty     { padding: 18px; text-align: center; color: #444; font-size: .85rem; }
+    .empty code { color: #555; }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <a class="back" href="/">← Departments</a>
+    <span class="dept-name">STUDIO</span>
+    <span class="dept-badge">Studio Ops</span>
+  </div>
+
+  <div class="main">
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Sessions</div>
+        <div class="stat-value">{{ sessions | length }}</div>
+        <div class="stat-sub">total booked</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Confirmed</div>
+        <div class="stat-value">{{ booked }}</div>
+        <div class="stat-sub">locked in</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Tentative</div>
+        <div class="stat-value">{{ tentative }}</div>
+        <div class="stat-sub">awaiting sign-off</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Clients</div>
+        <div class="stat-value">{{ clients | length }}</div>
+        <div class="stat-sub">on roster</div>
+      </div>
+    </div>
+
+    <!-- Sessions -->
+    <div class="section">
+      <div class="section-title">Sessions</div>
+      <div class="table-wrap">
+        {% if sessions %}
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th><th>Session</th><th>Artist</th>
+              <th>Engineer</th><th>Room</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in sessions %}
+            <tr>
+              <td>{{ s.get("session_date", "—") }}</td>
+              <td>{{ s.get("session_name", "—") }}</td>
+              <td>{{ s.get("artist",       "—") }}</td>
+              <td>{{ s.get("engineer",     "—") }}</td>
+              <td>{{ s.get("room",         "—") }}</td>
+              <td>
+                <span class="badge badge-{{ s.get('status','pending') }}">
+                  {{ s.get("status", "pending") | capitalize }}
+                </span>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="empty">No sessions yet — run the SESSION agent to add one.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Clients -->
+    <div class="section">
+      <div class="section-title">Clients</div>
+      <div class="table-wrap">
+        {% if clients %}
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th><th>Contact</th><th>Email</th>
+              <th>Type</th><th>Company / Label</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in clients %}
+            <tr>
+              <td>{{ c.get("client_name",       "—") }}</td>
+              <td>{{ c.get("contact_person",     "—") }}</td>
+              <td>{{ c.get("email",              "—") }}</td>
+              <td>
+                <span class="badge badge-active">
+                  {{ c.get("relationship_type", "—") | capitalize }}
+                </span>
+              </td>
+              <td>{{ c.get("company_label",      "—") }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="empty">No clients yet — run the CLIENT agent to add one.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Agents -->
+    <div class="section">
+      <div class="section-title">Agents</div>
+      <div class="agents">
+        {% for code, desc in [
+          ("CLIENT",  "Client relationship management, onboarding, and communication."),
+          ("SESSION", "Session planning, scheduling, and resource allocation."),
+          ("SOUND",   "Catalogue management, sync licensing, and rights tracking."),
+          ("SIGNAL",  "Studio marketing, social content, and brand positioning."),
+          ("CRAFT",   "Internal tooling and workflow automation."),
+          ("RATE",    "Pricing strategy, quote generation, and contracts."),
+          ("MIX",     "Strategy synthesiser — coordinates all agents.")
+        ] %}
+        <div class="agent">
+          <div class="agent-code">{{ code }}</div>
+          <div class="agent-desc">{{ desc }}</div>
+          <button
+            class="run-btn"
+            data-agent="{{ code | lower }}"
+            onclick="openAgentForm('{{ code | lower }}', '{{ code }}')"
+            type="button"
+          >▶ Run</button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div><!-- /main -->
+
+  <!-- ── Agent Modal ── -->
+  <div id="agentModal" class="modal-overlay" style="display:none" onclick="overlayClose(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+
+      <div class="modal-header">
+        <div>
+          <div class="modal-dept">STUDIO</div>
+          <div id="modalTitle" class="modal-title"></div>
+        </div>
+        <button class="modal-close" type="button" onclick="closeModal()">×</button>
+      </div>
+
+      <!-- Form panel -->
+      <div id="modalFormPanel">
+        <div class="modal-body">
+          <p id="modalDesc" class="modal-desc"></p>
+          <form id="agentForm">
+            <div id="formFields"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+          <button type="submit" form="agentForm" id="runBtn" class="btn btn-primary">▶ Run Agent</button>
+        </div>
+      </div>
+
+      <!-- Result panel -->
+      <div id="modalResultPanel" style="display:none">
+        <div class="modal-body">
+          <div id="resultMeta"></div>
+          <div id="resultContainer"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" onclick="copyResultJson()">Copy JSON</button>
+          <button type="button" class="btn" onclick="downloadResultJson()">↓ Download JSON</button>
+          <button type="button" class="btn" onclick="showFormPanel()">← Run Again</button>
+          <button type="button" class="btn btn-primary" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let currentAgent      = null;
+    let agentSchemasCache = null;
+    let lastEnvelope      = null;
+
+    // ── Schema loading ────────────────────────────────────────────────────
+    async function fetchStudioSchemas() {
+      if (agentSchemasCache) return agentSchemasCache;
+      const resp = await fetch('/studio/schemas');
+      if (!resp.ok) throw new Error('Failed to load /studio/schemas');
+      agentSchemasCache = await resp.json();
+      return agentSchemasCache;
+    }
+
+    async function openAgentForm(slug, displayName) {
+      try {
+        const schemas = await fetchStudioSchemas();
+        const root    = schemas.result || schemas;
+        const agents  = root.agents   || root;
+        const schema  = agents[slug]
+                     || agents[displayName]
+                     || agents[(displayName || '').toLowerCase()];
+        const fields  = schema?.fields
+                     || schema?.schema?.fields
+                     || schema?.form?.fields
+                     || [];
+        openModal(slug, displayName, fields, schema?.description || schema?.desc || '');
+      } catch (err) {
+        openModal(slug, displayName, [], `Could not load schema: ${err.message}`);
+      }
+    }
+
+    // ── Modal open / close ────────────────────────────────────────────────
+    function openModal(slug, name, fields, description) {
+      currentAgent = slug;
+      lastEnvelope = null;
+      document.getElementById('modalTitle').textContent    = name;
+      document.getElementById('modalDesc').textContent     = description || '';
+      document.getElementById('resultContainer').innerHTML = '';
+      document.getElementById('resultMeta').innerHTML      = '';
+      buildFormFields(fields || []);
+      showFormPanel();
+      document.getElementById('agentModal').style.display  = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('agentModal').style.display  = 'none';
+      document.getElementById('resultContainer').innerHTML = '';
+      document.getElementById('resultMeta').innerHTML      = '';
+      document.getElementById('formFields').innerHTML      = '';
+      currentAgent = null;
+      lastEnvelope = null;
+    }
+
+    function overlayClose(e) {
+      if (e.target === document.getElementById('agentModal')) closeModal();
+    }
+
+    // ── Panel switching ───────────────────────────────────────────────────
+    function showFormPanel() {
+      document.getElementById('modalFormPanel').style.display   = 'flex';
+      document.getElementById('modalResultPanel').style.display = 'none';
+      const btn = document.getElementById('runBtn');
+      btn.disabled    = false;
+      btn.textContent = '▶ Run Agent';
+      document.querySelector('#modalFormPanel .modal-body')?.scrollTo(0, 0);
+    }
+
+    function showResultPanel() {
+      document.getElementById('modalFormPanel').style.display   = 'none';
+      document.getElementById('modalResultPanel').style.display = 'flex';
+      document.querySelector('#modalResultPanel .modal-body')?.scrollTo(0, 0);
+    }
+
+    // ── Form builder ─────────────────────────────────────────────────────
+    function buildFormFields(fields) {
+      const wrap = document.getElementById('formFields');
+      if (!fields || !fields.length) {
+        wrap.innerHTML = '<div class="empty">No form fields defined for this agent.</div>';
+        return;
+      }
+      wrap.innerHTML = fields.map(f => {
+        const fieldName = f.key || f.name;
+        const req = f.required ? 'required' : '';
+        const ph  = (f.placeholder || '').replaceAll('"', '&quot;');
+        let ctrl  = '';
+
+        if (f.type === 'select') {
+          const opts = (f.options || []).map(o =>
+            `<option value="${String(o)}">${String(o)}</option>`
+          ).join('');
+          ctrl = `<select class="field-input" name="${fieldName}" ${req}>${opts}</select>`;
+        } else if (f.type === 'textarea') {
+          ctrl = `<textarea class="field-input" name="${fieldName}" rows="3"
+                    placeholder="${ph}" ${req}></textarea>`;
+        } else if (f.type === 'checkbox') {
+          ctrl = `<input class="field-input" type="checkbox" name="${fieldName}" value="true">`;
+        } else {
+          ctrl = `<input class="field-input" type="${f.type || 'text'}"
+                    name="${fieldName}" placeholder="${ph}" ${req}>`;
+        }
+
+        return `
+          <div class="field-group">
+            <label>${f.label || fieldName}${f.required ? ' <span class="req">*</span>' : ''}</label>
+            ${ctrl}
+          </div>`;
+      }).join('');
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────
+    function escapeHtml(s) {
+      return String(s ?? '')
+        .replaceAll('&', '&amp;').replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;').replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function formatMoney(amount, currency) {
+      const n = Number(amount);
+      if (!Number.isFinite(n)) return escapeHtml(amount);
+      try {
+        return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(n);
+      } catch {
+        return `${currency} ${n.toFixed(2)}`;
+      }
+    }
+
+    // ── RATE: quote card renderer ─────────────────────────────────────────
+    function renderRateQuoteCard(envelope) {
+      const quote = envelope?.result?.quote;
+      if (!quote || typeof quote !== 'object') return null;
+
+      const currency = quote.currency || 'GBP';
+      const items    = Array.isArray(quote.line_items) ? quote.line_items : [];
+
+      const rowsHtml = items.map(li => `
+        <tr>
+          <td>${escapeHtml(li.description ?? li.label ?? '')}</td>
+          <td style="text-align:right;">${escapeHtml(li.quantity ?? li.qty ?? '')}</td>
+          <td>${escapeHtml(li.unit ?? '')}</td>
+          <td style="text-align:right;">${formatMoney(li.unit_price ?? li.unitPrice, currency)}</td>
+          <td style="text-align:right;">${formatMoney(li.total ?? li.amount, currency)}</td>
+        </tr>`).join('');
+
+      const recommendations = envelope?.result?.recommendations ?? quote.recommendations;
+      let recHtml = '';
+      if (Array.isArray(recommendations) && recommendations.length) {
+        recHtml = `<ul>` + recommendations.map(r => {
+          if (typeof r === 'string') return `<li>${escapeHtml(r)}</li>`;
+          return `<li><strong>${escapeHtml(r.description ?? '')}</strong>${
+            r.suggested_action ? ` — ${escapeHtml(r.suggested_action)}` : ''
+          }</li>`;
+        }).join('') + `</ul>`;
+      } else if (typeof recommendations === 'string' && recommendations.trim()) {
+        recHtml = `<p>${escapeHtml(recommendations)}</p>`;
+      }
+
+      const vatPct  = quote.vat_rate != null ? Number(quote.vat_rate) * 100 : null;
+      const vatLine = vatPct != null
+        ? `<div class="ma-quote-totals-row">
+             <span>VAT (${vatPct}%)</span>
+             <span>${formatMoney(quote.vat_amount, currency)}</span>
+           </div>`
+        : '';
+
+      return `
+        <div class="ma-quote">
+          <div class="ma-quote-header">
+            <div>
+              <div class="ma-quote-title">Studio Quote</div>
+              <div class="ma-quote-sub">
+                <span><strong>Client:</strong> ${escapeHtml(quote.client)}</span>
+                <span class="ma-dot">•</span>
+                <span><strong>Project:</strong> ${escapeHtml(quote.project_type)}</span>
+                <span class="ma-dot">•</span>
+                <span><strong>Valid:</strong> ${escapeHtml(quote.quote_valid_days)} days</span>
+              </div>
+            </div>
+            <div class="ma-quote-grand">
+              <div class="ma-quote-grand-label">Total</div>
+              <div class="ma-quote-grand-value">${formatMoney(quote.grand_total, currency)}</div>
+            </div>
+          </div>
+
+          <div class="ma-quote-table-wrap">
+            <table class="ma-quote-table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th style="text-align:right;">Qty</th>
+                  <th>Unit</th>
+                  <th style="text-align:right;">Unit Price</th>
+                  <th style="text-align:right;">Line Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml || '<tr><td colspan="5"><em class="muted">No line items returned.</em></td></tr>'}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ma-quote-bottom">
+            <div class="ma-quote-terms">
+              <div class="ma-quote-section-title">Payment Terms</div>
+              <p>${escapeHtml(quote.payment_terms || '')}</p>
+
+              <div class="ma-quote-section-title">Deposit / Balance</div>
+              <p>
+                <strong>Deposit:</strong> ${formatMoney(quote.deposit_required, currency)}<br>
+                <strong>Balance:</strong> ${formatMoney(quote.balance_due, currency)}
+              </p>
+
+              ${recHtml ? `
+                <div class="ma-quote-section-title">Recommendations</div>
+                ${recHtml}` : ''}
+            </div>
+
+            <div class="ma-quote-totals">
+              <div class="ma-quote-section-title">Totals</div>
+              <div class="ma-quote-totals-row">
+                <span>Subtotal</span>
+                <span>${formatMoney(quote.subtotal, currency)}</span>
+              </div>
+              ${vatLine}
+              <div class="ma-quote-totals-row ma-quote-totals-grand">
+                <span>Grand Total</span>
+                <span>${formatMoney(quote.grand_total, currency)}</span>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    // ── MIX: strategy card renderer ──────────────────────────────────────
+    function renderMixStrategyCard(envelope) {
+      const result = envelope?.result;
+      if (!result) return null;
+
+      const strategy = result.strategy;
+      if (!strategy || typeof strategy !== 'object') return null;
+
+      const artist    = escapeHtml(result.artist    || 'Unknown Project');
+      const goal      = escapeHtml(result.goal      || '—');
+      const timeframe = escapeHtml(result.timeframe || '—');
+      const budget    = escapeHtml(String(result.budget || '—'));
+      const agents    = escapeHtml(result.agents    || 'all');
+      const overview  = escapeHtml(strategy.overview || '');
+
+      function sectionHtml(key, label, colorClass) {
+        const points = Array.isArray(strategy[key]) ? strategy[key] : [];
+        if (!points.length) return '';
+        const rows = points.map(p => `
+          <div class="ma-mix-point">
+            <div class="ma-mix-dot ${colorClass}"></div>
+            <span>${escapeHtml(p)}</span>
+          </div>`).join('');
+        return `
+          <div class="ma-mix-section">
+            <div class="ma-mix-section-label ${colorClass}">${label}</div>
+            ${rows}
+          </div>`;
+      }
+
+      const actions     = Array.isArray(strategy.next_actions) ? strategy.next_actions : [];
+      const actionsHtml = actions.length ? `
+        <div class="ma-mix-actions">
+          <div class="ma-mix-actions-label">Next Actions</div>
+          ${actions.map((a, i) => `
+            <div class="ma-mix-action-row">
+              <span class="ma-mix-action-num">${i + 1}</span>
+              <span>${escapeHtml(a)}</span>
+            </div>`).join('')}
+        </div>` : '';
+
+      const rawHtml = strategy.raw
+        ? `<pre class="ma-mix-raw">${escapeHtml(strategy.raw)}</pre>` : '';
+
+      const errHtml = strategy.llm_error
+        ? `<div class="muted" style="font-size:.78rem;padding:6px 0;">
+             ⚠ LLM unavailable — fallback strategy shown.
+             (${escapeHtml(strategy.llm_error)})
+           </div>` : '';
+
+      return `
+        <div class="ma-mix">
+          <div class="ma-mix-header">
+            <div>
+              <div class="ma-mix-title">${artist}</div>
+              <div class="ma-mix-sub">
+                <strong>Goal:</strong> ${goal}
+                ${timeframe !== '—' ? `&nbsp;·&nbsp;<strong>Timeframe:</strong> ${timeframe}` : ''}
+                ${budget    !== '—' ? `&nbsp;·&nbsp;<strong>Budget:</strong> ${budget}` : ''}
+              </div>
+            </div>
+            <span class="ma-mix-badge">MIX · ${agents}</span>
+          </div>
+
+          ${errHtml}
+          ${overview ? `<div class="ma-mix-overview">${overview}</div>` : ''}
+
+          <div class="ma-mix-grid">
+            ${sectionHtml('session', '📅 Session', 'session')}
+            ${sectionHtml('rate',    '💷 Rate',    'rate')}
+            ${sectionHtml('signal',  '📣 Signal',  'signal')}
+          </div>
+
+          ${actionsHtml}
+          ${rawHtml}
+        </div>`;
+    }
+
+    // ── Generic: recommendations card renderer ────────────────────────────
+    function renderRecommendationsCard(envelope) {
+      const result = envelope?.result?.result ?? envelope?.result;
+      if (!result) return null;
+
+      const recs = Array.isArray(result.recommendations)
+        ? result.recommendations : [];
+
+      const agent  = (envelope?.agent || currentAgent || '').toUpperCase();
+      const action = result.action || '';
+
+      // Primary display label — aligned to each agent's saved record keys
+      const labelMap = {
+        CLIENT:  r => r.client?.client_name  || r.client?.name  || '',
+        SESSION: r => r.session?.session_name || r.session?.name || '',
+        SOUND:   r => r.track?.track_title   || r.track?.title  || '',
+        SIGNAL:  r => r.campaign?.track_or_project || r.campaign?.project || '',
+        CRAFT:   r => r.tool?.tool_name      || r.tool?.name    || '',
+      };
+      const primaryLabel = (labelMap[agent] || (() => ''))(result);
+      const actionBadge  = action
+        ? `<span class="badge badge-${action === 'created' ? 'ok' : 'active'}">${action}</span>`
+        : '';
+
+      if (!recs.length && !primaryLabel) return null;
+
+      const recsHtml = recs.map((r, i) => `
+        <div class="ma-mix-action-row">
+          <span class="ma-mix-action-num">${i + 1}</span>
+          <span>${escapeHtml(r)}</span>
+        </div>`).join('');
+
+      // Detail grid — scalar string fields from the saved record
+      const recordObj = result.client  || result.session || result.track
+                     || result.campaign || result.tool   || {};
+      const skipKeys  = new Set(['created_at', 'updated_at']);
+      const detailRows = Object.entries(recordObj)
+        .filter(([k, v]) => !skipKeys.has(k) && v && v !== '—' && typeof v === 'string')
+        .map(([k, v]) => `
+          <div style="display:flex;gap:10px;padding:5px 0;
+                      border-bottom:1px solid #1a1a1a;font-size:.82rem;">
+            <span style="color:#555;min-width:120px;flex-shrink:0;text-transform:capitalize;">
+              ${escapeHtml(k.replaceAll('_', ' '))}
+            </span>
+            <span style="color:#c8c8c8;">${escapeHtml(v)}</span>
+          </div>`).join('');
+
+      return `
+        <div class="ma-mix">
+          <div class="ma-mix-header">
+            <div>
+              <div class="ma-mix-title">${escapeHtml(primaryLabel) || agent}</div>
+              <div class="ma-mix-sub">
+                ${agent} Agent &nbsp;·&nbsp; Record ${actionBadge}
+              </div>
+            </div>
+            <span class="ma-mix-badge">${agent}</span>
+          </div>
+
+          ${detailRows ? `
+            <div class="ma-mix-section" style="gap:0;">
+              <div class="ma-mix-section-label" style="margin-bottom:6px;">Record</div>
+              ${detailRows}
+            </div>` : ''}
+
+          ${recs.length ? `
+            <div class="ma-mix-actions">
+              <div class="ma-mix-actions-label">Recommendations</div>
+              ${recsHtml}
+            </div>` : ''}
+        </div>`;
+    }
+
+    // ── Fallback: raw JSON ────────────────────────────────────────────────
+    function renderFallbackJson(envelope) {
+      return `<pre style="
+        white-space:pre-wrap; border:1px solid #2a2a2a;
+        background:#0a0a0a; border-radius:10px; padding:12px;
+        color:#cfcfcf; font-size:12px; overflow:auto;
+      ">${escapeHtml(JSON.stringify(envelope, null, 2))}</pre>`;
+    }
+
+    // ── Main renderer — routes by agent slug ──────────────────────────────
+    function renderEnvelope(envelope) {
+      // Saved path + timestamp bar
+      const savedTo = envelope?.saved_to || envelope?.result?.saved_to;
+      const ts      = envelope?.timestamp;
+      const metaEl  = document.getElementById('resultMeta');
+
+      metaEl.innerHTML = (savedTo || ts) ? `
+        <div class="saved-bar">
+          ${savedTo ? `<div>
+            <span class="saved-label">Saved to</span>
+            <span class="saved-value">${escapeHtml(savedTo)}</span>
+          </div>` : ''}
+          ${ts ? `<div>
+            <span class="saved-label">Timestamp</span>
+            <span class="saved-value saved-ts">${escapeHtml(ts)}</span>
+          </div>` : ''}
+        </div>` : '';
+
+      const agent     = (envelope?.agent || currentAgent || '').toLowerCase();
+      const container = document.getElementById('resultContainer');
+
+      // Route to the right card renderer
+      if (agent === 'rate') {
+        const html = renderRateQuoteCard(envelope);
+        if (html) { container.innerHTML = html; return; }
+      }
+
+      if (agent === 'mix') {
+        const html = renderMixStrategyCard(envelope);
+        if (html) { container.innerHTML = html; return; }
+      }
+
+      // CLIENT, SESSION, SOUND, SIGNAL, CRAFT
+      const recHtml = renderRecommendationsCard(envelope);
+      if (recHtml) { container.innerHTML = recHtml; return; }
+
+      // Last resort
+      container.innerHTML = renderFallbackJson(envelope);
+    }
+
+    // ── Copy / Download ───────────────────────────────────────────────────
+    async function copyResultJson() {
+      if (!lastEnvelope) return;
+      const text = JSON.stringify(lastEnvelope, null, 2);
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = Object.assign(document.createElement('textarea'), { value: text });
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+    }
+
+    function downloadResultJson() {
+      if (!lastEnvelope) return;
+      const blob = new Blob(
+        [JSON.stringify(lastEnvelope, null, 2)],
+        { type: 'application/json' }
+      );
+      const url = URL.createObjectURL(blob);
+      const ts  = new Date().toISOString().replaceAll(':', '-').slice(0, 19);
+      const a   = Object.assign(document.createElement('a'), {
+        href:     url,
+        download: `${currentAgent || 'agent'}_${ts}.json`,
+      });
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    // ── Submit ────────────────────────────────────────────────────────────
+    document.getElementById('agentForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const btn = document.getElementById('runBtn');
+      btn.disabled    = true;
+      btn.textContent = 'Running…';
+
+      // Collect all named form elements — handles checkboxes correctly
+      const formData = new FormData(this);
+      const context  = {};
+      for (const el of this.elements) {
+        if (!el.name) continue;
+        context[el.name] = el.type === 'checkbox'
+          ? el.checked
+          : (formData.get(el.name) ?? '');
+      }
+
+      try {
+        const resp     = await fetch(`/studio/run/${currentAgent}`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(context),
+        });
+        const envelope = await resp.json();
+        lastEnvelope   = envelope;
+        showResultPanel();
+        renderEnvelope(envelope);
+      } catch (err) {
+        lastEnvelope = null;
+        showResultPanel();
+        document.getElementById('resultMeta').innerHTML      = '';
+        document.getElementById('resultContainer').innerHTML =
+          `<div class="error-msg">Request failed: ${escapeHtml(err.message)}</div>`;
+      } finally {
+        btn.disabled    = false;
+        btn.textContent = '▶ Run Agent';
+      }
+    });
+  </script>
+
+</body>
+</html>
