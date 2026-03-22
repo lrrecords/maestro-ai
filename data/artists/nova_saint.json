@@ -83,7 +83,7 @@
      "type": "call",
      "subject": "Release calendar + content capture plan",
      "direction": "outbound"
-}
+  }
   ],
   "_meta": {
     "demo": true,

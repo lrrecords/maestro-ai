@@ -1,0 +1,43 @@
+{
+  "artist": "Aria Velvet",
+  "health": {
+    "score": 85,
+    "status": "Healthy",
+    "interpretation": "<The relationship is strong, with a score of 85 indicating it's performing well. The recent contacts and upcoming release are contributing positively to the health score.>"
+  },
+  "pattern_analysis": {
+    "trend": "improving",
+    "summary": "<The communication pattern indicates an improving trend in interactions, with consistent contact within the last 90 days.",
+    "key_concern": null
+  },
+  "predictions": [
+    {
+      "timeframe": "This quarter",
+      "prediction": "Aria Velvet will release her single 'Neon Letters' on April 18th and achieve a successful pre-save strategy.",
+      "recommended_action": "<Label Owner> should finalize any remaining cover options by March 18th."
+    }
+  ],
+  "opportunities": [
+    "<The Label Owner can explore cross-promotion opportunities with Aria Velvet's visual-first social platforms (Instagram, TikTok) to reach a broader audience and increase visibility for the upcoming single 'Neon Letters'.>"
+  ],
+  "check_in_message": {
+    "channel": "Email",
+    "subject": null,
+    "message": "<Label Owner> Hey Aria,\n\nI hope you're doing well! I wanted to check in on our progress with 'Neon Letters' and give you a quick update. We've finalized the cover options, and we’re all set for final artwork approval by next week. Looking forward to launching this single and working together!\n\nBest,\nThe Label Owner",
+    "tone_notes": "<Warm and direct, addressing specific details from the profile.>"
+  },
+  "action_items": [
+    {
+      "priority": 1,
+      "action": "Finalize cover options for 'Neon Letters'",
+      "deadline": "Before March 18th",
+      "owner": "Label"
+    }
+  ],
+  "risk_assessment": {
+    "churn_risk": "LOW",
+    "churn_risk_reason": "<Aria Velvet is performing well and has a strong upcoming release with 'Neon Letters', reducing the risk of churn.",
+    "intervention_needed": false
+  },
+  "built_at_utc": "2026-03-20T02:06:04.007856+00:00"
+}

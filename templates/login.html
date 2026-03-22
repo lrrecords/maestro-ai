@@ -280,7 +280,7 @@
       <div class="logo-wrap">
         <span class="logo-icon">🎛️</span>
         <div class="logo-text">MAESTRO <span>AI</span></div>
-        <div class="logo-sub">LR Records · Artist Intelligence Platform</div>
+        <div class="logo-sub">LRRecords · Artist Intelligence Platform</div>
       </div>
 
       <div class="divider"></div>
@@ -294,10 +294,12 @@
       {% endif %}
 
       <!-- Form -->
-      <form method="POST" action="/login" id="loginForm">
+<form method="POST" action="/login" id="loginForm">
 
-        <div class="field">
-          <label for="token">Access Token</label>
+  <input type="hidden" name="next" value="{{ next_url }}">
+
+  <div class="field">
+    <label for="token">Access Token</label>
           <div class="input-wrap">
             <span class="input-icon">🔑</span>
             <input

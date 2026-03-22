@@ -2,93 +2,104 @@
 MAESTRO AI — LLM provider abstraction.
 
 Routes agent prompts to either Anthropic Claude or a local Ollama server,
-selected via the LLM_PROVIDER environment variable (default: anthropic).
+selected via the PLATFORM settings (or env var LLM_PROVIDER).
 
 Supported providers:
   anthropic  — Anthropic Claude API (requires ANTHROPIC_API_KEY)
   ollama     — Local Ollama HTTP server (requires Ollama running locally)
 
 Usage:
-    from llm.client import call_llm, get_provider
+    from llm.client import call_llm
 
     text = call_llm(prompt, max_tokens=2048)
 """
 
 import os
+import json
+from pathlib import Path
 
 import requests
 from dotenv import load_dotenv
 
 load_dotenv()
 
+# Path to PLATFORM settings (repo root / platform / data / platform_settings.json)
+PLATFORM_SETTINGS_PATH = (
+    Path(__file__).resolve().parents[2]
+    / "platform"
+    / "data"
+    / "platform_settings.json"
+)
+
+def _plat_settings() -> dict:
+    """Load PLATFORM settings from JSON, fall back to empty dict."""
+    if not PLATFORM_SETTINGS_PATH.exists():
+        return {}
+    try:
+        return json.loads(PLATFORM_SETTINGS_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+def _get_plat_val(section: str, key: str, default: str | None = None) -> str | None:
+    """Helper to pluck a setting from PLATFORM settings; returns None if not present."""
+    settings = _plat_settings().get(section, {})
+    return str(settings.get(key)) if key in settings else default
 
 def get_provider() -> str:
-    """Return the active LLM provider name ('anthropic' or 'ollama')."""
-    return os.getenv("LLM_PROVIDER", "anthropic").lower().strip()
+    """Return the active LLM provider name ('anthropic' or 'ollama') from env or PLATFORM settings."""
+    # Env takes precedence
+    provider = os.getenv("LLM_PROVIDER")
+    if provider is not None:
+        return provider.lower().strip()
+    # Fall back to PLATFORM settings
+    plat_llm = _get_plat_val("llm", "provider", "anthropic")
+    return plat_llm.lower().strip() if plat_llm else "anthropic"
 
+def _env_or_plat(section: str, key: str, default: str) -> str:
+    """Env → PLATFORM → default."""
+    val = os.getenv(key)
+    if val is not None:
+        return val
+    plat_val = _get_plat_val(section, key, default)
+    return plat_val or default
 
 def call_llm(prompt: str, max_tokens: int = 2048) -> str:
     """
-    Send *prompt* to the configured LLM provider and return the response text.
-
-    Provider is determined by LLM_PROVIDER in the environment (default: anthropic):
-      anthropic  — Anthropic Claude API
-      ollama     — Local Ollama server
-
-    Raises:
-        ImportError  — anthropic package not installed (LLM_PROVIDER=anthropic)
-        ValueError   — unknown provider value or missing credentials
-        RuntimeError — provider unreachable (Ollama not running, wrong model, etc.)
+    Send *prompt* to LLM provider (anthropic or ollama), honoring env *and*
+    PLATFORM settings for provider/model/timeouts/etc.
     """
     provider = get_provider()
     if provider == "anthropic":
         return _call_anthropic(prompt, max_tokens)
     if provider == "ollama":
         return _call_ollama(prompt, max_tokens)
-    raise ValueError(
-        f"Unknown LLM_PROVIDER: {provider!r}. "
-        "Set LLM_PROVIDER to 'anthropic' or 'ollama' in your .env file."
-    )
+    raise ValueError(f"Unknown LLM_PROVIDER: {provider!r}. Set it in .env or PLATFORM settings.")
 
-
-# ── Anthropic ──────────────────────────────────────────────────────────────────
-
+# ── Anthropic provider — unchanged from your existing code
 def _call_anthropic(prompt: str, max_tokens: int) -> str:
     try:
         import anthropic as _anthropic
     except ImportError as exc:
-        raise ImportError(
-            "The 'anthropic' package is required when LLM_PROVIDER=anthropic. "
-            "Run: pip install anthropic"
-        ) from exc
-
+        raise ImportError("The 'anthropic' package is required when LLM_PROVIDER=anthropic. Run: pip install anthropic") from exc
     api_key = os.getenv("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise ValueError(
-            "ANTHROPIC_API_KEY is not set in your .env file.\n"
-            "Either add your Anthropic key or switch to a local model:\n"
-            "  LLM_PROVIDER=ollama\n"
-            "  OLLAMA_MODEL=qwen2.5:3b"
-        )
-
-    model  = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-20250514")
-    client = _anthropic.Anthropic(api_key=api_key)
-    msg    = client.messages.create(
+    if api_key is None:
+        raise ValueError("ANTHROPIC_API_KEY is required for anthropic provider.")
+    model   = _env_or_plat("llm", "anthropic_model", "claude-sonnet-4-20250514")
+    client  = _anthropic.Anthropic(api_key=api_key)
+    msg     = client.messages.create(
         model=model,
         max_tokens=max_tokens,
         messages=[{"role": "user", "content": prompt}],
     )
     return msg.content[0].text
 
-
-# ── Ollama ─────────────────────────────────────────────────────────────────────
-
+# ── Ollama provider — updated to pull from PLATFORM settings/env
 def _call_ollama(prompt: str, max_tokens: int) -> str:
-    base_url    = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
-    model       = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
-    temperature = float(os.getenv("OLLAMA_TEMPERATURE", "0.7"))
-    num_ctx     = int(os.getenv("OLLAMA_NUM_CTX", "8192"))
-    timeout     = int(os.getenv("OLLAMA_TIMEOUT_SECONDS", "900"))
+    base_url    = _env_or_plat("llm", "base_url", "http://127.0.0.1:11434").rstrip("/")
+    model       = _env_or_plat("llm", "model", "qwen2.5:3b")
+    temperature = float(_env_or_plat("llm", "temperature", "0.7"))
+    num_ctx     = int(_env_or_plat("llm", "num_ctx", "8192"))
+    timeout     = int(_env_or_plat("llm", "timeout_seconds", "900"))
 
     url = f"{base_url}/api/chat"
     payload = {
@@ -102,35 +113,16 @@ def _call_ollama(prompt: str, max_tokens: int) -> str:
             "num_ctx":     num_ctx,
         },
     }
-
     try:
         resp = requests.post(url, json=payload, timeout=timeout)
     except requests.exceptions.ConnectionError:
-        raise RuntimeError(
-            f"Cannot connect to Ollama at {base_url}.\n"
-            "Make sure Ollama is running:\n"
-            "  - Windows: start Ollama from the system tray, or run 'ollama serve'\n"
-            "  - Mac/Linux: run 'ollama serve' in a terminal\n"
-            "See https://ollama.com for installation instructions."
-        )
+        raise RuntimeError(f"Cannot connect to Ollama at {base_url}.")
     except requests.exceptions.Timeout:
         raise RuntimeError(
-            f"Ollama request timed out after {timeout} s.\n"
-            "Options to fix this:\n"
-            "  1. Increase the timeout:  set OLLAMA_TIMEOUT_SECONDS=1800 in your .env file\n"
-            "  2. Use a smaller model:   set OLLAMA_MODEL=qwen2.5:3b in your .env file"
+            f"Ollama request timed out after {timeout} s. "
+            "Increase OLLAMA_TIMEOUT_SECONDS in your .env or PLATFORM settings."
         )
-
     if resp.status_code == 404:
-        raise RuntimeError(
-            f"Model '{model}' not found in Ollama.\n"
-            f"Pull it with: ollama pull {model}"
-        )
-
-    try:
-        resp.raise_for_status()
-    except requests.exceptions.HTTPError as exc:
-        raise RuntimeError(f"Ollama API error ({resp.status_code}): {exc}") from exc
-
-    data = resp.json()
-    return data["message"]["content"]
+        raise RuntimeError(f"Model '{model}' not found in Ollama. Pull it with: ollama pull {model}")
+    resp.raise_for_status()
+    return resp.json()["message"]["content"]
