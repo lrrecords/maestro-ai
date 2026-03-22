@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import requests
+from core.llm_client import call_llm
 
 
 class BaseAgent:
@@ -35,6 +35,7 @@ class BaseAgent:
         self.data_root = Path(data_root) if data_root else Path("studio") / "data"
         self.data_root.mkdir(parents=True, exist_ok=True)
 
+        # Legacy fields kept for compatibility, though centralized LLM config now lives in core.llm_client
         self.ollama_base_url = kwargs.get(
             "ollama_base_url",
             cfg.get("ollama_base_url", os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")),
@@ -48,26 +49,26 @@ class BaseAgent:
         raise NotImplementedError("Agent must implement run(context).")
 
     def llm(self, prompt: str, system: str | None = None, model: str | None = None) -> str:
-        payload = {
-            "model": model or self.ollama_model,
-            "prompt": prompt,
-            "stream": False,
-            "options": {"temperature": 0.2},
-        }
-        if system:
-            payload["system"] = system
+        """
+        Send prompt through the centralized LLM client.
 
-        url = f"{self.ollama_base_url.rstrip('/')}/api/generate"
-        r = requests.post(url, json=payload, timeout=90)
-        r.raise_for_status()
-        data = r.json()
-        text = (data.get("response") or "").strip()
+        Notes:
+        - Uses core.llm_client.call_llm(), which honors env vars and PLATFORM OPS settings.
+        - `system` and `model` are accepted for compatibility, though `call_llm()` currently
+          uses the configured provider/model globally.
+        """
+        full_prompt = prompt
+        if system:
+            full_prompt = f"{system.strip()}\n\n{prompt.strip()}"
+
+        text = call_llm(full_prompt, max_tokens=2048)
 
         if os.getenv("MAESTRO_DEBUG_LLM") == "1":
             self._save_debug_raw(text)
 
         if not text:
             raise RuntimeError("LLM returned empty response")
+
         return text
 
     def parse_json(self, raw: str):

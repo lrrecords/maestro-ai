@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MAESTRO AI — Dashboard</title>
+  <title>LABEL — Dashboard</title>
   <style>
     /* ── Reset & Variables ──────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,6 +30,18 @@
 
     html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; }
     button { cursor: pointer; font-family: var(--sans); }
+
+    /* Add consistent styling for the back button */
+    .back {
+      color: #555;
+      text-decoration: none;
+      font-size: .82rem;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+    .back:hover {
+      color: #ff6b6b; /* Optional: Customize hover color */
+    }
 
     /* ── App shell ──────────────────────────────────────────────────── */
     #app {
@@ -836,6 +848,12 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
+  <!-- ADD THIS BUTTON -->
+  <a class="back" href="/hub">← Departments</a>
+
+  <!-- Existing content of the Label dashboard -->
+  <h1>LABEL — Artist Performance and Music Releases</h1>
+  <!-- ... -->
 
 <div id="app">
 
@@ -843,7 +861,7 @@
   <aside id="sidebar">
     <div class="sb-logo">
       <div class="sb-logo-mark">MAESTRO <span>AI</span></div>
-      <div class="sb-logo-sub">LR Records · Intelligence Platform</div>
+      <div class="sb-logo-sub">LRRecords · Intelligence Platform</div>
     </div>
     <nav class="sb-nav">
       <button class="nav-btn active" id="nav-dash" onclick="showDashboard()">

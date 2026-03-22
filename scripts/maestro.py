@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 MAESTRO AI - Orchestrator
-LR Records
+LRRecords
 
 Commands:
     artists                    List roster
@@ -17,13 +17,15 @@ Commands:
 """
 
 import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 try:
     sys.stdout.reconfigure(encoding="utf-8")
 except Exception:
     pass
 import os
 import json
-from pathlib import Path
 from datetime import datetime, timezone
 from colorama import Fore, Style, init
 
@@ -424,7 +426,7 @@ def run_report():
 
 BANNER = """
 ==================================================
-      MAESTRO AI  -  LR Records Orchestrator
+      MAESTRO AI  -  LRRecords Orchestrator
 =================================================="""
 
 USAGE = """
