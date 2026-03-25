@@ -14,6 +14,7 @@ from flask import (
     Flask, Blueprint, render_template, request, session,
     redirect, url_for, jsonify, Response, stream_with_context, current_app,
 )
+bp = Blueprint('label', __name__, url_prefix='/label')
 from dotenv import load_dotenv
 
 # --- Paths ---
