@@ -1340,37 +1340,31 @@ function runAgent(agentId) {
   STATE.es = new EventSource(API_PREFIX + "/api/stream/" + agentId + "/" + slug);
 
   STATE.es.onmessage = e => {
-    const msg = JSON.parse(e.data);
-    const txt = msg.line || "";
-    addLine(txt, lineClass(txt));
-
-    if (msg.done) {
-      STATE.es.close();
-      STATE.es = null;
-      if (cursor.parentNode) cursor.remove();
-      if (label) label.textContent = msg.ok ? "✓ Completed" : "✗ Failed";
-
-      if (agentId === "full") {
-        if (fullBtn) {
-          fullBtn.disabled    = false;
-          fullBtn.textContent = `▶▶  RUN FULL PIPELINE — ALL AGENTS — ${name.toUpperCase()}`;
-        }
-      } else {
-        const b = document.getElementById("btn-" + agentId);
-        if (b) b.className = "agent-btn " + (msg.ok ? "done-ok" : "done-err");
-      }
-
-      toast(agentId.toUpperCase() + " " + (msg.ok ? "completed" : "failed"), msg.ok ? "ok" : "err");
-
-      // Refresh artist data if health-related agent ran
-      if (agentId === "bridge" || agentId === "full") {
-        setTimeout(() => loadArtist(slug), 1200);
-      }
-    }
-  };
+  let msg = {};
+  console.log("Stream event:", e.data);
+  try {
+    msg = JSON.parse(e.data);
+  } catch (err) { return; }
+  // Show progress lines if you still wish
+  if (msg.line) addLine(msg.line, lineClass(msg.line));
+  if (msg.result) {
+    // Success: msg.result is your complete JSON!
+    renderAgentResults(msg.result);
+  }
+  if (msg.error) {
+    // Show error and raw output
+    addLine("ERROR: " + msg.error);
+    addLine(msg.output);
+  }
+  if (msg.done) {
+    // update UI, enable buttons, etc.
+    STATE.es.close(); STATE.es = null;
+  }
+};
 
   STATE.es.onerror = () => {
     addLine("Connection error — check server logs", "t-red");
+    console.log("Stream disconnected/error event fired.");
     if (cursor.parentNode) cursor.remove();
     STATE.es.close();
     STATE.es = null;
@@ -1383,6 +1377,18 @@ function clearTerminal() {
   const term = document.getElementById("terminal");
   if (term) term.innerHTML = `<span class="t-dim">▸ Terminal cleared</span>`;
 }
+
+STATE.es.onmessage = e => {
+  let msg = {};
+  try {
+    msg = JSON.parse(e.data);
+  } catch (err) {
+    // Optionally, log the error and return (or show raw output for debugging)
+    // console.warn("JSON parse error in stream:", e.data, err);
+    return;
+  }
+  // ...the rest of your processing as before
+};
 
 /* ══════════════════════════════════════════════════════════════════
    TAB: HISTORY

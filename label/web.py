@@ -7,6 +7,7 @@ import logging
 import time
 import json
 import os
+import requests
 from pathlib import Path
 
 label_bp = Blueprint("label", __name__)
@@ -49,18 +50,80 @@ def api_artist(slug):
     }
     return jsonify(payload)
 
+def build_agent_prompt(agent, artist):
+    name = artist.get('artist_info', {}).get('name') or artist.get('artist_name', '(unknown artist)')
+    release = artist.get('upcoming_release', {}).get('title', '(no title)')
+    release_date = artist.get('upcoming_release', {}).get('date', '')
+    example_json = '''{
+      "agent": "VINYL",
+      "artist": "Nova Saint",
+      ...
+    }'''
+    prompt = (
+        f"You are the {agent.upper()} release operations agent for {name}.\n"
+        f"The upcoming release is '{release}' on {release_date}.\n"
+        f"Generate the full release operations JSON calendar in this format:\n\n"
+        f"{example_json}\n\n"
+        "Output ONLY MINIFIED JSON ON A SINGLE LINE, with NO spaces, indentation, or trailing commas. Do NOT explain. Do NOT include anything except the JSON."
+    )
+    return prompt
+
 # --- AGENT STREAM ROUTE ---
+import requests
+
 @label_bp.route("/api/stream/<agent>/<slug>")
 def api_stream(agent, slug):
-    def generate():
-        yield f'data: {{"line":"▶ Starting {agent.upper()} for {slug}"}}\n\n'
-        for i in range(1, 6):
-            time.sleep(0.6)
-            yield f'data: {{"line":"Processing step {i}/5..."}}\n\n'
-        yield 'data: {"line":"✓ Done","done":true,"ok":true}\n\n'
+    artist = load_artist(slug)
+    if not artist:
+        def error_stream():
+            part = '{"error": "Artist not found"}'
+            print("YIELDING TO FRONTEND:", part)
+            yield f'data: {part}\n\n'
+        return Response(stream_with_context(error_stream()), mimetype="text/event-stream")
 
-    return Response(stream_with_context(generate()),
-                    mimetype="text/event-stream")
+    # Build the prompt
+    prompt = build_agent_prompt(agent, artist)
+
+    # Ollama config from environment or .env
+    ollama_url   = os.environ.get('OLLAMA_BASE_URL', 'http://127.0.0.1:11434').rstrip('/')
+    ollama_model = os.environ.get('OLLAMA_MODEL', 'qwen2.5:3b')
+    ollama_timeout = int(os.environ.get('OLLAMA_TIMEOUT_SECONDS', '1800'))
+
+    # API endpoint
+    generate_url = f"{ollama_url}/api/generate"
+    payload = {
+        "model": ollama_model,
+        "prompt": prompt,
+        "stream": True
+    }
+
+    import re
+
+    def generate():
+        buffer = ""
+        try:
+            with requests.post(generate_url, json=payload, stream=True, timeout=ollama_timeout) as r:
+                for line in r.iter_lines():
+                    if not line:
+                        continue
+                    part = line.decode()
+                    data = json.loads(part)
+                    if "response" in data:
+                        buffer += data["response"]
+                    if data.get("done"):
+                        json_buffer = buffer.strip()
+                        try:
+                            output_json = json.loads(json_buffer)
+                            yield f'data: {json.dumps({"result": output_json, "done": True})}\n\n'
+                        except Exception as e:
+                            yield f'data: {json.dumps({"error": "Failed to parse JSON from LLM", "output": json_buffer, "done": True})}\n\n'
+                        # ADD THIS:
+                        yield 'data: [DONE]\n\n'
+                        return
+        except Exception as e:
+            yield f'data: {json.dumps({"error": "LLM error: " + str(e)})}\n\n'
+
+    return Response(stream_with_context(generate()), mimetype="text/event-stream")
 
 # --- CHECK-IN ---
 @label_bp.route("/api/checkin/<slug>", methods=["POST"])
