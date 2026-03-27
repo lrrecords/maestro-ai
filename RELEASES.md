@@ -5,6 +5,18 @@
 MAESTRO AI is an AI-powered, multi-agent business operating system designed for independent labels, studios, and live music organizations. The platform provides a unified web dashboard, organizing core operations into four domains (Label, Studio, Live, Platform Ops) each with pluggable agents for end-to-end workflow automation.
 
 ---
+## v1.2.0 (March 27, 2026) — Dashboard Hardening & Team-Ready Release
+
+**Highlights:**
+- Check-in and webhook endpoints fully robust against invalid/missing artist slugs (no more `/undefined` API calls).
+- All artist actions guarded in frontend (`STATE.slug` required for API).
+- Friendly toast and inline error handling for all main dashboard actions.
+- Minimal automated backend tests for check-in/webhook (see `/tests/test_api.py`).
+- Improved CONTRIBUTING and .env.example for new dev onboarding.
+- Updated README and test coverage guidelines.
+
+**Migration:**  
+Just update local repo, install any new dependencies, and copy `.env.example` to `.env` as needed.
 
 ## 🚦 Project Current State (as of March 27, 2026)
 
