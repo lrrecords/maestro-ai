@@ -39,6 +39,7 @@ Maestro AI brings together specialized AI agents—each handling real music busi
 
 ## 🖼️ Screenshots
 
+<<<<<<< HEAD
 ![LIVE Agents](docs/assets/LIVE_Agents.jpg)
 ![LIVE Dashboard](docs/assets/LIVE_Dashboard.jpg)
 ![MAESTRO Login](docs/assets/MAESTRO Login.jpg)
@@ -53,8 +54,7 @@ Maestro AI brings together specialized AI agents—each handling real music busi
 ![Screenshot Demo Artist Nova Saint](docs/assets/Screenshot Demo_Artist_Nova_Saint.jpg)
 ![Screenshot Departments](docs/assets/Screenshot Departments.jpg)
 ![Screenshot MAESTRO Dashboard](docs/assets/Screenshot MAESTRO_Dashboard.jpg)
-
----
+=======
 
 ## 🏢 Departments & Agents
 
