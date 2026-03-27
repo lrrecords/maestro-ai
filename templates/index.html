@@ -936,7 +936,22 @@
    STATE & CONSTANTS
 ══════════════════════════════════════════════════════════════════ */
 const STATE = { slug: null, tab: "overview", data: null, es: null, chart: null };
-
+/**
+ * Safely performs any API action that requires a selected artist slug.
+ * Usage: pass your async function as the second argument. The slug is passed in!
+ * Shows a toast if slug missing or bad.
+ *
+ * @param {Function} action - a function(slug) => Promise
+ */
+function withValidSlug(action) {
+  const slug = STATE.slug;
+  if (!slug || slug === "undefined") {
+    toast("Please select an artist before continuing.", "err");
+    return;
+  }
+  // Pass the slug to the provided action
+  return action(slug);
+}
 const AGENT_META = [
   { id:"vinyl",  icon:"🎵", lbl:"VINYL",  desc:"Streaming"  },
   { id:"echo",   icon:"📣", lbl:"ECHO",   desc:"Social"     },
@@ -1305,14 +1320,12 @@ function runAgent(agentId) {
   });
 
   if (agentId === "full") {
-    if (fullBtn) { fullBtn.disabled = true; fullBtn.textContent = "⏳  RUNNING FULL PIPELINE..."; }
-  } else {
-    const b = document.getElementById("btn-" + agentId);
-    if (b) b.className = "agent-btn running";
-  }
-
-  if (label) label.textContent = agentId.toUpperCase() + " running...";
-  term.innerHTML = "";
+    if (fullBtn) {
+        fullBtn.disabled = false;
+        fullBtn.textContent = "▶▶  RUN FULL PIPELINE — ALL AGENTS — " + name.toUpperCase();
+    }
+    if (label) label.textContent = "— ready —";
+}
 
   // Blinking cursor
   const cursor = document.createElement("span");
@@ -1577,6 +1590,10 @@ async function doCheckin(slug) {
   const res  = document.getElementById("checkin-result");
   res.style.display = "none";
 
+if (!slug || slug === "undefined") {
+    alert("Please select an artist before continuing.");
+    return;
+}
   const result = await apiFetch(API_PREFIX + "/api/checkin/" + slug, {
     method:  "POST",
     headers: { "Content-Type": "application/json" },
@@ -1594,7 +1611,10 @@ async function doCheckin(slug) {
 async function doWebhook(slug) {
   const res = document.getElementById("webhook-result");
   res.style.display = "none";
-
+if (!slug || slug === "undefined") {
+    alert("Please select an artist before continuing.");
+    return;
+}
   const result = await apiFetch(API_PREFIX + "/api/webhook/" + slug, { method: "POST" })
     .catch(e => ({ sent: false, error: String(e) }));
 
@@ -1604,6 +1624,14 @@ async function doWebhook(slug) {
     : "✗ " + (result.error || "Failed");
   res.style.display = "block";
   toast(result.sent ? "Webhook sent" : "Webhook failed", result.sent ? "ok" : "err");
+}
+function renderAgentResults(result) {
+  const term = document.getElementById("terminal");
+  if (!term) return;
+  // Format and display the agent result as pretty JSON
+  term.innerHTML = "<pre style='color:#0ff;'>" +
+    (typeof result === "object" ? JSON.stringify(result, null, 2) : result) +
+    "</pre>";
 }
 </script>
 </body>

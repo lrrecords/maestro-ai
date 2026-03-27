@@ -2,7 +2,7 @@ from flask import (
     Blueprint, render_template, request, jsonify, Response,
     stream_with_context, current_app, session, redirect, url_for
 )
-from datetime import datetime
+import datetime
 import logging
 import time
 import json
@@ -50,26 +50,194 @@ def api_artist(slug):
     }
     return jsonify(payload)
 
+import json
+import datetime
+import pathlib
+
 def build_agent_prompt(agent, artist):
     name = artist.get('artist_info', {}).get('name') or artist.get('artist_name', '(unknown artist)')
     release = artist.get('upcoming_release', {}).get('title', '(no title)')
-    release_date = artist.get('upcoming_release', {}).get('date', '')
-    example_json = '''{
-      "agent": "VINYL",
-      "artist": "Nova Saint",
-      ...
-    }'''
+    release_date = artist.get('upcoming_release', {}).get('date', '') or 'TBD'
+    today = datetime.date.today().isoformat()  # <- always use full name
+
+    example_json = f'''{{
+  "artist": "{name}",
+  "project": "{release}",
+  "project_type": "Release",
+  "release_date": "{release_date}",
+  "generated": "{today}",
+  "phases": [
+    {{
+      "phase": "Pre-Production",
+      "timeline": "8 weeks before release date",
+      "tasks": [
+        {{
+          "task": "Identify and finalize track list for the single",
+          "priority": "HIGH",
+          "status": "PENDING",
+          "notes": "Must happen 4 months in advance to align with distribution schedule"
+        }},
+        {{
+          "task": "Finalize artwork, including cover art, lyric sheets, and album concept design",
+          "priority": "MEDIUM",
+          "status": "PENDING",
+          "notes": "Artwork needs to be approved by label and distributors 3 weeks before release date"
+        }}
+      ]
+    }},
+    {{
+      "phase": "Distribution & Metadata",
+      "timeline": "4 weeks before release date",
+      "tasks": [
+        {{
+          "task": "Complete digital metadata for The Orchard, including song titles, artist names, and track IDs",
+          "priority": "HIGH",
+          "status": "PENDING",
+          "notes": "Needs to be completed 1 month in advance of release date"
+        }},
+        {{
+          "task": "Submit single artwork and metadata files to The Orchard for digital distribution",
+          "priority": "MEDIUM",
+          "status": "PENDING",
+          "notes": "Artwork approval process can take up to 2 weeks, so must be submitted early"
+        }}
+      ]
+    }},
+    {{
+      "phase": "Marketing & Promo",
+      "timeline": "3 weeks before release date",
+      "tasks": [
+        {{
+          "task": "Develop and distribute pre-release singles for radio airplay and playlist submissions",
+          "priority": "HIGH",
+          "status": "PENDING",
+          "notes": "Must be submitted 1 month in advance of release date"
+        }},
+        {{
+          "task": "Create and execute a social media campaign with artist interviews, behind-the-scenes content, and exclusive sneak peeks",
+          "priority": "MEDIUM",
+          "status": "IN_PROGRESS",
+          "notes": "Focus on generating buzz among the target audience for maximum impact"
+        }}
+      ]
+    }},
+    {{
+      "phase": "Release Day",
+      "timeline": "2 weeks before release date (day of release)",
+      "tasks": [
+        {{
+          "task": "Coordinate with The Orchard for final distribution setup and activation",
+          "priority": "MEDIUM",
+          "status": "IN_PROGRESS",
+          "notes": "Ensure all digital platforms are live and ready to go by the day of release"
+        }},
+        {{
+          "task": "Prepare promotional materials such as posters, flyers, and social media graphics for physical releases (if applicable)",
+          "priority": "LOW",
+          "status": "PENDING",
+          "notes": "Not required if only digital distribution is planned"
+        }}
+      ]
+    }},
+    {{
+      "phase": "Post-Release",
+      "timeline": "1 week after release date",
+      "tasks": [
+        {{
+          "task": "Analyze pre-release metrics and adjust marketing strategy for future releases (if applicable)",
+          "priority": "LOW",
+          "status": "PENDING",
+          "notes": "Based on data from the current release to optimize upcoming strategies"
+        }},
+        {{
+          "task": "Send out post-release surveys to collect feedback from listeners/patrons",
+          "priority": "MEDIUM",
+          "status": "IN_PROGRESS",
+          "notes": "Helps gauge listener satisfaction and identify areas for improvement in future releases"
+        }}
+      ]
+    }}
+  ],
+  "critical_path": [
+    "Finalize track list and artwork by the end of Phase Pre-Production"
+  ],
+  "immediate_actions": [
+    "Submit all digital metadata to The Orchard no later than 4 weeks before release date"
+  ],
+  "blockers": [
+    "No known blockers at this time"
+  ],
+  "recommendations": [
+    "Plan press outreach 2 weeks before release.",
+    "Engage fans with exclusive behind-the-scenes content.",
+    "Double-check distributor deadline alignment."
+  ]
+}}'''
     prompt = (
-        f"You are the {agent.upper()} release operations agent for {name}.\n"
-        f"The upcoming release is '{release}' on {release_date}.\n"
-        f"Generate the full release operations JSON calendar in this format:\n\n"
-        f"{example_json}\n\n"
-        "Output ONLY MINIFIED JSON ON A SINGLE LINE, with NO spaces, indentation, or trailing commas. Do NOT explain. Do NOT include anything except the JSON."
+        f"You are the {agent.upper()} release operations agent for {name}."
+        f" The upcoming release is '{release}' on {release_date}."
+        "\nReply ONLY with one valid JSON object (no preamble, no explanation, no markdown/code block fences), using the following format:"
+        f"\n{example_json}"
+        "\nAll keys and string values must use double quotes."
+        "\nOutput must be strictly valid JSON, parseable by Python's json.loads, and must include all the fields and structure in the sample (even if they must be empty)."
+        "\nPopulate recommendations with 2–3 actionable tips for this artist/release. Absolutely do not add any commentary, blank lines, or prefix/suffix—just pure JSON."
     )
     return prompt
 
+# Utility: Strip code block markup and whitespace
+def extract_json_from_llm(raw):
+    s = raw.strip()
+    # Remove code fences
+    if s.startswith("```json"):
+        s = s[len("```json"):]
+    if s.startswith("```"):
+        s = s[len("```"):]
+    if s.endswith("```"):
+        s = s[:-3]
+    return s.strip()
+
+# Optional: Schema validator stub (expand to real schema as needed)
+def validate_release_json(obj):
+    top_keys = ["artist", "phases", "critical_path", "immediate_actions", "blockers", "recommendations"]
+    for key in top_keys:
+        if key not in obj:
+            raise ValueError(f"Missing top-level key: {key}")
+    # Optionally: check subfields, array types, etc.
+    return True
+
+def save_agent_output(agent, artist_slug, output_object, data_dir="data"):
+    now = datetime.date.today().isoformat()  # <- always use full name
+    # Save with date
+    dated_filename = f"{data_dir}/{agent}/{artist_slug}_checklist_{now}.json"
+    # Optional: Save/overwrite 'latest' for quick access
+    latest_filename = f"{data_dir}/{agent}/{artist_slug}_checklist_latest.json"
+    pathlib.Path(f"{data_dir}/{agent}").mkdir(parents=True, exist_ok=True)
+    with open(dated_filename, "w", encoding="utf-8") as f:
+        json.dump(output_object, f, ensure_ascii=False, indent=2)
+    with open(latest_filename, "w", encoding="utf-8") as f:
+        json.dump(output_object, f, ensure_ascii=False, indent=2)
+    return dated_filename, latest_filename
+
+# --- Example agent run handling ---
+
+def handle_agent_llm_output(agent, artist, artist_slug, raw_llm_output):
+    try:
+        cleaned = extract_json_from_llm(raw_llm_output)
+        obj = json.loads(cleaned)
+        validate_release_json(obj)  # optional, but robust
+        save_agent_output(agent, artist_slug, obj)
+        return obj
+    except Exception as ex:
+        # handle/log error as needed, e.g.:
+        print("LLM output parse/validate failed:", ex)
+        return None
+
 # --- AGENT STREAM ROUTE ---
+from flask import Response, stream_with_context, current_app, jsonify
+import os
 import requests
+import json
+import datetime
 
 @label_bp.route("/api/stream/<agent>/<slug>")
 def api_stream(agent, slug):
@@ -97,8 +265,6 @@ def api_stream(agent, slug):
         "stream": True
     }
 
-    import re
-
     def generate():
         buffer = ""
         try:
@@ -108,40 +274,64 @@ def api_stream(agent, slug):
                         continue
                     part = line.decode()
                     data = json.loads(part)
+                    # Buffer all responses for result assembly
                     if "response" in data:
                         buffer += data["response"]
                     if data.get("done"):
                         json_buffer = buffer.strip()
                         try:
-                            output_json = json.loads(json_buffer)
-                            yield f'data: {json.dumps({"result": output_json, "done": True})}\n\n'
+                            cleaned = extract_json_from_llm(json_buffer)
+                            print("DEBUG: Cleaned LLM output:\n", cleaned)
+                            obj = json.loads(cleaned)
+                            validate_release_json(obj)
+                            dated_fn, latest_fn = save_agent_output(agent, slug, obj)
+                            yield f'data: {json.dumps({"result": obj, "done": True})}\n\n'
+                            print(f"Agent output saved to: {dated_fn} and {latest_fn}")
                         except Exception as e:
-                            yield f'data: {json.dumps({"error": "Failed to parse JSON from LLM", "output": json_buffer, "done": True})}\n\n'
-                        # ADD THIS:
+                            print("PARSE ERROR DEBUG: raw json_buffer=\n", repr(json_buffer))
+                            print("PARSE ERROR EXCEPTION:", e)
+                            err_info = {
+                                "error": "Failed to parse or save JSON from LLM",
+                                "output": json_buffer,
+                                "exception": str(e),
+                                "done": True
+                            }
+                            yield f'data: {json.dumps(err_info)}\n\n'
                         yield 'data: [DONE]\n\n'
                         return
         except Exception as e:
-            yield f'data: {json.dumps({"error": "LLM error: " + str(e)})}\n\n'
+            err_info = {
+                "error": "LLM error: " + str(e),
+                "done": True
+            }
+            print("Stream error:", e)
+            yield f'data: {json.dumps(err_info)}\n\n'
+            yield 'data: [DONE]\n\n'
 
     return Response(stream_with_context(generate()), mimetype="text/event-stream")
 
 # --- CHECK-IN ---
+from flask import abort
+
 @label_bp.route("/api/checkin/<slug>", methods=["POST"])
 def api_checkin(slug):
+    if not slug or slug == "undefined":
+        return jsonify({"success": False, "error": "No artist selected or slug undefined."}), 400
     note = (request.json or {}).get("note", "")
-    ts   = datetime.utcnow().isoformat()
+    ts = datetime.datetime.utcnow().isoformat()
     logging.info("Check-in logged for %s: %s", slug, note)
     return jsonify({"success": True, "output": f"Check-in saved at {ts}"})
 
 # --- WEBHOOK ---
 @label_bp.route("/api/webhook/<slug>", methods=["POST"])
 def api_webhook(slug):
-    # You may need to update these variables to match your project context
-    WEBHOOK_URL = os.getenv("WEBHOOK_URL", "http://localhost:5678/webhook/health-update")
+    if not slug or slug == "undefined":
+        return jsonify({"sent": False, "error": "No artist selected or slug undefined."}), 400
+    WEBHOOK_URL = os.getenv("WEBHOOK_URL", "https://webhook.site/04c2b94a-c4a5-4807-a99e-afad21373ce8")
     payload = {
         "artist":    slug_to_name(slug),
         "slug":      slug,
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.datetime.utcnow().isoformat(),
         "source":    "maestro-web-ui",
     }
     try:
@@ -149,8 +339,11 @@ def api_webhook(slug):
         r = req_lib.post(WEBHOOK_URL, json=payload, timeout=6)
         return jsonify({"sent": True, "http_status": r.status_code})
     except Exception as e:
-        logging.exception("Webhook error")
-        return jsonify({"sent": False, "error": str(e)}), 500
+        logging.warning(f"Webhook call failed: {e}")
+        return jsonify({
+            "sent": False, 
+            "error": "Webhook feature temporarily unavailable (no endpoint reachable). This does not affect dashboard operation."
+        }), 200
 
 # --- HELPERS (These can be moved to a utils.py if you prefer) ---
 def get_artist_slugs():
