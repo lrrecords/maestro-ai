@@ -2,7 +2,7 @@
 
 ## What is MAESTRO AI?
 
-MAESTRO AI is an AI-powered, multi-agent business operating system designed for independent labels, studios, and live music organizations. The platform provides a unified web dashboard, organizing core business operations (release management, studio workflow, live event logistics, platform infrastructure) into modular departments, each powered by specialized AI/automation agents.
+MAESTRO AI is an AI-powered, multi-agent business operating system designed for independent labels, studios, and live music organizations. The platform provides a unified web dashboard, organizing core operations into four domains (Label, Studio, Live, Platform Ops) each with pluggable agents for end-to-end workflow automation.
 
 ---
 
@@ -14,42 +14,13 @@ MAESTRO AI is an AI-powered, multi-agent business operating system designed for 
 - **Web Interface:** Central Flask app with modular blueprints per department and standardized cross-department navigation.
 - **LLM & Service Configuration:** In-app management of language model settings and service health monitoring.
 - **Real-Time Operations:** Agent tasks and business workflows update dashboards live.
+- **Robust Agent Output (NEW):** Agents now use LLM streaming to generate, validate, and persist actionable checklists and recommendations as structured JSON, automatically saved for artist/project history and dashboard integration.
 
 **Recent Focus Areas:**
 - Navigation overhaul: Hub-and-spoke navigation, department blueprints, and improved dashboard “Back to Departments” UX.
-- Department and agent expansion: Increasing granularity and number of business agents; all departments are now accessible via a unified hub.
+- Department and agent expansion: Increasing the granularity and number of business agents; all departments are now accessible via a unified hub.
 - Platform Ops: Integrated admin, model config, and health checks for a system overview.
-
----
-
-## 🏗️ Recent Releases & Major Updates
-
-### v0.8.0 — Hub & Platform Ops  
-**(In Progress: March 20–27, 2026)**
-
-- **Department Hub:** Central landing page `/hub` with department cards and streamlined navigation.
-- **Platform Ops:** Fourth department for infrastructure, model, and system health configuration.
-- **Consistent Navigation:** “Back to Departments” pattern across all dashboards; login flow now always returns users to Hub.
-- **Architecture:** Modular Flask Blueprints for each department; standardized routing and blueprint registration; root compatibility preserved for Label dashboard.
-- **New/Updated Files:**  
-  - `templates/hub.html` (new)  
-  - `dashboard/app.py` (blueprint registration, hub route)  
-  - Various templates updated for navigation
-
-#### Known Issues:
-- **Artist Card UI:** “Click for details” broken on Label dashboard (priority investigation).
-- **Back Navigation:** “Back to Departments” button not fully verified in all contexts.
-
-**Next Steps (v0.8.1):**
-1. Fix Label dashboard artist card click-through bug.
-2. Validate and polish back button placement and styling.
-3. Full navigation and department regression test.
-4. Verify agent runners after navigation refactor.
-
----
-
-### v0.7.0 — Department Architecture  
-**(Released: March 18, 2026)**
+- **LLM Agent Runner Overhaul (NEW):** Reliable agent output streaming and validation, persistent JSON file writing, improved error handling, and schema-first agent output.
 
 - Departmental structuring: MAESTRO split into 3 business domains (Label, Studio, Live), each with specialized agent suites and dashboards.
 - Pluggable agent framework: Python base class (`core/base_agent.py`); over 16 agents for client, studio, and live operations.
@@ -91,6 +62,7 @@ No data migration required; dependency update and web dashboard restart only.
 
 **Full changelogs:**  
 - [Releases page](https://github.com/lrrecords/maestro-ai/releases)
+- [Changelog for v0.8.0](https://github.com/lrrecords/maestro-ai/releases/tag/v0.8.0)
 - [Changelog for v0.7.0](https://github.com/lrrecords/maestro-ai/releases/tag/v0.7.0)
 
 ---
