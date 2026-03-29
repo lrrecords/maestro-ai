@@ -1,196 +1,711 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LIVE — MAESTRO Ecosystem</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #0d0d0d; color: #d8d8d8; font-family: system-ui, "Segoe UI", sans-serif; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #0d0d0d;
+      color: #d8d8d8;
+      font-family: system-ui, "Segoe UI", sans-serif;
+    }
 
     /* ── Header ── */
     .header {
-      background: #141414; border-bottom: 1px solid #2a2a2a;
-      padding: 14px 32px; display: flex; align-items: center; gap: 14px;
+      background: #141414;
+      border-bottom: 1px solid #2a2a2a;
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
-    .back { color: #555; text-decoration: none; font-size: .82rem; }
-    .back:hover { color: #00e5b0; }
-    .dept-name  { font-size: 1rem; font-weight: 700; color: #f0f0f0; }
+
+    .back {
+      color: #555;
+      text-decoration: none;
+      font-size: .82rem;
+    }
+
+    .back:hover {
+      color: #00e5b0;
+    }
+
+    .dept-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f0f0f0;
+    }
+
     .dept-badge {
-      font-size: .65rem; letter-spacing: .12em; text-transform: uppercase;
-      color: #00e5b0; border: 1px solid rgba(0,229,176,.3);
-      padding: 2px 8px; border-radius: 999px;
+      font-size: .65rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #00e5b0;
+      border: 1px solid rgba(0, 229, 176, .3);
+      padding: 2px 8px;
+      border-radius: 999px;
     }
 
     /* ── Layout ── */
-    .main { max-width: 1100px; margin: 0 auto; padding: 28px 32px; }
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 32px;
+    }
 
     /* ── Stats ── */
-    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 32px; }
-    .stat  { background: #141414; border: 1px solid #2a2a2a; border-radius: 10px; padding: 16px; }
-    .stat-label { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: #555; margin-bottom: 8px; }
-    .stat-value { font-size: 1.8rem; font-weight: 700; color: #f0f0f0; line-height: 1; }
-    .stat-sub   { font-size: .76rem; color: #555; margin-top: 6px; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .stat {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .stat-label {
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #f0f0f0;
+      line-height: 1;
+    }
+
+    .stat-sub {
+      font-size: .76rem;
+      color: #555;
+      margin-top: 6px;
+    }
 
     /* ── Section ── */
-    .section       { margin-bottom: 36px; }
+    .section {
+      margin-bottom: 36px;
+    }
+
     .section-title {
-      font-size: .78rem; font-weight: 600; letter-spacing: .1em;
-      text-transform: uppercase; color: #888; margin-bottom: 12px;
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 12px;
     }
 
     /* ── Table ── */
-    .table-wrap { background: #141414; border: 1px solid #2a2a2a; border-radius: 10px; overflow: hidden; }
-    table       { width: 100%; border-collapse: collapse; }
-    thead th    {
-      background: #1a1a1a; color: #555; font-size: .7rem;
-      letter-spacing: .1em; text-transform: uppercase;
-      padding: 10px 16px; text-align: left; font-weight: 500;
+    .table-wrap {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      overflow: hidden;
     }
-    td          { padding: 12px 16px; border-top: 1px solid #1e1e1e; font-size: .87rem; color: #c8c8c8; }
-    tr:hover td { background: #181818; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      background: #1a1a1a;
+      color: #555;
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 10px 16px;
+      text-align: left;
+      font-weight: 500;
+    }
+
+    td {
+      padding: 12px 16px;
+      border-top: 1px solid #1e1e1e;
+      font-size: .87rem;
+      color: #c8c8c8;
+    }
+
+    tr:hover td {
+      background: #181818;
+    }
 
     /* ── Badges ── */
-    .badge           { display: inline-block; font-size: .68rem; padding: 2px 9px; border-radius: 999px; font-weight: 500; }
-    .badge-confirmed { background: rgba(0,200,100,.10);  color: #00c864; border: 1px solid rgba(0,200,100,.25); }
-    .badge-hold      { background: rgba(255,180,0,.10);  color: #ffb400; border: 1px solid rgba(255,180,0,.25); }
-    .badge-pending   { background: rgba(120,120,255,.10);color: #8888ff; border: 1px solid rgba(120,120,255,.25); }
-    .badge-cancelled { background: rgba(255,80,80,.10);  color: #ff6060; border: 1px solid rgba(255,80,80,.25); }
-    .badge-stub      { background: rgba(255,180,0,.10);  color: #ffb400; border: 1px solid rgba(255,180,0,.25); }
-    .badge-ok        { background: rgba(0,200,100,.10);  color: #00c864; border: 1px solid rgba(0,200,100,.25); }
-    .badge-error     { background: rgba(255,80,80,.10);  color: #ff6060; border: 1px solid rgba(255,80,80,.25); }
+    .badge {
+      display: inline-block;
+      font-size: .68rem;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+
+    .badge-confirmed {
+      background: rgba(0, 200, 100, .10);
+      color: #00c864;
+      border: 1px solid rgba(0, 200, 100, .25);
+    }
+
+    .badge-hold {
+      background: rgba(255, 180, 0, .10);
+      color: #ffb400;
+      border: 1px solid rgba(255, 180, 0, .25);
+    }
+
+    .badge-pending {
+      background: rgba(120, 120, 255, .10);
+      color: #8888ff;
+      border: 1px solid rgba(120, 120, 255, .25);
+    }
+
+    .badge-cancelled {
+      background: rgba(255, 80, 80, .10);
+      color: #ff6060;
+      border: 1px solid rgba(255, 80, 80, .25);
+    }
+
+    .badge-stub {
+      background: rgba(255, 180, 0, .10);
+      color: #ffb400;
+      border: 1px solid rgba(255, 180, 0, .25);
+    }
+
+    .badge-ok {
+      background: rgba(0, 200, 100, .10);
+      color: #00c864;
+      border: 1px solid rgba(0, 200, 100, .25);
+    }
+
+    .badge-error {
+      background: rgba(255, 80, 80, .10);
+      color: #ff6060;
+      border: 1px solid rgba(255, 80, 80, .25);
+    }
 
     /* ── Agent grid ── */
-    .agents { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 10px; }
-    .agent  {
-      background: #141414; border: 1px solid #2a2a2a; border-radius: 8px;
-      padding: 14px; display: flex; flex-direction: column; gap: 6px;
+    .agents {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+      gap: 10px;
     }
-    .agent-code { font-weight: 700; font-size: .9rem; color: #f0f0f0; }
-    .agent-desc { font-size: .78rem; color: #666; line-height: 1.4; flex: 1; }
+
+    .agent {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .agent-code {
+      font-weight: 700;
+      font-size: .9rem;
+      color: #f0f0f0;
+    }
+
+    .agent-desc {
+      font-size: .78rem;
+      color: #666;
+      line-height: 1.4;
+      flex: 1;
+    }
+
     .run-btn {
-      margin-top: 10px; width: 100%; padding: 7px 0;
-      background: transparent; border: 1px solid #2a2a2a;
-      border-radius: 6px; color: #00e5b0;
-      font-size: .78rem; font-weight: 600; letter-spacing: .06em;
-      cursor: pointer; transition: background .12s, border-color .12s;
+      margin-top: 10px;
+      width: 100%;
+      padding: 7px 0;
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      color: #00e5b0;
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      cursor: pointer;
+      transition: background .12s, border-color .12s;
     }
-    .run-btn:hover    { background: rgba(0,229,176,.07); border-color: #00e5b0; }
-    .run-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    .run-btn:hover {
+      background: rgba(0, 229, 176, .07);
+      border-color: #00e5b0;
+    }
+
+    .run-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
 
     /* ── Modal shell ── */
     .modal-backdrop {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,.75); z-index: 100;
-      align-items: center; justify-content: center;
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .75);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
     }
-    .modal-backdrop.open { display: flex; }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
     .modal {
-      background: #141414; border: 1px solid #2a2a2a; border-radius: 14px;
-      width: min(540px, 92vw); max-height: 88vh;
-      display: flex; flex-direction: column; overflow: hidden;
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 14px;
+      width: min(540px, 92vw);
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     /* ── Shared panel pieces ── */
-    .modal-panel { display: flex; flex-direction: column; flex: 1; min-height: 0; }
-    .modal-head  {
-      display: flex; align-items: center; gap: 10px;
-      padding: 15px 18px; border-bottom: 1px solid #1e1e1e; flex-shrink: 0;
+    .modal-panel {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
     }
-    .modal-agent-name { font-weight: 700; font-size: 1rem; color: #f0f0f0; flex: 1; }
-    .modal-ts         { font-size: .7rem; color: #444; }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 18px;
+      border-bottom: 1px solid #1e1e1e;
+      flex-shrink: 0;
+    }
+
+    .modal-agent-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #f0f0f0;
+      flex: 1;
+    }
+
+    .modal-ts {
+      font-size: .7rem;
+      color: #444;
+    }
+
     .modal-close {
-      background: none; border: none; color: #555;
-      font-size: 1.1rem; cursor: pointer; padding: 2px 6px; line-height: 1;
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 2px 6px;
+      line-height: 1;
     }
-    .modal-close:hover { color: #d8d8d8; }
-    .modal-body  { flex: 1; overflow-y: auto; }
-    .modal-foot  {
-      display: flex; gap: 8px; justify-content: flex-end;
-      padding: 12px 18px; border-top: 1px solid #1e1e1e; flex-shrink: 0;
+
+    .modal-close:hover {
+      color: #d8d8d8;
+    }
+
+    .modal-body {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .modal-foot {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      padding: 12px 18px;
+      border-top: 1px solid #1e1e1e;
+      flex-shrink: 0;
     }
 
     /* ── Form panel ── */
-    .form-desc  {
-      font-size: .82rem; color: #666; line-height: 1.5;
-      padding: 14px 18px 14px; border-bottom: 1px solid #1a1a1a;
+    .form-desc {
+      font-size: .82rem;
+      color: #666;
+      line-height: 1.5;
+      padding: 14px 18px 14px;
+      border-bottom: 1px solid #1a1a1a;
     }
-    .field-group { padding: 14px 18px 0; }
-    .field-group:last-child { padding-bottom: 6px; }
+
+    .field-group {
+      padding: 14px 18px 0;
+    }
+
+    .field-group:last-child {
+      padding-bottom: 6px;
+    }
+
     .field-label {
-      display: block; font-size: .7rem; font-weight: 600;
-      letter-spacing: .07em; text-transform: uppercase;
-      color: #666; margin-bottom: 6px;
+      display: block;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: #666;
+      margin-bottom: 6px;
     }
-    .req { color: #ff5555; margin-left: 2px; }
+
+    .req {
+      color: #ff5555;
+      margin-left: 2px;
+    }
+
     .field-input {
-      display: block; width: 100%;
-      background: #0a0a0a; border: 1px solid #242424;
-      border-radius: 6px; color: #d8d8d8;
-      padding: 8px 11px; font-size: .87rem; font-family: inherit;
-      outline: none; transition: border-color .15s;
+      display: block;
+      width: 100%;
+      background: #0a0a0a;
+      border: 1px solid #242424;
+      border-radius: 6px;
+      color: #d8d8d8;
+      padding: 8px 11px;
+      font-size: .87rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .15s;
     }
-    .field-input:focus       { border-color: #00e5b0; }
-    .field-input.field-error { border-color: #ff5555; }
-    .field-ta   { min-height: 78px; resize: vertical; line-height: 1.5; }
-    .field-hint { display: block; font-size: .7rem; color: #3a3a3a; margin-top: 5px; }
-    .no-fields  { padding: 20px 18px; color: #555; font-size: .85rem; }
+
+    .field-input:focus {
+      border-color: #00e5b0;
+    }
+
+    .field-input.field-error {
+      border-color: #ff5555;
+    }
+
+    .field-ta {
+      min-height: 78px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .field-hint {
+      display: block;
+      font-size: .7rem;
+      color: #3a3a3a;
+      margin-top: 5px;
+    }
+
+    .no-fields {
+      padding: 20px 18px;
+      color: #555;
+      font-size: .85rem;
+    }
 
     /* ── Result panel ── */
     .modal-pre {
-      background: #0a0a0a; border: 1px solid #1e1e1e; border-radius: 8px;
-      padding: 14px; margin: 14px 18px;
+      background: #0a0a0a;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      padding: 14px;
+      margin: 14px 18px;
       font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
-      font-size: .77rem; color: #c0c0c0;
-      white-space: pre-wrap; word-break: break-all;
-      overflow-y: auto; max-height: 52vh;
+      font-size: .77rem;
+      color: #c0c0c0;
+
+      /* wrap to prevent horizontal overflow */
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+
+      /* IMPORTANT: no inner scrolling */
+      overflow: visible;
     }
 
-    /* ── BOOK card ── */
-    .live-card { padding: 14px 18px; }
-    .live-card-section { margin-bottom: 18px; }
+    /* ── BOOK Card (polished) ── */
+    .live-card {
+      margin: 14px 18px 10px;
+      padding: 14px;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      background: #101010;
+    }
+
+    .live-card-section {
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .live-card-section:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
     .live-card-label {
-      font-size: .68rem; font-weight: 700; letter-spacing: .1em;
-      text-transform: uppercase; color: #00e5b0; margin-bottom: 8px;
+      font-size: .62rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #00e5b0;
+      margin-bottom: 10px;
     }
-    .live-card-kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; }
+
+    .live-card-kv {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 8px 12px;
+    }
+
     .live-card-kv dt {
-      font-size: .7rem; color: #555; text-transform: uppercase;
-      letter-spacing: .07em; align-self: center;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #555;
     }
-    .live-card-kv dd { font-size: .87rem; color: #d8d8d8; margin: 0; }
-    .live-card-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+    .live-card-kv dd {
+      margin: 0;
+      font-size: .88rem;
+      color: #e2e2e2;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .live-card-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
     .live-card-list li {
-      background: #0e0e0e; border: 1px solid #1e1e1e; border-radius: 6px;
-      padding: 9px 12px; font-size: .83rem; color: #c8c8c8;
+      background: #0a0a0a;
+      border: 1px solid #242424;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: .84rem;
+      color: #cfcfcf;
+      line-height: 1.45;
+      word-break: break-word;
     }
-    .live-card-stub { padding: 20px 0; color: #555; font-size: .85rem; text-align: center; }
+
+    .live-card-stub {
+      padding: 10px 12px;
+      border: 1px dashed #2a2a2a;
+      border-radius: 10px;
+      color: #777;
+      font-size: .85rem;
+    }
+
     .live-card-meta {
-      font-size: .7rem; color: #444; padding-top: 10px;
-      border-top: 1px solid #1a1a1a; margin-top: 4px;
+      font-size: .72rem;
+      color: #555;
+      overflow-wrap: anywhere;
+      line-height: 1.4;
+    }
+
+    .live-card-list li:hover {
+      border-color: #3a3a3a;
+    }
+
+    /* ── Generic agent card ── */
+    .gen-sanity {
+      margin-top: 8px;
+      font-size: .72rem;
+      color: #666;
+      line-height: 1.35;
+    }
+
+    .gen-sanity strong {
+      color: #888;
+      font-weight: 700;
+    }
+
+    .gen-card-section {
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .gen-card-section:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .gen-card-title {
+      font-size: .62rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #00e5b0;
+      margin-bottom: 10px;
+    }
+
+    .gen-kv {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 8px 12px;
+    }
+
+    .gen-kv dt {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .gen-kv dd {
+      margin: 0;
+      font-size: .88rem;
+      color: #e2e2e2;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+
+    .gen-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .gen-list li {
+      background: #0a0a0a;
+      border: 1px solid #242424;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: .84rem;
+      color: #cfcfcf;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .gen-obj {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 6px 12px;
+    }
+
+    .gen-obj dt {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .gen-obj dd {
+      margin: 0;
+      font-size: .84rem;
+      color: #cfcfcf;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .gen-obj code {
+      color: #bbb;
+      font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+      font-size: .78rem;
+    }
+
+    .gen-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .84rem;
+    }
+
+    .gen-table th {
+      text-align: left;
+      font-size: .65rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #555;
+      font-weight: 700;
+      padding: 8px 10px;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .gen-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #141414;
+      color: #cfcfcf;
+      vertical-align: top;
+    }
+
+    .gen-table tr:last-child td {
+      border-bottom: 0;
     }
 
     /* ── Buttons ── */
     .btn-ghost {
-      background: transparent; border: 1px solid #2a2a2a;
-      border-radius: 6px; color: #888; padding: 6px 14px;
-      font-size: .8rem; cursor: pointer; transition: border-color .12s, color .12s;
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      color: #888;
+      padding: 6px 14px;
+      font-size: .8rem;
+      cursor: pointer;
+      transition: border-color .12s, color .12s;
     }
-    .btn-ghost:hover { border-color: #555; color: #d8d8d8; }
+
+    .btn-ghost:hover {
+      border-color: #555;
+      color: #d8d8d8;
+    }
+
     .btn-primary {
-      background: rgba(0,229,176,.1); border: 1px solid #00e5b0;
-      border-radius: 6px; color: #00e5b0; padding: 6px 18px;
-      font-size: .82rem; font-weight: 600; letter-spacing: .04em;
-      cursor: pointer; transition: background .12s;
+      background: rgba(0, 229, 176, .1);
+      border: 1px solid #00e5b0;
+      border-radius: 6px;
+      color: #00e5b0;
+      padding: 6px 18px;
+      font-size: .82rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      cursor: pointer;
+      transition: background .12s;
     }
-    .btn-primary:hover    { background: rgba(0,229,176,.2); }
-    .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+
+    .btn-primary:hover {
+      background: rgba(0, 229, 176, .2);
+    }
+
+    .btn-primary:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
 
     /* ── Empty ── */
-    .empty { padding: 36px; text-align: center; color: #444; font-size: .85rem; }
-    .empty code { color: #555; }
+    .empty {
+      padding: 36px;
+      text-align: center;
+      color: #444;
+      font-size: .85rem;
+    }
+
+    .empty code {
+      color: #555;
+    }
   </style>
 </head>
+
 <body>
 
   <div class="header">
@@ -230,7 +745,14 @@
         {% if shows %}
         <table>
           <thead>
-            <tr><th>Date</th><th>Artist</th><th>Venue</th><th>City</th><th>Country</th><th>Status</th></tr>
+            <tr>
+              <th>Date</th>
+              <th>Artist</th>
+              <th>Venue</th>
+              <th>City</th>
+              <th>Territory</th>
+              <th>Status</th>
+            </tr>
           </thead>
           <tbody>
             {% for s in shows %}
@@ -239,8 +761,9 @@
               <td>{{ s.get("artist","—") }}</td>
               <td>{{ s.get("venue","—") }}</td>
               <td>{{ s.get("city","—") }}</td>
-              <td>{{ s.get("country","—") }}</td>
-              <td><span class="badge badge-{{ s.get('status','pending') }}">{{ s.get("status","pending") | capitalize }}</span></td>
+              <td>{{ s.get("territory", s.get("country","—")) }}</td>
+              <td><span class="badge badge-{{ s.get('status','pending') }}">{{ s.get("status","pending") | capitalize
+                  }}</span></td>
             </tr>
             {% endfor %}
           </tbody>
@@ -257,7 +780,14 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Tour</th><th>Artist</th><th>Start</th><th>End</th><th>Shows</th><th>Status</th></tr>
+            <tr>
+              <th>Tour</th>
+              <th>Artist</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Shows</th>
+              <th>Status</th>
+            </tr>
           </thead>
           <tbody>
             {% for t in tours %}
@@ -267,7 +797,8 @@
               <td>{{ t.get("start","—") }}</td>
               <td>{{ t.get("end","—") }}</td>
               <td>{{ t.get("show_count","—") }}</td>
-              <td><span class="badge badge-{{ t.get('status','pending') }}">{{ t.get("status","pending") | capitalize }}</span></td>
+              <td><span class="badge badge-{{ t.get('status','pending') }}">{{ t.get("status","pending") | capitalize
+                  }}</span></td>
             </tr>
             {% endfor %}
           </tbody>
@@ -280,22 +811,19 @@
       <div class="section-title">Agents</div>
       <div class="agents">
         {% for code, desc in [
-          ("BOOK",   "Venues, holds, deal negotiation, contract tracking."),
-          ("MERCH",  "Merchandise planning, inventory, and settlement."),
-          ("PROMO",  "Marketing and promotional strategy."),
-          ("ROUTE",  "Tour routing and travel optimisation."),
-          ("SETTLE", "Financial settlement and reconciliation."),
-          ("RIDER",  "Technical and hospitality rider management."),
-          ("TOUR",   "Strategy synthesiser — coordinates all agents."),
+        ("BOOK", "Venues, holds, deal negotiation, contract tracking."),
+        ("MERCH", "Merchandise planning, inventory, and settlement."),
+        ("PROMO", "Marketing and promotional strategy."),
+        ("ROUTE", "Tour routing and travel optimisation."),
+        ("SETTLE", "Financial settlement and reconciliation."),
+        ("RIDER", "Technical and hospitality rider management."),
+        ("TOUR", "Strategy synthesiser — coordinates all agents."),
         ] %}
         <div class="agent">
           <div class="agent-code">{{ code }}</div>
           <div class="agent-desc">{{ desc }}</div>
-          <button
-            class="run-btn"
-            data-agent="{{ code | lower }}"
-            onclick="openAgentForm('{{ code | lower }}', '{{ code }}')"
-          >▶ Run</button>
+          <button class="run-btn" data-agent="{{ code | lower }}"
+            onclick="openAgentForm('{{ code | lower }}', '{{ code }}')">▶ Run</button>
         </div>
         {% endfor %}
       </div>
@@ -333,260 +861,785 @@
           <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
         </div>
         <div class="modal-body">
+          <div id="modal-card" class="live-card" style="display:none;"></div>
           <pre class="modal-pre" id="modal-json"></pre>
-          <!-- BOOK agent card view (shown instead of raw pre for BOOK) -->
-          <div id="book-card" class="live-card" style="display:none">
-            <div class="live-card-section" id="bk-booking-section">
-              <div class="live-card-label">Booking</div>
-              <div id="bk-booking"></div>
-            </div>
-            <div class="live-card-section" id="bk-recs-section">
-              <div class="live-card-label">Recommendations</div>
-              <ul class="live-card-list" id="bk-recs"></ul>
-            </div>
-            <div class="live-card-section" id="bk-audit-section">
-              <div class="live-card-label">Audit Trail</div>
-              <ul class="live-card-list" id="bk-audit"></ul>
-            </div>
-            <div class="live-card-meta" id="bk-meta"></div>
-          </div>
         </div>
         <div class="modal-foot">
           <button class="btn-ghost" onclick="showFormPanel()">← Back</button>
+          <button class="btn-ghost" id="toggle-json-btn" onclick="toggleJson()" style="display:none">Show JSON</button>
+          <button class="btn-ghost" id="apply-book-btn" onclick="applyBookToShows()" style="display:none">Add to
+            Shows</button>
+          <button class="btn-ghost" id="apply-tour-btn" onclick="applyTourToTours()" style="display:none">Add to
+            Tours</button>
           <button class="btn-ghost" id="copy-btn" onclick="copyResult()">Copy JSON</button>
           <button class="btn-ghost" onclick="closeModal()">Close</button>
         </div>
+
       </div>
-
-    </div>
-  </div><!-- /modal -->
+    </div><!-- /modal -->
 
 
-  <script>
-    const DEPT         = 'live';
-    const AGENT_FIELDS = {{ agent_fields | tojson }};
+    <script>
+      const DEPT = 'live';
+      const AGENT_FIELDS = {{ agent_fields | tojson }};
 
-    let _cur = null;  // { slug, displayName }
+      let _cur = null;  // { slug, displayName }
 
-    /* ── Open form ─────────────────────────────────────── */
-    function openAgentForm(slug, displayName) {
-      _cur = { slug, displayName };
+      let _jsonVisible = true;
 
-      const info   = AGENT_FIELDS[slug] || {};
-      const fields = info.fields || [];
-      const desc   = info.description || '';
+      function setJsonVisible(visible) {
+        const pre = document.getElementById('modal-json');
+        const btn = document.getElementById('toggle-json-btn');
+        _jsonVisible = !!visible;
 
-      document.getElementById('form-agent-name').textContent = displayName;
-      document.getElementById('form-agent-desc').textContent = desc;
-      document.getElementById('form-fields').innerHTML = fields.length
-        ? fields.map(buildFieldHtml).join('')
-        : '<p class="no-fields">No context required — click Run Agent to continue.</p>';
-
-      showPanel('form');
-      document.getElementById('agent-modal').classList.add('open');
-    }
-
-    /* ── Build one field's HTML ─────────────────────────── */
-    function buildFieldHtml(f) {
-      const id  = 'field-' + f.key;
-      const req = f.required ? '<span class="req">*</span>' : '';
-      let   ctrl;
-
-      if (f.type === 'select') {
-        const opts = (f.options || [])
-          .map(o => `<option value="${o}">${o}</option>`)
-          .join('');
-        ctrl = `<select id="${id}" class="field-input">
-          <option value="">— choose —</option>${opts}
-        </select>`;
-      } else if (f.type === 'textarea') {
-        ctrl = `<textarea id="${id}" class="field-input field-ta"
-          placeholder="${esc(f.placeholder || '')}"></textarea>`;
-      } else {
-        const t = f.type === 'number' ? 'number' : 'text';
-        ctrl = `<input type="${t}" id="${id}" class="field-input"
-          placeholder="${esc(f.placeholder || '')}">`;
+        if (pre) pre.style.display = _jsonVisible ? '' : 'none';
+        if (btn) btn.textContent = _jsonVisible ? 'Hide JSON' : 'Show JSON';
       }
 
-      const hint = f.type === 'tags'
-        ? '<span class="field-hint">Comma-separated list</span>' : '';
+      function toggleJson() {
+        setJsonVisible(!_jsonVisible);
+      }
 
-      return `<div class="field-group">
+      /* ── Open form ─────────────────────────────────────── */
+      function openAgentForm(slug, displayName) {
+        _cur = { slug, displayName };
+
+        const info = AGENT_FIELDS[slug] || {};
+        const fields = info.fields || [];
+        const desc = info.description || '';
+
+        document.getElementById('form-agent-name').textContent = displayName;
+        document.getElementById('form-agent-desc').textContent = desc;
+        document.getElementById('form-fields').innerHTML = fields.length
+          ? fields.map(buildFieldHtml).join('')
+          : '<p class="no-fields">No context required — click Run Agent to continue.</p>';
+
+        showPanel('form');
+        document.getElementById('agent-modal').classList.add('open');
+      }
+
+      /* ── Build one field's HTML ─────────────────────────── */
+      function buildFieldHtml(f) {
+        const k = f.key || f.name;         // supports both styles
+        const id = 'field-' + k;
+        const req = f.required ? '<span class="req">*</span>' : '';
+        let ctrl;
+
+        if (f.type === 'select') {
+          const opts = (f.options || [])
+            .map(o => `<option value="${o}">${o}</option>`)
+            .join('');
+          ctrl = `<select id="${id}" class="field-input">
+          <option value="">— choose —</option>${opts}
+        </select>`;
+        } else if (f.type === 'textarea') {
+          ctrl = `<textarea id="${id}" class="field-input field-ta"
+          placeholder="${esc(f.placeholder || '')}"></textarea>`;
+        } else {
+          const t = f.type === 'number' ? 'number' : 'text';
+          ctrl = `<input type="${t}" id="${id}" class="field-input"
+          placeholder="${esc(f.placeholder || '')}">`;
+        }
+
+        const hint = f.type === 'tags'
+          ? '<span class="field-hint">Comma-separated list</span>' : '';
+
+        return `<div class="field-group">
         <label class="field-label" for="${id}">${f.label}${req}</label>
         ${ctrl}${hint}
       </div>`;
-    }
+      }
 
-    function esc(s) {
-      return s.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-    }
+      function esc(s) {
+        return s.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      }
 
-    /* ── Collect + submit form ──────────────────────────── */
-    function submitCurrentForm() {
-      if (!_cur) return;
-      const { slug, displayName } = _cur;
-      const fields  = (AGENT_FIELDS[slug] || {}).fields || [];
-      const context = {};
-      let   hasErr  = false;
+      /* ── Collect + submit form ──────────────────────────── */
+      function submitCurrentForm() {
+        if (!_cur) return;
+        const { slug, displayName } = _cur;
+        const fields = (AGENT_FIELDS[slug] || {}).fields || [];
+        const context = {};
+        let hasErr = false;
 
-      for (const f of fields) {
-        const el = document.getElementById('field-' + f.key);
-        if (!el) continue;
-        el.classList.remove('field-error');
-        const raw = el.value.trim();
+        for (const f of fields) {
+          const k = f.key || f.name;
+          if (!k) continue;
 
-        if (f.required && !raw) {
-          el.classList.add('field-error');
-          el.focus();
-          hasErr = true;
-          break;
+          const el = document.getElementById('field-' + k);
+          if (!el) continue;
+
+          el.classList.remove('field-error');
+          const raw = (el.value || '').trim();
+
+          if (f.required && !raw) {
+            el.classList.add('field-error');
+            el.focus();
+            hasErr = true;
+            break;
+          }
+          if (!raw) continue;
+
+          if (f.type === 'number') {
+            context[k] = parseFloat(raw) || 0;
+          } else if (f.type === 'tags') {
+            context[k] = raw.split(',').map(s => s.trim()).filter(Boolean);
+          } else {
+            context[k] = raw;
+          }
         }
-        if (!raw) continue;
 
-        if      (f.type === 'number') context[f.key] = parseFloat(raw) || 0;
-        else if (f.type === 'tags')   context[f.key] = raw.split(',').map(s => s.trim()).filter(Boolean);
-        else                          context[f.key] = raw;
+        if (hasErr) return;
+        _execAgent(slug, displayName, context);
       }
 
-      if (hasErr) return;
-      _execAgent(slug, displayName, context);
-    }
+      /* ── POST to run endpoint ───────────────────────────── */
+      async function _execAgent(slug, displayName, context) {
+        const btn = document.getElementById('run-btn');
+        btn.disabled = true;
+        btn.textContent = '…';
 
-    /* ── POST to run endpoint ───────────────────────────── */
-    async function _execAgent(slug, displayName, context) {
-      const btn = document.getElementById('run-btn');
-      btn.disabled    = true;
-      btn.textContent = '…';
+        try {
+          const res = await fetch(`/${DEPT}/run/${slug}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(context),
+          });
+          const data = await res.json();
+          showResultPanel(displayName, data, res.ok);
+        } catch (err) {
+          showResultPanel(displayName, { ok: false, error: err.message }, false);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = '▶ Run Agent';
+        }
+      }
 
-      try {
-        const res  = await fetch(`/${DEPT}/run/${slug}`, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(context),
+      /* ── Populate + show result panel ───────────────────── */
+      function escapeHtml(s) {
+        return String(s ?? '')
+          .replaceAll('&', '&amp;').replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;').replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      }
+
+      function renderBookCard(envelope) {
+        const result = envelope?.result?.result;
+        const booking = result?.booking;
+        if (!booking) return '';
+
+        const dates = Array.isArray(booking.dates) ? booking.dates.join(', ') : (booking.dates || '—');
+        const recs = Array.isArray(result.recommendations) ? result.recommendations : [];
+        const audit = Array.isArray(result.audit_trail) ? result.audit_trail : [];
+
+        const recHtml = recs.length
+          ? `<ul class="live-card-list">${recs.map(r => `<li>${escapeHtml(r)}</li>`).join('')}</ul>`
+          : `<div class="live-card-stub">No recommendations returned.</div>`;
+
+        const auditHtml = audit.length
+          ? `<ul class="live-card-list">${audit.slice(-5).reverse().map(a => {
+            const adates = Array.isArray(a.dates) ? a.dates.join(', ') : (a.dates || '—');
+            return `<li>
+          <strong>${escapeHtml(a.artist || '')}</strong> · ${escapeHtml(a.territory || '—')} · ${escapeHtml(adates)}<br/>
+          <span style="color:#666">${escapeHtml(a.deal_type || '—')}</span>
+        </li>`;
+          }).join('')}</ul>`
+          : `<div class="live-card-stub">No recent bookings in audit trail.</div>`;
+
+        const savedTo = result?.saved_to ? escapeHtml(result.saved_to) : '';
+
+        return `
+    <div class="live-card-section">
+      <div class="live-card-label">Booking</div>
+      <dl class="live-card-kv">
+        <dt>Artist</dt><dd>${escapeHtml(booking.artist || '—')}</dd>
+        <dt>Territory</dt><dd>${escapeHtml(booking.territory || '—')}</dd>
+        <dt>Dates</dt><dd>${escapeHtml(dates)}</dd>
+        <dt>Deal</dt><dd>${escapeHtml(booking.deal_type || '—')}</dd>
+        <dt>Capacity</dt><dd>${escapeHtml(booking.capacity ?? '—')}</dd>
+        <dt>Notes</dt><dd>${escapeHtml(booking.notes || '—')}</dd>
+      </dl>
+    </div>
+
+    <div class="live-card-section">
+      <div class="live-card-label">Recommendations</div>
+      ${recHtml}
+    </div>
+
+    <div class="live-card-section">
+      <div class="live-card-label">Recent Audit Trail</div>
+      ${auditHtml}
+    </div>
+
+    ${savedTo ? `<div class="live-card-meta"><strong>Saved to:</strong> ${savedTo}</div>` : ''}
+  `;
+      }
+
+      function isPlainObject(v) {
+        return v && typeof v === 'object' && !Array.isArray(v);
+      }
+
+      function fmtValue(v) {
+        if (v === null || v === undefined) return '—';
+        if (typeof v === 'string') return v || '—';
+        if (typeof v === 'number' || typeof v === 'boolean') return String(v);
+        if (Array.isArray(v)) return v.length ? `${v.length} item(s)` : '—';
+        if (isPlainObject(v)) return Object.keys(v).length ? `${Object.keys(v).length} field(s)` : '—';
+        return String(v);
+      }
+
+      function prettyKey(k) {
+        return String(k).replace(/_/g, ' ');
+      }
+
+      function fmtPct(n) {
+        const x = Number(n);
+        if (!Number.isFinite(x)) return '—';
+        return `${(x * 100).toFixed(0)}%`;
+      }
+
+      function parseDealMemoSplit(s) {
+        // Accept "70/30", "70 / 30", "70-30", "70:30"
+        if (typeof s !== 'string') return null;
+        const m = s.match(/(\d+(?:\.\d+)?)\s*[/:\-]\s*(\d+(?:\.\d+)?)/);
+        if (!m) return null;
+
+        const a = Number(m[1]);
+        const b = Number(m[2]);
+        const sum = a + b;
+        if (!Number.isFinite(sum) || sum <= 0) return null;
+
+        return { artistPct: a / sum, promoterPct: b / sum };
+      }
+
+      function fmtHours(n) {
+        const x = Number(n);
+        if (!Number.isFinite(x)) return '—';
+        return `${x.toFixed(1)} hr`;
+      }
+
+      function fmtMoney(n) {
+        const x = Number(n);
+        if (!Number.isFinite(x)) return '—';
+        return x.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+      }
+
+      function fmtMoney1(n) {
+        const x = Number(n);
+        if (!Number.isFinite(x)) return '—';
+        return x.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 1 });
+      }
+
+      function looksLikeOrderLine(x) {
+        return x && typeof x === 'object' && !Array.isArray(x) &&
+          ('item' in x) && ('quantity' in x) && ('price_point' in x);
+      }
+
+      function groupOrderQuantities(lines) {
+        const m = new Map();
+
+        for (const line of lines) {
+          const item = String(line.item ?? '').trim();
+          const size = String(line.size ?? '').trim();
+          const pp = Number(line.price_point);
+          const qty = Number(line.quantity);
+
+          const key = `${item}||${size}||${Number.isFinite(pp) ? pp : ''}`;
+          const cur = m.get(key) || { item, size, price_point: Number.isFinite(pp) ? pp : null, quantity: 0 };
+
+          cur.quantity += Number.isFinite(qty) ? qty : 0;
+          m.set(key, cur);
+        }
+
+        return Array.from(m.values()).sort((a, b) =>
+          a.item.localeCompare(b.item) ||
+          String(a.size).localeCompare(String(b.size)) ||
+          (Number(a.price_point) - Number(b.price_point))
+        );
+      }
+
+      function renderOrderQtyTable(lines) {
+        const rows = lines.map(x => `
+    <tr>
+      <td>${escapeHtml(x.item || '—')}</td>
+      <td>${escapeHtml(x.size || '—')}</td>
+      <td>${escapeHtml(x.price_point ?? '—')}</td>
+      <td>${escapeHtml(x.quantity ?? '—')}</td>
+    </tr>
+  `).join('');
+
+        return `
+    <table class="gen-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Size</th>
+          <th>Price</th>
+          <th>Qty</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+      }
+
+      function isPrimitive(v) {
+        return v === null || v === undefined || typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean';
+      }
+
+      function tryParseJson(s) {
+        if (typeof s !== 'string') return null;
+        try { return JSON.parse(s); } catch { return null; }
+      }
+
+      // ISO date helpers (single definition)
+      function isIsoDate(s) {
+        return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s);
+      }
+
+      function fmtIsoWithUtcDow(s) {
+        if (!isIsoDate(s)) return s;
+        const d = new Date(s + 'T00:00:00Z'); // stable UTC weekday
+        if (Number.isNaN(d.getTime())) return s;
+        const dow = d.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' });
+        return `${s} (${dow})`;
+      }
+
+      function renderObjValue(v) {
+        // Handle strings first so we can format ISO dates (YYYY-MM-DD) before escaping
+        if (typeof v === 'string') {
+          const s = v || '—';
+          return escapeHtml(isIsoDate(s) ? fmtIsoWithUtcDow(s) : s);
+        }
+
+        if (v === null || v === undefined) return '—';
+        if (typeof v === 'number' || typeof v === 'boolean') return escapeHtml(String(v));
+
+        if (Array.isArray(v)) {
+          // Render arrays of primitives nicely; arrays of objects as compact JSON
+          const allPrim = v.every(isPrimitive);
+          if (allPrim) {
+            return escapeHtml(v.map(x => {
+              if (typeof x === 'string') return isIsoDate(x) ? fmtIsoWithUtcDow(x) : (x || '—');
+              return fmtValue(x);
+            }).join(', '));
+          }
+          return `<code>${escapeHtml(JSON.stringify(v))}</code>`;
+        }
+
+        if (isPlainObject(v)) {
+          return `<code>${escapeHtml(JSON.stringify(v))}</code>`;
+        }
+
+        return escapeHtml(String(v));
+      }
+
+      function renderObjectAsDl(obj, limit = 12) {
+        const entries = Object.entries(obj || {}).slice(0, limit);
+        if (!entries.length) return `<div class="live-card-stub">Empty.</div>`;
+
+        const rows = entries.map(([k, v]) =>
+          `<dt>${escapeHtml(prettyKey(k))}</dt><dd>${renderObjValue(v)}</dd>`
+        ).join('');
+
+        const more = Object.keys(obj).length > limit
+          ? `<div style="margin-top:6px;color:#555;font-size:.72rem;">Showing ${limit} of ${Object.keys(obj).length} fields…</div>`
+          : '';
+
+        return `<dl class="gen-obj">${rows}</dl>${more}`;
+      }
+
+      function renderGenericCard(envelope) {
+        const result = envelope?.result;
+
+        // Prefer .data (MERCH, many others), fall back to .result (BOOK-like), and finally to the whole result
+        const data =
+          result?.data ??
+          result?.result ??
+          result;
+
+        if (!data || typeof data !== 'object') return '';
+
+        // ROUTE: reconcile inconsistent fields between result.data and result.message
+        // + add sanity block for travel time vs distance
+        let routeSanityHtml = '';
+
+        if ((envelope?.agent || '').toUpperCase() === 'ROUTE') {
+          const msgObj = tryParseJson(result?.message);
+
+          const dataVal = Number(data.estimated_travel_time_hr);
+          const msgVal = Number(msgObj?.estimated_travel_time_hr);
+
+          let agentHr = dataVal;
+          let derivedFromMessage = false;
+
+          if ((!Number.isFinite(agentHr) || agentHr === 0) && Number.isFinite(msgVal) && msgVal > 0) {
+            agentHr = msgVal;
+            data.estimated_travel_time_hr = msgVal; // keep display consistent in the main KV
+            derivedFromMessage = true;
+          }
+
+          const kmTotal =
+            Number(data.total_km) ||
+            (Array.isArray(data.route_plan)
+              ? data.route_plan.reduce((acc, x) => acc + (Number(x?.km) || 0), 0)
+              : 0);
+
+          const AVG_KMH = 80;
+          const impliedHr = (Number.isFinite(kmTotal) && kmTotal > 0) ? (kmTotal / AVG_KMH) : NaN;
+
+          // Only show if we have at least one meaningful number
+          if ((Number.isFinite(agentHr) && agentHr > 0) || (Number.isFinite(impliedHr) && impliedHr > 0)) {
+            // Flag obvious nonsense: implied is much larger than agent (e.g., > 1.5x)
+            const ratio = (Number.isFinite(agentHr) && agentHr > 0 && Number.isFinite(impliedHr) && impliedHr > 0)
+              ? (impliedHr / agentHr)
+              : NaN;
+
+            const warnStyle = (Number.isFinite(ratio) && ratio > 1.5)
+              ? 'color:#ffb400;'
+              : '';
+
+            routeSanityHtml = `
+        <div class="gen-sanity">
+          <div><strong>Travel time (agent):</strong> ${escapeHtml(fmtHours(agentHr))}${derivedFromMessage ? ' <span style="color:#555">(from message)</span>' : ''}</div>
+          <div style="${warnStyle}"><strong>Travel time (implied @ ${AVG_KMH} km/h):</strong> ${escapeHtml(fmtHours(impliedHr))}</div>
+          ${Number.isFinite(ratio) && ratio > 1.5 ? `<div style="margin-top:4px;${warnStyle}">Sanity check: implied time is ~${escapeHtml(ratio.toFixed(1))}× the agent estimate.</div>` : ''}
+        </div>
+      `;
+          }
+        }
+
+        // SETTLE sanity block (UI-only)
+        let settleSanityHtml = '';
+
+        if ((envelope?.agent || '').toUpperCase() === 'SETTLE') {
+          const ctx = result?.context || {};
+
+          const gross = Number(data.gross_box_office ?? ctx.gross_box_office);
+          const expenses = Number(data.deductible_expenses ?? ctx.expenses);
+          const net = Number(data.net_box_office);
+
+          const shownArtist = Number(data.artist_share);
+          const shownPromoter = Number(data.promoter_share);
+
+          const impliedNet =
+            (Number.isFinite(gross) ? gross : NaN) - (Number.isFinite(expenses) ? expenses : 0);
+
+          const split = parseDealMemoSplit(ctx.deal_memo);
+          const impliedArtist = (split && Number.isFinite(impliedNet)) ? impliedNet * split.artistPct : NaN;
+          const impliedPromoter = (split && Number.isFinite(impliedNet)) ? impliedNet * split.promoterPct : NaN;
+
+          const shownSum =
+            (Number.isFinite(shownArtist) ? shownArtist : 0) +
+            (Number.isFinite(shownPromoter) ? shownPromoter : 0);
+
+          const netMismatch =
+            Number.isFinite(net) && Number.isFinite(impliedNet) ? Math.abs(net - impliedNet) : NaN;
+
+          const sharesMismatch =
+            (Number.isFinite(net) && Number.isFinite(shownSum)) ? Math.abs(net - shownSum) : NaN;
+
+          const warnNet = Number.isFinite(netMismatch) && netMismatch >= 1;
+          const warnShares = Number.isFinite(sharesMismatch) && sharesMismatch >= 1;
+
+          const warnStyle = (warnNet || warnShares) ? 'color:#ffb400;' : '';
+
+          settleSanityHtml = `
+      <div class="gen-sanity">
+        <div><strong>Gross:</strong> ${escapeHtml(fmtMoney(gross))}</div>
+        <div><strong>Expenses:</strong> ${escapeHtml(fmtMoney(expenses))}</div>
+        <div><strong>Net (implied):</strong> ${escapeHtml(fmtMoney(impliedNet))}</div>
+
+        <div style="margin-top:6px"><strong>Net (reported):</strong> <span style="${warnNet ? 'color:#ffb400;' : ''}">${escapeHtml(fmtMoney(net))}</span></div>
+
+        <div style="margin-top:6px"><strong>Shares (reported):</strong>
+          <span style="${warnShares ? 'color:#ffb400;' : ''}">
+            artist ${escapeHtml(fmtMoney(shownArtist))} + promoter ${escapeHtml(fmtMoney(shownPromoter))} = ${escapeHtml(fmtMoney(shownSum))}
+          </span>
+        </div>
+
+        ${split ? `
+          <div style="margin-top:6px;${warnStyle}">
+            <strong>Split (from deal memo):</strong> artist ${escapeHtml(fmtPct(split.artistPct))} / promoter ${escapeHtml(fmtPct(split.promoterPct))}
+          </div>
+          <div style="${warnStyle}">
+            <strong>Shares (implied):</strong> artist ${escapeHtml(fmtMoney(impliedArtist))}, promoter ${escapeHtml(fmtMoney(impliedPromoter))}
+          </div>
+        ` : `
+          <div style="margin-top:6px;color:#555;">
+            Deal memo not parseable for split sanity (expected like "70/30").
+          </div>
+        `}
+
+        ${(warnNet || warnShares) ? `
+          <div style="margin-top:4px;${warnStyle}">
+            Sanity check warning: reported values don’t reconcile.
+          </div>
+        ` : ''}
+      </div>
+    `;
+        }
+
+        const sections = [];
+
+        for (const [k, v] of Object.entries(data)) {
+          if (Array.isArray(v)) {
+            // Special-case MERCH order quantities: group + table render
+            if (k === 'order_quantities' && v.every(looksLikeOrderLine)) {
+              const grouped = groupOrderQuantities(v);
+              sections.push(`
+          <div class="gen-card-section">
+            <div class="gen-card-title">${escapeHtml(prettyKey(k))}</div>
+            ${grouped.length ? renderOrderQtyTable(grouped) : `<div class="live-card-stub">No items.</div>`}
+          </div>
+        `);
+              continue;
+            }
+
+            // default array rendering
+            const items = v.slice(0, 20);
+            const li = items.map(item => {
+              if (isPlainObject(item)) {
+                return `<li>${renderObjectAsDl(item)}</li>`;
+              }
+              return `<li>${escapeHtml(fmtValue(item))}</li>`;
+            }).join('');
+
+            sections.push(`
+        <div class="gen-card-section">
+          <div class="gen-card-title">${escapeHtml(prettyKey(k))}</div>
+          ${v.length ? `<ul class="gen-list">${li}</ul>` : `<div class="live-card-stub">No items.</div>`}
+        </div>
+      `);
+            continue;
+          }
+
+          if (isPlainObject(v)) {
+            const pairs = Object.entries(v).slice(0, 30).map(([kk, vv]) => {
+              return `<dt>${escapeHtml(prettyKey(kk))}</dt><dd>${escapeHtml(fmtValue(vv))}</dd>`;
+            }).join('');
+
+            // ── Sanity lines for settlement_estimate (MERCH) ──
+            let sanityHtml = '';
+            if (k === 'settlement_estimate') {
+              const gross = Number(v.expected_gross);
+              const ctx = envelope?.result?.context || {};
+              const attendance = Number(ctx.expected_attendance);
+              const showCount = Array.isArray(ctx.show_dates) && ctx.show_dates.length ? ctx.show_dates.length : 1;
+
+              const grossPerShow = Number.isFinite(gross) ? gross / showCount : NaN;
+
+              // Assume expected_attendance is per show => total attendees = attendance * showCount
+              const totalAttendees = (Number.isFinite(attendance) && attendance > 0) ? (attendance * showCount) : NaN;
+              const grossPerAttendee =
+                (Number.isFinite(gross) && Number.isFinite(totalAttendees) && totalAttendees > 0)
+                  ? (gross / totalAttendees)
+                  : NaN;
+
+              const net = Number(v.expected_net);
+              const netPerShow = Number.isFinite(net) ? net / showCount : NaN;
+              const netPerAttendee =
+                (Number.isFinite(net) && Number.isFinite(totalAttendees) && totalAttendees > 0)
+                  ? (net / totalAttendees)
+                  : NaN;
+
+              sanityHtml = `
+          <div class="gen-sanity">
+            <div><strong>Gross per attendee:</strong> ${escapeHtml(fmtMoney1(grossPerAttendee))}</div>
+            <div><strong>Gross per show:</strong> ${escapeHtml(fmtMoney(grossPerShow))}</div>
+
+            <div style="margin-top:6px"><strong>Net per attendee:</strong> ${escapeHtml(fmtMoney1(netPerAttendee))}</div>
+            <div><strong>Net per show:</strong> ${escapeHtml(fmtMoney(netPerShow))}</div>
+
+            <div style="margin-top:4px;color:#555;">
+              Assumes expected_attendance is per show (shows: ${escapeHtml(String(showCount))}).
+            </div>
+          </div>
+        `;
+            }
+
+            sections.push(`
+        <div class="gen-card-section">
+          <div class="gen-card-title">${escapeHtml(prettyKey(k))}</div>
+          ${Object.keys(v).length
+                ? `<dl class="gen-kv">${pairs}</dl>${sanityHtml}`
+                : `<div class="live-card-stub">Empty object.</div>`}
+        </div>
+      `);
+            continue;
+          }
+
+          sections.push(`
+      <div class="gen-card-section">
+        <div class="gen-card-title">${escapeHtml(prettyKey(k))}</div>
+        <dl class="gen-kv">
+          <dt>value</dt><dd>${escapeHtml(fmtValue(v))}</dd>
+        </dl>
+      </div>
+    `);
+        }
+
+        if (routeSanityHtml) {
+          sections.push(`
+      <div class="gen-card-section">
+        <div class="gen-card-title">sanity</div>
+        ${routeSanityHtml}
+      </div>
+    `);
+        }
+
+        if (settleSanityHtml) {
+          sections.push(`
+      <div class="gen-card-section">
+        <div class="gen-card-title">sanity</div>
+        ${settleSanityHtml}
+      </div>
+    `);
+        }
+
+        return sections.join('') || '';
+      }
+
+      function showResultPanel(name, envelope, httpOk) {
+        window._lastEnvelope = envelope;
+        document.getElementById('result-agent-name').textContent = name;
+
+
+        const status = envelope.result?.status ?? (httpOk ? 'ok' : 'error');
+        const statusEl = document.getElementById('result-status');
+        statusEl.textContent = status;
+        statusEl.className = 'badge badge-' + status;
+
+        const ts = envelope.timestamp || '';
+        document.getElementById('result-ts').textContent =
+          ts ? new Date(ts).toLocaleTimeString() : '';
+
+        // Always populate raw JSON for copy/debug
+        document.getElementById('modal-json').textContent =
+          JSON.stringify(envelope, null, 2);
+
+        const agent = (envelope.agent || '').toLowerCase();
+        const cardEl = document.getElementById('modal-card');
+        const toggleBtn = document.getElementById('toggle-json-btn');
+
+        let html = '';
+        if (agent === 'book') {
+          html = renderBookCard(envelope);
+        } else {
+          html = renderGenericCard(envelope);
+        }
+
+        if (html) {
+          cardEl.innerHTML = html;
+          cardEl.style.display = '';
+
+          // show toggle and default-hide JSON when a card is present
+          if (toggleBtn) toggleBtn.style.display = '';
+          setJsonVisible(false);
+        } else {
+          cardEl.innerHTML = '';
+          cardEl.style.display = 'none';
+
+          // no card => show JSON, hide toggle
+          if (toggleBtn) toggleBtn.style.display = 'none';
+          setJsonVisible(true);
+        }
+
+        const applyBookBtn = document.getElementById('apply-book-btn');
+        const applyTourBtn = document.getElementById('apply-tour-btn');
+        if (applyBookBtn) { applyBookBtn.disabled = false; applyBookBtn.textContent = 'Add to Shows'; }
+        if (applyTourBtn) { applyTourBtn.disabled = false; applyTourBtn.textContent = 'Add to Tours'; }
+        if (applyBookBtn) applyBookBtn.style.display = (agent === 'book' && envelope?.ok) ? '' : 'none';
+        if (applyTourBtn) applyTourBtn.style.display = (agent === 'tour' && envelope?.ok) ? '' : 'none';
+
+        showPanel('result');
+      }
+
+      /* ── Panel switching ────────────────────────────────── */
+      function showPanel(which) {
+        document.getElementById('modal-form').style.display = which === 'form' ? '' : 'none';
+        document.getElementById('modal-result').style.display = which === 'result' ? '' : 'none';
+      }
+      function showFormPanel() { showPanel('form'); }
+      function closeModal() { document.getElementById('agent-modal').classList.remove('open'); }
+
+      /* ── Copy JSON ──────────────────────────────────────── */
+      function copyResult() {
+        navigator.clipboard.writeText(
+          document.getElementById('modal-json').textContent
+        ).then(() => {
+          const btn = document.getElementById('copy-btn');
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = 'Copy JSON'; }, 1500);
         });
-        const data = await res.json();
-        showResultPanel(displayName, slug, data, res.ok);
-      } catch (err) {
-        showResultPanel(displayName, slug, { ok: false, error: err.message }, false);
-      } finally {
-        btn.disabled    = false;
-        btn.textContent = '▶ Run Agent';
       }
-    }
+      async function applyBookToShows() {
+        const env = window._lastEnvelope;
+        const booking = env?.result?.result?.booking;
+        if (!booking) return alert('No booking found in last result.');
 
-    /* ── Populate + show result panel ───────────────────── */
-    function showResultPanel(name, slug, envelope, httpOk) {
-      document.getElementById('result-agent-name').textContent = name;
+        const btn = document.getElementById('apply-book-btn');
+        btn.disabled = true;
+        const old = btn.textContent;
+        btn.textContent = 'Saving…';
 
-      const status   = envelope.result?.status ?? (httpOk ? 'ok' : 'error');
-      const statusEl = document.getElementById('result-status');
-      statusEl.textContent = status;
-      statusEl.className   = 'badge badge-' + status;
+        try {
+          const res = await fetch(`/${DEPT}/apply/book`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ booking }),
+          });
+          const out = await res.json();
+          if (!res.ok || !out.ok) throw new Error(out.error || 'Apply failed');
 
-      const ts = envelope.timestamp || '';
-      document.getElementById('result-ts').textContent =
-        ts ? new Date(ts).toLocaleTimeString() : '';
+          btn.textContent = `Added (${out.added})`;
+          setTimeout(() => { btn.textContent = old; btn.disabled = false; }, 1200);
 
-      document.getElementById('modal-json').textContent =
-        JSON.stringify(envelope, null, 2);
-
-      const cardEl = document.getElementById('book-card');
-      const preEl  = document.getElementById('modal-json');
-
-      if (slug === 'book') {
-        preEl.style.display  = 'none';
-        cardEl.style.display = '';
-        _renderBookCard(envelope);
-      } else {
-        cardEl.style.display = 'none';
-        preEl.style.display  = '';
+          // simplest: refresh the page so stats/tables update
+          window.location.reload();
+        } catch (e) {
+          btn.textContent = old;
+          btn.disabled = false;
+          alert(String(e.message || e));
+        }
       }
 
-      showPanel('result');
-    }
+      async function applyTourToTours() {
+        const env = window._lastEnvelope;
+        const ctx = env?.result?.context || {};
+        if (!ctx.artist) return alert('No TOUR context found in last result.');
 
-    /* ── Render BOOK agent card view ────────────────────── */
-    function _renderBookCard(envelope) {
-      const res     = (envelope.result || {}).result || {};
-      const booking = res.booking;
-      const recs    = res.recommendations;
-      const audit   = res.audit_trail;
+        const btn = document.getElementById('apply-tour-btn');
+        btn.disabled = true;
+        const old = btn.textContent;
+        btn.textContent = 'Saving…';
 
-      // Booking section
-      const bkSection = document.getElementById('bk-booking-section');
-      const bkDiv     = document.getElementById('bk-booking');
-      if (booking && typeof booking === 'object' && Object.keys(booking).length) {
-        const pairs = Object.entries(booking)
-          .map(([k, v]) => `<dt>${esc(k.replace(/_/g, ' '))}</dt><dd>${esc(String(v))}</dd>`)
-          .join('');
-        bkDiv.innerHTML = `<dl class="live-card-kv">${pairs}</dl>`;
-        bkSection.style.display = '';
-      } else {
-        bkSection.style.display = 'none';
+        try {
+          const res = await fetch(`/${DEPT}/apply/tour`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ context: ctx }),
+          });
+          const out = await res.json();
+          if (!res.ok || !out.ok) throw new Error(out.error || 'Apply failed');
+
+          btn.textContent = 'Added';
+          setTimeout(() => { btn.textContent = old; btn.disabled = false; }, 1200);
+
+          window.location.reload();
+        } catch (e) {
+          btn.textContent = old;
+          btn.disabled = false;
+          alert(String(e.message || e));
+        }
       }
 
-      // Recommendations section
-      const recSection = document.getElementById('bk-recs-section');
-      const recList    = document.getElementById('bk-recs');
-      if (Array.isArray(recs) && recs.length) {
-        recList.innerHTML = recs
-          .map(r => `<li>${esc(typeof r === 'string' ? r : JSON.stringify(r))}</li>`)
-          .join('');
-        recSection.style.display = '';
-      } else {
-        recSection.style.display = 'none';
-      }
-
-      // Audit trail section
-      const auSection = document.getElementById('bk-audit-section');
-      const auList    = document.getElementById('bk-audit');
-      if (Array.isArray(audit) && audit.length) {
-        auList.innerHTML = audit
-          .map(a => `<li>${esc(typeof a === 'string' ? a : JSON.stringify(a))}</li>`)
-          .join('');
-        auSection.style.display = '';
-      } else {
-        auSection.style.display = 'none';
-      }
-
-      // Fallback: show status/message if no structured data
-      if (!booking && !Array.isArray(recs) && !Array.isArray(audit)) {
-        const msg = (envelope.result || {}).message || 'Agent returned no structured booking data.';
-        bkSection.style.display = '';
-        bkDiv.innerHTML = `<p class="live-card-stub">${esc(msg)}</p>`;
-      }
-
-      // Meta footer
-      const meta = [];
-      if (envelope.saved_to) meta.push('Saved → ' + envelope.saved_to);
-      if (envelope.timestamp) meta.push(new Date(envelope.timestamp).toLocaleString());
-      document.getElementById('bk-meta').textContent = meta.join(' · ');
-    }
-
-    /* ── Panel switching ────────────────────────────────── */
-    function showPanel(which) {
-      document.getElementById('modal-form').style.display   = which === 'form'   ? '' : 'none';
-      document.getElementById('modal-result').style.display = which === 'result' ? '' : 'none';
-    }
-    function showFormPanel() { showPanel('form'); }
-    function closeModal()    { document.getElementById('agent-modal').classList.remove('open'); }
-
-    /* ── Copy JSON ──────────────────────────────────────── */
-    function copyResult() {
-      navigator.clipboard.writeText(
-        document.getElementById('modal-json').textContent
-      ).then(() => {
-        const btn = document.getElementById('copy-btn');
-        btn.textContent = 'Copied!';
-        setTimeout(() => { btn.textContent = 'Copy JSON'; }, 1500);
-      });
-    }
-
-    /* ── Dismiss on backdrop / Escape ───────────────────── */
-    const _backdrop = document.getElementById('agent-modal');
-    _backdrop.addEventListener('click', e => { if (e.target === _backdrop) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-  </script>
+      /* ── Dismiss on backdrop / Escape ───────────────────── */
+      const _backdrop = document.getElementById('agent-modal');
+      _backdrop.addEventListener('click', e => { if (e.target === _backdrop) closeModal(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    </script>
 
 </body>
+
 </html>

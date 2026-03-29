@@ -5,6 +5,33 @@
 MAESTRO AI is an AI-powered, multi-agent business operating system designed for independent labels, studios, and live music organizations. The platform provides a unified web dashboard, organizing core operations into four domains (Label, Studio, Live, Platform Ops) each with pluggable agents for end-to-end workflow automation.
 
 ---
+## v1.3.0 (April 1, 2026) — LIVE Dashboard Agent Cards + Apply Workflow
+
+**Highlights:**
+- LIVE dashboard agent result rendering significantly improved:
+  - Added polished generic agent result card rendering (arrays, objects, primitives).
+  - ISO date formatting now includes a stable UTC weekday label (e.g., `2026-05-12 (Tue)`).
+- Added LIVE agent “sanity check” sections to make outputs more actionable and easier to validate:
+  - **ROUTE:** reconciles inconsistent travel-time fields (prefers `result.data`, falls back to parsed `result.message` when needed) and adds implied travel-time sanity check.
+  - **SETTLE:** gross/expenses/net/share reconciliation plus deal memo split parsing (e.g., `70/30`).
+  - **MERCH:** settlement estimate sanity lines (per-attendee, per-show).
+- Added explicit operational write workflow (safer than auto-writing from agent runs):
+  - **BOOK → “Add to Shows”** button writes schedule rows to `live/data/shows.json`.
+  - **TOUR → “Add to Tours”** button writes a tour row to `live/data/tours.json`.
+  - Backend endpoints: `POST /live/apply/book` and `POST /live/apply/tour` with atomic JSON writes.
+  - Optional dedupe support to prevent duplicate BOOK entries by `(artist, date)`.
+- LIVE Shows table now displays **Territory** (supports values like “UK and Europe”), with backwards-compatible fallback for legacy `country` fields.
+
+**Notes / Behavioral changes:**
+- Running an agent (`▶ Run`) continues to save per-run outputs under `live/data/<agent>/...` for audit/debug.
+- Schedule tables (Shows/Tours) update only when using the explicit **Apply** actions.
+
+**Migration:**
+- No database migration required.
+- If you have legacy `live/data/shows.json` entries using `country`, they will continue to display via fallback.
+  - Optional: migrate data by renaming `country` → `territory` in `shows.json` for consistency.
+
+---
 ## v1.2.0 (March 27, 2026) — Dashboard Hardening & Team-Ready Release
 
 **Highlights:**

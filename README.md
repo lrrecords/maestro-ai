@@ -152,12 +152,36 @@ _Ollama runs on Mac, Linux, or Windows and requires downloading a model._
 
 ---
 
-## ⚠️ Known Issues & Limitations
+## LIVE dashboard
 
-- Artist details on the Label dashboard: click-through for profile is temporarily broken.
-- Advanced analytics visualizations are WIP.
-- Some agents remain stubs or MVPs—follow the roadmap for next milestones.
+The LIVE dashboard (`/live/`) shows operational tables (Shows, Tours) plus a modal runner for LIVE agents (BOOK, ROUTE, SETTLE, MERCH, PROMO, RIDER, TOUR).
 
+### Running agents vs updating the schedule
+
+Running an agent (`▶ Run`) generates an output JSON payload and saves it under `live/data/<agent>/...` for audit/debug. These agent runs do **not** automatically update the Shows/Tours tables.
+
+To update the schedule tables, use the explicit **Apply** buttons in the result modal:
+
+- **BOOK → “Add to Shows”**
+  - Creates one row in `live/data/shows.json` per booked date.
+  - Default fields for unknown details:
+    - `venue: "—"`
+    - `city: "—"`
+    - `status: "pending"`
+  - Writes `territory` (supports values like `UK and Europe`).
+
+- **TOUR → “Add to Tours”**
+  - Appends a tour row to `live/data/tours.json`
+  - Default `status: "pending"`
+
+This explicit “apply” step keeps the dashboard safe: agent runs can be evaluated before writing operational data.
+
+### Data files
+
+- `live/data/shows.json` — drives the Shows table and stats
+- `live/data/tours.json` — drives the Tours table and stats
+- `live/data/booking_history.json` — BOOK agent audit history
+- `live/data/<agent>/*.json` — per-run saved outputs (debug/audit)
 ---
 
 ## 🗺️ Roadmap (2026+)
