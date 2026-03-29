@@ -22,6 +22,13 @@ def _load(filename: str) -> list:
         return []
 
 
+def _save_list(filename: str, data: list) -> None:
+    path = _DATA / filename
+    tmp  = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    tmp.replace(path)
+
+
 @live_bp.get("/")
 def index():
     shows = _load("shows.json")
@@ -40,9 +47,9 @@ def index():
         "dept_live.html",
         shows=shows,
         tours=tours,
-        confirmed=len([s for s in shows if s.get("status") == "confirmed"]),
-        on_hold=len([s for s in shows if s.get("status") == "hold"]),
-        pending=len([s for s in shows if s.get("status") == "pending"]),
+        confirmed=len([s for s in shows if (s.get("status") or "").lower() == "confirmed"]),
+        on_hold=len([s for s in shows if (s.get("status") or "").lower() == "hold"]),
+        pending=len([s for s in shows if (s.get("status") or "").lower() == "pending"]),
         agent_fields=agent_fields,
     )
 
@@ -64,6 +71,81 @@ def run_agent(agent_name: str):
                         "saved_to": str(saved), "result": result})
     except Exception as exc:
         return jsonify({"ok": False, "agent": slug.upper(), "error": str(exc)}), 500
+
+
+@live_bp.post("/apply/book")
+def apply_book():
+    payload = request.get_json(silent=True) or {}
+    booking = payload.get("booking") or {}
+
+    artist    = booking.get("artist") or "—"
+    territory = booking.get("territory") or "—"
+    dates     = booking.get("dates") or []
+
+    if not isinstance(dates, list) or not dates:
+        return jsonify({"ok": False, "error": "Missing booking.dates[]"}), 400
+
+    shows = _load("shows.json")
+
+    added = []
+    for d in dates:
+        if not isinstance(d, str) or not d:
+            continue
+
+        # ✅ DEDUPE: prevent duplicate artist/date rows
+        exists = any((s.get("date") == d and s.get("artist") == artist) for s in shows)
+        if exists:
+            continue
+
+        show = {
+            "date": d,
+            "artist": artist,
+            "venue": "—",
+            "city": "—",
+            "territory": territory,
+            "status": "pending",
+        }
+        shows.append(show)
+        added.append(show)
+
+    _save_list("shows.json", shows)
+    return jsonify({"ok": True, "added": len(added), "shows": added})
+
+
+@live_bp.post("/apply/tour")
+def apply_tour():
+    payload = request.get_json(silent=True) or {}
+
+    # accept either explicit tour fields OR a TOUR envelope's context/data
+    artist = payload.get("artist") or payload.get("context", {}).get("artist") or "—"
+    start  = payload.get("start") or payload.get("context", {}).get("start_date") or "—"
+    end    = payload.get("end") or payload.get("context", {}).get("end_date") or "—"
+
+    show_count = payload.get("show_count")
+    if show_count is None:
+        show_count = payload.get("context", {}).get("show_count")
+
+    try:
+        show_count = int(show_count) if show_count is not None else 0
+    except Exception:
+        show_count = 0
+
+    name = payload.get("name") or payload.get("tour_name") or f"{artist} Tour"
+
+    tours = _load("tours.json")
+
+    tour = {
+        "name": name,
+        "artist": artist,
+        "start": start,
+        "end": end,
+        "show_count": show_count,
+        "status": "pending",
+    }
+    tours.append(tour)
+    _save_list("tours.json", tours)
+
+    return jsonify({"ok": True, "added": 1, "tour": tour})
 
 
 @live_bp.get("/agents")
