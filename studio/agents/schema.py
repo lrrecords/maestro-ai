@@ -1,6 +1,7 @@
 # studio/agents/schema.py
 # Single source of truth for all STUDIO agent form schemas.
-# All field identifiers use "key" to match agent FIELDS definitions.
+# All field identifiers use "key" to match agent FIELDS definitions in code.
+# Be sure to update both backend agent and this schema if fields change!
 
 STUDIO_AGENT_SCHEMAS = {
 
@@ -24,18 +25,18 @@ STUDIO_AGENT_SCHEMAS = {
         "title": "SESSION",
         "description": "Session planning, scheduling, and resource allocation.",
         "fields": [
-            {"key": "session_name",  "label": "Session Name",   "type": "text",     "required": True,  "placeholder": "e.g. Jordan Blake — Tracking Day 1"},
-            {"key": "artist",        "label": "Artist",         "type": "text",     "required": True,  "placeholder": "e.g. Jordan Blake"},
-            {"key": "session_date",  "label": "Session Date",   "type": "text",     "required": True,  "placeholder": "e.g. 2026-04-12"},
-            {"key": "start_time",    "label": "Start Time",     "type": "text",     "required": False, "placeholder": "e.g. 10:00"},
-            {"key": "end_time",      "label": "End Time",       "type": "text",     "required": False, "placeholder": "e.g. 18:00"},
-            {"key": "room",          "label": "Room",           "type": "text",     "required": False, "placeholder": "e.g. Studio A"},
-            {"key": "engineer",      "label": "Engineer",       "type": "text",     "required": False, "placeholder": "e.g. Brett"},
-            {"key": "session_type",  "label": "Session Type",  "type": "select",   "required": False,
+            {"key": "session_name",  "label": "Session Name",    "type": "text",     "required": True,  "placeholder": "e.g. Jordan Blake — Tracking Day 1"},
+            {"key": "artist",        "label": "Artist",          "type": "text",     "required": True,  "placeholder": "e.g. Jordan Blake"},
+            {"key": "session_date",  "label": "Session Date",    "type": "date",     "required": True,  "placeholder": "e.g. 2026-04-12"},
+            {"key": "start_time",    "label": "Start Time",      "type": "time",     "required": False, "placeholder": "e.g. 10:00"},
+            {"key": "end_time",      "label": "End Time",        "type": "time",     "required": False, "placeholder": "e.g. 18:00"},
+            {"key": "room",          "label": "Room",            "type": "text",     "required": False, "placeholder": "e.g. Studio A"},
+            {"key": "engineer",      "label": "Engineer",        "type": "text",     "required": False, "placeholder": "e.g. Brett"},
+            {"key": "session_type",  "label": "Session Type",    "type": "select",   "required": False,
              "options": ["tracking", "overdubs", "mixing", "mastering", "editing", "rehearsal", "other"]},
-            {"key": "status",        "label": "Status",         "type": "select",   "required": False,
-             "options": ["tentative", "booked", "confirmed", "completed", "cancelled"]},
-            {"key": "notes",         "label": "Notes",          "type": "textarea", "required": False, "placeholder": "Goals, equipment needs, special requests"},
+            {"key": "status",        "label": "Status",          "type": "select",   "required": False,
+             "options": ["tentative", "booked", "completed", "cancelled"]},
+            {"key": "notes",         "label": "Notes",           "type": "textarea", "required": False, "placeholder": "Goals, equipment needs, special requests"},
         ],
     },
 
@@ -107,7 +108,7 @@ STUDIO_AGENT_SCHEMAS = {
             {"key": "currency",          "label": "Currency",         "type": "select", "required": False,
              "options": ["GBP", "USD", "EUR", "AUD", "CAD"]},
             {"key": "discount_percent",  "label": "Discount %",       "type": "number", "required": False, "placeholder": "e.g. 10"},
-            {"key": "notes",             "label": "Notes",            "type": "textarea","required": False, "placeholder": "Special terms, rush fees, travel, etc."},
+            {"key": "notes",             "label": "Notes",            "type": "textarea", "required": False, "placeholder": "Special terms, rush fees, travel, etc."},
         ],
     },
 
@@ -124,4 +125,37 @@ STUDIO_AGENT_SCHEMAS = {
         ],
     },
 
+    "ask_ai": {
+        "title": "ASK_AI",
+        "description": "Ask any question—get AI-powered studio, business, or music answers.",
+        "fields": [
+            {
+                "key": "question",
+                "label": "Your Question",
+                "type": "textarea",
+                "required": True,
+                "placeholder": "Type any studio, music, or business question here…"
+            },
+            {
+                "key": "context_notes",
+                "label": "Context (optional)",
+                "type": "textarea",
+                "required": False,
+                "placeholder": "Tell us what this relates to (project, artist, session…)"
+            },
+            {
+                "key": "answer_style",
+                "label": "Answer Style",
+                "type": "select",
+                "options": [
+                    "concise",
+                    "detailed",
+                    "step_by_step",
+                    "creative",
+                    "industry_best_practices"
+                ],
+                "required": False
+            }
+        ],
+    },
 }

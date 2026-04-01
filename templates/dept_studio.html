@@ -22,6 +22,13 @@
       color: #b388ff; border: 1px solid rgba(179,136,255,.3);
       padding: 2px 8px; border-radius: 999px;
     }
+    .strategy-section summary {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.strategy-content { padding: 5px 0 5px 8px; }
+#audit-history { border: 1px solid #222; margin: 1em 0; padding: 0.5em; background: #181818 }
 
     /* ── Layout ── */
     .main { max-width: 1100px; margin: 0 auto; padding: 28px 32px; }
@@ -445,7 +452,8 @@
           ("SIGNAL",  "Studio marketing, social content, and brand positioning."),
           ("CRAFT",   "Internal tooling and workflow automation."),
           ("RATE",    "Pricing strategy, quote generation, and contracts."),
-          ("MIX",     "Strategy synthesiser — coordinates all agents.")
+          ("MIX",     "Strategy synthesiser — coordinates all agents."),
+          ("ASK_AI",  "Ask any question—get AI-powered studio, business, or music answers."),
         ] %}
         <div class="agent">
           <div class="agent-code">{{ code }}</div>
@@ -494,6 +502,17 @@
         <div class="modal-body">
           <div id="resultMeta"></div>
           <div id="resultContainer"></div>
+          <div id="signal-enhanced-view" style="display:none; margin-top:12px;">
+  <div>
+    <strong>Strategy</strong>
+    <div id="signal-strategy-panels"></div>
+  </div>
+  <div style="margin-top:14px;">
+    <button class="btn" onclick="toggleSignalAudit()">View Audit History</button>
+    <button class="btn" onclick="downloadSignalAudit()">Download Audit Log</button>
+  </div>
+  <div id="signal-audit-history" style="display:none; margin-top:10px; border:1px solid #1e1e1e; border-radius:8px; background:#181818;"></div>
+</div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn" onclick="copyResultJson()">Copy JSON</button>
@@ -1013,6 +1032,92 @@
       }
     });
   </script>
+<script>
+function renderSignalStrategySections(strategy) {
+  const sectionNames = {
+    overview: "Overview",
+    content: "Content Plan",
+    channels: "Channels",
+    actions: "Immediate Actions",
+    recommendations: "Recommendations"
+  };
+  let html = '';
+  for (const key of Object.keys(sectionNames)) {
+    let value = strategy[key];
+    let label = sectionNames[key];
+    if (!value) continue;
+    html += `
+      <details class="strategy-section" open>
+        <summary style="font-weight:bold;cursor:pointer;">${label}
+          <button class="btn" style="float:right;font-size:.7em;padding:2px 10px;" 
+            onclick="event.stopPropagation();copySignalSection('${key}')">Copy</button>
+        </summary>
+        <div class="strategy-content" style="margin:8px 0 8px 10px;">
+          ${Array.isArray(value) 
+            ? '<ul style="margin:0 0 0 12px;">' + value.map(x => `<li>${x}</li>`).join('') + '</ul>'
+            : `<p>${value}</p>`}
+        </div>
+      </details>
+    `;
+  }
+  return html || "<i>No strategy data available yet.</i>";
+}
 
+function copySignalSection(key) {
+  const val = window._lastSignalResult?.strategy?.[key];
+  if (!val) return;
+  let text = Array.isArray(val) ? val.join('\n') : val;
+  navigator.clipboard.writeText(text);
+}
+
+function renderSignalAudit(auditTrail) {
+  if (!auditTrail || !auditTrail.length) return "<em>No previous SIGNAL campaigns found.</em>";
+  return "<ul style='padding:8px 12px;list-style:none;'>"
+    + auditTrail.map((c, i) =>
+      `<li style="border-bottom:1px solid #222;padding:8px 0;">
+        <b>${c.track_or_project || '[?]'}</b> 
+        · <span style="color:#b388ff">${c.release_date || ''}</span>
+        <br><small>Key Msg: ${c.key_message || ''} </small>
+        <br>Channels: ${c.channels || ''} | Budget: ${c.budget || ''}<br>
+        <button class="btn" style="margin:6px 0 0 0;" onclick='autofillSignalFromAudit(${encodeURIComponent(JSON.stringify(c))})'>Autofill</button>
+      </li>`
+    ).join('') + "</ul>";
+}
+
+function toggleSignalAudit() {
+  const el = document.getElementById('signal-audit-history');
+  el.style.display = (el.style.display === 'none') ? '' : 'none';
+  if (!el.innerHTML && window._lastSignalResult?.audit_trail) {
+    el.innerHTML = renderSignalAudit(window._lastSignalResult.audit_trail);
+  }
+}
+
+function downloadSignalAudit() {
+  if (!window._lastSignalResult?.audit_trail) return;
+  const blob = new Blob([JSON.stringify(window._lastSignalResult.audit_trail, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'signal_audit_trail.json';
+  a.click();
+}
+
+function autofillSignalFromAudit(encC) {
+  const c = JSON.parse(decodeURIComponent(encC));
+  for (const k in c) {
+    const el = document.getElementById('field-' + k);
+    if (el) el.value = c[k];
+  }
+  alert("Form autofilled from selected campaign.");
+}
+
+// Show/hide SIGNAL view and populate when you handle a SIGNAL result:
+function onSignalAgentResult(agentResult) {
+  window._lastSignalResult = agentResult;
+  document.getElementById('signal-enhanced-view').style.display = '';
+  document.getElementById('signal-strategy-panels').innerHTML = renderSignalStrategySections(agentResult.strategy || {});
+  document.getElementById('signal-audit-history').innerHTML = "";
+  document.getElementById('signal-audit-history').style.display = 'none';
+}
+</script>
 </body>
 </html>
