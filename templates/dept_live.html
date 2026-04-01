@@ -147,27 +147,34 @@
     }
 
     /* ── BOOK card ── */
-    .live-card { padding: 14px 18px; }
-    .live-card-section { margin-bottom: 18px; }
+    .live-card {
+      background: #0f0f0f; border: 1px solid #1e1e1e; border-radius: 10px;
+      padding: 16px 18px; margin: 14px 18px;
+    }
+    .live-card-section { margin-bottom: 20px; }
+    .live-card-section:last-of-type { margin-bottom: 0; }
     .live-card-label {
       font-size: .68rem; font-weight: 700; letter-spacing: .1em;
-      text-transform: uppercase; color: #00e5b0; margin-bottom: 8px;
+      text-transform: uppercase; color: #00e5b0;
+      margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #1a1a1a;
     }
     .live-card-kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; }
     .live-card-kv dt {
       font-size: .7rem; color: #555; text-transform: uppercase;
-      letter-spacing: .07em; align-self: center;
+      letter-spacing: .07em; align-self: baseline; padding-top: 2px;
     }
-    .live-card-kv dd { font-size: .87rem; color: #d8d8d8; margin: 0; }
+    .live-card-kv dd { font-size: .87rem; color: #d8d8d8; margin: 0; word-break: break-word; }
     .live-card-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
     .live-card-list li {
-      background: #0e0e0e; border: 1px solid #1e1e1e; border-radius: 6px;
-      padding: 9px 12px; font-size: .83rem; color: #c8c8c8;
+      background: #141414; border: 1px solid #222; border-radius: 6px;
+      padding: 9px 12px; font-size: .83rem; color: #c8c8c8; line-height: 1.5;
     }
+    .live-card-item-header { font-size: .85rem; color: #d8d8d8; font-weight: 600; }
+    .live-card-item-meta   { font-size: .73rem; color: #666; margin-top: 3px; }
     .live-card-stub { padding: 20px 0; color: #555; font-size: .85rem; text-align: center; }
     .live-card-meta {
       font-size: .7rem; color: #444; padding-top: 10px;
-      border-top: 1px solid #1a1a1a; margin-top: 4px;
+      border-top: 1px solid #1a1a1a; margin-top: 12px; word-break: break-all;
     }
 
     /* ── Buttons ── */
@@ -353,6 +360,7 @@
         </div>
         <div class="modal-foot">
           <button class="btn-ghost" onclick="showFormPanel()">← Back</button>
+          <button class="btn-ghost" id="toggle-json-btn" onclick="toggleJson()" style="display:none">Show JSON</button>
           <button class="btn-ghost" id="copy-btn" onclick="copyResult()">Copy JSON</button>
           <button class="btn-ghost" onclick="closeModal()">Close</button>
         </div>
@@ -419,6 +427,16 @@
 
     function esc(s) {
       return s.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    /* ── Full HTML content escaping ─────────────────────── */
+    function escHtml(s) {
+      return String(s ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
 
     /* ── Collect + submit form ──────────────────────────── */
@@ -490,16 +508,20 @@
       document.getElementById('modal-json').textContent =
         JSON.stringify(envelope, null, 2);
 
-      const cardEl = document.getElementById('book-card');
-      const preEl  = document.getElementById('modal-json');
+      const cardEl    = document.getElementById('book-card');
+      const preEl     = document.getElementById('modal-json');
+      const toggleBtn = document.getElementById('toggle-json-btn');
 
       if (slug === 'book') {
-        preEl.style.display  = 'none';
-        cardEl.style.display = '';
+        preEl.style.display     = 'none';
+        cardEl.style.display    = '';
+        toggleBtn.style.display = '';
+        toggleBtn.textContent   = 'Show JSON';
         _renderBookCard(envelope);
       } else {
-        cardEl.style.display = 'none';
-        preEl.style.display  = '';
+        cardEl.style.display    = 'none';
+        preEl.style.display     = '';
+        toggleBtn.style.display = 'none';
       }
 
       showPanel('result');
@@ -516,9 +538,13 @@
       const bkSection = document.getElementById('bk-booking-section');
       const bkDiv     = document.getElementById('bk-booking');
       if (booking && typeof booking === 'object' && Object.keys(booking).length) {
-        const pairs = Object.entries(booking)
-          .map(([k, v]) => `<dt>${esc(k.replace(/_/g, ' '))}</dt><dd>${esc(String(v))}</dd>`)
-          .join('');
+        const pairs = Object.entries(booking).map(([k, v]) => {
+          const label = escHtml(k.replace(/_/g, ' '));
+          const val   = Array.isArray(v)
+            ? escHtml(v.join(', ') || '—')
+            : escHtml(String(v ?? '—'));
+          return `<dt>${label}</dt><dd>${val}</dd>`;
+        }).join('');
         bkDiv.innerHTML = `<dl class="live-card-kv">${pairs}</dl>`;
         bkSection.style.display = '';
       } else {
@@ -530,20 +556,29 @@
       const recList    = document.getElementById('bk-recs');
       if (Array.isArray(recs) && recs.length) {
         recList.innerHTML = recs
-          .map(r => `<li>${esc(typeof r === 'string' ? r : JSON.stringify(r))}</li>`)
+          .map(r => `<li>${escHtml(typeof r === 'string' ? r : JSON.stringify(r))}</li>`)
           .join('');
         recSection.style.display = '';
       } else {
         recSection.style.display = 'none';
       }
 
-      // Audit trail section
+      // Audit trail section — last 5 entries, structured header + meta
       const auSection = document.getElementById('bk-audit-section');
       const auList    = document.getElementById('bk-audit');
       if (Array.isArray(audit) && audit.length) {
-        auList.innerHTML = audit
-          .map(a => `<li>${esc(typeof a === 'string' ? a : JSON.stringify(a))}</li>`)
-          .join('');
+        const last5 = audit.slice(-5);
+        auList.innerHTML = last5.map(a => {
+          const artist    = escHtml(a.artist    || '—');
+          const territory = escHtml(a.territory || '—');
+          const dates     = escHtml(Array.isArray(a.dates) ? a.dates.join(', ') : (a.dates || '—'));
+          const dealType  = escHtml(a.deal_type || '—');
+          const capacity  = escHtml(String(a.capacity ?? '—'));
+          return `<li>
+            <div class="live-card-item-header">${artist} · ${territory}</div>
+            <div class="live-card-item-meta">${dates} · ${dealType} · cap ${capacity}</div>
+          </li>`;
+        }).join('');
         auSection.style.display = '';
       } else {
         auSection.style.display = 'none';
@@ -553,14 +588,23 @@
       if (!booking && !Array.isArray(recs) && !Array.isArray(audit)) {
         const msg = (envelope.result || {}).message || 'Agent returned no structured booking data.';
         bkSection.style.display = '';
-        bkDiv.innerHTML = `<p class="live-card-stub">${esc(msg)}</p>`;
+        bkDiv.innerHTML = `<p class="live-card-stub">${escHtml(msg)}</p>`;
       }
 
       // Meta footer
       const meta = [];
-      if (envelope.saved_to) meta.push('Saved → ' + envelope.saved_to);
-      if (envelope.timestamp) meta.push(new Date(envelope.timestamp).toLocaleString());
+      if (envelope.saved_to)   meta.push('Saved → ' + envelope.saved_to);
+      if (envelope.timestamp)  meta.push(new Date(envelope.timestamp).toLocaleString());
       document.getElementById('bk-meta').textContent = meta.join(' · ');
+    }
+
+    /* ── Toggle JSON visibility ─────────────────────────── */
+    function toggleJson() {
+      const preEl = document.getElementById('modal-json');
+      const btn   = document.getElementById('toggle-json-btn');
+      const shown = preEl.style.display !== 'none';
+      preEl.style.display = shown ? 'none' : '';
+      btn.textContent     = shown ? 'Show JSON' : 'Hide JSON';
     }
 
     /* ── Panel switching ────────────────────────────────── */
