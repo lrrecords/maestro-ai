@@ -1031,11 +1031,18 @@
         const dates = Array.isArray(booking.dates) ? booking.dates.join(', ') : (booking.dates || '—');
         const recs = Array.isArray(result.recommendations) ? result.recommendations : [];
         const audit = Array.isArray(result.audit_trail) ? result.audit_trail : [];
-
+        const nextActions = Array.isArray(result.next_actions) ? result.next_actions : [];
+        const risks = Array.isArray(result.risks) ? result.risks : [];
         const recHtml = recs.length
           ? `<ul class="live-card-list">${recs.map(r => `<li>${escapeHtml(r)}</li>`).join('')}</ul>`
           : `<div class="live-card-stub">No recommendations returned.</div>`;
+        const nextHtml = nextActions.length
+          ? `<ul class="live-card-list">${nextActions.map(r => `<li>${escapeHtml(r)}</li>`).join('')}</ul>`
+          : `<div class="live-card-stub">No next actions returned.</div>`;
 
+        const risksHtml = risks.length
+          ? `<ul class="live-card-list">${risks.map(r => `<li>${escapeHtml(r)}</li>`).join('')}</ul>`
+          : `<div class="live-card-stub">No risks returned.</div>`;
         const auditHtml = audit.length
           ? `<ul class="live-card-list">${audit.slice(-5).reverse().map(a => {
             const adates = Array.isArray(a.dates) ? a.dates.join(', ') : (a.dates || '—');
@@ -1069,6 +1076,15 @@
     <div class="live-card-section">
       <div class="live-card-label">Recent Audit Trail</div>
       ${auditHtml}
+    </div>
+    <div class="live-card-section">
+      <div class="live-card-label">Next Actions</div>
+      ${nextHtml}
+    </div>
+
+    <div class="live-card-section">
+      <div class="live-card-label">Risks</div>
+      ${risksHtml}
     </div>
 
     ${savedTo ? `<div class="live-card-meta"><strong>Saved to:</strong> ${savedTo}</div>` : ''}
