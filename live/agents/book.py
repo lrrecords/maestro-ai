@@ -64,12 +64,38 @@ class BookAgent(BaseAgent):
         # Last runs as audit trail
         audit_trail = bookings[-5:]
 
-        # Recommendations placeholder — wire in LLM when ready
-        recommendations = [
-            "Double-check availability for all requested dates before sending holds.",
-            "Clarify deal type (flat/versus/guarantee) to align artist/promoter expectations up front.",
-            "Record all offers and counter-offers for audit trail and deal reporting.",
-        ]
+        # LLM recommendations (Ollama/Anthropic via core.llm_client)
+        prompt = f"""
+You are MAESTRO BOOK, a live music booking agent.
+
+Return JSON only with keys:
+- recommendations: array of 4-8 actionable bullets
+- next_actions: array of 3-6 concrete steps
+- risks: array of 2-6 items
+
+Booking request:
+{json.dumps(booking, ensure_ascii=False, indent=2)}
+
+Recent audit trail (last 5 bookings):
+{json.dumps(audit_trail, ensure_ascii=False, indent=2)}
+""".strip()
+
+        try:
+            raw = self.llm(prompt)
+            llm_obj = self.parse_json(raw)
+
+            recommendations = llm_obj.get("recommendations") or []
+            next_actions = llm_obj.get("next_actions") or []
+            risks = llm_obj.get("risks") or []
+        except Exception as e:
+            # Fallback if Ollama isn't running / invalid JSON / etc.
+            recommendations = [
+                "Double-check availability for all requested dates before sending holds.",
+                "Clarify deal type (flat/versus/guarantee) to align artist/promoter expectations up front.",
+                "Record all offers and counter-offers for audit trail and deal reporting.",
+            ]
+            next_actions = []
+            risks = [f"LLM unavailable or invalid JSON: {e}"]
 
         return {
             "agent": self.name,
@@ -80,6 +106,8 @@ class BookAgent(BaseAgent):
                 "action": "created",
                 "booking": booking,
                 "recommendations": recommendations,
+                "next_actions": next_actions,
+                "risks": risks,
                 "audit_trail": audit_trail,
                 "saved_to": str(file),
             }
