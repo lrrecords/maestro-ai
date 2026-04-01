@@ -1,11 +1,9 @@
-from __future__ import annotations
-
+from pathlib import Path
+from datetime import datetime, timezone
 import json
 import os
 import requests
-from datetime import datetime, timezone
 from core.base_agent import BaseAgent
-
 
 class SignalAgent(BaseAgent):
     name = "SIGNAL"
@@ -13,144 +11,109 @@ class SignalAgent(BaseAgent):
     description = "Studio marketing, social content, and brand positioning."
 
     FIELDS = [
-        {"key": "track_or_project", "label": "Track / Project",  "type": "text",     "required": True,  "placeholder": "e.g. Midnight Signal EP"},
-        {"key": "key_message",      "label": "Key Message",      "type": "textarea", "required": True,  "placeholder": "What is the core story or hook to communicate?"},
-        {"key": "target_audience",  "label": "Target Audience",  "type": "text",     "required": False, "placeholder": "e.g. 18–34 indie fans, UK/US"},
-        {"key": "channels",         "label": "Channels",         "type": "text",     "required": False, "placeholder": "e.g. Instagram, TikTok, Spotify"},
-        {"key": "tone",             "label": "Tone",             "type": "select",   "required": False,
-         "options": ["professional", "casual", "hype", "intimate", "editorial"]},
-        {"key": "release_date",     "label": "Release Date",     "type": "text",     "required": False, "placeholder": "e.g. 2026-05-01"},
-        {"key": "budget",           "label": "Marketing Budget", "type": "number",   "required": False, "placeholder": "e.g. 500"},
-        {"key": "notes",            "label": "Notes",            "type": "textarea", "required": False, "placeholder": "Campaign history, prior posts, brand notes"},
+        {"key": "track_or_project", "label": "Track / Project",  "type": "text",     "placeholder": "e.g. Midnight Signal EP", "required": True},
+        {"key": "key_message",      "label": "Key Message",      "type": "textarea", "placeholder": "What is the core story or hook?", "required": True},
+        {"key": "target_audience",  "label": "Target Audience",  "type": "text",     "placeholder": "e.g. 18–34 indie fans, UK/US"},
+        {"key": "channels",         "label": "Channels",         "type": "text",     "placeholder": "e.g. Instagram, TikTok, Spotify"},
+        {"key": "genre",            "label": "Genre",            "type": "text",     "placeholder": "e.g. Drum and Bass, Indie"},
+        {"key": "artist_story",     "label": "Artist/Project Story", "type": "textarea", "placeholder": "A brief narrative or artist bio (feeds LLM context)"},
+        {"key": "release_date",     "label": "Release Date",     "type": "text",     "placeholder": "e.g. 2026-05-01"},
+        {"key": "budget",           "label": "Marketing Budget", "type": "number",   "placeholder": "e.g. 500"},
+        {"key": "notes",            "label": "Notes",            "type": "textarea", "placeholder": "Campaign history, prior posts, brand notes"},
     ]
 
     def run(self, context: dict) -> dict:
-        track_or_project = context.get("track_or_project", "").strip()
-        key_message      = context.get("key_message",      "").strip()
-        target_audience  = context.get("target_audience",  "").strip()
-        channels         = context.get("channels",         "").strip()
-        tone             = context.get("tone",             "professional").strip()
-        release_date     = context.get("release_date",     "").strip()
-        budget           = context.get("budget",           "")
-        notes            = context.get("notes",            "").strip()
+        ctx = context or {}
 
-        missing = [f for f, v in [
-            ("track_or_project", track_or_project),
-            ("key_message",      key_message),
-        ] if not v]
-
+        # ----------- Validation -----------
+        requireds = [
+            ("track_or_project", ctx.get("track_or_project", "")),
+            ("key_message", ctx.get("key_message", "")),
+        ]
+        missing = [k for k, v in requireds if not v]
         if missing:
             return {
-                "agent":      self.name,
+                "agent": self.name,
                 "department": self.department,
-                "status":     "error",
-                "error":      f"Missing required fields: {', '.join(missing)}",
-                "context":    context,
-                "recommendations": [
-                    "Provide the track or project name and a core key message to generate a campaign plan.",
-                    "Add target audience and channels for more focused recommendations.",
-                    "Include the release date so SIGNAL can work backwards on campaign timing.",
-                ],
+                "status": "error",
+                "error": f"Missing required fields: {', '.join(missing)}",
+                "context": context,
+                "result": {
+                    "action": "error",
+                    "campaign": {},
+                    "strategy": {},
+                    "recommendations": [
+                        "Provide the project name and a clear 'key message' for campaign planning.",
+                        "Specify your target audience, main channels, and release date for stronger plans.",
+                    ]
+                }
             }
 
+        # ----------- Audit/history logging -----------
         campaigns_file = self.data_root / "campaigns.json"
         campaigns = []
         if campaigns_file.exists():
             try:
                 campaigns = json.loads(campaigns_file.read_text(encoding="utf-8"))
-                if not isinstance(campaigns, list):
-                    campaigns = []
+                if not isinstance(campaigns, list): campaigns = []
             except Exception:
                 campaigns = []
 
-        now_iso = datetime.now(timezone.utc).isoformat()
+        project = ctx.get("track_or_project", "").strip()
+        previous_campaigns = [
+            c for c in campaigns if c.get("track_or_project") == project
+        ]
+
         campaign_record = {
-            "track_or_project": track_or_project,
-            "key_message":      key_message,
-            "target_audience":  target_audience,
-            "channels":         channels,
-            "tone":             tone,
-            "release_date":     release_date,
-            "budget":           budget,
-            "notes":            notes,
+            "track_or_project": project,
+            "key_message":      ctx.get("key_message", "").strip(),
+            "target_audience":  ctx.get("target_audience", "").strip(),
+            "channels":         ctx.get("channels", "").strip(),
+            "genre":            ctx.get("genre", "").strip(),
+            "artist_story":     ctx.get("artist_story", "").strip(),
+            "release_date":     ctx.get("release_date", "").strip(),
+            "budget":           ctx.get("budget", ""),
+            "notes":            ctx.get("notes", "").strip(),
+            "created_at":       datetime.now(timezone.utc).isoformat(),
         }
+        campaigns.append(campaign_record)
+        campaigns_file.write_text(json.dumps(campaigns, indent=2, ensure_ascii=False), encoding="utf-8")
 
-        existing = next(
-            (c for c in campaigns if c.get("track_or_project") == track_or_project),
-            None,
-        )
-
-        if existing:
-            existing.update(campaign_record)
-            existing["updated_at"] = now_iso
-            action = "updated"
-            saved_record = existing
-        else:
-            campaign_record["created_at"] = now_iso
-            campaigns.append(campaign_record)
-            action = "created"
-            saved_record = campaign_record
-
-        campaigns_file.write_text(
-            json.dumps(campaigns, indent=2, ensure_ascii=False),
-            encoding="utf-8",
-        )
-
-        recommendations = self._generate_recommendations(saved_record)
+        # ----------- LLM/campaign strategy -----------
+        strategy = self._generate_strategy(campaign_record, previous_campaigns)
 
         return {
-            "agent":      self.name,
+            "agent": self.name,
             "department": self.department,
-            "status":     "ok",
-            "context":    context,
+            "status": "ok",
+            "context": context,
             "result": {
-                "action":   action,
-                "campaign": {
-                    "project":   track_or_project,
-                    "message":   key_message,
-                    "audience":  target_audience or "—",
-                    "channels":  channels or "—",
-                    "tone":      tone,
-                    "release":   release_date or "—",
-                    "budget":    budget or "—",
-                    "notes":     notes or "—",
-                },
-                "recommendations": recommendations,
-            },
+                "action": "planned",
+                "campaign": campaign_record,
+                "strategy": strategy,
+                "recommendations": strategy.get("recommendations", []) or [
+                    "Create a campaign timeline, working back from the release date.",
+                    "Define the key marketing channels and tone for messaging.",
+                    "Assign owners for each campaign action early.",
+                ],
+                "audit_trail": [
+                    {k: v for k,v in pc.items() if k not in ("notes", "created_at")} for pc in previous_campaigns[-5:]
+                ],  # UI can expand/collapse these for review!
+                "saved_to": str(campaigns_file),
+            }
         }
 
-    def _generate_recommendations(self, record: dict) -> list[str]:
+    def _generate_strategy(self, record: dict, previous_campaigns: list) -> dict:
         provider = os.getenv("LLM_PROVIDER", "ollama").strip().lower()
         if provider != "ollama":
-            return self._fallback(record)
+            return self._fallback_strategy(record, previous_campaigns)
 
         base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
         model    = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
         num_ctx  = int(os.getenv("OLLAMA_NUM_CTX", "4096"))
         timeout  = int(os.getenv("OLLAMA_TIMEOUT_SECONDS", "1800"))
 
-        prompt = f"""
-You are a music marketing strategist specialising in independent artists and recording studios.
-
-Generate a practical marketing campaign plan for the following project.
-
-Campaign details:
-- Project: {record.get("track_or_project", "")}
-- Key message: {record.get("key_message", "")}
-- Target audience: {record.get("target_audience", "")}
-- Channels: {record.get("channels", "")}
-- Tone: {record.get("tone", "")}
-- Release date: {record.get("release_date", "")}
-- Budget: {record.get("budget", "")}
-- Notes: {record.get("notes", "")}
-
-Return:
-- A short intro sentence summarising the campaign opportunity
-- 5 bullet recommendations covering content, timing, channels, and messaging
-- 3 suggested next actions
-
-Be concise and actionable. Do not use markdown headings.
-""".strip()
+        prompt = self._build_prompt(record, previous_campaigns)
 
         try:
             resp = requests.post(
@@ -165,31 +128,112 @@ Be concise and actionable. Do not use markdown headings.
             )
             resp.raise_for_status()
             text = (resp.json().get("response") or "").strip()
-            lines = [l.strip("•- \t") for l in text.splitlines() if l.strip()]
-            return lines[:9] or self._fallback(record)
+            return self._parse_strategy(text, record, previous_campaigns)
         except Exception as exc:
-            return self._fallback(record) + [f"LLM unavailable; using fallback. ({exc})"]
+            fallback = self._fallback_strategy(record, previous_campaigns)
+            fallback["llm_error"] = str(exc)
+            return fallback
 
-    def _fallback(self, record: dict) -> list[str]:
-        tone     = (record.get("tone") or "professional").lower()
-        channels = (record.get("channels") or "").lower()
-        budget   = str(record.get("budget") or "").strip()
-        recs = [
-            "Define a clear release timeline — work backwards from the drop date with weekly milestones.",
-            "Create a content bank of at least 10 assets (clips, stills, quotes) before the campaign begins.",
-            "Pin the key message to every piece of content so the narrative stays consistent across channels.",
-        ]
-        if "tiktok" in channels:
-            recs.append("Prioritise short-form video on TikTok — 15–30s clips with the hook in the first 2 seconds.")
-        if "instagram" in channels:
-            recs.append("Use Instagram Reels for reach and Stories for behind-the-scenes engagement.")
-        if "spotify" in channels:
-            recs.append("Submit to Spotify editorial playlists via Spotify for Artists at least 7 days before release.")
-        if tone == "intimate":
-            recs.append("Lead with personal storytelling — share the 'why' behind the project on long-form posts.")
-        elif tone == "hype":
-            recs.append("Build anticipation with countdowns, teaser clips, and exclusive previews for followers.")
-        if budget:
-            recs.append(f"Allocate the {budget} budget — prioritise paid social in the first 48 hours post-release for maximum algorithmic lift.")
-        recs.append("Track engagement daily in the first week and adjust channel focus based on what is performing.")
-        return recs[:7]
+    def _build_prompt(self, record: dict, previous_campaigns: list) -> str:
+        prev = "\n\n-- Previous campaigns for this project --\n" + "\n".join(
+            f"- {c.get('release_date','?')}: {c.get('key_message', '')[:80]}..." for c in previous_campaigns[-3:]
+        ) if previous_campaigns else ""
+        return f"""
+You are a music marketing strategist for a professional studio.
+
+Generate a concise campaign plan for the following:
+
+- Project: {record.get("track_or_project", "")}
+- Key message: {record.get("key_message", "")}
+- Target audience: {record.get("target_audience", "")}
+- Channels: {record.get("channels", "")}
+- Genre: {record.get("genre", "")}
+- Artist story: {record.get("artist_story", "")}
+- Release date: {record.get("release_date", "")}
+- Budget: {record.get("budget", "")}
+- Internal notes: {record.get("notes", "")}
+{prev}
+
+Structure your response as follows (plain text, no markdown headings):
+
+OVERVIEW
+A one paragraph summary of the campaign approach.
+
+CONTENT
+3-4 bullets about the kinds of content to create and emphasize.
+
+CHANNELS
+Up to 3 marketing channels to focus on.
+
+ACTIONS
+3 immediate next actions for the team.
+
+RECOMMENDATIONS
+3-4 bullet-point practical suggestions for maximizing campaign impact.
+
+Return only these sections in this exact order. Be specific and reference genre, prior outcomes or lessons if possible.
+""".strip()
+
+    def _parse_strategy(self, text: str, record: dict, previous_campaigns: list) -> dict:
+        sections = {
+            "overview": [],
+            "content": [],
+            "channels": [],
+            "actions": [],
+            "recommendations": [],
+        }
+        current = None
+        key_map = {
+            "OVERVIEW": "overview",
+            "CONTENT": "content",
+            "CHANNELS": "channels",
+            "ACTIONS": "actions",
+            "RECOMMENDATIONS": "recommendations",
+        }
+        for line in text.splitlines():
+            stripped = line.strip()
+            upper = stripped.upper()
+            matched = next((v for k, v in key_map.items() if upper.startswith(k)), None)
+            if matched:
+                current = matched
+                continue
+            if current and stripped:
+                sections[current].append(stripped.lstrip("•-–1234567890. \t"))
+        return {
+            "overview":        " ".join(sections["overview"]) or self._fallback_strategy(record, previous_campaigns)["overview"],
+            "content":         sections["content"] or self._fallback_strategy(record, previous_campaigns)["content"],
+            "channels":        sections["channels"] or self._fallback_strategy(record, previous_campaigns)["channels"],
+            "actions":         sections["actions"] or self._fallback_strategy(record, previous_campaigns)["actions"],
+            "recommendations": sections["recommendations"] or self._fallback_strategy(record, previous_campaigns)["recommendations"],
+        }
+
+    def _fallback_strategy(self, record: dict, previous_campaigns: list) -> dict:
+        lessons = []
+        if previous_campaigns:
+            lessons.append("Review previous campaign engagement to see which content and channels performed best.")
+        artist_story = (record.get("artist_story") or "").strip()
+        if artist_story:
+            lessons.append(f"Leverage artist story: {artist_story[:90]}...")
+        genre = (record.get("genre") or "").strip().lower()
+        if genre:
+            lessons.append(f"Tap into {genre}-specific blogs, playlists, and communities.")
+        lessons.append("Time paid promotions for a 48hr lift right after release.")
+        return {
+            "overview": (
+                f"Run an integrated campaign focused on telling the story of '{record.get('track_or_project','[project]')}' using the '{record.get('key_message','')}' message. Prioritize owned and paid channels just before and after release."
+            ),
+            "content": [
+                "Short video teasers, behind-the-scenes clips, and artwork reveals.",
+                "Interviews or testimonials from key figures in the target scene.",
+                "Countdown and feature posts targeting the chosen audience.",
+            ],
+            "channels": [
+                record.get("channels") or "Instagram & TikTok for social; email list for core audience.",
+            ],
+            "actions": [
+                "Draft campaign timeline with key milestone dates.",
+                "Assign ownership for content, posting, and paid media.",
+                "Prep all content assets at least two weeks in advance.",
+            ],
+            "recommendations": lessons[:4]
+        }

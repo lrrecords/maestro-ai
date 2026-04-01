@@ -22,25 +22,30 @@ class MixAgent(BaseAgent):
     ]
 
     def run(self, context: dict) -> dict:
-        artist    = context.get("artist",    "").strip()
-        goal      = context.get("goal",      "").strip()
-        timeframe = context.get("timeframe", "").strip()
-        budget    = context.get("budget",    "")
-        agents    = context.get("agents",    "").strip()
-        notes     = context.get("notes",     "").strip()
+        artist    = (context.get("artist") or "").strip()
+        goal      = (context.get("goal") or "").strip()
+        timeframe = (context.get("timeframe") or "").strip()
+        budget    = context.get("budget", "")
+        agents    = (context.get("agents") or "").strip()
+        notes     = (context.get("notes") or "").strip()
 
-        missing = [f for f, v in [
-            ("artist", artist),
-            ("goal",   goal),
-        ] if not v]
-
+        missing = [f for f, v in [("artist", artist), ("goal", goal)] if not v]
         if missing:
+            # Consistently include .result and .context keys, even for error cases!
             return {
                 "agent":      self.name,
                 "department": self.department,
                 "status":     "error",
                 "error":      f"Missing required fields: {', '.join(missing)}",
                 "context":    context,
+                "result":     {
+                    "artist": artist or "—",
+                    "goal": goal or "—",
+                    "timeframe": timeframe or "—",
+                    "budget": budget or "—",
+                    "agents": agents or "all",
+                    "strategy": {},
+                },
                 "recommendations": [
                     "Provide artist name and a clear goal for MIX to synthesise a strategy.",
                     "Include timeframe and budget for a more complete strategic overview.",
