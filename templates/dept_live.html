@@ -146,6 +146,30 @@
       overflow-y: auto; max-height: 52vh;
     }
 
+    /* ── BOOK card ── */
+    .live-card { padding: 14px 18px; }
+    .live-card-section { margin-bottom: 18px; }
+    .live-card-label {
+      font-size: .68rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: #00e5b0; margin-bottom: 8px;
+    }
+    .live-card-kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; }
+    .live-card-kv dt {
+      font-size: .7rem; color: #555; text-transform: uppercase;
+      letter-spacing: .07em; align-self: center;
+    }
+    .live-card-kv dd { font-size: .87rem; color: #d8d8d8; margin: 0; }
+    .live-card-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .live-card-list li {
+      background: #0e0e0e; border: 1px solid #1e1e1e; border-radius: 6px;
+      padding: 9px 12px; font-size: .83rem; color: #c8c8c8;
+    }
+    .live-card-stub { padding: 20px 0; color: #555; font-size: .85rem; text-align: center; }
+    .live-card-meta {
+      font-size: .7rem; color: #444; padding-top: 10px;
+      border-top: 1px solid #1a1a1a; margin-top: 4px;
+    }
+
     /* ── Buttons ── */
     .btn-ghost {
       background: transparent; border: 1px solid #2a2a2a;
@@ -310,6 +334,22 @@
         </div>
         <div class="modal-body">
           <pre class="modal-pre" id="modal-json"></pre>
+          <!-- BOOK agent card view (shown instead of raw pre for BOOK) -->
+          <div id="book-card" class="live-card" style="display:none">
+            <div class="live-card-section" id="bk-booking-section">
+              <div class="live-card-label">Booking</div>
+              <div id="bk-booking"></div>
+            </div>
+            <div class="live-card-section" id="bk-recs-section">
+              <div class="live-card-label">Recommendations</div>
+              <ul class="live-card-list" id="bk-recs"></ul>
+            </div>
+            <div class="live-card-section" id="bk-audit-section">
+              <div class="live-card-label">Audit Trail</div>
+              <ul class="live-card-list" id="bk-audit"></ul>
+            </div>
+            <div class="live-card-meta" id="bk-meta"></div>
+          </div>
         </div>
         <div class="modal-foot">
           <button class="btn-ghost" onclick="showFormPanel()">← Back</button>
@@ -425,9 +465,9 @@
           body:    JSON.stringify(context),
         });
         const data = await res.json();
-        showResultPanel(displayName, data, res.ok);
+        showResultPanel(displayName, slug, data, res.ok);
       } catch (err) {
-        showResultPanel(displayName, { ok: false, error: err.message }, false);
+        showResultPanel(displayName, slug, { ok: false, error: err.message }, false);
       } finally {
         btn.disabled    = false;
         btn.textContent = '▶ Run Agent';
@@ -435,7 +475,7 @@
     }
 
     /* ── Populate + show result panel ───────────────────── */
-    function showResultPanel(name, envelope, httpOk) {
+    function showResultPanel(name, slug, envelope, httpOk) {
       document.getElementById('result-agent-name').textContent = name;
 
       const status   = envelope.result?.status ?? (httpOk ? 'ok' : 'error');
@@ -450,7 +490,77 @@
       document.getElementById('modal-json').textContent =
         JSON.stringify(envelope, null, 2);
 
+      const cardEl = document.getElementById('book-card');
+      const preEl  = document.getElementById('modal-json');
+
+      if (slug === 'book') {
+        preEl.style.display  = 'none';
+        cardEl.style.display = '';
+        _renderBookCard(envelope);
+      } else {
+        cardEl.style.display = 'none';
+        preEl.style.display  = '';
+      }
+
       showPanel('result');
+    }
+
+    /* ── Render BOOK agent card view ────────────────────── */
+    function _renderBookCard(envelope) {
+      const res     = (envelope.result || {}).result || {};
+      const booking = res.booking;
+      const recs    = res.recommendations;
+      const audit   = res.audit_trail;
+
+      // Booking section
+      const bkSection = document.getElementById('bk-booking-section');
+      const bkDiv     = document.getElementById('bk-booking');
+      if (booking && typeof booking === 'object' && Object.keys(booking).length) {
+        const pairs = Object.entries(booking)
+          .map(([k, v]) => `<dt>${esc(k.replace(/_/g, ' '))}</dt><dd>${esc(String(v))}</dd>`)
+          .join('');
+        bkDiv.innerHTML = `<dl class="live-card-kv">${pairs}</dl>`;
+        bkSection.style.display = '';
+      } else {
+        bkSection.style.display = 'none';
+      }
+
+      // Recommendations section
+      const recSection = document.getElementById('bk-recs-section');
+      const recList    = document.getElementById('bk-recs');
+      if (Array.isArray(recs) && recs.length) {
+        recList.innerHTML = recs
+          .map(r => `<li>${esc(typeof r === 'string' ? r : JSON.stringify(r))}</li>`)
+          .join('');
+        recSection.style.display = '';
+      } else {
+        recSection.style.display = 'none';
+      }
+
+      // Audit trail section
+      const auSection = document.getElementById('bk-audit-section');
+      const auList    = document.getElementById('bk-audit');
+      if (Array.isArray(audit) && audit.length) {
+        auList.innerHTML = audit
+          .map(a => `<li>${esc(typeof a === 'string' ? a : JSON.stringify(a))}</li>`)
+          .join('');
+        auSection.style.display = '';
+      } else {
+        auSection.style.display = 'none';
+      }
+
+      // Fallback: show status/message if no structured data
+      if (!booking && !Array.isArray(recs) && !Array.isArray(audit)) {
+        const msg = (envelope.result || {}).message || 'Agent returned no structured booking data.';
+        bkSection.style.display = '';
+        bkDiv.innerHTML = `<p class="live-card-stub">${esc(msg)}</p>`;
+      }
+
+      // Meta footer
+      const meta = [];
+      if (envelope.saved_to) meta.push('Saved → ' + envelope.saved_to);
+      if (envelope.timestamp) meta.push(new Date(envelope.timestamp).toLocaleString());
+      document.getElementById('bk-meta').textContent = meta.join(' · ');
     }
 
     /* ── Panel switching ────────────────────────────────── */
