@@ -24,9 +24,16 @@ app = Flask(
 
 SECRET_KEY = os.getenv("SECRET_KEY", os.urandom(24).hex())
 app.secret_key = SECRET_KEY
-MAESTRO_TOKEN = os.getenv("MAESTRO_TOKEN")
-if not MAESTRO_TOKEN:
-    raise ValueError("MAESTRO_TOKEN not set in .env file")
+
+MAESTRO_TOKEN = (os.getenv("MAESTRO_TOKEN") or "").strip()
+MAESTRO_DEV_MODE = os.getenv("MAESTRO_DEV_MODE", "").strip() == "1"
+
+if not MAESTRO_TOKEN and not MAESTRO_DEV_MODE:
+    # Don't crash — run in locked mode and show a helpful message on /login
+    app.logger.warning(
+        "MAESTRO_TOKEN is not set. Dashboard is locked. "
+        "Set MAESTRO_TOKEN in .env (recommended) or set MAESTRO_DEV_MODE=1 for local dev."
+    )
 
 def login_required(f):
     @wraps(f)
@@ -65,11 +72,22 @@ def login_page():
     error = None
 
     if request.method == "POST":
-        token = request.form.get("token", "").strip()
-        if token == MAESTRO_TOKEN:
-            session["authenticated"] = True
-            return redirect(next_url)
-        error = "Invalid token. Try again."
+        if MAESTRO_DEV_MODE and not MAESTRO_TOKEN:
+            # Dev bypass: any non-empty token logs in (or you can accept blank)
+            token = request.form.get("token", "").strip()
+            if token:
+                session["authenticated"] = True
+                return redirect(next_url)
+            error = "Enter any token to continue (dev mode)."
+        else:
+            if not MAESTRO_TOKEN:
+                error = "Dashboard not configured: MAESTRO_TOKEN is missing. Set it in your .env."
+            else:
+                token = request.form.get("token", "").strip()
+                if token == MAESTRO_TOKEN:
+                    session["authenticated"] = True
+                    return redirect(next_url)
+                error = "Invalid token. Try again."
 
     return render_template("login.html", error=error, next_url=next_url)
 
