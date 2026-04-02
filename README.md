@@ -43,22 +43,13 @@ Maestro AI brings together specialized AI agents—each handling real music busi
 
 ## 🖼️ Screenshots
 
-<<<<<<< HEAD
+A few snapshots of the web dashboards:
+
+![Departments Hub](docs/assets/Screenshot%20Departments.jpg)
 ![LIVE Agents](docs/assets/LIVE_Agents.jpg)
-![LIVE Dashboard](docs/assets/LIVE_Dashboard.jpg)
-![MAESTRO Login](docs/assets/MAESTRO Login.jpg)
-![MAESTRO Checkin](docs/assets/MAESTRO_Checkin.jpg)
-![MAESTRO Checkin Example](docs/assets/MAESTRO_Checkin_Example.jpg)
-![MAESTRO Outputs Example](docs/assets/MAESTRO_Outputs_Example.jpg)
-![MAESTRO Run Agents](docs/assets/MAESTRO_Run_Agents.jpg)
 ![STUDIO Agents](docs/assets/STUDIO_Agents.jpg)
-![STUDIO Dashboard](docs/assets/STUDIO_Dashboard.jpg)
-![Screenshot Demo Artist Aria Velvet](docs/assets/Screenshot Demo_Artist_Aria_Velvet.jpg)
-![Screenshot Demo Artist King Juno](docs/assets/Screenshot Demo_Artist_King_Juno.jpg)
-![Screenshot Demo Artist Nova Saint](docs/assets/Screenshot Demo_Artist_Nova_Saint.jpg)
-![Screenshot Departments](docs/assets/Screenshot Departments.jpg)
-![Screenshot MAESTRO Dashboard](docs/assets/Screenshot MAESTRO_Dashboard.jpg)
-=======
+
+More screenshots: see `docs/assets/`.
 
 ## 🏢 Departments & Agents
 
