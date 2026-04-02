@@ -561,7 +561,8 @@
     .agent-btn.done-ok  { border-color: var(--green); color: var(--green); background: rgba(0,201,122,0.05); }
     .agent-btn.done-err { border-color: var(--red);   color: var(--red);   background: rgba(232,69,69,0.05); }
 
-    .agent-icon  { font-size: 1.3rem; }
+    .agent-icon  { width: 32px; height: 32px; display: block; color: var(--cyan); }
+    .agent-icon svg { width: 100%; height: 100%; }
     .agent-lbl   { font-weight: 700; }
     .agent-desc  { font-size: 0.62rem; color: var(--muted); }
 
@@ -844,6 +845,140 @@
       .agent-grid { grid-template-columns: repeat(2, 1fr); }
       .two-col, .checkin-grid { grid-template-columns: 1fr; }
     }
+
+/* ── Label result modal ── */
+.lm-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.78);
+  z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+.lm-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 100%; max-width: 680px; max-height: 88vh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.lm-modal-head {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.lm-modal-dept {
+  font-size: .6rem; font-weight: 700;
+  letter-spacing: .14em; color: var(--cyan);
+  text-transform: uppercase; margin-bottom: 3px;
+}
+.lm-modal-title {
+  font-size: 1rem; font-weight: 700; color: var(--white);
+}
+.lm-modal-ts { font-size: .68rem; color: var(--muted); font-family: var(--mono); }
+.lm-modal-close {
+  background: none; border: none; color: var(--muted);
+  font-size: 1rem; padding: 4px 8px; border-radius: 4px;
+  transition: color .15s; cursor: pointer;
+}
+.lm-modal-close:hover { color: var(--white); }
+.lm-modal-body {
+  flex: 1; overflow-y: auto;
+  padding: 16px 20px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.lm-modal-foot {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 8px; justify-content: flex-end;
+  flex-shrink: 0;
+}
+.lm-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px;
+}
+.lm-card-title {
+  font-size: .62rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 10px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--border);
+}
+.lm-score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.lm-score-big {
+  font-size: 2rem; font-weight: 700;
+  font-family: var(--mono); color: var(--cyan); line-height: 1;
+}
+.lm-badge {
+  padding: 3px 10px; border-radius: 4px;
+  font-size: .68rem; font-weight: 700; letter-spacing: .08em;
+}
+.lm-badge.good     { background: rgba(0,201,122,.1);  color: var(--green);  border: 1px solid rgba(0,201,122,.2);  }
+.lm-badge.monitor  { background: rgba(245,200,66,.1);  color: var(--yellow); border: 1px solid rgba(245,200,66,.2);  }
+.lm-badge.critical { background: rgba(232,69,69,.1);   color: var(--red);    border: 1px solid rgba(232,69,69,.2);   }
+.lm-text  { font-size: .82rem; color: var(--text); line-height: 1.6; }
+.lm-muted { font-size: .78rem; color: var(--muted); }
+.lm-list  { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.lm-list li {
+  font-size: .82rem; color: var(--text); line-height: 1.5;
+  padding-left: 14px; position: relative;
+}
+.lm-list li::before { content: "→"; position: absolute; left: 0; color: var(--cyan-dim); }
+.lm-action-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 8px 0; border-bottom: 1px solid rgba(42,42,42,.6);
+  font-size: .82rem;
+}
+.lm-action-item:last-child { border-bottom: none; }
+.lm-action-priority {
+  background: rgba(0,200,212,.12); border: 1px solid rgba(0,200,212,.2);
+  border-radius: 4px; color: var(--cyan);
+  font-size: .62rem; font-weight: 700;
+  font-family: var(--mono); padding: 2px 6px;
+  flex-shrink: 0; margin-top: 1px;
+}
+.lm-kv {
+  display: grid; grid-template-columns: 130px 1fr;
+  gap: 6px 12px; font-size: .8rem;
+}
+.lm-kv-key { color: var(--muted); }
+.lm-kv-val { color: var(--text); }
+.lm-checkin-box {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 12px;
+  font-size: .82rem; color: var(--text); line-height: 1.7; font-style: italic;
+}
+.lm-phase-title {
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--label); margin: 10px 0 6px;
+}
+.lm-task-row {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 5px 0; border-bottom: 1px solid rgba(42,42,42,.4);
+  font-size: .78rem;
+}
+.lm-task-row:last-child { border-bottom: none; }
+.lm-task-status {
+  font-size: .65rem; font-weight: 700;
+  padding: 2px 6px; border-radius: 3px; flex-shrink: 0;
+}
+.lm-status-pending  { background: rgba(85,85,85,.2);    color: var(--muted);  }
+.lm-status-done     { background: rgba(0,201,122,.12);   color: var(--green);  }
+.lm-status-progress { background: rgba(0,200,212,.12);   color: var(--cyan);   }
+.lm-status-blocked  { background: rgba(232,69,69,.12);   color: var(--red);    }
+.lm-json-view {
+  display: none; font-family: var(--mono); font-size: .72rem;
+  color: var(--cyan); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px; overflow-x: auto; white-space: pre-wrap; word-break: break-all;
+}
+@media (max-width: 600px) {
+  .lm-modal { max-height: 95vh; border-radius: 8px; }
+  .lm-kv { grid-template-columns: 100px 1fr; }
+}
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -926,6 +1061,28 @@
   </main>
 </div><!-- /app -->
 
+<!-- ── LABEL Agent Result Modal ── -->
+<div id="label-result-modal" class="lm-backdrop" style="display:none" onclick="if(event.target===this)closeLabelModal()">
+  <div class="lm-modal">
+    <div class="lm-modal-head">
+      <div>
+        <div class="lm-modal-dept">LABEL</div>
+        <div class="lm-modal-title" id="lm-title">Result</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <span class="lm-modal-ts" id="lm-ts"></span>
+        <button class="lm-modal-close" onclick="closeLabelModal()">✕</button>
+      </div>
+    </div>
+    <div class="lm-modal-body" id="lm-body"></div>
+    <div class="lm-modal-foot">
+      <button class="t-btn" id="lm-json-btn" onclick="toggleLabelJson()">Show JSON</button>
+      <button class="t-btn" onclick="copyLabelJson()">Copy JSON</button>
+      <button class="t-btn" onclick="closeLabelModal()">Close</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast-container"></div>
 <div id="sb-overlay"
      style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99;"
@@ -953,12 +1110,12 @@ function withValidSlug(action) {
   return action(slug);
 }
 const AGENT_META = [
-  { id:"vinyl",  icon:"🎵", lbl:"VINYL",  desc:"Streaming"  },
-  { id:"echo",   icon:"📣", lbl:"ECHO",   desc:"Social"     },
-  { id:"atlas",  icon:"🌍", lbl:"ATLAS",  desc:"Press"      },
-  { id:"forge",  icon:"🔨", lbl:"FORGE",  desc:"Releases"   },
-  { id:"sage",   icon:"🧠", lbl:"SAGE",   desc:"Strategy"   },
-  { id:"bridge", icon:"🌉", lbl:"BRIDGE", desc:"Health"     },
+  { id:"vinyl",  icon:'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><circle cx="10" cy="10" r="2.5"/><circle cx="10" cy="10" r="1" fill="currentColor" stroke="none"/></svg>', lbl:"VINYL",  desc:"Streaming"  },
+  { id:"echo",   icon:'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5v1a1 1 0 0 0 1 1h1l4 3.5V6L5 9.5H4a1 1 0 0 0-1 1z"/><path d="M13 9a3 3 0 0 1 0 2"/><path d="M15.5 7a6 6 0 0 1 0 6"/></svg>', lbl:"ECHO",   desc:"Social"     },
+  { id:"atlas",  icon:'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><path d="M3 10h14"/><path d="M10 3c-2.5 3-2.5 11 0 14M10 3c2.5 3 2.5 11 0 14"/></svg>', lbl:"ATLAS",  desc:"Press"      },
+  { id:"forge",  icon:'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3c1 2 3.5 3.5 3.5 6.5 0 2-1.5 3.5-3.5 4.5-2-1-3.5-2.5-3.5-4.5C6.5 6.5 9 5 10 3z"/><path d="M8 16h4M10 14v2"/></svg>', lbl:"FORGE",  desc:"Releases"   },
+  { id:"sage",   icon:'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11c0-2.2 1.8-4 4-4s4 1.8 4 4c0 1.6-.8 3-2 3.7V17H8v-2.3C6.8 14 6 12.6 6 11z"/><line x1="10" y1="7" x2="10" y2="4"/></svg>', lbl:"SAGE",   desc:"Strategy"   },
+  { id:"bridge", icon:'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15c0-4.4 3.1-8 7-8s7 3.6 7 8"/><line x1="3" y1="15" x2="17" y2="15"/><line x1="7" y1="15" x2="7" y2="18"/><line x1="13" y1="15" x2="13" y2="18"/></svg>', lbl:"BRIDGE", desc:"Health"     },
 ];
 
 const API_PREFIX = "{{ api_prefix }}";
@@ -1307,6 +1464,7 @@ function renderAgents(d) {
 
 function runAgent(agentId) {
   stopStream();
+  STATE.agentRunning = agentId;
   const slug    = STATE.slug;
   const name    = STATE.data?.profile?.artist_info?.name || slug;
   const fullBtn = document.getElementById("btn-full");
@@ -1626,12 +1784,228 @@ if (!slug || slug === "undefined") {
   toast(result.sent ? "Webhook sent" : "Webhook failed", result.sent ? "ok" : "err");
 }
 function renderAgentResults(result) {
+  // Show structured modal
+  const agentId = STATE.agentRunning || 'unknown';
+  renderLabelResultModal(agentId, result);
+  // Keep a brief terminal status line
   const term = document.getElementById("terminal");
-  if (!term) return;
-  // Format and display the agent result as pretty JSON
-  term.innerHTML = "<pre style='color:#0ff;'>" +
-    (typeof result === "object" ? JSON.stringify(result, null, 2) : result) +
-    "</pre>";
+  if (term) {
+    const line = document.createElement("div");
+    line.className = "t-green";
+    line.textContent = "✓ Done — results shown below";
+    const cursor = term.querySelector(".t-cursor");
+    if (cursor) term.insertBefore(line, cursor); else term.appendChild(line);
+    term.scrollTop = term.scrollHeight;
+  }
+}
+
+/* ── Label result modal ────────────────────────────────────────────── */
+let lmData       = null;
+let lmJsonVisible = false;
+const EXCLUDED_NOTE_VALUES = ["none", "n/a", ""];
+
+function closeLabelModal() {
+  document.getElementById("label-result-modal").style.display = "none";
+}
+
+function toggleLabelJson() {
+  lmJsonVisible = !lmJsonVisible;
+  const btn     = document.getElementById("lm-json-btn");
+  const cards   = document.getElementById("lm-body").querySelector(".lm-cards");
+  const jsonEl  = document.getElementById("lm-json-view");
+  if (cards)  cards.style.display  = lmJsonVisible ? "none"  : "";
+  if (jsonEl) jsonEl.style.display = lmJsonVisible ? "block" : "none";
+  if (btn)    btn.textContent      = lmJsonVisible ? "Hide JSON" : "Show JSON";
+}
+
+function copyLabelJson() {
+  if (!lmData) return;
+  navigator.clipboard.writeText(JSON.stringify(lmData, null, 2))
+    .then(() => toast("Copied!", "ok"))
+    .catch(() => toast("Copy failed", "err"));
+}
+
+function escapeHtml(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function renderLabelResultModal(agentId, result) {
+  lmData        = result;
+  lmJsonVisible = false;
+  const modal  = document.getElementById("label-result-modal");
+  const title  = document.getElementById("lm-title");
+  const tsEl   = document.getElementById("lm-ts");
+  const body   = document.getElementById("lm-body");
+  const jsonBtn = document.getElementById("lm-json-btn");
+
+  title.textContent = agentId.toUpperCase();
+  tsEl.textContent  = result.built_at_utc
+    ? new Date(result.built_at_utc).toLocaleString()
+    : (result.generated || "");
+  if (jsonBtn) jsonBtn.textContent = "Show JSON";
+
+  let cards = "";
+  if      (agentId === "bridge") cards = renderBridgeCards(result);
+  else if (agentId === "vinyl")  cards = renderVinylCards(result);
+  else                            cards = renderGenericLabelCards(result);
+
+  body.innerHTML =
+    `<div class="lm-cards">${cards}</div>` +
+    `<pre class="lm-json-view" id="lm-json-view">${escapeHtml(JSON.stringify(result, null, 2))}</pre>`;
+
+  modal.style.display = "flex";
+}
+
+function renderBridgeCards(r) {
+  let h = "";
+  if (r.health) {
+    const st = r.health.score >= 70 ? "good" : r.health.score >= 45 ? "monitor" : "critical";
+    h += `<div class="lm-card">
+      <div class="lm-card-title">Health Score</div>
+      <div class="lm-score-row">
+        <div class="lm-score-big">${escapeHtml(r.health.score)}<span style="font-size:1rem;color:var(--muted)">/100</span></div>
+        <span class="lm-badge ${st}">${escapeHtml(r.health.status)}</span>
+      </div>
+      ${r.health.interpretation ? `<div class="lm-text">${escapeHtml(r.health.interpretation)}</div>` : ""}
+    </div>`;
+  }
+  if (r.pattern_analysis) {
+    const pa = r.pattern_analysis;
+    h += `<div class="lm-card">
+      <div class="lm-card-title">Pattern Analysis</div>
+      <div class="lm-kv">
+        <span class="lm-kv-key">Trend</span><span class="lm-kv-val">${escapeHtml(pa.trend || "—")}</span>
+        ${pa.key_concern ? `<span class="lm-kv-key">Key Concern</span><span class="lm-kv-val">${escapeHtml(pa.key_concern)}</span>` : ""}
+      </div>
+      ${pa.summary ? `<div class="lm-text" style="margin-top:8px">${escapeHtml(pa.summary)}</div>` : ""}
+    </div>`;
+  }
+  if (r.check_in_message) {
+    const ci = r.check_in_message;
+    h += `<div class="lm-card">
+      <div class="lm-card-title">Check-in Message · ${escapeHtml(ci.channel || "")}</div>
+      ${ci.subject ? `<div class="lm-kv" style="margin-bottom:8px"><span class="lm-kv-key">Subject</span><span class="lm-kv-val">${escapeHtml(ci.subject)}</span></div>` : ""}
+      <div class="lm-checkin-box">${escapeHtml(ci.message || "—")}</div>
+      ${ci.tone_notes ? `<div class="lm-muted" style="margin-top:8px">${escapeHtml(ci.tone_notes)}</div>` : ""}
+    </div>`;
+  }
+  if (r.action_items && r.action_items.length) {
+    h += `<div class="lm-card"><div class="lm-card-title">Action Items</div>`;
+    for (const ai of r.action_items) {
+      h += `<div class="lm-action-item">
+        <span class="lm-action-priority">#${escapeHtml(ai.priority)}</span>
+        <div>
+          <div style="color:var(--text)">${escapeHtml(ai.action)}</div>
+          <div class="lm-muted">${escapeHtml(ai.deadline || "")} · ${escapeHtml(ai.owner || "")}</div>
+        </div>
+      </div>`;
+    }
+    h += `</div>`;
+  }
+  if (r.predictions && r.predictions.length) {
+    h += `<div class="lm-card"><div class="lm-card-title">Predictions</div><ul class="lm-list">`;
+    for (const p of r.predictions) {
+      h += `<li><strong>${escapeHtml(p.timeframe || "")}</strong> — ${escapeHtml(p.prediction || "")}${p.recommended_action ? `<br><span class="lm-muted">→ ${escapeHtml(p.recommended_action)}</span>` : ""}</li>`;
+    }
+    h += `</ul></div>`;
+  }
+  if (r.risk_assessment) {
+    const ra = r.risk_assessment;
+    const col = ra.churn_risk === "LOW" ? "var(--green)" : ra.churn_risk === "MEDIUM" ? "var(--yellow)" : "var(--red)";
+    h += `<div class="lm-card">
+      <div class="lm-card-title">Risk Assessment</div>
+      <div class="lm-kv">
+        <span class="lm-kv-key">Churn Risk</span>
+        <span class="lm-kv-val" style="color:${col};font-weight:700">${escapeHtml(ra.churn_risk || "—")}</span>
+        ${ra.churn_risk_reason ? `<span class="lm-kv-key">Reason</span><span class="lm-kv-val">${escapeHtml(ra.churn_risk_reason)}</span>` : ""}
+      </div>
+    </div>`;
+  }
+  return h;
+}
+
+function renderVinylCards(r) {
+  let h = `<div class="lm-card">
+    <div class="lm-card-title">Release Summary</div>
+    <div class="lm-kv">
+      <span class="lm-kv-key">Artist</span>  <span class="lm-kv-val">${escapeHtml(r.artist || "—")}</span>
+      <span class="lm-kv-key">Project</span> <span class="lm-kv-val">${escapeHtml(r.project || "—")}</span>
+      <span class="lm-kv-key">Type</span>    <span class="lm-kv-val">${escapeHtml(r.project_type || "—")}</span>
+      <span class="lm-kv-key">Release</span> <span class="lm-kv-val">${escapeHtml(r.release_date || "—")}</span>
+    </div>
+  </div>`;
+  if (r.blockers && r.blockers.length) {
+    h += `<div class="lm-card" style="border-color:rgba(232,69,69,.3)">
+      <div class="lm-card-title" style="color:var(--red)">Blockers</div>
+      <ul class="lm-list">${r.blockers.map(b => `<li style="color:var(--red)">${escapeHtml(b)}</li>`).join("")}</ul>
+    </div>`;
+  }
+  if (r.immediate_actions && r.immediate_actions.length) {
+    h += `<div class="lm-card">
+      <div class="lm-card-title">Immediate Actions</div>
+      <ul class="lm-list">${r.immediate_actions.map(a => `<li>${escapeHtml(a)}</li>`).join("")}</ul>
+    </div>`;
+  }
+  if (r.critical_path && r.critical_path.length) {
+    h += `<div class="lm-card">
+      <div class="lm-card-title">Critical Path</div>
+      <ul class="lm-list">${r.critical_path.map(c => `<li>${escapeHtml(c)}</li>`).join("")}</ul>
+    </div>`;
+  }
+  const statusMap = {
+    COMPLETE:    ["lm-status-done",     "DONE"],
+    IN_PROGRESS: ["lm-status-progress", "IN PROGRESS"],
+    BLOCKED:     ["lm-status-blocked",  "BLOCKED"],
+    PENDING:     ["lm-status-pending",  "PENDING"],
+  };
+  for (const phase of (r.phases || [])) {
+    h += `<div class="lm-card">
+      <div class="lm-card-title">${escapeHtml(phase.phase || "")} <span style="font-weight:400;color:var(--muted)">${escapeHtml(phase.timeline || "")}</span></div>`;
+    for (const task of (phase.tasks || [])) {
+      const [cls, lbl] = statusMap[task.status] || ["lm-status-pending", task.status || "PENDING"];
+      const noteHtml = task.notes && !EXCLUDED_NOTE_VALUES.includes((task.notes||"").toLowerCase())
+        ? `<div class="lm-muted">${escapeHtml(task.notes)}</div>` : "";
+      h += `<div class="lm-task-row">
+        <span class="lm-task-status ${cls}">${lbl}</span>
+        <div><div style="color:var(--text)">${escapeHtml(task.task || "")}</div>${noteHtml}</div>
+      </div>`;
+    }
+    h += `</div>`;
+  }
+  return h;
+}
+
+function renderGenericLabelCards(r) {
+  let h = "";
+  // Summary-like scalar string
+  for (const f of ["summary","overview","description","brief","interpretation"]) {
+    if (r[f] && typeof r[f] === "string") {
+      h += `<div class="lm-card"><div class="lm-card-title">Summary</div><div class="lm-text">${escapeHtml(r[f])}</div></div>`;
+      break;
+    }
+  }
+  // Array fields → lists
+  for (const f of ["recommendations","signals","insights","opportunities","actions","next_actions","key_signals","immediate_actions","blockers"]) {
+    if (Array.isArray(r[f]) && r[f].length) {
+      h += `<div class="lm-card">
+        <div class="lm-card-title">${f.replace(/_/g," ").toUpperCase()}</div>
+        <ul class="lm-list">${r[f].map(item => `<li>${escapeHtml(typeof item === "string" ? item : JSON.stringify(item))}</li>`).join("")}</ul>
+      </div>`;
+    }
+  }
+  // Scalar KV
+  const scalars = Object.entries(r).filter(([k,v]) => (typeof v === "string" || typeof v === "number") && !["built_at_utc","generated"].includes(k));
+  if (scalars.length) {
+    h += `<div class="lm-card"><div class="lm-card-title">Details</div><div class="lm-kv">`;
+    for (const [k,v] of scalars) h += `<span class="lm-kv-key">${escapeHtml(k)}</span><span class="lm-kv-val">${escapeHtml(String(v))}</span>`;
+    h += `</div></div>`;
+  }
+  if (!h) h = `<div class="lm-card"><div class="lm-text">Result received — click Show JSON to view the full output.</div></div>`;
+  return h;
 }
 </script>
 </body>
