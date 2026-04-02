@@ -1785,7 +1785,7 @@ if (!slug || slug === "undefined") {
 }
 function renderAgentResults(result) {
   // Show structured modal
-  const agentId = STATE.agentRunning || 'unknown';
+  const agentId = STATE.agentRunning || (typeof result === 'object' && result.agent) || 'agent';
   renderLabelResultModal(agentId, result);
   // Keep a brief terminal status line
   const term = document.getElementById("terminal");
