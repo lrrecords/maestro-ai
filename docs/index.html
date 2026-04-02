@@ -1,691 +1,801 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Maestro AI — The AI Operating System for Independent Music</title>
-  <meta name="description" content="Maestro AI is an open-source multi-agent AI business operating system for independent music labels, studios, managers, touring operators, and indie artists." />
+  <meta name="description"
+    content="Maestro AI is an open-source multi-agent AI business operating system for independent music labels, studios, managers, touring operators, and indie artists." />
   <style>
-    :root{
-      --bg:#0d0d0d;
-      --surface:#141414;
-      --surface-2:#101010;
-      --border:#2a2a2a;
-      --border-2:#1e1e1e;
-      --text:#d8d8d8;
-      --muted:#888;
-      --muted-2:#666;
-      --white:#f0f0f0;
+    :root {
+      --bg: #0d0d0d;
+      --surface: #141414;
+      --surface-2: #101010;
+      --border: #2a2a2a;
+      --border-2: #1e1e1e;
+      --text: #d8d8d8;
+      --muted: #888;
+      --muted-2: #666;
+      --white: #f0f0f0;
 
-      --accent:#00e5b0;
-      --accent-dim:rgba(0,229,176,.14);
-      --accent-2:#00c8d4; /* alternate cyan for subtle gradients */
-      --amber:#ffb400;
-      --red:#ff6060;
+      --accent: #00e5b0;
+      --accent-dim: rgba(0, 229, 176, .14);
+      --accent-2: #00c8d4;
+      /* alternate cyan for subtle gradients */
+      --amber: #ffb400;
+      --red: #ff6060;
 
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --shadow: 0 18px 60px rgba(0, 0, 0, .45);
       --radius: 14px;
       --radius-sm: 10px;
 
       --container: 1140px;
     }
 
-    *{ box-sizing:border-box; }
-    html, body{ height:100%; }
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family:var(--sans);
-      line-height:1.45;
-      overflow-x:hidden;
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: -40px -40px -40px -40px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .22;
+      background:
+        radial-gradient(circle at 15% 30%, rgba(0, 229, 176, .18), rgba(0, 229, 176, 0) 55%),
+        radial-gradient(circle at 85% 15%, rgba(0, 200, 212, .14), rgba(0, 200, 212, 0) 55%),
+        repeating-linear-gradient(90deg,
+          rgba(0, 229, 176, .06) 0px,
+          rgba(0, 229, 176, .06) 2px,
+          transparent 2px,
+          transparent 14px);
+      filter: blur(.2px);
+    }
+
+    .hero-inner {
+      position: relative;
+    }
+
+    .hero-inner>* {
+      position: relative;
+      z-index: 1;
     }
 
     /* subtle grid background */
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:0;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
       background-image:
-        linear-gradient(rgba(0,229,176,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,229,176,.04) 1px, transparent 1px);
+        linear-gradient(rgba(0, 229, 176, .04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 176, .04) 1px, transparent 1px);
       background-size: 44px 44px;
-      opacity:.35;
+      opacity: .35;
     }
 
     /* glow */
-    body::after{
-      content:"";
-      position:fixed;
-      top:-18%;
-      left:50%;
-      transform:translateX(-50%);
-      width:820px;
-      height:820px;
-      pointer-events:none;
-      z-index:0;
-      background: radial-gradient(circle, rgba(0,229,176,.09) 0%, rgba(0,229,176,0) 65%);
+    body::after {
+      content: "";
+      position: fixed;
+      top: -18%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 820px;
+      height: 820px;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle, rgba(0, 229, 176, .09) 0%, rgba(0, 229, 176, 0) 65%);
       filter: blur(0px);
-      opacity:.7;
+      opacity: .7;
     }
 
-    a{ color:inherit; text-decoration:none; }
-    a:hover{ color:var(--white); }
-
-    .wrap{
-      position:relative;
-      z-index:1;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    .container{
-      width:min(var(--container), calc(100% - 40px));
-      margin:0 auto;
+    a:hover {
+      color: var(--white);
     }
 
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      border:1px solid rgba(0,229,176,.28);
-      background:rgba(0,229,176,.06);
-      border-radius:999px;
-      font-size:.78rem;
-      color:var(--accent);
-      letter-spacing:.02em;
-      white-space:nowrap;
+    .wrap {
+      position: relative;
+      z-index: 1;
     }
 
-    .pill .dot{
-      width:8px; height:8px; border-radius:50%;
-      background:var(--accent);
-      box-shadow:0 0 14px rgba(0,229,176,.55);
+    .container {
+      width: min(var(--container), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid rgba(0, 229, 176, .28);
+      background: rgba(0, 229, 176, .06);
+      border-radius: 999px;
+      font-size: .78rem;
+      color: var(--accent);
+      letter-spacing: .02em;
+      white-space: nowrap;
+    }
+
+    .pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 14px rgba(0, 229, 176, .55);
     }
 
     /* NAV */
-    .nav{
-      position:sticky;
-      top:0;
-      z-index:20;
-      background:rgba(13,13,13,.65);
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(13, 13, 13, .65);
       backdrop-filter: blur(10px);
-      border-bottom:1px solid rgba(42,42,42,.8);
+      border-bottom: 1px solid rgba(42, 42, 42, .8);
     }
 
-    .nav-inner{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding:14px 0;
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 0;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       min-width: 160px;
     }
 
-    .brand-mark{
-      width:34px; height:34px;
-      border-radius:10px;
-      border:1px solid rgba(0,229,176,.35);
+    .brand-logo {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 229, 176, .25);
+      background: rgba(0, 229, 176, .06);
+      padding: 4px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 229, 176, .35);
       background:
-        radial-gradient(circle at 30% 30%, rgba(0,229,176,.20), rgba(0,229,176,0) 55%),
-        linear-gradient(135deg, rgba(0,229,176,.10), rgba(0,229,176,0));
-      box-shadow: 0 0 30px rgba(0,229,176,.08);
-      display:grid;
-      place-items:center;
-      font-family:var(--mono);
-      color:var(--accent);
-      font-weight:800;
-      letter-spacing:.04em;
+        radial-gradient(circle at 30% 30%, rgba(0, 229, 176, .20), rgba(0, 229, 176, 0) 55%),
+        linear-gradient(135deg, rgba(0, 229, 176, .10), rgba(0, 229, 176, 0));
+      box-shadow: 0 0 30px rgba(0, 229, 176, .08);
+      display: grid;
+      place-items: center;
+      font-family: var(--mono);
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: .04em;
     }
 
-    .brand-name{
-      font-weight:900;
-      letter-spacing:.12em;
-      font-size:.95rem;
-      color:var(--white);
-      text-transform:uppercase;
+    .brand-name {
+      font-weight: 900;
+      letter-spacing: .12em;
+      font-size: .95rem;
+      color: var(--white);
+      text-transform: uppercase;
     }
 
-    .brand-name span{ color:var(--accent); }
-
-    .nav-links{
-      display:none;
-      gap:18px;
-      align-items:center;
-      font-size:.86rem;
-      color:var(--muted);
+    .brand-name span {
+      color: var(--accent);
     }
 
-    .nav-links a{
-      color:var(--muted);
+    .nav-links {
+      display: none;
+      gap: 18px;
+      align-items: center;
+      font-size: .86rem;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      color: var(--muted);
       transition: color .15s ease;
     }
-    .nav-links a:hover{
-      color:var(--white);
+
+    .nav-links a:hover {
+      color: var(--white);
     }
 
-    .nav-ctas{
-      display:flex;
-      align-items:center;
-      gap:10px;
+    .nav-ctas {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:10px 14px;
-      border-radius:10px;
-      border:1px solid var(--border);
-      background:transparent;
-      color:var(--text);
-      font-weight:700;
-      font-size:.86rem;
-      letter-spacing:.02em;
-      cursor:pointer;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-weight: 700;
+      font-size: .86rem;
+      letter-spacing: .02em;
+      cursor: pointer;
       transition: transform .12s ease, background .12s ease, border-color .12s ease, color .12s ease;
-      user-select:none;
-      white-space:nowrap;
+      user-select: none;
+      white-space: nowrap;
     }
 
-    .btn:hover{
+    .btn:hover {
       transform: translateY(-1px);
-      border-color:#3a3a3a;
-      background:rgba(255,255,255,.03);
-      color:var(--white);
+      border-color: #3a3a3a;
+      background: rgba(255, 255, 255, .03);
+      color: var(--white);
     }
 
-    .btn:active{ transform: translateY(0px); }
+    .btn:active {
+      transform: translateY(0px);
+    }
 
-    .btn-oss{
-      border-color: rgba(0,229,176,.35);
-      background: rgba(0,229,176,.08);
+    .btn-oss {
+      border-color: rgba(0, 229, 176, .35);
+      background: rgba(0, 229, 176, .08);
       color: var(--accent);
     }
-    .btn-oss:hover{
+
+    .btn-oss:hover {
       border-color: var(--accent);
-      background: rgba(0,229,176,.14);
+      background: rgba(0, 229, 176, .14);
       color: var(--accent);
-      box-shadow: 0 0 26px rgba(0,229,176,.10);
+      box-shadow: 0 0 26px rgba(0, 229, 176, .10);
     }
 
-    .btn-cloud{
-      border-color: rgba(255,180,0,.35);
-      background: rgba(255,180,0,.08);
+    .btn-cloud {
+      border-color: rgba(255, 180, 0, .35);
+      background: rgba(255, 180, 0, .08);
       color: var(--amber);
     }
-    .btn-cloud:hover{
+
+    .btn-cloud:hover {
       border-color: var(--amber);
-      background: rgba(255,180,0,.12);
+      background: rgba(255, 180, 0, .12);
       color: var(--amber);
-      box-shadow: 0 0 26px rgba(255,180,0,.10);
+      box-shadow: 0 0 26px rgba(255, 180, 0, .10);
     }
 
-    .btn-managed{
-      border-color: rgba(0,200,212,.35);
-      background: rgba(0,200,212,.08);
+    .btn-managed {
+      border-color: rgba(0, 200, 212, .35);
+      background: rgba(0, 200, 212, .08);
       color: var(--accent-2);
     }
-    .btn-managed:hover{
+
+    .btn-managed:hover {
       border-color: var(--accent-2);
-      background: rgba(0,200,212,.12);
+      background: rgba(0, 200, 212, .12);
       color: var(--accent-2);
-      box-shadow: 0 0 26px rgba(0,200,212,.10);
+      box-shadow: 0 0 26px rgba(0, 200, 212, .10);
     }
 
-    .btn small{
-      opacity:.8;
-      font-weight:800;
-      font-family:var(--mono);
-      letter-spacing:.04em;
+    .btn small {
+      opacity: .8;
+      font-weight: 800;
+      font-family: var(--mono);
+      letter-spacing: .04em;
     }
 
     /* Mobile menu */
-    .menu-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width:42px;
-      height:42px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.02);
-      color:var(--text);
-      cursor:pointer;
+    .menu-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, .02);
+      color: var(--text);
+      cursor: pointer;
       transition: border-color .12s ease, background .12s ease;
     }
-    .menu-btn:hover{
-      border-color:#3a3a3a;
-      background:rgba(255,255,255,.04);
+
+    .menu-btn:hover {
+      border-color: #3a3a3a;
+      background: rgba(255, 255, 255, .04);
     }
-    .menu{
-      display:none;
-      border-top:1px solid rgba(42,42,42,.8);
-      padding:10px 0 14px;
+
+    .menu {
+      display: none;
+      border-top: 1px solid rgba(42, 42, 42, .8);
+      padding: 10px 0 14px;
     }
-    .menu.open{ display:block; }
-    .menu a{
-      display:block;
-      padding:10px 0;
-      color:var(--muted);
-      font-size:.92rem;
+
+    .menu.open {
+      display: block;
     }
-    .menu a:hover{ color:var(--white); }
+
+    .menu a {
+      display: block;
+      padding: 10px 0;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .menu a:hover {
+      color: var(--white);
+    }
 
     /* HERO */
-    .hero{
-      padding:54px 0 28px;
+    .hero {
+      padding: 34px 0 28px;
     }
 
-    .hero-grid{
-      display:grid;
+    .hero-grid {
+      display: grid;
       grid-template-columns: 1fr;
-      gap:22px;
-      align-items:start;
+      gap: 22px;
+      align-items: start;
     }
 
-    h1{
-      margin:0;
+    h1 {
+      margin: 0;
       font-size: clamp(2.0rem, 4vw, 3.1rem);
-      line-height:1.05;
-      letter-spacing:-0.02em;
-      color:var(--white);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--white);
     }
 
-    .hero-sub{
-      margin-top:14px;
-      font-size:1.02rem;
-      color:var(--muted);
-      max-width:58ch;
+    .hero-sub {
+      margin-top: 14px;
+      font-size: 1.02rem;
+      color: var(--muted);
+      max-width: 58ch;
     }
 
-    .hero-ctas{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:18px;
-      align-items:center;
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      align-items: center;
     }
 
-    .hero-meta{
-      margin-top:14px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      color:var(--muted-2);
-      font-size:.86rem;
+    .hero-meta {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted-2);
+      font-size: .86rem;
     }
 
-    .hero-meta a{
-      color:var(--muted);
-      text-decoration:underline;
-      text-decoration-color: rgba(0,229,176,.25);
-      text-underline-offset:3px;
+    .hero-meta a {
+      color: var(--muted);
+      text-decoration: underline;
+      text-decoration-color: rgba(0, 229, 176, .25);
+      text-underline-offset: 3px;
     }
-    .hero-meta a:hover{ color:var(--white); }
+
+    .hero-meta a:hover {
+      color: var(--white);
+    }
 
     /* Terminal */
-    .terminal{
-      border:1px solid rgba(42,42,42,.9);
-      background: linear-gradient(180deg, rgba(20,20,20,.95), rgba(10,10,10,.95));
+    .terminal {
+      border: 1px solid rgba(42, 42, 42, .9);
+      background: linear-gradient(180deg, rgba(20, 20, 20, .95), rgba(10, 10, 10, .95));
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
+      overflow: hidden;
+      position: relative;
     }
 
-    .term-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:12px 14px;
-      background: rgba(26,26,26,.85);
-      border-bottom:1px solid rgba(30,30,30,.9);
-      color:var(--muted);
-      font-size:.8rem;
-      font-family:var(--mono);
+    .term-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      background: rgba(26, 26, 26, .85);
+      border-bottom: 1px solid rgba(30, 30, 30, .9);
+      color: var(--muted);
+      font-size: .8rem;
+      font-family: var(--mono);
     }
 
-    .term-dots{
-      display:flex;
-      gap:7px;
-      align-items:center;
-    }
-    .term-dot{
-      width:10px;height:10px;border-radius:50%;
-      background:#333;
-      border:1px solid rgba(255,255,255,.08);
-    }
-    .term-dot.red{ background: rgba(255,96,96,.25); border-color: rgba(255,96,96,.35); }
-    .term-dot.amb{ background: rgba(255,180,0,.22); border-color: rgba(255,180,0,.32); }
-    .term-dot.grn{ background: rgba(0,200,100,.22); border-color: rgba(0,200,100,.32); }
-
-    .term-body{
-      padding:14px;
-      font-family:var(--mono);
-      font-size:.82rem;
-      color:#cfcfcf;
-      white-space:pre-wrap;
-      overflow-wrap:anywhere;
-      line-height:1.45;
+    .term-dots {
+      display: flex;
+      gap: 7px;
+      align-items: center;
     }
 
-    .term-line{
-      display:block;
-      margin-bottom:6px;
+    .term-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #333;
+      border: 1px solid rgba(255, 255, 255, .08);
     }
 
-    .tok-key{ color:#9ad; }
-    .tok-str{ color:#9f9; }
-    .tok-num{ color:#fd9; }
-    .tok-bool{ color:#8ff; }
-    .tok-null{ color:#aaa; }
-    .tok-accent{ color:var(--accent); }
-
-    .term-foot{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      padding:12px 14px;
-      border-top:1px solid rgba(30,30,30,.9);
-      color:var(--muted-2);
-      font-size:.78rem;
+    .term-dot.red {
+      background: rgba(255, 96, 96, .25);
+      border-color: rgba(255, 96, 96, .35);
     }
 
-    .kbd{
-      font-family:var(--mono);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      padding:2px 8px;
-      border-radius:999px;
-      color:#bbb;
-      letter-spacing:.02em;
+    .term-dot.amb {
+      background: rgba(255, 180, 0, .22);
+      border-color: rgba(255, 180, 0, .32);
+    }
+
+    .term-dot.grn {
+      background: rgba(0, 200, 100, .22);
+      border-color: rgba(0, 200, 100, .32);
+    }
+
+    .term-body {
+      padding: 14px;
+      font-family: var(--mono);
+      font-size: .82rem;
+      color: #cfcfcf;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      line-height: 1.45;
+    }
+
+    .term-line {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .tok-key {
+      color: #9ad;
+    }
+
+    .tok-str {
+      color: #9f9;
+    }
+
+    .tok-num {
+      color: #fd9;
+    }
+
+    .tok-bool {
+      color: #8ff;
+    }
+
+    .tok-null {
+      color: #aaa;
+    }
+
+    .tok-accent {
+      color: var(--accent);
+    }
+
+    .term-foot {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-top: 1px solid rgba(30, 30, 30, .9);
+      color: var(--muted-2);
+      font-size: .78rem;
+    }
+
+    .kbd {
+      font-family: var(--mono);
+      border: 1px solid rgba(255, 255, 255, .10);
+      background: rgba(255, 255, 255, .03);
+      padding: 2px 8px;
+      border-radius: 999px;
+      color: #bbb;
+      letter-spacing: .02em;
     }
 
     /* Pain strip */
-    .strip{
+    .strip {
       padding: 18px 0 10px;
     }
 
-    .pain{
-      border:1px solid rgba(42,42,42,.85);
-      background: rgba(20,20,20,.65);
+    .pain {
+      border: 1px solid rgba(42, 42, 42, .85);
+      background: rgba(20, 20, 20, .65);
       border-radius: var(--radius);
       padding: 18px 16px;
     }
 
-    .pain-grid{
-      display:grid;
+    .pain-grid {
+      display: grid;
       grid-template-columns: 1fr;
-      gap:10px;
+      gap: 10px;
     }
 
-    .pain-item{
-      border:1px solid rgba(42,42,42,.8);
-      background: rgba(10,10,10,.55);
+    .pain-item {
+      border: 1px solid rgba(42, 42, 42, .8);
+      background: rgba(10, 10, 10, .55);
       border-radius: 12px;
       padding: 14px;
       transition: transform .12s ease, border-color .12s ease, background .12s ease;
     }
-    .pain-item:hover{
+
+    .pain-item:hover {
       transform: translateY(-1px);
-      border-color:#3a3a3a;
-      background: rgba(255,255,255,.03);
+      border-color: #3a3a3a;
+      background: rgba(255, 255, 255, .03);
     }
 
-    .pain-title{
-      font-weight:800;
-      color:var(--white);
-      letter-spacing:.02em;
-      margin-bottom:6px;
-      font-size:.96rem;
+    .pain-title {
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: .02em;
+      margin-bottom: 6px;
+      font-size: .96rem;
     }
 
-    .pain-desc{
-      color:var(--muted);
-      font-size:.9rem;
-      margin:0;
+    .pain-desc {
+      color: var(--muted);
+      font-size: .9rem;
+      margin: 0;
     }
 
     /* Sections */
-    section{
+    section {
       padding: 56px 0;
     }
 
-    .section-head{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom:18px;
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
     }
 
-    .kicker{
-      color:var(--accent);
-      font-weight:900;
-      letter-spacing:.14em;
-      font-size:.75rem;
-      text-transform:uppercase;
-      margin-bottom:8px;
+    .kicker {
+      color: var(--accent);
+      font-weight: 900;
+      letter-spacing: .14em;
+      font-size: .75rem;
+      text-transform: uppercase;
+      margin-bottom: 8px;
     }
 
-    h2{
-      margin:0;
-      color:var(--white);
+    h2 {
+      margin: 0;
+      color: var(--white);
       font-size: clamp(1.5rem, 2.6vw, 2.1rem);
-      line-height:1.15;
-      letter-spacing:-0.01em;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
     }
 
-    .section-sub{
-      margin-top:10px;
-      color:var(--muted);
-      max-width:70ch;
-      font-size:.98rem;
+    .section-sub {
+      margin-top: 10px;
+      color: var(--muted);
+      max-width: 70ch;
+      font-size: .98rem;
     }
 
-    .grid-3{
-      display:grid;
+    .grid-3 {
+      display: grid;
       grid-template-columns: 1fr;
-      gap:12px;
+      gap: 12px;
     }
 
-    .grid-4{
-      display:grid;
+    .grid-4 {
+      display: grid;
       grid-template-columns: 1fr;
-      gap:12px;
+      gap: 12px;
     }
 
-    .card{
-      background: rgba(20,20,20,.78);
-      border:1px solid rgba(42,42,42,.85);
+    .card {
+      background: rgba(20, 20, 20, .78);
+      border: 1px solid rgba(42, 42, 42, .85);
       border-radius: var(--radius);
       padding: 16px;
       transition: transform .12s ease, border-color .12s ease, background .12s ease;
-      box-shadow: 0 0 0 rgba(0,0,0,0);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
     }
 
-    .card:hover{
+    .card:hover {
       transform: translateY(-1px);
-      border-color:#3a3a3a;
-      background: rgba(255,255,255,.03);
+      border-color: #3a3a3a;
+      background: rgba(255, 255, 255, .03);
     }
 
-    .step{
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
+    .step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
     }
 
-    .step-num{
-      width:36px;height:36px;
-      border-radius:12px;
-      border:1px solid rgba(0,229,176,.30);
-      background: rgba(0,229,176,.06);
-      color:var(--accent);
-      display:grid;
-      place-items:center;
-      font-weight:900;
-      font-family:var(--mono);
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 229, 176, .30);
+      background: rgba(0, 229, 176, .06);
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-family: var(--mono);
     }
 
-    .step h3{
-      margin:0;
-      color:var(--white);
-      font-size:1rem;
+    .step h3 {
+      margin: 0;
+      color: var(--white);
+      font-size: 1rem;
     }
 
-    .step p{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:.92rem;
+    .step p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: .92rem;
     }
 
     /* Department cards */
-    .dept-top{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:10px;
+    .dept-top {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
     }
 
-    .dept-name{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      color:var(--white);
-      font-weight:900;
-      font-size:1.02rem;
+    .dept-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--white);
+      font-weight: 900;
+      font-size: 1.02rem;
     }
 
-    .dept-tag{
-      font-size:.7rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:var(--accent);
-      border:1px solid rgba(0,229,176,.22);
-      background: rgba(0,229,176,.06);
-      padding:4px 10px;
-      border-radius:999px;
-      white-space:nowrap;
+    .dept-tag {
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(0, 229, 176, .22);
+      background: rgba(0, 229, 176, .06);
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
     }
 
-    .dept-desc{
-      color:var(--muted);
-      margin:0;
-      font-size:.92rem;
-      line-height:1.5;
+    .dept-desc {
+      color: var(--muted);
+      margin: 0;
+      font-size: .92rem;
+      line-height: 1.5;
     }
 
-    .agent-chips{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:12px;
+    .agent-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
     }
 
-    .chip{
-      font-family:var(--mono);
-      font-size:.74rem;
-      letter-spacing:.04em;
-      color:#cfcfcf;
-      border:1px solid rgba(36,36,36,.9);
-      background: rgba(10,10,10,.55);
-      padding:5px 8px;
-      border-radius:999px;
+    .chip {
+      font-family: var(--mono);
+      font-size: .74rem;
+      letter-spacing: .04em;
+      color: #cfcfcf;
+      border: 1px solid rgba(36, 36, 36, .9);
+      background: rgba(10, 10, 10, .55);
+      padding: 5px 8px;
+      border-radius: 999px;
     }
 
     /* Agent spotlight grid */
-    .agent-grid{
-      display:grid;
+    .agent-grid {
+      display: grid;
       grid-template-columns: 1fr;
-      gap:12px;
+      gap: 12px;
     }
 
-    .agent-card{
-      background: rgba(20,20,20,.78);
-      border:1px solid rgba(42,42,42,.85);
+    .agent-card {
+      background: rgba(20, 20, 20, .78);
+      border: 1px solid rgba(42, 42, 42, .85);
       border-radius: var(--radius);
       padding: 16px;
       transition: transform .12s ease, border-color .12s ease, background .12s ease;
-      overflow:hidden;
-      position:relative;
+      overflow: hidden;
+      position: relative;
     }
 
-    .agent-card:hover{
+    .agent-card:hover {
       transform: translateY(-1px);
-      border-color:#3a3a3a;
-      background: rgba(255,255,255,.03);
+      border-color: #3a3a3a;
+      background: rgba(255, 255, 255, .03);
     }
 
-    .agent-head{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      justify-content:space-between;
-      margin-bottom:10px;
+    .agent-head {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 10px;
     }
 
-    .agent-ident{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      min-width:0;
+    .agent-ident {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      min-width: 0;
     }
 
-    .agent-icon{
-      width:38px;height:38px;
-      border-radius:12px;
-      border:1px solid rgba(0,229,176,.28);
+    .agent-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 229, 176, .28);
       background:
-        radial-gradient(circle at 30% 30%, rgba(0,229,176,.18), rgba(0,229,176,0) 60%),
-        linear-gradient(135deg, rgba(0,229,176,.08), rgba(0,229,176,0));
-      display:grid;
-      place-items:center;
-      font-size:1.05rem;
-      color:var(--accent);
-      flex-shrink:0;
+        radial-gradient(circle at 30% 30%, rgba(0, 229, 176, .18), rgba(0, 229, 176, 0) 60%),
+        linear-gradient(135deg, rgba(0, 229, 176, .08), rgba(0, 229, 176, 0));
+      display: grid;
+      place-items: center;
+      font-size: 1.05rem;
+      color: var(--accent);
+      flex-shrink: 0;
     }
 
-    .agent-name{
-      margin:0;
-      color:var(--white);
-      font-weight:900;
-      letter-spacing:.02em;
-      font-size:1rem;
+    .agent-name {
+      margin: 0;
+      color: var(--white);
+      font-weight: 900;
+      letter-spacing: .02em;
+      font-size: 1rem;
     }
 
-    .agent-sub{
-      margin:4px 0 0;
-      color:var(--muted);
-      font-size:.9rem;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      line-clamp:2;
-      -webkit-box-orient:vertical;
+    .agent-sub {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: .9rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
-    .agent-preview{
-      margin-top:12px;
-      border:1px solid rgba(30,30,30,.95);
-      background: rgba(10,10,10,.55);
+    .agent-preview {
+      margin-top: 12px;
+      border: 1px solid rgba(30, 30, 30, .95);
+      background: rgba(10, 10, 10, .55);
       border-radius: 12px;
       padding: 12px;
       font-family: var(--mono);
@@ -693,547 +803,650 @@
       color: #cfcfcf;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
-      line-height:1.5;
+      line-height: 1.5;
     }
 
-    .agent-preview strong{
-      color:var(--accent);
-      font-weight:900;
+    .agent-preview strong {
+      color: var(--accent);
+      font-weight: 900;
     }
 
     /* Audience */
-    .audience-wrap{
-      display:grid;
+    .audience-wrap {
+      display: grid;
       grid-template-columns: 1fr;
-      gap:12px;
+      gap: 12px;
     }
 
-    .aud-card{
-      background: rgba(20,20,20,.78);
-      border:1px solid rgba(42,42,42,.85);
+    .aud-card {
+      background: rgba(20, 20, 20, .78);
+      border: 1px solid rgba(42, 42, 42, .85);
       border-radius: var(--radius);
-      overflow:hidden;
+      overflow: hidden;
     }
 
-    .aud-head{
-      padding:14px 16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      border-bottom:1px solid rgba(30,30,30,.9);
-      background: rgba(16,16,16,.72);
+    .aud-head {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(30, 30, 30, .9);
+      background: rgba(16, 16, 16, .72);
     }
 
-    .aud-title{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      color:var(--white);
-      font-weight:900;
-      font-size:1rem;
-      margin:0;
+    .aud-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--white);
+      font-weight: 900;
+      font-size: 1rem;
+      margin: 0;
     }
 
-    .aud-title span{
-      width:34px;height:34px;border-radius:12px;
-      display:grid;place-items:center;
-      border:1px solid rgba(0,229,176,.25);
-      background: rgba(0,229,176,.06);
-      color:var(--accent);
-      flex-shrink:0;
+    .aud-title span {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(0, 229, 176, .25);
+      background: rgba(0, 229, 176, .06);
+      color: var(--accent);
+      flex-shrink: 0;
     }
 
-    .aud-body{
-      padding:14px 16px 16px;
+    .aud-body {
+      padding: 14px 16px 16px;
     }
 
-    .aud-body p{
-      margin:0 0 10px;
-      color:var(--muted);
-      font-size:.92rem;
+    .aud-body p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: .92rem;
     }
 
-    .bullets{
-      margin:0;
-      padding-left:18px;
-      color:#cfcfcf;
-      font-size:.9rem;
+    .bullets {
+      margin: 0;
+      padding-left: 18px;
+      color: #cfcfcf;
+      font-size: .9rem;
     }
-    .bullets li{ margin:6px 0; }
 
-    .aud-meta{
-      margin-top:12px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
+    .bullets li {
+      margin: 6px 0;
     }
-    .aud-meta .chip{ border-color: rgba(0,229,176,.16); color:#d9fff6; }
+
+    .aud-meta {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .aud-meta .chip {
+      border-color: rgba(0, 229, 176, .16);
+      color: #d9fff6;
+    }
 
     /* Case study strip */
-    .case{
+    .case {
       padding: 0;
     }
-    .case-inner{
+
+    .case-inner {
       margin: 0 auto;
-      width:min(var(--container), calc(100% - 40px));
+      width: min(var(--container), calc(100% - 40px));
       border-radius: calc(var(--radius) + 2px);
-      border:1px solid rgba(42,42,42,.9);
+      border: 1px solid rgba(42, 42, 42, .9);
       background:
-        radial-gradient(circle at 20% 20%, rgba(0,229,176,.09), rgba(0,229,176,0) 55%),
-        linear-gradient(180deg, rgba(20,20,20,.9), rgba(10,10,10,.9));
+        radial-gradient(circle at 20% 20%, rgba(0, 229, 176, .09), rgba(0, 229, 176, 0) 55%),
+        linear-gradient(180deg, rgba(20, 20, 20, .9), rgba(10, 10, 10, .9));
       box-shadow: var(--shadow);
       padding: 22px 16px;
     }
 
-    .case-grid{
-      display:grid;
+    .case-grid {
+      display: grid;
       grid-template-columns: 1fr;
-      gap:12px;
-      align-items:start;
+      gap: 12px;
+      align-items: start;
     }
 
-    .case h3{
-      margin:0;
-      color:var(--white);
-      font-size:1.25rem;
-      letter-spacing:-0.01em;
+    .case h3 {
+      margin: 0;
+      color: var(--white);
+      font-size: 1.25rem;
+      letter-spacing: -0.01em;
     }
 
-    .case p{
-      margin:10px 0 0;
-      color:var(--muted);
-      font-size:.95rem;
-      max-width:75ch;
+    .case p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: .95rem;
+      max-width: 75ch;
     }
 
-    .case-metrics{
-      display:grid;
+    .case-metrics {
+      display: grid;
       grid-template-columns: 1fr;
-      gap:10px;
-      margin-top:12px;
+      gap: 10px;
+      margin-top: 12px;
     }
 
-    .metric{
-      background: rgba(10,10,10,.55);
-      border:1px solid rgba(36,36,36,.95);
+    .metric {
+      background: rgba(10, 10, 10, .55);
+      border: 1px solid rgba(36, 36, 36, .95);
       border-radius: 12px;
       padding: 14px;
     }
 
-    .metric .k{
-      font-size:.72rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:var(--muted-2);
-      font-weight:800;
-      margin-bottom:6px;
+    .metric .k {
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+      font-weight: 800;
+      margin-bottom: 6px;
     }
-    .metric .v{
-      margin:0;
-      font-weight:900;
-      color:var(--white);
-      font-size:1.02rem;
-      line-height:1.2;
+
+    .metric .v {
+      margin: 0;
+      font-weight: 900;
+      color: var(--white);
+      font-size: 1.02rem;
+      line-height: 1.2;
     }
-    .metric .s{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:.9rem;
+
+    .metric .s {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: .9rem;
     }
 
     /* Pricing */
-    .pricing-grid{
-      display:grid;
+    .pricing-grid {
+      display: grid;
       grid-template-columns: 1fr;
-      gap:12px;
-      align-items:stretch;
+      gap: 12px;
+      align-items: stretch;
     }
 
-    .price-card{
-      background: rgba(20,20,20,.78);
-      border:1px solid rgba(42,42,42,.85);
+    .price-card {
+      background: rgba(20, 20, 20, .78);
+      border: 1px solid rgba(42, 42, 42, .85);
       border-radius: var(--radius);
       padding: 18px 16px;
       transition: transform .12s ease, border-color .12s ease, background .12s ease;
-      position:relative;
+      position: relative;
     }
 
-    .price-card:hover{
+    .price-card:hover {
       transform: translateY(-1px);
-      border-color:#3a3a3a;
-      background: rgba(255,255,255,.03);
+      border-color: #3a3a3a;
+      background: rgba(255, 255, 255, .03);
     }
 
-    .price-top{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:10px;
+    .price-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
-    .plan{
-      font-weight:900;
-      color:var(--white);
-      margin:0;
-      font-size:1.05rem;
+    .plan {
+      font-weight: 900;
+      color: var(--white);
+      margin: 0;
+      font-size: 1.05rem;
     }
 
-    .plan-badge{
-      font-size:.7rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      padding:4px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      color:var(--muted);
-      background: rgba(255,255,255,.02);
-      white-space:nowrap;
+    .plan-badge {
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .10);
+      color: var(--muted);
+      background: rgba(255, 255, 255, .02);
+      white-space: nowrap;
     }
 
-    .price{
-      margin:10px 0 0;
-      font-size:1.6rem;
-      color:var(--white);
-      font-weight:900;
-      letter-spacing:-0.01em;
-      line-height:1.1;
-    }
-    .price small{
-      font-size:.86rem;
-      color:var(--muted);
-      font-weight:800;
+    .price {
+      margin: 10px 0 0;
+      font-size: 1.6rem;
+      color: var(--white);
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
     }
 
-    .plan-desc{
-      margin:10px 0 0;
-      color:var(--muted);
-      font-size:.92rem;
+    .price small {
+      font-size: .86rem;
+      color: var(--muted);
+      font-weight: 800;
     }
 
-    .plan-feats{
-      margin:14px 0 0;
-      padding-left:18px;
-      color:#cfcfcf;
-      font-size:.9rem;
-    }
-    .plan-feats li{ margin:8px 0; }
-
-    .comp{
-      margin-top:16px;
-      border-top:1px solid rgba(30,30,30,.9);
-      padding-top:14px;
-      display:grid;
-      gap:10px;
+    .plan-desc {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: .92rem;
     }
 
-    .row{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-      font-size:.88rem;
-      color:#cfcfcf;
-    }
-    .row strong{
-      color:var(--muted);
-      font-weight:900;
-      font-size:.78rem;
-      letter-spacing:.10em;
-      text-transform:uppercase;
+    .plan-feats {
+      margin: 14px 0 0;
+      padding-left: 18px;
+      color: #cfcfcf;
+      font-size: .9rem;
     }
 
-    .yes{ color: var(--accent); font-weight:900; }
-    .maybe{ color: var(--amber); font-weight:900; }
-    .no{ color: rgba(255,255,255,.35); font-weight:800; }
-
-    .price-cta{
-      margin-top:14px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
+    .plan-feats li {
+      margin: 8px 0;
     }
 
-    .price-card.oss{
-      border-color: rgba(0,229,176,.30);
-      background: rgba(0,229,176,.06);
+    .comp {
+      margin-top: 16px;
+      border-top: 1px solid rgba(30, 30, 30, .9);
+      padding-top: 14px;
+      display: grid;
+      gap: 10px;
     }
 
-    .price-card.cloud{
-      border-color: rgba(255,180,0,.26);
-      background: rgba(255,180,0,.06);
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      font-size: .88rem;
+      color: #cfcfcf;
     }
 
-    .price-card.managed{
-      border-color: rgba(0,200,212,.26);
-      background: rgba(0,200,212,.06);
+    .row strong {
+      color: var(--muted);
+      font-weight: 900;
+      font-size: .78rem;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+
+    .yes {
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .maybe {
+      color: var(--amber);
+      font-weight: 900;
+    }
+
+    .no {
+      color: rgba(255, 255, 255, .35);
+      font-weight: 800;
+    }
+
+    .price-cta {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .price-card.oss {
+      border-color: rgba(0, 229, 176, .30);
+      background: rgba(0, 229, 176, .06);
+    }
+
+    .price-card.cloud {
+      border-color: rgba(255, 180, 0, .26);
+      background: rgba(255, 180, 0, .06);
+    }
+
+    .price-card.managed {
+      border-color: rgba(0, 200, 212, .26);
+      background: rgba(0, 200, 212, .06);
     }
 
     /* GitHub CTA */
-    .gh{
+    .gh {
       padding: 0;
     }
-    .gh-inner{
-      width:min(var(--container), calc(100% - 40px));
-      margin:0 auto;
-      border:1px solid rgba(42,42,42,.9);
+
+    .gh-inner {
+      width: min(var(--container), calc(100% - 40px));
+      margin: 0 auto;
+      border: 1px solid rgba(42, 42, 42, .9);
       border-radius: calc(var(--radius) + 2px);
       background:
-        radial-gradient(circle at 80% 20%, rgba(0,229,176,.09), rgba(0,229,176,0) 58%),
-        linear-gradient(180deg, rgba(20,20,20,.88), rgba(10,10,10,.88));
+        radial-gradient(circle at 80% 20%, rgba(0, 229, 176, .09), rgba(0, 229, 176, 0) 58%),
+        linear-gradient(180deg, rgba(20, 20, 20, .88), rgba(10, 10, 10, .88));
       box-shadow: var(--shadow);
-      overflow:hidden;
+      overflow: hidden;
     }
 
-    .gh-grid{
-      display:grid;
+    .gh-grid {
+      display: grid;
       grid-template-columns: 1fr;
-      gap:0;
+      gap: 0;
     }
 
-    .gh-copy{
+    .gh-copy {
       padding: 20px 16px;
-      border-bottom:1px solid rgba(30,30,30,.9);
+      border-bottom: 1px solid rgba(30, 30, 30, .9);
     }
 
-    .gh-copy h3{
-      margin:0;
-      color:var(--white);
-      font-size:1.25rem;
-      letter-spacing:-0.01em;
-    }
-    .gh-copy p{
-      margin:10px 0 0;
-      color:var(--muted);
-      font-size:.95rem;
-      max-width:72ch;
+    .gh-copy h3 {
+      margin: 0;
+      color: var(--white);
+      font-size: 1.25rem;
+      letter-spacing: -0.01em;
     }
 
-    .gh-meta{
-      margin-top:12px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      color:var(--muted-2);
-      font-size:.86rem;
+    .gh-copy p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: .95rem;
+      max-width: 72ch;
     }
 
-    .statline{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      padding:6px 10px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.02);
-      border-radius:999px;
-      font-family:var(--mono);
+    .gh-meta {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted-2);
+      font-size: .86rem;
     }
 
-    .gh-term{
-      padding:0;
+    .statline {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 6px 10px;
+      border: 1px solid rgba(255, 255, 255, .08);
+      background: rgba(255, 255, 255, .02);
+      border-radius: 999px;
+      font-family: var(--mono);
     }
 
-    .gh-term .term-body{
-      padding:16px;
-      font-size:.80rem;
+    .gh-term {
+      padding: 0;
+    }
+
+    .gh-term .term-body {
+      padding: 16px;
+      font-size: .80rem;
     }
 
     /* Waitlist */
-    .form-card{
-      background: rgba(20,20,20,.78);
-      border:1px solid rgba(42,42,42,.85);
+    .form-card {
+      background: rgba(20, 20, 20, .78);
+      border: 1px solid rgba(42, 42, 42, .85);
       border-radius: var(--radius);
       padding: 18px 16px;
     }
 
-    .form-row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
+    .form-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
     }
 
-    .input{
+    .input {
       flex: 1 1 220px;
       padding: 12px 12px;
       border-radius: 10px;
-      border:1px solid rgba(36,36,36,.95);
-      background: rgba(10,10,10,.55);
+      border: 1px solid rgba(36, 36, 36, .95);
+      background: rgba(10, 10, 10, .55);
       color: var(--white);
-      outline:none;
-      font-size:.92rem;
-    }
-    .input:focus{
-      border-color: rgba(255,180,0,.55);
-      box-shadow: 0 0 0 3px rgba(255,180,0,.10);
+      outline: none;
+      font-size: .92rem;
     }
 
-    .fine{
-      margin-top:10px;
-      color:var(--muted-2);
-      font-size:.82rem;
+    .input:focus {
+      border-color: rgba(255, 180, 0, .55);
+      box-shadow: 0 0 0 3px rgba(255, 180, 0, .10);
+    }
+
+    .fine {
+      margin-top: 10px;
+      color: var(--muted-2);
+      font-size: .82rem;
     }
 
     /* Footer */
-    footer{
+    footer {
       padding: 34px 0 44px;
-      border-top:1px solid rgba(42,42,42,.7);
-      background: rgba(0,0,0,.10);
+      border-top: 1px solid rgba(42, 42, 42, .7);
+      background: rgba(0, 0, 0, .10);
     }
 
-    .foot-grid{
-      display:grid;
+    .foot-grid {
+      display: grid;
       grid-template-columns: 1fr;
-      gap:14px;
-      align-items:start;
+      gap: 14px;
+      align-items: start;
     }
 
-    .foot-brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
+    .foot-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .foot-title{
-      margin:0;
-      color:var(--white);
-      font-weight:900;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:.92rem;
+    .foot-title {
+      margin: 0;
+      color: var(--white);
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: .92rem;
     }
 
-    .foot-title span{ color:var(--accent); }
-
-    .foot-links{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:6px;
-      color:var(--muted);
-      font-size:.88rem;
+    .foot-title span {
+      color: var(--accent);
     }
 
-    .foot-links a{
-      color:var(--muted);
-      text-decoration:underline;
-      text-decoration-color: rgba(255,255,255,.12);
-      text-underline-offset:3px;
-    }
-    .foot-links a:hover{
-      color:var(--white);
-      text-decoration-color: rgba(0,229,176,.25);
+    .foot-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: .88rem;
     }
 
-    .foot-note{
-      color:var(--muted-2);
-      font-size:.84rem;
-      margin:0;
-      max-width:76ch;
+    .foot-links a {
+      color: var(--muted);
+      text-decoration: underline;
+      text-decoration-color: rgba(255, 255, 255, .12);
+      text-underline-offset: 3px;
+    }
+
+    .foot-links a:hover {
+      color: var(--white);
+      text-decoration-color: rgba(0, 229, 176, .25);
+    }
+
+    .foot-note {
+      color: var(--muted-2);
+      font-size: .84rem;
+      margin: 0;
+      max-width: 76ch;
     }
 
     /* Utilities */
-    .muted{ color:var(--muted); }
-    .sep{ opacity:.45; margin:0 8px; }
-    .sr-only{
-      position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;
+    .muted {
+      color: var(--muted);
+    }
+
+    .sep {
+      opacity: .45;
+      margin: 0 8px;
+    }
+
+    .sr-only {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
     }
 
     /* Responsive breakpoints */
-    @media (min-width: 740px){
-      .nav-links{ display:flex; }
-      .menu-btn{ display:none; }
-      .menu{ display:none !important; }
+    @media (min-width: 740px) {
+      .nav-links {
+        display: flex;
+      }
 
-      .hero{ padding: 74px 0 40px; }
-      .hero-grid{ grid-template-columns: 1.05fr .95fr; gap:18px; align-items:center; }
+      .menu-btn {
+        display: none;
+      }
 
-      .pain-grid{ grid-template-columns: repeat(3, 1fr); }
+      .menu {
+        display: none !important;
+      }
 
-      .grid-3{ grid-template-columns: repeat(3, 1fr); }
-      .grid-4{ grid-template-columns: repeat(2, 1fr); }
-      .agent-grid{ grid-template-columns: repeat(2, 1fr); }
+      .hero {
+        padding: 54px 0 40px;
+      }
 
-      .audience-wrap{ grid-template-columns: repeat(2, 1fr); }
+      .hero-grid {
+        grid-template-columns: 1.05fr .95fr;
+        gap: 18px;
+        align-items: center;
+      }
 
-      .case-grid{ grid-template-columns: 1.2fr .8fr; }
-      .case-metrics{ grid-template-columns: 1fr; }
+      .pain-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
 
-      .pricing-grid{ grid-template-columns: repeat(3, 1fr); }
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
 
-      .gh-grid{ grid-template-columns: 1.02fr .98fr; }
-      .gh-copy{ border-bottom:none; border-right:1px solid rgba(30,30,30,.9); }
+      .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
 
-      .foot-grid{ grid-template-columns: 1.3fr .7fr; align-items:center; }
+      .agent-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .audience-wrap {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .case-grid {
+        grid-template-columns: 1.2fr .8fr;
+      }
+
+      .case-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .gh-grid {
+        grid-template-columns: 1.02fr .98fr;
+      }
+
+      .gh-copy {
+        border-bottom: none;
+        border-right: 1px solid rgba(30, 30, 30, .9);
+      }
+
+      .foot-grid {
+        grid-template-columns: 1.3fr .7fr;
+        align-items: center;
+      }
     }
 
-    @media (min-width: 980px){
-      .grid-4{ grid-template-columns: repeat(4, 1fr); }
-      .agent-grid{ grid-template-columns: repeat(3, 1fr); }
-      .case-metrics{ grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 980px) {
+      .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .agent-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .case-metrics {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     /* Smooth scroll */
-    html{ scroll-behavior:smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     /* Reduce motion */
-    @media (prefers-reduced-motion: reduce){
-      *{ scroll-behavior:auto !important; transition:none !important; animation:none !important; }
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+      }
     }
   </style>
 </head>
 
 <body>
-<div class="wrap">
+  <div class="wrap">
 
-  <!-- 1) NAV -->
-  <header class="nav" aria-label="Primary">
-    <div class="container">
-      <div class="nav-inner">
-        <a class="brand" href="#top" aria-label="Maestro AI home">
-          <div class="brand-mark" aria-hidden="true">M</div>
-          <div class="brand-name">MAESTRO <span>AI</span></div>
-        </a>
+    <!-- 1) NAV -->
+    <header class="nav" aria-label="Primary">
+      <div class="container">
+        <div class="nav-inner">
+          <a class="brand" href="#top" aria-label="Maestro AI home">
+            <img class="brand-logo" src="assets/MAESTRO_LOGO.png" alt="Maestro AI logo" />
+            <div class="brand-name">MAESTRO <span>AI</span></div>
+          </a>
 
-        <nav class="nav-links" aria-label="Sections">
+          <nav class="nav-links" aria-label="Sections">
+            <a href="#features">Features</a>
+            <a href="#agents">Agents</a>
+            <a href="#pricing">Pricing</a>
+            <a href="https://github.com/lrrecords/maestro-ai" target="_blank" rel="noopener">GitHub</a>
+          </nav>
+
+          <div class="nav-ctas">
+            <a class="btn btn-oss" href="https://github.com/lrrecords/maestro-ai" target="_blank" rel="noopener">
+              <span>Get Started Free</span> <small>↗</small>
+            </a>
+            <a class="btn btn-cloud" href="#waitlist">
+              <span>Cloud Waitlist</span>
+            </a>
+
+            <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+              ☰
+            </button>
+          </div>
+        </div>
+
+        <div class="menu" id="menu" aria-label="Mobile menu">
           <a href="#features">Features</a>
           <a href="#agents">Agents</a>
           <a href="#pricing">Pricing</a>
           <a href="https://github.com/lrrecords/maestro-ai" target="_blank" rel="noopener">GitHub</a>
-        </nav>
-
-        <div class="nav-ctas">
-          <a class="btn btn-oss" href="https://github.com/lrrecords/maestro-ai" target="_blank" rel="noopener">
-            <span>Get Started Free</span> <small>↗</small>
-          </a>
-          <a class="btn btn-cloud" href="#waitlist">
-            <span>Cloud Waitlist</span>
-          </a>
-
-          <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
-            ☰
-          </button>
+          <a href="#waitlist">Cloud Waitlist</a>
         </div>
       </div>
+    </header>
 
-      <div class="menu" id="menu" aria-label="Mobile menu">
-        <a href="#features">Features</a>
-        <a href="#agents">Agents</a>
-        <a href="#pricing">Pricing</a>
-        <a href="https://github.com/lrrecords/maestro-ai" target="_blank" rel="noopener">GitHub</a>
-        <a href="#waitlist">Cloud Waitlist</a>
-      </div>
-    </div>
-  </header>
+    <main id="top">
 
-  <main id="top">
-
-    <!-- 2) HERO -->
-    <section class="hero" aria-label="Hero">
-      <div class="container">
-        <div class="hero-grid">
+      <!-- 2) HERO -->
+      <section class="hero" aria-label="Hero">
+        <div class="container hero-inner">
+          <div class="hero-bg" aria-hidden="true"></div>
           <div>
             <div class="pill" style="margin-bottom:14px;">
               <span class="dot" aria-hidden="true"></span>
@@ -1242,8 +1455,10 @@
 
             <h1>The AI Operating System for Independent Music</h1>
             <p class="hero-sub">
-              Maestro AI orchestrates specialized agents across <strong>Label</strong>, <strong>Studio</strong>, <strong>Live</strong>, and
-              <strong>Platform Ops</strong>—so you can run releases, sessions, tours, and relationships with less chaos and more leverage.
+              Maestro AI orchestrates specialized agents across <strong>Label</strong>, <strong>Studio</strong>,
+              <strong>Live</strong>, and
+              <strong>Platform Ops</strong>—so you can run releases, sessions, tours, and relationships with less
+              chaos and more leverage.
             </p>
 
             <div class="hero-ctas">
@@ -1278,28 +1493,39 @@
             </div>
 
             <div class="term-body" id="heroTerm">
-<span class="term-line"><span class="tok-accent">maestro</span> run bridge --artist "Nova Saint" --mode health_check</span>
-<span class="term-line">{</span>
-<span class="term-line">  <span class="tok-key">"agent"</span>: <span class="tok-str">"BRIDGE"</span>,</span>
-<span class="term-line">  <span class="tok-key">"department"</span>: <span class="tok-str">"label"</span>,</span>
-<span class="term-line">  <span class="tok-key">"status"</span>: <span class="tok-str">"ok"</span>,</span>
-<span class="term-line">  <span class="tok-key">"artist"</span>: {</span>
-<span class="term-line">    <span class="tok-key">"name"</span>: <span class="tok-str">"Nova Saint"</span>,</span>
-<span class="term-line">    <span class="tok-key">"last_contacted"</span>: <span class="tok-str">"2026-03-28"</span>,</span>
-<span class="term-line">    <span class="tok-key">"risk_level"</span>: <span class="tok-str">"medium"</span>,</span>
-<span class="term-line">    <span class="tok-key">"signals"</span>: [<span class="tok-str">"needs_release_date_lock"</span>, <span class="tok-str">"missing_assets"</span>]</span>
-<span class="term-line">  },</span>
-<span class="term-line">  <span class="tok-key">"recommendations"</span>: [</span>
-<span class="term-line">    <span class="tok-str">"Schedule a 10-min check-in and confirm next release milestone."</span>,</span>
-<span class="term-line">    <span class="tok-str">"Request final artwork + masters by Friday for distribution lead time."</span>,</span>
-<span class="term-line">    <span class="tok-str">"Draft a 2-week content plan (TikTok/Reels/Shorts) aligned to the drop."</span></span>
-<span class="term-line">  ],</span>
-<span class="term-line">  <span class="tok-key">"next_actions"</span>: [</span>
-<span class="term-line">    <span class="tok-str">"Send recap email + checklist"</span>,</span>
-<span class="term-line">    <span class="tok-str">"Create release task board"</span>,</span>
-<span class="term-line">    <span class="tok-str">"Assign socials to ECHO"</span></span>
-<span class="term-line">  ]</span>
-<span class="term-line">}</span>
+              <span class="term-line"><span class="tok-accent">maestro</span> run bridge --artist "Nova Saint" --mode
+                health_check</span>
+              <span class="term-line">{</span>
+              <span class="term-line"> <span class="tok-key">"agent"</span>: <span
+                  class="tok-str">"BRIDGE"</span>,</span>
+              <span class="term-line"> <span class="tok-key">"department"</span>: <span
+                  class="tok-str">"label"</span>,</span>
+              <span class="term-line"> <span class="tok-key">"status"</span>: <span class="tok-str">"ok"</span>,</span>
+              <span class="term-line"> <span class="tok-key">"artist"</span>: {</span>
+              <span class="term-line"> <span class="tok-key">"name"</span>: <span class="tok-str">"Nova
+                  Saint"</span>,</span>
+              <span class="term-line"> <span class="tok-key">"last_contacted"</span>: <span
+                  class="tok-str">"2026-03-28"</span>,</span>
+              <span class="term-line"> <span class="tok-key">"risk_level"</span>: <span
+                  class="tok-str">"medium"</span>,</span>
+              <span class="term-line"> <span class="tok-key">"signals"</span>: [<span
+                  class="tok-str">"needs_release_date_lock"</span>, <span
+                  class="tok-str">"missing_assets"</span>]</span>
+              <span class="term-line"> },</span>
+              <span class="term-line"> <span class="tok-key">"recommendations"</span>: [</span>
+              <span class="term-line"> <span class="tok-str">"Schedule a 10-min check-in and confirm next release
+                  milestone."</span>,</span>
+              <span class="term-line"> <span class="tok-str">"Request final artwork + masters by Friday for
+                  distribution lead time."</span>,</span>
+              <span class="term-line"> <span class="tok-str">"Draft a 2-week content plan (TikTok/Reels/Shorts)
+                  aligned to the drop."</span></span>
+              <span class="term-line"> ],</span>
+              <span class="term-line"> <span class="tok-key">"next_actions"</span>: [</span>
+              <span class="term-line"> <span class="tok-str">"Send recap email + checklist"</span>,</span>
+              <span class="term-line"> <span class="tok-str">"Create release task board"</span>,</span>
+              <span class="term-line"> <span class="tok-str">"Assign socials to ECHO"</span></span>
+              <span class="term-line"> ]</span>
+              <span class="term-line">}</span>
             </div>
 
             <div class="term-foot">
@@ -1309,602 +1535,687 @@
           </div>
 
         </div>
-      </div>
-    </section>
+  </div>
+  </section>
 
-    <!-- 3) PAIN / PROBLEM STRIP -->
-    <div class="strip" aria-label="Problems">
-      <div class="container">
-        <div class="pain">
-          <div class="pain-grid">
-            <div class="pain-item">
-              <div class="pain-title">Artist relationships slip</div>
-              <p class="pain-desc">Contact history, sentiment, and “next steps” live in DMs, emails, and memory—until they don’t.</p>
+  <!-- 3) PAIN / PROBLEM STRIP -->
+  <div class="strip" aria-label="Problems">
+    <div class="container">
+      <div class="pain">
+        <div class="pain-grid">
+          <div class="pain-item">
+            <div class="pain-title">Artist relationships slip</div>
+            <p class="pain-desc">Contact history, sentiment, and “next steps” live in DMs, emails, and memory—until
+              they don’t.</p>
+          </div>
+          <div class="pain-item">
+            <div class="pain-title">Release coordination breaks</div>
+            <p class="pain-desc">Assets, dates, splits, and deadlines fall through the cracks when you’re juggling
+              everything manually.</p>
+          </div>
+          <div class="pain-item">
+            <div class="pain-title">Hours lost to repeat work</div>
+            <p class="pain-desc">Tour routing, session follow-ups, weekly planning, and reporting should be
+              automated—not rebuilt every time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4) HOW IT WORKS -->
+  <section id="features" aria-label="How it works">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="kicker">How it works</div>
+          <h2>Connect your roster → run your agents → automate your operations</h2>
+          <p class="section-sub">
+            Maestro AI is a modular Flask platform with departments and agents. You can run it fully local (Ollama),
+            integrate cloud LLMs, or scale into a managed deployment later.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card step">
+          <div class="step-num">1</div>
+          <div>
+            <h3>Connect your roster</h3>
+            <p>Add artists, sessions, shows, tours, and your operating rules—then keep everything in one place.</p>
+          </div>
+        </div>
+        <div class="card step">
+          <div class="step-num">2</div>
+          <div>
+            <h3>Run your agents</h3>
+            <p>Spin up BRIDGE, VINYL, ECHO, ROUTE, SETTLE, and more from the dashboard or CLI.</p>
+          </div>
+        </div>
+        <div class="card step">
+          <div class="step-num">3</div>
+          <div>
+            <h3>Automate the work</h3>
+            <p>Review structured outputs, apply changes explicitly, and build repeatable workflows across
+              departments.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5) DEPARTMENTS SHOWCASE -->
+  <section aria-label="Departments">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Departments</div>
+          <h2>Four dashboards. One operating system.</h2>
+          <p class="section-sub">
+            Each department is a modular blueprint—built to mirror how real teams operate across label, studio, and
+            live worlds.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-4">
+        <div class="card">
+          <div class="dept-top">
+            <div class="dept-name">Label</div>
+            <div class="dept-tag">ROSTER OPS</div>
+          </div>
+          <p class="dept-desc">Artist relations, releases, analytics, planning, and automation for lean label teams.
+          </p>
+          <div class="agent-chips">
+            <span class="chip">BRIDGE</span>
+            <span class="chip">VINYL</span>
+            <span class="chip">ECHO</span>
+            <span class="chip">ATLAS</span>
+            <span class="chip">FORGE</span>
+            <span class="chip">SAGE</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="dept-top">
+            <div class="dept-name">Studio</div>
+            <div class="dept-tag">PRODUCTION</div>
+          </div>
+          <p class="dept-desc">Sessions, clients, rates, deliverables, and creative workflows—captured and
+            coordinated.</p>
+          <div class="agent-chips">
+            <span class="chip">SESSION</span>
+            <span class="chip">RATE</span>
+            <span class="chip">SIGNAL</span>
+            <span class="chip">SOUND</span>
+            <span class="chip">MIX</span>
+            <span class="chip">CRAFT</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="dept-top">
+            <div class="dept-name">Live</div>
+            <div class="dept-tag">TOUR OPS</div>
+          </div>
+          <p class="dept-desc">Booking, routing, settlement, riders, merch, and tour synthesis with audit trails.
+          </p>
+          <div class="agent-chips">
+            <span class="chip">BOOK</span>
+            <span class="chip">ROUTE</span>
+            <span class="chip">SETTLE</span>
+            <span class="chip">TOUR</span>
+            <span class="chip">RIDER</span>
+            <span class="chip">MERCH</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="dept-top">
+            <div class="dept-name">Platform Ops</div>
+            <div class="dept-tag">CONFIG</div>
+          </div>
+          <p class="dept-desc">System health, LLM provider routing, model settings, and operational configuration.
+          </p>
+          <div class="agent-chips">
+            <span class="chip">SETTINGS</span>
+            <span class="chip">HEALTH</span>
+            <span class="chip">LLM</span>
+            <span class="chip">OPS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6) AGENT SPOTLIGHT GRID -->
+  <section id="agents" aria-label="Agent spotlight">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Agents</div>
+          <h2>Specialists that do the work (and show their working)</h2>
+          <p class="section-sub">
+            Agents output structured JSON—easy to review, store, audit, and apply to real operational data.
+          </p>
+        </div>
+      </div>
+
+      <div class="agent-grid">
+        <div class="agent-card">
+          <div class="agent-head">
+            <div class="agent-ident">
+              <div class="agent-icon" aria-hidden="true">🤝</div>
+              <div>
+                <p class="agent-name">BRIDGE</p>
+                <p class="agent-sub">Artist relations: health checks, follow-ups, relationship tracking.</p>
+              </div>
             </div>
-            <div class="pain-item">
-              <div class="pain-title">Release coordination breaks</div>
-              <p class="pain-desc">Assets, dates, splits, and deadlines fall through the cracks when you’re juggling everything manually.</p>
+            <span class="plan-badge" style="border-color:rgba(0,229,176,.22); color:var(--accent);">LABEL</span>
+          </div>
+          <div class="agent-preview"><strong>output</strong>: risk_level=medium · next_actions=3 ·
+            signals=["missing_assets","needs_checkin"]</div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-head">
+            <div class="agent-ident">
+              <div class="agent-icon" aria-hidden="true">💿</div>
+              <div>
+                <p class="agent-name">VINYL</p>
+                <p class="agent-sub">Release ops: checklists, timelines, metadata sanity, deliverable tracking.</p>
+              </div>
             </div>
-            <div class="pain-item">
-              <div class="pain-title">Hours lost to repeat work</div>
-              <p class="pain-desc">Tour routing, session follow-ups, weekly planning, and reporting should be automated—not rebuilt every time.</p>
+            <span class="plan-badge" style="border-color:rgba(0,229,176,.22); color:var(--accent);">LABEL</span>
+          </div>
+          <div class="agent-preview"><strong>preview</strong>: release_plan={assets_due:"Fri", distro:"D-14"} ·
+            blockers=2 · owner="label"</div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-head">
+            <div class="agent-ident">
+              <div class="agent-icon" aria-hidden="true">📣</div>
+              <div>
+                <p class="agent-name">ECHO</p>
+                <p class="agent-sub">Content + marketing: weekly plan, hooks, campaign assets, posting cadence.</p>
+              </div>
+            </div>
+            <span class="plan-badge" style="border-color:rgba(0,229,176,.22); color:var(--accent);">LABEL</span>
+          </div>
+          <div class="agent-preview"><strong>preview</strong>: 14-day content plan · 6 reels ideas · captions + CTA
+            variants</div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-head">
+            <div class="agent-ident">
+              <div class="agent-icon" aria-hidden="true">🧭</div>
+              <div>
+                <p class="agent-name">ROUTE</p>
+                <p class="agent-sub">Tour routing: distance sanity, travel time, schedule optimization.</p>
+              </div>
+            </div>
+            <span class="plan-badge" style="border-color:rgba(255,180,0,.22); color:var(--amber);">LIVE</span>
+          </div>
+          <div class="agent-preview"><strong>preview</strong>: route_plan=7 legs · total_km=1,842 · time_hr=23.5 ·
+            flags=1</div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-head">
+            <div class="agent-ident">
+              <div class="agent-icon" aria-hidden="true">🧾</div>
+              <div>
+                <p class="agent-name">SETTLE</p>
+                <p class="agent-sub">Settlement: reconcile gross/expenses, split sanity checks, payout estimates.
+                </p>
+              </div>
+            </div>
+            <span class="plan-badge" style="border-color:rgba(255,180,0,.22); color:var(--amber);">LIVE</span>
+          </div>
+          <div class="agent-preview"><strong>preview</strong>: net_box_office=$18,240 · artist_share=$12,768 ·
+            warnings=["deal_memo_parse"]</div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-head">
+            <div class="agent-ident">
+              <div class="agent-icon" aria-hidden="true">📅</div>
+              <div>
+                <p class="agent-name">SAGE</p>
+                <p class="agent-sub">Weekly planning: priorities, deadlines, delegation, and “what moves the
+                  needle”.</p>
+              </div>
+            </div>
+            <span class="plan-badge" style="border-color:rgba(0,200,212,.22); color:var(--accent-2);">OPS</span>
+          </div>
+          <div class="agent-preview"><strong>preview</strong>: weekly_priorities=5 · focus_blocks=3 ·
+            automation_targets=["release_board","followups"]</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:18px;" aria-label="All agents">
+      <div class="card">
+        <div class="dept-top" style="margin-bottom:8px;">
+          <div class="dept-name">All Agents</div>
+          <div class="dept-tag">COMPLETE LIST</div>
+        </div>
+        <p class="dept-desc" style="margin-bottom:12px;">
+          Agents are grouped by department. Platform Ops focuses on config + health (no agents by design).
+        </p>
+
+        <div class="agent-chips" style="margin-top:0;">
+          <span class="chip" style="border-color:rgba(0,229,176,.18);">LABEL</span>
+          <span class="chip">ATLAS</span>
+          <span class="chip">BRIDGE</span>
+          <span class="chip">ECHO</span>
+          <span class="chip">FORGE</span>
+          <span class="chip">SAGE</span>
+          <span class="chip">VINYL</span>
+        </div>
+
+        <div class="agent-chips">
+          <span class="chip" style="border-color:rgba(0,229,176,.18);">STUDIO</span>
+          <span class="chip">ASK_AI</span>
+          <span class="chip">CLIENT</span>
+          <span class="chip">CRAFT</span>
+          <span class="chip">MIX</span>
+          <span class="chip">RATE</span>
+          <span class="chip">SCHEMA</span>
+          <span class="chip">SESSION</span>
+          <span class="chip">SIGNAL</span>
+          <span class="chip">SOUND</span>
+        </div>
+
+        <div class="agent-chips">
+          <span class="chip" style="border-color:rgba(255,180,0,.18);">LIVE</span>
+          <span class="chip">BOOK</span>
+          <span class="chip">MERCH</span>
+          <span class="chip">PROMO</span>
+          <span class="chip">RIDER</span>
+          <span class="chip">ROUTE</span>
+          <span class="chip">SCHEMA</span>
+          <span class="chip">SETTLE</span>
+          <span class="chip">TOUR</span>
+        </div>
+
+        <div class="agent-chips">
+          <span class="chip" style="border-color:rgba(0,200,212,.18);">PLATFORM OPS</span>
+          <span class="chip">HEALTH</span>
+          <span class="chip">SETTINGS</span>
+          <span class="chip">LLM ROUTING</span>
+          <span class="chip">MONITORING</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7) AUDIENCE SECTIONS -->
+  <section aria-label="Who it's for">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Who it's for</div>
+          <h2>Built for people who run music ops — not just “make content”</h2>
+          <p class="section-sub">
+            Each audience can start with a few agents and expand into an OS that matches their real workflows.
+          </p>
+        </div>
+      </div>
+
+      <div class="audience-wrap">
+        <div class="aud-card">
+          <div class="aud-head">
+            <p class="aud-title"><span aria-hidden="true">🏷️</span>Independent Labels (1–10 artists)</p>
+            <span class="plan-badge" style="border-color:rgba(0,229,176,.22); color:var(--accent);">LABEL</span>
+          </div>
+          <div class="aud-body">
+            <p>Run releases like a system: relationship health, deliverables, timelines, and reporting.</p>
+            <ul class="bullets">
+              <li><strong>BRIDGE</strong> for artist health + follow-ups</li>
+              <li><strong>VINYL</strong> for release checklists + timelines</li>
+              <li><strong>ECHO</strong> for content + campaign planning</li>
+              <li><strong>ATLAS</strong> for analytics + weekly reporting</li>
+            </ul>
+            <div class="aud-meta">
+              <span class="chip">release board</span>
+              <span class="chip">asset tracking</span>
+              <span class="chip">weekly ops</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="aud-card">
+          <div class="aud-head">
+            <p class="aud-title"><span aria-hidden="true">🎛️</span>Recording Studios</p>
+            <span class="plan-badge" style="border-color:rgba(0,229,176,.22); color:var(--accent);">STUDIO</span>
+          </div>
+          <div class="aud-body">
+            <p>Turn session management into a clean pipeline: inquiries → booking → rates → deliverables.</p>
+            <ul class="bullets">
+              <li><strong>SESSION</strong> for client/session coordination</li>
+              <li><strong>RATE</strong> for pricing, quotes, packages</li>
+              <li><strong>SIGNAL</strong> for client comms + follow-up reminders</li>
+              <li><strong>CRAFT</strong> for production checklists and handoff</li>
+            </ul>
+            <div class="aud-meta">
+              <span class="chip">client CRM</span>
+              <span class="chip">quote templates</span>
+              <span class="chip">deliverables</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="aud-card">
+          <div class="aud-head">
+            <p class="aud-title"><span aria-hidden="true">🚌</span>Artist & Tour Managers</p>
+            <span class="plan-badge" style="border-color:rgba(255,180,0,.22); color:var(--amber);">LIVE</span>
+          </div>
+          <div class="aud-body">
+            <p>Run tours with less back-and-forth: routing, holds, settlements, riders, and merch planning.</p>
+            <ul class="bullets">
+              <li><strong>BOOK</strong> for holds + deal tracking</li>
+              <li><strong>ROUTE</strong> for routing optimization + travel sanity</li>
+              <li><strong>SETTLE</strong> for settlement reconciliation</li>
+              <li><strong>TOUR</strong> to synthesize plans across agents</li>
+            </ul>
+            <div class="aud-meta">
+              <span class="chip">tour routing</span>
+              <span class="chip">deal memos</span>
+              <span class="chip">settlement sanity</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="aud-card">
+          <div class="aud-head">
+            <p class="aud-title"><span aria-hidden="true">🧑‍🎤</span>Indie Artists (self-managed)</p>
+            <span class="plan-badge" style="border-color:rgba(0,200,212,.22); color:var(--accent-2);">ALL
+              DEPTS</span>
+          </div>
+          <div class="aud-body">
+            <p>Stop “winging it”. Get a plan: releases, content, shows, and weekly priorities—without a full team.
+            </p>
+            <ul class="bullets">
+              <li><strong>SAGE</strong> for weekly planning + focus blocks</li>
+              <li><strong>ECHO</strong> for content hooks + posting cadence</li>
+              <li><strong>VINYL</strong> for release checklists</li>
+              <li><strong>BOOK</strong> for show tracking + next steps</li>
+            </ul>
+            <div class="aud-meta">
+              <span class="chip">weekly plan</span>
+              <span class="chip">content engine</span>
+              <span class="chip">release checklist</span>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- 4) HOW IT WORKS -->
-    <section id="features" aria-label="How it works">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="kicker">How it works</div>
-            <h2>Connect your roster → run your agents → automate your operations</h2>
-            <p class="section-sub">
-              Maestro AI is a modular Flask platform with departments and agents. You can run it fully local (Ollama),
-              integrate cloud LLMs, or scale into a managed deployment later.
-            </p>
+  <!-- 8) LRRECORDS CASE STUDY STRIP -->
+  <section class="case" id="case" aria-label="Case study">
+    <div class="case-inner">
+      <div class="case-grid">
+        <div>
+          <div class="pill" style="margin-bottom:10px;">
+            <span class="dot" aria-hidden="true"></span>
+            <span>Built &amp; battle-tested at LRRecords (Rockingham, WA)</span>
           </div>
+          <h3>From “too many tabs” to a repeatable operating system</h3>
+          <p>
+            Maestro AI was built inside a working independent label environment—where real constraints exist:
+            limited time, small teams, and high operational load across releases, studio workflows, and live ops.
+          </p>
         </div>
 
-        <div class="grid-3">
-          <div class="card step">
-            <div class="step-num">1</div>
+        <div class="case-metrics" aria-label="Outcomes">
+          <div class="metric">
+            <div class="k">Artist health monitoring</div>
+            <p class="v">Automated check-ins &amp; risk flags</p>
+            <p class="s">BRIDGE outputs structured actions instead of “remember to follow up”.</p>
+          </div>
+          <div class="metric">
+            <div class="k">Release coordination</div>
+            <p class="v">Checklists generated in seconds</p>
+            <p class="s">VINYL turns milestones into tasks—fast enough to do every time.</p>
+          </div>
+          <div class="metric">
+            <div class="k">Operational clarity</div>
+            <p class="v">Weekly planning becomes a system</p>
+            <p class="s">SAGE creates priorities + focus blocks for label, studio, and live work.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9) PRICING -->
+  <section id="pricing" aria-label="Pricing">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Pricing</div>
+          <h2>Start open-source. Upgrade when you want hosting or support.</h2>
+          <p class="section-sub">
+            Open Source is free forever. Cloud and Managed are for teams that want hosted deployments, onboarding,
+            and operations support.
+          </p>
+        </div>
+      </div>
+
+      <div class="pricing-grid">
+
+        <div class="price-card oss">
+          <div class="price-top">
             <div>
-              <h3>Connect your roster</h3>
-              <p>Add artists, sessions, shows, tours, and your operating rules—then keep everything in one place.</p>
+              <p class="plan">Open Source</p>
+              <span class="plan-badge" style="border-color:rgba(0,229,176,.22); color:var(--accent);">SELF-HOSTED</span>
             </div>
-          </div>
-          <div class="card step">
-            <div class="step-num">2</div>
-            <div>
-              <h3>Run your agents</h3>
-              <p>Spin up BRIDGE, VINYL, ECHO, ROUTE, SETTLE, and more from the dashboard or CLI.</p>
-            </div>
-          </div>
-          <div class="card step">
-            <div class="step-num">3</div>
-            <div>
-              <h3>Automate the work</h3>
-              <p>Review structured outputs, apply changes explicitly, and build repeatable workflows across departments.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5) DEPARTMENTS SHOWCASE -->
-    <section aria-label="Departments">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="kicker">Departments</div>
-            <h2>Four dashboards. One operating system.</h2>
-            <p class="section-sub">
-              Each department is a modular blueprint—built to mirror how real teams operate across label, studio, and live worlds.
-            </p>
-          </div>
-        </div>
-
-        <div class="grid-4">
-          <div class="card">
-            <div class="dept-top">
-              <div class="dept-name">Label</div>
-              <div class="dept-tag">ROSTER OPS</div>
-            </div>
-            <p class="dept-desc">Artist relations, releases, analytics, planning, and automation for lean label teams.</p>
-            <div class="agent-chips">
-              <span class="chip">BRIDGE</span>
-              <span class="chip">VINYL</span>
-              <span class="chip">ECHO</span>
-              <span class="chip">ATLAS</span>
-              <span class="chip">FORGE</span>
-              <span class="chip">SAGE</span>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="dept-top">
-              <div class="dept-name">Studio</div>
-              <div class="dept-tag">PRODUCTION</div>
-            </div>
-            <p class="dept-desc">Sessions, clients, rates, deliverables, and creative workflows—captured and coordinated.</p>
-            <div class="agent-chips">
-              <span class="chip">SESSION</span>
-              <span class="chip">RATE</span>
-              <span class="chip">SIGNAL</span>
-              <span class="chip">SOUND</span>
-              <span class="chip">MIX</span>
-              <span class="chip">CRAFT</span>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="dept-top">
-              <div class="dept-name">Live</div>
-              <div class="dept-tag">TOUR OPS</div>
-            </div>
-            <p class="dept-desc">Booking, routing, settlement, riders, merch, and tour synthesis with audit trails.</p>
-            <div class="agent-chips">
-              <span class="chip">BOOK</span>
-              <span class="chip">ROUTE</span>
-              <span class="chip">SETTLE</span>
-              <span class="chip">TOUR</span>
-              <span class="chip">RIDER</span>
-              <span class="chip">MERCH</span>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="dept-top">
-              <div class="dept-name">Platform Ops</div>
-              <div class="dept-tag">CONFIG</div>
-            </div>
-            <p class="dept-desc">System health, LLM provider routing, model settings, and operational configuration.</p>
-            <div class="agent-chips">
-              <span class="chip">SETTINGS</span>
-              <span class="chip">HEALTH</span>
-              <span class="chip">LLM</span>
-              <span class="chip">OPS</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 6) AGENT SPOTLIGHT GRID -->
-    <section id="agents" aria-label="Agent spotlight">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="kicker">Agents</div>
-            <h2>Specialists that do the work (and show their working)</h2>
-            <p class="section-sub">
-              Agents output structured JSON—easy to review, store, audit, and apply to real operational data.
-            </p>
-          </div>
-        </div>
-
-        <div class="agent-grid">
-          <div class="agent-card">
-            <div class="agent-head">
-              <div class="agent-ident">
-                <div class="agent-icon" aria-hidden="true">🤝</div>
-                <div>
-                  <p class="agent-name">BRIDGE</p>
-                  <p class="agent-sub">Artist relations: health checks, follow-ups, relationship tracking.</p>
-                </div>
-              </div>
-              <span class="plan-badge" style="border-color:rgba(0,229,176,.22); color:var(--accent);">LABEL</span>
-            </div>
-            <div class="agent-preview"><strong>output</strong>: risk_level=medium · next_actions=3 · signals=["missing_assets","needs_checkin"]</div>
-          </div>
-
-          <div class="agent-card">
-            <div class="agent-head">
-              <div class="agent-ident">
-                <div class="agent-icon" aria-hidden="true">💿</div>
-                <div>
-                  <p class="agent-name">VINYL</p>
-                  <p class="agent-sub">Release ops: checklists, timelines, metadata sanity, deliverable tracking.</p>
-                </div>
-              </div>
-              <span class="plan-badge" style="border-color:rgba(0,229,176,.22); color:var(--accent);">LABEL</span>
-            </div>
-            <div class="agent-preview"><strong>preview</strong>: release_plan={assets_due:"Fri", distro:"D-14"} · blockers=2 · owner="label"</div>
-          </div>
-
-          <div class="agent-card">
-            <div class="agent-head">
-              <div class="agent-ident">
-                <div class="agent-icon" aria-hidden="true">📣</div>
-                <div>
-                  <p class="agent-name">ECHO</p>
-                  <p class="agent-sub">Content + marketing: weekly plan, hooks, campaign assets, posting cadence.</p>
-                </div>
-              </div>
-              <span class="plan-badge" style="border-color:rgba(0,229,176,.22); color:var(--accent);">LABEL</span>
-            </div>
-            <div class="agent-preview"><strong>preview</strong>: 14-day content plan · 6 reels ideas · captions + CTA variants</div>
-          </div>
-
-          <div class="agent-card">
-            <div class="agent-head">
-              <div class="agent-ident">
-                <div class="agent-icon" aria-hidden="true">🧭</div>
-                <div>
-                  <p class="agent-name">ROUTE</p>
-                  <p class="agent-sub">Tour routing: distance sanity, travel time, schedule optimization.</p>
-                </div>
-              </div>
-              <span class="plan-badge" style="border-color:rgba(255,180,0,.22); color:var(--amber);">LIVE</span>
-            </div>
-            <div class="agent-preview"><strong>preview</strong>: route_plan=7 legs · total_km=1,842 · time_hr=23.5 · flags=1</div>
-          </div>
-
-          <div class="agent-card">
-            <div class="agent-head">
-              <div class="agent-ident">
-                <div class="agent-icon" aria-hidden="true">🧾</div>
-                <div>
-                  <p class="agent-name">SETTLE</p>
-                  <p class="agent-sub">Settlement: reconcile gross/expenses, split sanity checks, payout estimates.</p>
-                </div>
-              </div>
-              <span class="plan-badge" style="border-color:rgba(255,180,0,.22); color:var(--amber);">LIVE</span>
-            </div>
-            <div class="agent-preview"><strong>preview</strong>: net_box_office=$18,240 · artist_share=$12,768 · warnings=["deal_memo_parse"]</div>
-          </div>
-
-          <div class="agent-card">
-            <div class="agent-head">
-              <div class="agent-ident">
-                <div class="agent-icon" aria-hidden="true">📅</div>
-                <div>
-                  <p class="agent-name">SAGE</p>
-                  <p class="agent-sub">Weekly planning: priorities, deadlines, delegation, and “what moves the needle”.</p>
-                </div>
-              </div>
-              <span class="plan-badge" style="border-color:rgba(0,200,212,.22); color:var(--accent-2);">OPS</span>
-            </div>
-            <div class="agent-preview"><strong>preview</strong>: weekly_priorities=5 · focus_blocks=3 · automation_targets=["release_board","followups"]</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7) AUDIENCE SECTIONS -->
-    <section aria-label="Who it's for">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="kicker">Who it's for</div>
-            <h2>Built for people who run music ops — not just “make content”</h2>
-            <p class="section-sub">
-              Each audience can start with a few agents and expand into an OS that matches their real workflows.
-            </p>
-          </div>
-        </div>
-
-        <div class="audience-wrap">
-          <div class="aud-card">
-            <div class="aud-head">
-              <p class="aud-title"><span aria-hidden="true">🏷️</span>Independent Labels (1–10 artists)</p>
-              <span class="plan-badge" style="border-color:rgba(0,229,176,.22); color:var(--accent);">LABEL</span>
-            </div>
-            <div class="aud-body">
-              <p>Run releases like a system: relationship health, deliverables, timelines, and reporting.</p>
-              <ul class="bullets">
-                <li><strong>BRIDGE</strong> for artist health + follow-ups</li>
-                <li><strong>VINYL</strong> for release checklists + timelines</li>
-                <li><strong>ECHO</strong> for content + campaign planning</li>
-                <li><strong>ATLAS</strong> for analytics + weekly reporting</li>
-              </ul>
-              <div class="aud-meta">
-                <span class="chip">release board</span>
-                <span class="chip">asset tracking</span>
-                <span class="chip">weekly ops</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="aud-card">
-            <div class="aud-head">
-              <p class="aud-title"><span aria-hidden="true">🎛️</span>Recording Studios</p>
-              <span class="plan-badge" style="border-color:rgba(0,229,176,.22); color:var(--accent);">STUDIO</span>
-            </div>
-            <div class="aud-body">
-              <p>Turn session management into a clean pipeline: inquiries → booking → rates → deliverables.</p>
-              <ul class="bullets">
-                <li><strong>SESSION</strong> for client/session coordination</li>
-                <li><strong>RATE</strong> for pricing, quotes, packages</li>
-                <li><strong>SIGNAL</strong> for client comms + follow-up reminders</li>
-                <li><strong>CRAFT</strong> for production checklists and handoff</li>
-              </ul>
-              <div class="aud-meta">
-                <span class="chip">client CRM</span>
-                <span class="chip">quote templates</span>
-                <span class="chip">deliverables</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="aud-card">
-            <div class="aud-head">
-              <p class="aud-title"><span aria-hidden="true">🚌</span>Artist & Tour Managers</p>
-              <span class="plan-badge" style="border-color:rgba(255,180,0,.22); color:var(--amber);">LIVE</span>
-            </div>
-            <div class="aud-body">
-              <p>Run tours with less back-and-forth: routing, holds, settlements, riders, and merch planning.</p>
-              <ul class="bullets">
-                <li><strong>BOOK</strong> for holds + deal tracking</li>
-                <li><strong>ROUTE</strong> for routing optimization + travel sanity</li>
-                <li><strong>SETTLE</strong> for settlement reconciliation</li>
-                <li><strong>TOUR</strong> to synthesize plans across agents</li>
-              </ul>
-              <div class="aud-meta">
-                <span class="chip">tour routing</span>
-                <span class="chip">deal memos</span>
-                <span class="chip">settlement sanity</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="aud-card">
-            <div class="aud-head">
-              <p class="aud-title"><span aria-hidden="true">🧑‍🎤</span>Indie Artists (self-managed)</p>
-              <span class="plan-badge" style="border-color:rgba(0,200,212,.22); color:var(--accent-2);">ALL DEPTS</span>
-            </div>
-            <div class="aud-body">
-              <p>Stop “winging it”. Get a plan: releases, content, shows, and weekly priorities—without a full team.</p>
-              <ul class="bullets">
-                <li><strong>SAGE</strong> for weekly planning + focus blocks</li>
-                <li><strong>ECHO</strong> for content hooks + posting cadence</li>
-                <li><strong>VINYL</strong> for release checklists</li>
-                <li><strong>BOOK</strong> for show tracking + next steps</li>
-              </ul>
-              <div class="aud-meta">
-                <span class="chip">weekly plan</span>
-                <span class="chip">content engine</span>
-                <span class="chip">release checklist</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 8) LRRECORDS CASE STUDY STRIP -->
-    <section class="case" id="case" aria-label="Case study">
-      <div class="case-inner">
-        <div class="case-grid">
-          <div>
-            <div class="pill" style="margin-bottom:10px;">
+            <div class="pill" style="border-color:rgba(0,229,176,.28); background:rgba(0,229,176,.06);">
               <span class="dot" aria-hidden="true"></span>
-              <span>Built &amp; battle-tested at LRRecords (Rockingham, WA)</span>
+              <span>Free forever</span>
             </div>
-            <h3>From “too many tabs” to a repeatable operating system</h3>
-            <p>
-              Maestro AI was built inside a working independent label environment—where real constraints exist:
-              limited time, small teams, and high operational load across releases, studio workflows, and live ops.
-            </p>
           </div>
 
-          <div class="case-metrics" aria-label="Outcomes">
-            <div class="metric">
-              <div class="k">Artist health monitoring</div>
-              <p class="v">Automated check-ins &amp; risk flags</p>
-              <p class="s">BRIDGE outputs structured actions instead of “remember to follow up”.</p>
+          <p class="price">$0 <small>/ forever</small></p>
+          <p class="plan-desc">For technical users who want full control. Run locally with Ollama or connect your
+            own LLM provider.</p>
+
+          <ul class="plan-feats">
+            <li>Self-hosted Flask dashboard</li>
+            <li>Label / Studio / Live / Platform Ops departments</li>
+            <li>Agents + structured JSON outputs</li>
+            <li>Audit trail outputs to disk</li>
+            <li>MIT license</li>
+          </ul>
+
+          <div class="comp">
+            <div class="row"><strong>Hosting</strong> <span class="yes">You</span></div>
+            <div class="row"><strong>Setup</strong> <span class="yes">DIY</span></div>
+            <div class="row"><strong>Support</strong> <span class="maybe">Community</span></div>
+            <div class="row"><strong>SSO</strong> <span class="no">—</span></div>
+          </div>
+
+          <div class="price-cta">
+            <a class="btn btn-oss" href="https://github.com/lrrecords/maestro-ai" target="_blank" rel="noopener">
+              Get Started Free <small>↗</small>
+            </a>
+          </div>
+        </div>
+
+        <div class="price-card cloud">
+          <div class="price-top">
+            <div>
+              <p class="plan">Maestro Cloud</p>
+              <span class="plan-badge" style="border-color:rgba(255,180,0,.22); color:var(--amber);">HOSTED
+                SAAS</span>
             </div>
-            <div class="metric">
-              <div class="k">Release coordination</div>
-              <p class="v">Checklists generated in seconds</p>
-              <p class="s">VINYL turns milestones into tasks—fast enough to do every time.</p>
+            <span class="plan-badge">Coming soon</span>
+          </div>
+
+          <p class="price">Waitlist <small>/ early access</small></p>
+          <p class="plan-desc">For non-technical labels and studios that want Maestro hosted, maintained, and
+            upgraded automatically.</p>
+
+          <ul class="plan-feats">
+            <li>Hosted dashboard + automatic updates</li>
+            <li>Secure multi-user access</li>
+            <li>Managed model configuration</li>
+            <li>Backups + monitoring</li>
+            <li>Simple onboarding &amp; templates</li>
+          </ul>
+
+          <div class="comp">
+            <div class="row"><strong>Hosting</strong> <span class="yes">We host</span></div>
+            <div class="row"><strong>Setup</strong> <span class="yes">Guided</span></div>
+            <div class="row"><strong>Support</strong> <span class="yes">Included</span></div>
+            <div class="row"><strong>SSO</strong> <span class="maybe">Planned</span></div>
+          </div>
+
+          <div class="price-cta">
+            <a class="btn btn-cloud" href="#waitlist">Join Waitlist <small>→</small></a>
+          </div>
+        </div>
+
+        <div class="price-card managed">
+          <div class="price-top">
+            <div>
+              <p class="plan">Maestro Managed</p>
+              <span class="plan-badge"
+                style="border-color:rgba(0,200,212,.22); color:var(--accent-2);">WHITE-GLOVE</span>
             </div>
-            <div class="metric">
-              <div class="k">Operational clarity</div>
-              <p class="v">Weekly planning becomes a system</p>
-              <p class="s">SAGE creates priorities + focus blocks for label, studio, and live work.</p>
+            <span class="plan-badge">Custom</span>
+          </div>
+
+          <p class="price">Talk to us <small>/ tailored</small></p>
+          <p class="plan-desc">For enterprises and non-technical operators who want a complete system: setup,
+            workflows, and ongoing support.</p>
+
+          <ul class="plan-feats">
+            <li>White-glove deployment (cloud or on-prem)</li>
+            <li>Workflow design across departments</li>
+            <li>Custom agent development (optional)</li>
+            <li>Integrations (email, calendars, CRMs, BI)</li>
+            <li>Ongoing support &amp; training</li>
+          </ul>
+
+          <div class="comp">
+            <div class="row"><strong>Hosting</strong> <span class="yes">We manage</span></div>
+            <div class="row"><strong>Setup</strong> <span class="yes">White-glove</span></div>
+            <div class="row"><strong>Support</strong> <span class="yes">Dedicated</span></div>
+            <div class="row"><strong>SSO</strong> <span class="yes">Available</span></div>
+          </div>
+
+          <div class="price-cta">
+            <a class="btn btn-managed" href="#waitlist" onclick="prefillWaitlist('managed'); return false;">Book a
+              Call <small>→</small></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 10) GITHUB CTA SECTION -->
+  <section class="gh" aria-label="GitHub CTA">
+    <div class="gh-inner">
+      <div class="gh-grid">
+        <div class="gh-copy">
+          <h3>Open-source, auditable, and built for operators</h3>
+          <p>
+            Maestro AI is free to self-host. Read the code, run the agents, and adapt the platform to your
+            operation.
+            If you’re technical, you can be running in minutes.
+          </p>
+
+          <div class="gh-meta" aria-label="GitHub stats placeholders">
+            <div class="statline" title="placeholder">
+              ★ <span id="stars">—</span> stars
             </div>
+            <div class="statline" title="placeholder">
+              ⑂ <span id="forks">—</span> forks
+            </div>
+            <div class="statline" title="placeholder">
+              ⛭ MIT
+            </div>
+          </div>
+
+          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn btn-oss" href="https://github.com/lrrecords/maestro-ai" target="_blank" rel="noopener">
+              View on GitHub <small>↗</small>
+            </a>
+            <a class="btn" href="#features">Explore Features <small>→</small></a>
+          </div>
+        </div>
+
+        <div class="gh-term terminal" aria-label="GitHub terminal block">
+          <div class="term-head">
+            <div class="term-dots" aria-hidden="true">
+              <span class="term-dot red"></span>
+              <span class="term-dot amb"></span>
+              <span class="term-dot grn"></span>
+            </div>
+            <div>terminal · quickstart</div>
+          </div>
+          <div class="term-body">
+            <span class="term-line"><span class="tok-accent">$</span> git clone
+              https://github.com/lrrecords/maestro-ai.git</span>
+            <span class="term-line"><span class="tok-accent">$</span> cd maestro-ai</span>
+            <span class="term-line"><span class="tok-accent">$</span> python -m venv venv</span>
+            <span class="term-line"><span class="tok-accent">$</span> pip install -r requirements.txt</span>
+            <span class="term-line"><span class="tok-accent">$</span> cp .env.example .env</span>
+            <span class="term-line"><span class="tok-accent">$</span> python dashboard/app.py</span>
+            <span class="term-line"></span>
+            <span class="term-line"><span class="tok-key">#</span> then open: http://127.0.0.1:8080</span>
+          </div>
+          <div class="term-foot">
+            <span class="muted">Tip: Use <span class="kbd">LLM_PROVIDER=ollama</span> for local inference.</span>
+            <span class="kbd">maestro-ai</span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- 9) PRICING -->
-    <section id="pricing" aria-label="Pricing">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="kicker">Pricing</div>
-            <h2>Start open-source. Upgrade when you want hosting or support.</h2>
-            <p class="section-sub">
-              Open Source is free forever. Cloud and Managed are for teams that want hosted deployments, onboarding, and operations support.
-            </p>
-          </div>
-        </div>
-
-        <div class="pricing-grid">
-
-          <div class="price-card oss">
-            <div class="price-top">
-              <div>
-                <p class="plan">Open Source</p>
-                <span class="plan-badge" style="border-color:rgba(0,229,176,.22); color:var(--accent);">SELF-HOSTED</span>
-              </div>
-              <div class="pill" style="border-color:rgba(0,229,176,.28); background:rgba(0,229,176,.06);">
-                <span class="dot" aria-hidden="true"></span>
-                <span>Free forever</span>
-              </div>
-            </div>
-
-            <p class="price">$0 <small>/ forever</small></p>
-            <p class="plan-desc">For technical users who want full control. Run locally with Ollama or connect your own LLM provider.</p>
-
-            <ul class="plan-feats">
-              <li>Self-hosted Flask dashboard</li>
-              <li>Label / Studio / Live / Platform Ops departments</li>
-              <li>Agents + structured JSON outputs</li>
-              <li>Audit trail outputs to disk</li>
-              <li>MIT license</li>
-            </ul>
-
-            <div class="comp">
-              <div class="row"><strong>Hosting</strong> <span class="yes">You</span></div>
-              <div class="row"><strong>Setup</strong> <span class="yes">DIY</span></div>
-              <div class="row"><strong>Support</strong> <span class="maybe">Community</span></div>
-              <div class="row"><strong>SSO</strong> <span class="no">—</span></div>
-            </div>
-
-            <div class="price-cta">
-              <a class="btn btn-oss" href="https://github.com/lrrecords/maestro-ai" target="_blank" rel="noopener">
-                Get Started Free <small>↗</small>
-              </a>
-            </div>
-          </div>
-
-          <div class="price-card cloud">
-            <div class="price-top">
-              <div>
-                <p class="plan">Maestro Cloud</p>
-                <span class="plan-badge" style="border-color:rgba(255,180,0,.22); color:var(--amber);">HOSTED SAAS</span>
-              </div>
-              <span class="plan-badge">Coming soon</span>
-            </div>
-
-            <p class="price">Waitlist <small>/ early access</small></p>
-            <p class="plan-desc">For non-technical labels and studios that want Maestro hosted, maintained, and upgraded automatically.</p>
-
-            <ul class="plan-feats">
-              <li>Hosted dashboard + automatic updates</li>
-              <li>Secure multi-user access</li>
-              <li>Managed model configuration</li>
-              <li>Backups + monitoring</li>
-              <li>Simple onboarding &amp; templates</li>
-            </ul>
-
-            <div class="comp">
-              <div class="row"><strong>Hosting</strong> <span class="yes">We host</span></div>
-              <div class="row"><strong>Setup</strong> <span class="yes">Guided</span></div>
-              <div class="row"><strong>Support</strong> <span class="yes">Included</span></div>
-              <div class="row"><strong>SSO</strong> <span class="maybe">Planned</span></div>
-            </div>
-
-            <div class="price-cta">
-              <a class="btn btn-cloud" href="#waitlist">Join Waitlist <small>→</small></a>
-            </div>
-          </div>
-
-          <div class="price-card managed">
-            <div class="price-top">
-              <div>
-                <p class="plan">Maestro Managed</p>
-                <span class="plan-badge" style="border-color:rgba(0,200,212,.22); color:var(--accent-2);">WHITE-GLOVE</span>
-              </div>
-              <span class="plan-badge">Custom</span>
-            </div>
-
-            <p class="price">Talk to us <small>/ tailored</small></p>
-            <p class="plan-desc">For enterprises and non-technical operators who want a complete system: setup, workflows, and ongoing support.</p>
-
-            <ul class="plan-feats">
-              <li>White-glove deployment (cloud or on-prem)</li>
-              <li>Workflow design across departments</li>
-              <li>Custom agent development (optional)</li>
-              <li>Integrations (email, calendars, CRMs, BI)</li>
-              <li>Ongoing support &amp; training</li>
-            </ul>
-
-            <div class="comp">
-              <div class="row"><strong>Hosting</strong> <span class="yes">We manage</span></div>
-              <div class="row"><strong>Setup</strong> <span class="yes">White-glove</span></div>
-              <div class="row"><strong>Support</strong> <span class="yes">Dedicated</span></div>
-              <div class="row"><strong>SSO</strong> <span class="yes">Available</span></div>
-            </div>
-
-            <div class="price-cta">
-              <a class="btn btn-managed" href="#waitlist" onclick="prefillWaitlist('managed'); return false;">Book a Call <small>→</small></a>
-            </div>
-          </div>
-
+  <!-- 11) CLOUD WAITLIST FORM -->
+  <section id="waitlist" aria-label="Cloud waitlist">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Maestro Cloud</div>
+          <h2>Get early access to hosted Maestro</h2>
+          <p class="section-sub">
+            Join the waitlist for Maestro Cloud (hosted SaaS). We’ll reach out when early access opens.
+            No spam. Unsubscribe any time.
+          </p>
         </div>
       </div>
-    </section>
 
-    <!-- 10) GITHUB CTA SECTION -->
-    <section class="gh" aria-label="GitHub CTA">
-      <div class="gh-inner">
-        <div class="gh-grid">
-          <div class="gh-copy">
-            <h3>Open-source, auditable, and built for operators</h3>
-            <p>
-              Maestro AI is free to self-host. Read the code, run the agents, and adapt the platform to your operation.
-              If you’re technical, you can be running in minutes.
-            </p>
-
-            <div class="gh-meta" aria-label="GitHub stats placeholders">
-              <div class="statline" title="placeholder">
-                ★ <span id="stars">—</span> stars
-              </div>
-              <div class="statline" title="placeholder">
-                ⑂ <span id="forks">—</span> forks
-              </div>
-              <div class="statline" title="placeholder">
-                ⛭ MIT
-              </div>
-            </div>
-
-            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-              <a class="btn btn-oss" href="https://github.com/lrrecords/maestro-ai" target="_blank" rel="noopener">
-                View on GitHub <small>↗</small>
-              </a>
-              <a class="btn" href="#features">Explore Features <small>→</small></a>
-            </div>
+      <div class="form-card">
+        <form id="waitlistForm" action="mailto:hello@lrrecords.com.au" method="post" enctype="text/plain">
+          <label class="sr-only" for="email">Email address</label>
+          <div class="form-row">
+            <input class="input" id="email" name="email" type="email" placeholder="you@label.com" required />
+            <input class="input" id="interest" name="interest" type="text"
+              placeholder="Interest: cloud / managed / open source" />
+            <button class="btn btn-cloud" type="submit" id="waitlistBtn">Join Waitlist</button>
           </div>
-
-          <div class="gh-term terminal" aria-label="GitHub terminal block">
-            <div class="term-head">
-              <div class="term-dots" aria-hidden="true">
-                <span class="term-dot red"></span>
-                <span class="term-dot amb"></span>
-                <span class="term-dot grn"></span>
-              </div>
-              <div>terminal · quickstart</div>
-            </div>
-            <div class="term-body">
-<span class="term-line"><span class="tok-accent">$</span> git clone https://github.com/lrrecords/maestro-ai.git</span>
-<span class="term-line"><span class="tok-accent">$</span> cd maestro-ai</span>
-<span class="term-line"><span class="tok-accent">$</span> python -m venv venv</span>
-<span class="term-line"><span class="tok-accent">$</span> pip install -r requirements.txt</span>
-<span class="term-line"><span class="tok-accent">$</span> cp .env.example .env</span>
-<span class="term-line"><span class="tok-accent">$</span> python dashboard/app.py</span>
-<span class="term-line"></span>
-<span class="term-line"><span class="tok-key">#</span> then open: http://127.0.0.1:8080</span>
-            </div>
-            <div class="term-foot">
-              <span class="muted">Tip: Use <span class="kbd">LLM_PROVIDER=ollama</span> for local inference.</span>
-              <span class="kbd">maestro-ai</span>
-            </div>
+          <div class="fine">
+            This form uses <span class="muted">mailto</span> as a placeholder and does not store submissions.
+            For production, connect this to your CRM or email provider.
           </div>
-        </div>
+        </form>
       </div>
-    </section>
 
-    <!-- 11) CLOUD WAITLIST FORM -->
-    <section id="waitlist" aria-label="Cloud waitlist">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="kicker">Maestro Cloud</div>
-            <h2>Get early access to hosted Maestro</h2>
-            <p class="section-sub">
-              Join the waitlist for Maestro Cloud (hosted SaaS). We’ll reach out when early access opens.
-              No spam. Unsubscribe any time.
-            </p>
-          </div>
-        </div>
-
-        <div class="form-card">
-          <form id="waitlistForm" action="mailto:hello@lrrecords.com.au" method="post" enctype="text/plain">
-            <label class="sr-only" for="email">Email address</label>
-            <div class="form-row">
-              <input class="input" id="email" name="email" type="email" placeholder="you@label.com" required />
-              <input class="input" id="interest" name="interest" type="text" placeholder="Interest: cloud / managed / open source" />
-              <button class="btn btn-cloud" type="submit" id="waitlistBtn">Join Waitlist</button>
-            </div>
-            <div class="fine">
-              This form uses <span class="muted">mailto</span> as a placeholder and does not store submissions.
-              For production, connect this to your CRM or email provider.
-            </div>
-          </form>
-        </div>
-
-        <div style="margin-top:14px; color:var(--muted); font-size:.9rem;">
-          Want white-glove setup? <a href="#pricing" style="color:var(--accent-2); text-decoration:underline; text-underline-offset:3px;">Explore Maestro Managed</a>.
-        </div>
+      <div style="margin-top:14px; color:var(--muted); font-size:.9rem;">
+        Want white-glove setup? <a href="#pricing"
+          style="color:var(--accent-2); text-decoration:underline; text-underline-offset:3px;">Explore Maestro
+          Managed</a>.
       </div>
-    </section>
+    </div>
+  </section>
 
   </main>
 
@@ -1924,14 +2235,16 @@
           <div class="foot-links">
             <a href="https://github.com/lrrecords/maestro-ai" target="_blank" rel="noopener">GitHub</a>
             <a href="https://lrrecords.com.au" target="_blank" rel="noopener">LRRecords</a>
-            <a href="https://github.com/lrrecords/maestro-ai/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+            <a href="https://github.com/lrrecords/maestro-ai/blob/main/LICENSE" target="_blank" rel="noopener">MIT
+              License</a>
             <a href="#waitlist">Cloud Waitlist</a>
           </div>
         </div>
 
         <div>
           <p class="foot-note">
-            <strong style="color:var(--white);">Note:</strong> Maestro Cloud and Maestro Managed are upcoming offerings.
+            <strong style="color:var(--white);">Note:</strong> Maestro Cloud and Maestro Managed are upcoming
+            offerings.
             Open Source is available now.
           </p>
           <p class="foot-note" style="margin-top:10px;">
@@ -1942,91 +2255,92 @@
     </div>
   </footer>
 
-</div>
+  </div>
 
-<script>
-  // Mobile menu
-  const menuBtn = document.getElementById('menuBtn');
-  const menu = document.getElementById('menu');
-  if (menuBtn && menu) {
-    menuBtn.addEventListener('click', () => {
-      const isOpen = menu.classList.toggle('open');
-      menuBtn.setAttribute('aria-expanded', String(isOpen));
-    });
-
-    // Close menu on click
-    menu.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        menu.classList.remove('open');
-        menuBtn.setAttribute('aria-expanded', 'false');
+  <script>
+    // Mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const menu = document.getElementById('menu');
+    if (menuBtn && menu) {
+      menuBtn.addEventListener('click', () => {
+        const isOpen = menu.classList.toggle('open');
+        menuBtn.setAttribute('aria-expanded', String(isOpen));
       });
-    });
-  }
 
-  // Prefill waitlist interest
-  function prefillWaitlist(kind) {
-    const interest = document.getElementById('interest');
-    if (interest) interest.value = kind === 'managed' ? 'managed' : 'cloud';
-    document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(() => document.getElementById('email')?.focus(), 350);
-  }
-  window.prefillWaitlist = prefillWaitlist;
+      // Close menu on click
+      menu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          menu.classList.remove('open');
+          menuBtn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
 
-  // Year
-  document.getElementById('year').textContent = new Date().getFullYear();
+    // Prefill waitlist interest
+    function prefillWaitlist(kind) {
+      const interest = document.getElementById('interest');
+      if (interest) interest.value = kind === 'managed' ? 'managed' : 'cloud';
+      document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(() => document.getElementById('email')?.focus(), 350);
+    }
+    window.prefillWaitlist = prefillWaitlist;
 
-  // Placeholder GitHub stats (no external calls in this single-file build)
-  // If you later want live counts, wire this to a server-side proxy or a build step.
-  document.getElementById('stars').textContent = '—';
-  document.getElementById('forks').textContent = '—';
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Subtle hero terminal "cursor" blink (no motion heavy)
-  (function cursorBlink(){
-    const term = document.getElementById('heroTerm');
-    if (!term) return;
-    const prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduce) return;
+    // Placeholder GitHub stats (no external calls in this single-file build)
+    // If you later want live counts, wire this to a server-side proxy or a build step.
+    document.getElementById('stars').textContent = '—';
+    document.getElementById('forks').textContent = '—';
 
-    const foot = term.parentElement?.querySelector('.term-foot');
-    if (!foot) return;
+    // Subtle hero terminal "cursor" blink (no motion heavy)
+    (function cursorBlink() {
+      const term = document.getElementById('heroTerm');
+      if (!term) return;
+      const prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduce) return;
 
-    const el = document.createElement('span');
-    el.textContent = ' ▋';
-    el.style.color = 'rgba(0,229,176,.75)';
-    el.style.fontFamily = 'var(--mono)';
-    el.style.marginLeft = '6px';
-    foot.appendChild(el);
+      const foot = term.parentElement?.querySelector('.term-foot');
+      if (!foot) return;
 
-    let on = true;
-    setInterval(() => {
-      on = !on;
-      el.style.opacity = on ? '1' : '0.15';
-    }, 650);
-  })();
+      const el = document.createElement('span');
+      el.textContent = ' ▋';
+      el.style.color = 'rgba(0,229,176,.75)';
+      el.style.fontFamily = 'var(--mono)';
+      el.style.marginLeft = '6px';
+      foot.appendChild(el);
 
-  // Make mailto form a bit nicer: add subject/body
-  const waitlistForm = document.getElementById('waitlistForm');
-  if (waitlistForm) {
-    waitlistForm.addEventListener('submit', (e) => {
-      // Let mailto work normally, but add context if possible
-      const email = (document.getElementById('email')?.value || '').trim();
-      const interest = (document.getElementById('interest')?.value || '').trim();
-      // Cloud waitlist opens soon. For now this opens your email client
-      // Update action with subject/body (best-effort; mailto behavior varies per client)
-      const subject = encodeURIComponent('Maestro Cloud Waitlist');
-      const body = encodeURIComponent(
-        `Please add me to the Maestro waitlist.\n\nEmail: ${email}\nInterest: ${interest || '(not specified)'}\n`
-      );
+      let on = true;
+      setInterval(() => {
+        on = !on;
+        el.style.opacity = on ? '1' : '0.15';
+      }, 650);
+    })();
 
-      waitlistForm.action = `mailto:hello@lrrecords.com.au?subject=${subject}&body=${body}`;
-      const btn = document.getElementById('waitlistBtn');
-      if (btn) {
-        btn.textContent = 'Opening email…';
-        btn.disabled = true;
-        setTimeout(() => { btn.textContent = 'Join Waitlist'; btn.disabled = false; }, 1200);
-      }
-    });
-  }
-</script>
+    // Make mailto form a bit nicer: add subject/body
+    const waitlistForm = document.getElementById('waitlistForm');
+    if (waitlistForm) {
+      waitlistForm.addEventListener('submit', (e) => {
+        // Let mailto work normally, but add context if possible
+        const email = (document.getElementById('email')?.value || '').trim();
+        const interest = (document.getElementById('interest')?.value || '').trim();
+        // Cloud waitlist opens soon. For now this opens your email client
+        // Update action with subject/body (best-effort; mailto behavior varies per client)
+        const subject = encodeURIComponent('Maestro Cloud Waitlist');
+        const body = encodeURIComponent(
+          `Please add me to the Maestro waitlist.\n\nEmail: ${email}\nInterest: ${interest || '(not specified)'}\n`
+        );
+
+        waitlistForm.action = `mailto:hello@lrrecords.com.au?subject=${subject}&body=${body}`;
+        const btn = document.getElementById('waitlistBtn');
+        if (btn) {
+          btn.textContent = 'Opening email…';
+          btn.disabled = true;
+          setTimeout(() => { btn.textContent = 'Join Waitlist'; btn.disabled = false; }, 1200);
+        }
+      });
+    }
+  </script>
 </body>
+
 </html>
