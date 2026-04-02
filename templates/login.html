@@ -285,13 +285,20 @@
 
       <div class="divider"></div>
 
-      <!-- Error -->
       {% if error %}
-      <div class="error-box">
-        <span>⚠</span>
-        <span>{{ error }}</span>
-      </div>
-      {% endif %}
+  <div class="error-box">
+    <span>⚠</span>
+    <span>{{ error }}</span>
+  </div>
+{% elif not token_configured %}
+  <div class="error-box" style="color:#ffb400;border-color:rgba(255,180,0,0.25);background:rgba(255,180,0,0.06);">
+    <span>⚙</span>
+    <span>
+      Setup required: set <code>MAESTRO_TOKEN</code> in your <code>.env</code>
+      {% if dev_mode %}(dev mode enabled){% endif %}.
+    </span>
+  </div>
+{% endif %}
 
       <!-- Form -->
 <form method="POST" action="/login" id="loginForm">
@@ -325,15 +332,21 @@
       <!-- System status -->
       <div class="status-row">
         <div class="status-dot"></div>
-        <span>All systems operational</span>
+        <span>
+          {% if token_configured %}
+            Ready for login
+          {% else %}
+            Setup required (missing MAESTRO_TOKEN)
+          {% endif %}
+        </span>
       </div>
 
     </div>
 
     <!-- Footer -->
     <div class="footer">
-      MAESTRO AI &nbsp;·&nbsp; v1.0.0 &nbsp;·&nbsp; commit 4290067<br>
-      &copy; 2026 LR Records
+      MAESTRO AI · open source edition<br>
+      &copy; 2026 LRRecords
     </div>
   </div>
 

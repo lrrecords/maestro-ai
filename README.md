@@ -8,7 +8,6 @@
 
 [![License](https://img.shields.io/github/license/lrrecords/maestro-ai.svg)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/lrrecords/maestro-ai?sort=semver)](https://github.com/lrrecords/maestro-ai/releases)
-[![Build Status](https://github.com/lrrecords/maestro-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/lrrecords/maestro-ai/actions)
 
 ---
 

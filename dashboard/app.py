@@ -71,25 +71,34 @@ def login_page():
     next_url = request.form.get("next") or request.args.get("next", url_for("hub"))
     error = None
 
+    token_configured = bool(MAESTRO_TOKEN)
     if request.method == "POST":
-        if MAESTRO_DEV_MODE and not MAESTRO_TOKEN:
-            # Dev bypass: any non-empty token logs in (or you can accept blank)
-            token = request.form.get("token", "").strip()
+        token = request.form.get("token", "").strip()
+
+        # Dev bypass: if explicitly enabled and no real token is configured
+        if MAESTRO_DEV_MODE and not token_configured:
             if token:
                 session["authenticated"] = True
                 return redirect(next_url)
             error = "Enter any token to continue (dev mode)."
+
         else:
-            if not MAESTRO_TOKEN:
+            # Normal mode: must have MAESTRO_TOKEN configured and match exactly
+            if not token_configured:
                 error = "Dashboard not configured: MAESTRO_TOKEN is missing. Set it in your .env."
+            elif token == MAESTRO_TOKEN:
+                session["authenticated"] = True
+                return redirect(next_url)
             else:
-                token = request.form.get("token", "").strip()
-                if token == MAESTRO_TOKEN:
-                    session["authenticated"] = True
-                    return redirect(next_url)
                 error = "Invalid token. Try again."
 
-    return render_template("login.html", error=error, next_url=next_url)
+    return render_template(
+        "login.html",
+        error=error,
+        next_url=next_url,
+        token_configured=token_configured,
+        dev_mode=MAESTRO_DEV_MODE,
+    )
 
 @app.route("/logout")
 def logout():
