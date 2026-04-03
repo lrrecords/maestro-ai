@@ -45,16 +45,16 @@ Maestro AI brings together specialized AI agents—each handling real music busi
 A few snapshots of the web dashboards:
 
 ### Hub
-![Hub dashboard](docs/screenshots/hub.png)
+![Hub dashboard](docs/screenshots/Hub.png)
 
 ### LABEL — “Nice cards” output
-![LABEL agent result cards](docs/screenshots/label-nice-cards.png)
+![LABEL agent result cards](docs/screenshots/label-nice-card.png)
 
 ### Agent Cards (icons + orchestration)
 ![Agent cards with icons](docs/screenshots/studio-agent-cards.png)
 
 ### LIVE - BOOK Agent card
-![BOOK agent card](dos/screenshots/live-book-card.png)
+![BOOK agent card](docs/screenshots/live-book-card.png)
 
 More screenshots: see `docs/assets/`.
 
