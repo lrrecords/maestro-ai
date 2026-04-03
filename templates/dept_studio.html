@@ -89,6 +89,15 @@
     .run-btn:hover    { background: rgba(179,136,255,.07); border-color: #b388ff; }
     .run-btn:disabled { opacity: .45; cursor: not-allowed; }
 
+    .agent-icon {
+      width: 36px;
+      height: 36px;
+      color: #b388ff;
+      display: block;
+      margin-bottom: 2px;
+      opacity: 0.85;
+    }
+
     /* ── Modal ── */
     .modal-overlay {
       display: none; position: fixed; inset: 0;
@@ -1118,6 +1127,31 @@ function onSignalAgentResult(agentResult) {
   document.getElementById('signal-audit-history').innerHTML = "";
   document.getElementById('signal-audit-history').style.display = 'none';
 }
+</script>
+
+<script>
+(function injectStudioIcons() {
+  const ICONS = {
+    'ASK_AI':  '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2l1.5 5.5H17l-4.5 3.3 1.7 5.2L10 13l-4.2 3 1.7-5.2L3 7.5h5.5L10 2z"/></svg>',
+    'CLIENT':  '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="4"/><path d="M3 17c0-3.3 3.1-6 7-6s7 2.7 7 6"/></svg>',
+    'CRAFT':   '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2.5l-1.5 1.5-8.5 8.5-1 3 3-1 8.5-8.5 1.5-1.5a2.1 2.1 0 0 0-2-2z"/></svg>',
+    'MIX':     '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="16" y2="6"/><line x1="4" y1="10" x2="16" y2="10"/><line x1="4" y1="14" x2="16" y2="14"/><rect x="6" y="4" width="4" height="4" rx="1"/><rect x="10" y="8" width="4" height="4" rx="1"/><rect x="5" y="12" width="4" height="4" rx="1"/></svg>',
+    'RATE':    '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><path d="M10 7v6"/><path d="M12.5 8H9a1.5 1.5 0 0 0 0 3h2a1.5 1.5 0 0 1 0 3H7.5"/></svg>',
+    'SCHEMA':  '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg>',
+    'SESSION': '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="6" height="9" rx="3"/><path d="M4 11a6 6 0 0 0 12 0"/><line x1="10" y1="17" x2="10" y2="19"/><line x1="7" y1="19" x2="13" y2="19"/></svg>',
+    'SIGNAL':  '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="2" fill="currentColor"/><path d="M7 7a4.24 4.24 0 0 0 0 6M13 7a4.24 4.24 0 0 1 0 6"/><path d="M4.9 4.9a7.78 7.78 0 0 0 0 10.2M15.1 4.9a7.78 7.78 0 0 1 0 10.2"/></svg>',
+    'SOUND':   '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3,8 3,12 6,12 10,16 10,4 6,8"/><path d="M13 8a4 4 0 0 1 0 4"/><path d="M15.5 5.5a8 8 0 0 1 0 9"/></svg>',
+  };
+  document.querySelectorAll('.agent').forEach(card => {
+    const code = card.querySelector('.agent-code')?.textContent?.trim();
+    if (code && ICONS[code]) {
+      const wrap = document.createElement('div');
+      wrap.className = 'agent-icon';
+      wrap.innerHTML = ICONS[code];
+      card.insertBefore(wrap, card.firstChild);
+    }
+  });
+})();
 </script>
 </body>
 </html>
