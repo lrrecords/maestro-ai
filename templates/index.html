@@ -1761,6 +1761,88 @@
           <div id="dash-inner" style="padding:24px;">
             <div class="spinner"></div>
           </div>
+
+          <!-- ══ CEO MISSION BRIEF PANEL ══ -->
+          <div style="background:var(--surface);border:1px solid var(--border);
+                      border-left:3px solid var(--cyan);border-radius:10px;
+                      padding:22px;margin:0 24px 22px;">
+            <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;
+                        text-transform:uppercase;color:var(--cyan);margin-bottom:12px;">
+              🎯 Mission Brief — CEO Command Centre
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 160px auto;gap:10px;margin-bottom:10px;">
+              <textarea id="mission-input"
+                style="background:var(--bg);border:1px solid var(--border);border-radius:8px;
+                       color:var(--white);font-family:var(--mono);font-size:.82rem;
+                       padding:10px;resize:none;height:64px;outline:none;"
+                placeholder="e.g. Run full release campaign for Aria Velvet — Neon Letters, dropping April 18"></textarea>
+              <input id="mission-slug" type="text"
+                style="background:var(--bg);border:1px solid var(--border);border-radius:8px;
+                       color:var(--white);font-family:var(--mono);font-size:.82rem;padding:10px;"
+                placeholder="artist_slug">
+              <button onclick="fireMission()"
+                style="background:linear-gradient(135deg,var(--cyan-dim),#005f65);
+                       border:1px solid var(--cyan-dim);border-radius:8px;color:var(--white);
+                       font-family:var(--mono);font-size:.78rem;font-weight:700;
+                       padding:0 20px;cursor:pointer;white-space:nowrap;">
+                ▶ FIRE MISSION
+              </button>
+            </div>
+            <div id="mission-status" style="font-family:var(--mono);font-size:.74rem;
+                 color:var(--muted);min-height:18px;"></div>
+          </div>
+
+          <!-- ══ RECENT MISSIONS ══ -->
+          <div style="background:var(--surface);border:1px solid var(--border);
+                      border-left:3px solid var(--green);border-radius:10px;
+                      padding:22px;margin:0 24px 22px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;
+                          text-transform:uppercase;color:var(--green);">
+                📋 Recent Missions
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <span id="mission-list-count" style="font-family:var(--mono);font-size:.7rem;
+                      background:rgba(0,201,122,.08);border:1px solid rgba(0,201,122,.25);
+                      border-radius:999px;padding:2px 10px;color:var(--green);"></span>
+                <button onclick="loadMissionList()"
+                  style="background:none;border:1px solid var(--border);border-radius:6px;
+                         color:var(--muted);font-size:.7rem;padding:4px 10px;cursor:pointer;">
+                  ↺
+                </button>
+              </div>
+            </div>
+            <div id="mission-list">
+              <div style="color:var(--muted);font-size:.8rem;padding:4px 0;">Loading...</div>
+            </div>
+            <div id="mission-detail" style="display:none;margin-top:14px;
+                 border-top:1px solid var(--border);padding-top:14px;"></div>
+          </div>
+
+          <!-- ══ CEO APPROVAL QUEUE ══ -->
+          <div style="background:var(--surface);border:1px solid var(--border);
+                      border-left:3px solid var(--yellow);border-radius:10px;
+                      padding:22px;margin:0 24px 22px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;
+                          text-transform:uppercase;color:var(--yellow);">
+                ⏳ CEO Approval Queue
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <span id="queue-count" style="font-family:var(--mono);font-size:.7rem;
+                      background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);
+                      border-radius:999px;padding:2px 10px;color:var(--yellow);"></span>
+                <button onclick="loadApprovalQueue()"
+                  style="background:none;border:1px solid var(--border);border-radius:6px;
+                         color:var(--muted);font-size:.7rem;padding:4px 10px;cursor:pointer;">
+                  ↺
+                </button>
+              </div>
+            </div>
+            <div id="approval-queue">
+              <div style="color:var(--muted);font-size:.8rem;padding:8px 0;">Loading...</div>
+            </div>
+          </div>
         </div>
 
         <!-- VIEW: Artist -->
@@ -2745,6 +2827,297 @@
         if (!h) h = `<div class="lm-card"><div class="lm-text">Result received — click Show JSON to view the full output.</div></div>`;
         return h;
       }
+
+    // ── Mission Brief ──────────────────────────────────────────────────────
+    async function fireMission() {
+      const mission  = document.getElementById('mission-input').value.trim();
+      const slug     = document.getElementById('mission-slug').value.trim() || STATE.slug;
+      const statusEl = document.getElementById('mission-status');
+
+      if (!mission) { toast('Enter a mission brief', 'err'); return; }
+      if (!slug)    { toast('Select an artist or enter a slug', 'err'); return; }
+
+      statusEl.innerHTML = '🚀 <span style="color:var(--cyan)">Launching CrewAI crew...</span>';
+
+      const resp = await fetch(API_PREFIX + '/api/mission', {
+        method:  'POST',
+        headers: {'Content-Type': 'application/json'},
+        body:    JSON.stringify({ artist_slug: slug, mission, release_title: mission }),
+      });
+      const data = await resp.json();
+
+      if (data.job_id) {
+        setTimeout(loadMissionList, 500);
+        pollMissionStatus(data.job_id, statusEl);
+      } else {
+        statusEl.textContent = '❌ Launch failed: ' + JSON.stringify(data);
+      }
+    }
+
+    function pollMissionStatus(jobId, statusEl) {
+      statusEl.innerHTML = `⏳ Job: <span style="color:var(--cyan);font-family:var(--mono)">${jobId}</span> — running...`;
+      const iv = setInterval(async () => {
+        try {
+          const r    = await fetch(API_PREFIX + '/api/mission/' + jobId);
+          const data = await r.json();
+          const job  = data.job || data;
+          const st   = job.status;
+          if (st === 'complete' || st === 'cancelled') {
+            clearInterval(iv);
+            if (st === 'complete') {
+              statusEl.innerHTML = `✅ Mission complete — <span style="color:var(--yellow)">check Approval Queue for tasks needing sign-off</span>`;
+              loadApprovalQueue();
+              toast('Mission complete!', 'ok');
+            } else {
+              statusEl.innerHTML = `🚫 Mission cancelled`;
+            }
+            loadMissionList();
+          } else if (st === 'error') {
+            clearInterval(iv);
+            statusEl.innerHTML = `❌ Error: ${escapeHtml(String(job.result || ''))}`;
+            loadMissionList();
+          }
+        } catch (_) { /* network hiccup — keep polling */ }
+      }, 3000);
+    }
+
+    // ── Recent Missions ───────────────────────────────────────────────────
+    let _selectedMissionId = null;
+
+    function _fmtTs(ts, full) {
+      if (!ts || ts === '—') return '—';
+      return ts.replace('T', ' ').slice(0, full ? 19 : 16);
+    }
+
+    async function loadMissionList() {
+      try {
+        const r    = await fetch(API_PREFIX + '/api/mission/list');
+        const data = await r.json();
+        renderMissionList(data.jobs || []);
+      } catch (_) { /* silently ignore network errors */ }
+    }
+
+    function _missionStatusBadge(st) {
+      const map = {
+        running:   ['var(--cyan)',   '⏳'],
+        complete:  ['var(--green)',  '✅'],
+        error:     ['var(--red)',    '❌'],
+        cancelled: ['var(--muted)', '🚫'],
+      };
+      const [color, icon] = map[st] || ['var(--muted)', '•'];
+      return `<span style="font-family:var(--mono);font-size:.68rem;color:${color};
+                           background:${color}1a;border:1px solid ${color}55;
+                           border-radius:999px;padding:1px 8px;white-space:nowrap;">
+                ${icon} ${st}</span>`;
+    }
+
+    function renderMissionList(jobs) {
+      const listEl  = document.getElementById('mission-list');
+      const countEl = document.getElementById('mission-list-count');
+      countEl.textContent = jobs.length ? `${jobs.length} total` : '';
+
+      if (!jobs.length) {
+        listEl.innerHTML = '<div style="color:var(--muted);font-size:.8rem;padding:4px 0;">No missions yet — fire one above.</div>';
+        document.getElementById('mission-detail').style.display = 'none';
+        return;
+      }
+
+      listEl.innerHTML = jobs.map(j => {
+        const isSelected = j.job_id === _selectedMissionId;
+        const preview    = (j.mission || j.release_title || '—').slice(0, 80);
+        return `
+        <div id="mrow-${j.job_id}"
+          onclick="selectMission('${j.job_id}')"
+          style="background:${isSelected ? 'rgba(0,201,122,.06)' : 'var(--bg)'};
+                 border:1px solid ${isSelected ? 'var(--green)' : 'var(--border)'};
+                 border-radius:8px;padding:10px 14px;margin-bottom:6px;cursor:pointer;
+                 display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+                 transition:border-color .15s;">
+          <div>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;">
+              ${_missionStatusBadge(j.status)}
+              <span style="font-size:.76rem;font-weight:700;color:var(--white);
+                           font-family:var(--mono);">${escapeHtml(j.slug || '—')}</span>
+            </div>
+            <div style="font-size:.7rem;color:var(--muted);overflow:hidden;
+                        text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(preview)}</div>
+          </div>
+          <div style="font-size:.64rem;color:var(--muted);font-family:var(--mono);white-space:nowrap;">${_fmtTs(j.created_at)}</div>
+        </div>`;
+      }).join('');
+
+      // Re-render detail if a mission is selected and still in list
+      if (_selectedMissionId && jobs.find(j => j.job_id === _selectedMissionId)) {
+        selectMission(_selectedMissionId);
+      }
+    }
+
+    async function selectMission(jobId) {
+      _selectedMissionId = jobId;
+
+      // Highlight selected row (re-render list highlight)
+      document.querySelectorAll('[id^="mrow-"]').forEach(el => {
+        const isThis = el.id === `mrow-${jobId}`;
+        el.style.background = isThis ? 'rgba(0,201,122,.06)' : 'var(--bg)';
+        el.style.border     = `1px solid ${isThis ? 'var(--green)' : 'var(--border)'}`;
+      });
+
+      const detailEl = document.getElementById('mission-detail');
+      detailEl.style.display = '';
+      detailEl.innerHTML = '<div style="color:var(--muted);font-size:.8rem;">Loading...</div>';
+
+      try {
+        const r    = await fetch(API_PREFIX + '/api/mission/' + jobId);
+        const data = await r.json();
+        if (!data.ok) {
+          detailEl.innerHTML = `<div style="color:var(--red);font-size:.8rem;">⚠ ${escapeHtml(data.error || 'Not found')}</div>`;
+          return;
+        }
+        renderMissionDetail(data.job);
+      } catch (err) {
+        detailEl.innerHTML = `<div style="color:var(--red);font-size:.8rem;">⚠ ${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    function renderMissionDetail(job) {
+      const detailEl = document.getElementById('mission-detail');
+      const isRunning = job.status === 'running';
+
+      const rows = [
+        ['Job ID',         job.job_id || '—'],
+        ['Slug',           job.slug || '—'],
+        ['Status',         job.status || '—'],
+        ['Created',        _fmtTs(job.created_at, true)],
+        ['Updated',        _fmtTs(job.updated_at, true)],
+        ['Finished',       _fmtTs(job.finished_at, true)],
+        ['Mission',        (job.mission || '—').slice(0, 200)],
+        ['Release Title',  (job.release_title || '—').slice(0, 120)],
+      ].map(([k, v]) => `
+        <span style="font-size:.7rem;color:var(--muted);font-family:var(--mono);">${escapeHtml(k)}</span>
+        <span style="font-size:.72rem;color:var(--white);word-break:break-word;">${escapeHtml(String(v))}</span>
+      `).join('');
+
+      const resultHtml = job.result
+        ? `<div style="margin-top:10px;">
+             <div style="font-size:.65rem;color:var(--muted);font-family:var(--mono);margin-bottom:4px;">RESULT</div>
+             <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;
+                         padding:10px;font-size:.72rem;color:var(--white);font-family:var(--mono);
+                         white-space:pre-wrap;max-height:120px;overflow:auto;">${escapeHtml(String(job.result).slice(0, 600))}${String(job.result).length > 600 ? '…' : ''}</div>
+           </div>`
+        : '';
+
+      detailEl.innerHTML = `
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin-bottom:10px;">${rows}</div>
+        ${resultHtml}
+        <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end;">
+          ${isRunning ? `<button onclick="cancelMission('${job.job_id}')"
+            style="background:rgba(232,69,69,.08);border:1px solid var(--red);border-radius:6px;
+                   color:var(--red);padding:6px 16px;font-size:.74rem;font-weight:700;cursor:pointer;">
+            🚫 Cancel Mission
+          </button>` : ''}
+          <button onclick="clearMission('${job.job_id}')"
+            style="background:rgba(100,100,100,.08);border:1px solid var(--border);border-radius:6px;
+                   color:var(--muted);padding:6px 16px;font-size:.74rem;font-weight:700;cursor:pointer;">
+            🗑 Clear
+          </button>
+        </div>`;
+    }
+
+    async function cancelMission(jobId) {
+      const r    = await fetch(API_PREFIX + '/api/mission/' + jobId + '/cancel', { method: 'POST' });
+      const data = await r.json();
+      if (data.ok) {
+        toast('Mission cancelled', 'inf');
+        loadMissionList();
+        renderMissionDetail(data.job);
+      } else {
+        toast(data.error || 'Cancel failed', 'err');
+      }
+    }
+
+    async function clearMission(jobId) {
+      const r    = await fetch(API_PREFIX + '/api/mission/' + jobId, { method: 'DELETE' });
+      const data = await r.json();
+      if (data.ok) {
+        toast('Mission cleared', 'inf');
+        if (_selectedMissionId === jobId) {
+          _selectedMissionId = null;
+          document.getElementById('mission-detail').style.display = 'none';
+        }
+        loadMissionList();
+      } else {
+        toast(data.error || 'Clear failed', 'err');
+      }
+    }
+
+    // ── Approval Queue ─────────────────────────────────────────────────────
+    async function loadApprovalQueue() {
+      const r       = await fetch(API_PREFIX + '/api/ceo/queue');
+      const tasks   = await r.json();
+      const el      = document.getElementById('approval-queue');
+      const countEl = document.getElementById('queue-count');
+
+      countEl.textContent = tasks.length ? `${tasks.length} pending` : '';
+
+      if (!tasks.length) {
+        el.innerHTML = '<div style="color:var(--muted);font-size:.8rem;padding:4px 0;">✅ No pending approvals</div>';
+        return;
+      }
+
+      const actionIcons = {
+        send_mass_email: '📧', publish_public_content: '📝',
+        post_social_media: '📱', press_outreach: '📰',
+        mint_nft: '🔷', spend_money: '💰',
+        bulk_crm_update: '👥', orchard_submission: '🎵',
+        spotify_playlist_pitch: '🎧',
+      };
+
+      el.innerHTML = tasks.map(t => `
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;
+                    padding:12px 14px;margin-bottom:8px;
+                    display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:start;">
+          <div>
+            <div style="font-size:.76rem;font-weight:700;color:var(--white);margin-bottom:3px;">
+              ${actionIcons[t.action] || '⚡'} [${t.agent}] ${t.action.replaceAll('_',' ').toUpperCase()}
+            </div>
+            <div style="font-size:.7rem;color:var(--muted);font-family:var(--mono);
+                        white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px;">
+              ${JSON.stringify(t.payload).slice(0, 140)}${JSON.stringify(t.payload).length > 140 ? '…' : ''}
+            </div>
+            <div style="font-size:.64rem;color:#444;margin-top:4px;">${t.queued_at}</div>
+          </div>
+          <button onclick="actionApproval('${t.task_id}', true)"
+            style="background:rgba(0,201,122,.08);border:1px solid var(--green);
+                   border-radius:6px;color:var(--green);padding:7px 16px;
+                   font-size:.76rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+            ✓ Approve
+          </button>
+          <button onclick="actionApproval('${t.task_id}', false)"
+            style="background:rgba(232,69,69,.08);border:1px solid var(--red);
+                   border-radius:6px;color:var(--red);padding:7px 16px;
+                   font-size:.76rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+            ✗ Reject
+          </button>
+        </div>`).join('');
+    }
+
+    async function actionApproval(taskId, approved) {
+      await fetch(API_PREFIX + '/api/ceo/approve/' + taskId, {
+        method:  'POST',
+        headers: {'Content-Type': 'application/json'},
+        body:    JSON.stringify({ approved, note: '' }),
+      });
+      toast(approved ? '✅ Approved — executing via n8n' : '✗ Rejected', approved ? 'ok' : 'err');
+      setTimeout(loadApprovalQueue, 500);
+    }
+
+    // Auto-load and auto-refresh approval queue and mission list
+    document.addEventListener('DOMContentLoaded', () => {
+      loadApprovalQueue();
+      setInterval(loadApprovalQueue, 30000);
+      loadMissionList();
+      setInterval(loadMissionList, 15000);
+    });
   </script>
 </body>
 
