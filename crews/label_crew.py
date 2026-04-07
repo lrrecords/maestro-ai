@@ -4,13 +4,48 @@ CrewAI crew for the Label department.
 Wraps existing Maestro agents (BRIDGE, VINYL, ECHO, SAGE) as CrewAI role-playing agents.
 Each agent's tools call the existing Maestro Flask endpoints — no duplication of logic.
 """
-from crewai import Agent, Task, Crew, Process
+from crewai import Agent, Task, Crew, Process, LLM
 from crewai.tools import tool
 from crews.base_crew import queue_for_approval
 import requests, os, json
 
 
 MAESTRO_BASE = os.getenv("MAESTRO_BASE_URL", "http://localhost:8080")
+
+
+def _make_crew_llm() -> LLM:
+    """
+    Build a crewai.LLM instance from environment variables.
+
+    Supported providers (via LLM_PROVIDER env var):
+      - ollama  (default): uses OLLAMA_BASE_URL + OLLAMA_MODEL
+      - openai           : uses OPENAI_API_KEY
+      - anthropic        : uses ANTHROPIC_API_KEY + ANTHROPIC_MODEL
+    """
+    provider = os.getenv("LLM_PROVIDER", "ollama").lower().strip()
+
+    if provider == "ollama":
+        base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
+        model    = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
+        return LLM(
+            model=f"ollama/{model}",
+            base_url=base_url,
+            api_key="ollama",
+        )
+
+    if provider == "anthropic":
+        model = os.getenv("ANTHROPIC_MODEL", "claude-3-5-haiku-20241022")
+        return LLM(
+            model=f"anthropic/{model}",
+            api_key=os.getenv("ANTHROPIC_API_KEY", ""),
+        )
+
+    # openai / default
+    model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+    return LLM(
+        model=model,
+        api_key=os.getenv("OPENAI_API_KEY", ""),
+    )
 
 
 # ─── Tools ────────────────────────────────────────────────────────────────────
@@ -105,64 +140,72 @@ def queue_checkin_message(artist: str, channel: str, message: str) -> str:
 
 # ─── Agent Definitions ────────────────────────────────────────────────────────
 
-bridge_agent = Agent(
-    role="Artist Relations Director",
-    goal="Monitor every artist's relationship health and ensure no one falls through the cracks",
-    backstory=(
-        "You are BRIDGE — LRRecords' artist intelligence agent. "
-        "You score relationships 0-100 based on recency, frequency, and momentum. "
-        "You detect trends (improving/stable/declining) and draft personalised check-in messages "
-        "in Brett's direct, warm, action-oriented voice. No corporate language. "
-        "You NEVER send anything without CEO approval."
-    ),
-    tools=[run_bridge, get_artist_profile, queue_checkin_message],
-    verbose=True,
-    allow_delegation=False,
-)
+def _make_agents(llm: LLM):
+    """Instantiate all label CrewAI agents with the given LLM."""
+    bridge_agent = Agent(
+        role="Artist Relations Director",
+        goal="Monitor every artist's relationship health and ensure no one falls through the cracks",
+        backstory=(
+            "You are BRIDGE — LRRecords' artist intelligence agent. "
+            "You score relationships 0-100 based on recency, frequency, and momentum. "
+            "You detect trends (improving/stable/declining) and draft personalised check-in messages "
+            "in Brett's direct, warm, action-oriented voice. No corporate language. "
+            "You NEVER send anything without CEO approval."
+        ),
+        tools=[run_bridge, get_artist_profile, queue_checkin_message],
+        llm=llm,
+        verbose=True,
+        allow_delegation=False,
+    )
 
-vinyl_agent = Agent(
-    role="Music Operations Director",
-    goal="Keep every release on track from pre-production through post-release metrics",
-    backstory=(
-        "You are VINYL — the label's release operations specialist. "
-        "You generate phased release checklists, track distribution deadlines, "
-        "and coordinate metadata submissions to The Orchard. "
-        "You are systematic, checklist-driven, and deadline-obsessed. "
-        "You know that artwork approval via The Orchard takes up to 2 weeks — you plan for it."
-    ),
-    tools=[run_vinyl, get_artist_profile],
-    verbose=True,
-    allow_delegation=False,
-)
+    vinyl_agent = Agent(
+        role="Music Operations Director",
+        goal="Keep every release on track from pre-production through post-release metrics",
+        backstory=(
+            "You are VINYL — the label's release operations specialist. "
+            "You generate phased release checklists, track distribution deadlines, "
+            "and coordinate metadata submissions to The Orchard. "
+            "You are systematic, checklist-driven, and deadline-obsessed. "
+            "You know that artwork approval via The Orchard takes up to 2 weeks — you plan for it."
+        ),
+        tools=[run_vinyl, get_artist_profile],
+        llm=llm,
+        verbose=True,
+        allow_delegation=False,
+    )
 
-echo_agent = Agent(
-    role="Content and Marketing Chief",
-    goal="Plan and draft content that builds real audience and drives release momentum",
-    backstory=(
-        "You are ECHO — LRRecords' content strategist. "
-        "You build 2-week content calendars, write captions for Instagram/TikTok/X, "
-        "and craft email campaign briefs. You understand the indie doom/electronic music "
-        "audience. You post quality over quantity. "
-        "You ALWAYS queue public-facing content for CEO approval — never publish directly."
-    ),
-    tools=[queue_content_approval, queue_email_campaign],
-    verbose=True,
-    allow_delegation=True,
-)
+    echo_agent = Agent(
+        role="Content and Marketing Chief",
+        goal="Plan and draft content that builds real audience and drives release momentum",
+        backstory=(
+            "You are ECHO — LRRecords' content strategist. "
+            "You build 2-week content calendars, write captions for Instagram/TikTok/X, "
+            "and craft email campaign briefs. You understand the indie doom/electronic music "
+            "audience. You post quality over quantity. "
+            "You ALWAYS queue public-facing content for CEO approval — never publish directly."
+        ),
+        tools=[queue_content_approval, queue_email_campaign],
+        llm=llm,
+        verbose=True,
+        allow_delegation=True,
+    )
 
-sage_agent = Agent(
-    role="Chief of Staff and Weekly Planner",
-    goal="Synthesise all agent outputs into the CEO's ranked weekly action list",
-    backstory=(
-        "You are SAGE — Brett's AI chief of staff. "
-        "You read every other agent's output and distil it into a 30-second CEO briefing: "
-        "top 5 actions this week, blockers, approvals needed, and wins to celebrate. "
-        "You never bury the lead. The most urgent item is always first."
-    ),
-    tools=[],
-    verbose=True,
-    allow_delegation=True,
-)
+    sage_agent = Agent(
+        role="Chief of Staff and Weekly Planner",
+        goal="Synthesise all agent outputs into the CEO's ranked weekly action list",
+        backstory=(
+            "You are SAGE — Brett's AI chief of staff. "
+            "You read every other agent's output and distil it into a 30-second CEO briefing: "
+            "top 5 actions this week, blockers, approvals needed, and wins to celebrate. "
+            "You never bury the lead. The most urgent item is always first."
+        ),
+        tools=[],
+        llm=llm,
+        verbose=True,
+        allow_delegation=True,
+    )
+
+    return bridge_agent, vinyl_agent, echo_agent, sage_agent
 
 
 # ─── Crew Builders ────────────────────────────────────────────────────────────
@@ -172,6 +215,9 @@ def build_release_campaign_crew(artist_slug: str, release_title: str) -> Crew:
     Full release campaign crew: VINYL → ECHO → BRIDGE → SAGE
     Use for: new single/EP/album release preparation
     """
+    llm = _make_crew_llm()
+    bridge_agent, vinyl_agent, echo_agent, sage_agent = _make_agents(llm)
+
     task_checklist = Task(
         description=(
             f"Generate a complete release checklist for artist '{artist_slug}' "
@@ -242,6 +288,9 @@ def build_roster_health_crew(artist_slugs: list) -> Crew:
     Weekly roster health check across all artists.
     Use for: Monday morning CEO briefing
     """
+    llm = _make_crew_llm()
+    bridge_agent, _, _, sage_agent = _make_agents(llm)
+
     task_health = Task(
         description=(
             f"Run BRIDGE health checks for these artists: {', '.join(artist_slugs)}. "
