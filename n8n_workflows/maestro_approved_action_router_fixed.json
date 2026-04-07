@@ -1,0 +1,146 @@
+{
+ "name": "Maestro Approved Action Router",
+ "nodes": [
+  {
+   "name": "Webhook — Approved Action",
+   "type": "n8n-nodes-base.webhook",
+   "parameters": {
+    "path": "maestro-approved-action",
+    "httpMethod": "POST",
+    "responseMode": "onReceived"
+   },
+   "position": [
+    250,
+    300
+   ],
+   "options": {}
+  },
+  {
+   "name": "Switch — Route by Workflow Type",
+   "type": "n8n-nodes-base.switch",
+   "parameters": {
+    "rules": [
+     {
+      "condition": "=",
+      "value1": "={{ $json.workflow }}",
+      "value2": "send_email_campaign"
+     },
+     {
+      "condition": "=",
+      "value1": "={{ $json.workflow }}",
+      "value2": "publish_blog_post"
+     },
+     {
+      "condition": "=",
+      "value1": "={{ $json.workflow }}",
+      "value2": "post_social_media"
+     }
+    ]
+   },
+   "position": [
+    500,
+    300
+   ],
+   "options": {}
+  },
+  {
+   "name": "EasyFunnels — Send Email Campaign",
+   "type": "n8n-nodes-base.httpRequest",
+   "parameters": {
+    "method": "POST",
+    "url": "https://lrrecords.com.au/api/v1/campaigns",
+    "authentication": "genericCredentialType",
+    "genericAuthType": "httpHeaderAuth",
+    "body": {
+     "name": "={{ $json.payload.artist }} Release Campaign",
+     "subject": "={{ $json.payload.subject }}",
+     "body": "={{ $json.payload.body }}",
+     "status": "draft"
+    },
+    "options": {},
+    "notes": "[verify: EasyFunnels email campaign API endpoint]"
+   },
+   "position": [
+    750,
+    200
+   ]
+  },
+  {
+   "name": "EasyFunnels — Publish Blog Post",
+   "type": "n8n-nodes-base.httpRequest",
+   "parameters": {
+    "method": "POST",
+    "url": "https://lrrecords.com.au/api/v1/blog/posts",
+    "authentication": "genericCredentialType",
+    "genericAuthType": "httpHeaderAuth",
+    "body": {
+     "title": "={{ $json.payload.title }}",
+     "content": "={{ $json.payload.content }}",
+     "status": "draft",
+     "tags": "={{ $json.payload.seo_keywords }}"
+    },
+    "options": {},
+    "notes": "[verify: EasyFunnels blog API endpoint]"
+   },
+   "position": [
+    750,
+    350
+   ]
+  },
+  {
+   "name": "Slack — Notify Brett",
+   "type": "n8n-nodes-base.httpRequest",
+   "parameters": {
+    "method": "POST",
+    "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+    "body": {
+     "text": "✅ Maestro executed: {{ $json.workflow }} for {{ $json.payload.artist }}"
+    },
+    "options": {},
+    "notes": "Optional — set SLACK_WEBHOOK_URL in n8n env vars"
+   },
+   "position": [
+    1000,
+    300
+   ]
+  }
+ ],
+ "connections": {
+  "Webhook — Approved Action": {
+   "main": [
+    [
+     {
+      "node": "Switch — Route by Workflow Type",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Switch — Route by Workflow Type": {
+   "main": [
+    [
+     {
+      "node": "EasyFunnels — Send Email Campaign",
+      "type": "main",
+      "index": 0
+     }
+    ],
+    [
+     {
+      "node": "EasyFunnels — Publish Blog Post",
+      "type": "main",
+      "index": 0
+     }
+    ],
+    [
+     {
+      "node": "Slack — Notify Brett",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ }
+}
