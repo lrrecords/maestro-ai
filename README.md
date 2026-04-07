@@ -28,6 +28,12 @@ Maestro AI brings together specialized AI agents—each handling real music busi
 
 ---
 
+## Implementation Guide
+
+See `docs/IMPLEMENTATION_GUIDE.md` for the end-to-end CrewAI + CEO Approval Queue implementation notes and planned steps.
+
+---
+
 ## ✨ Key Features
 
 - Unified navigation and department hub
