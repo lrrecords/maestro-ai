@@ -1,0 +1,33 @@
+{
+  "name": "EasyFunnels CRM → Maestro BRIDGE",
+  "nodes": [
+    {
+      "name": "Webhook — EasyFunnels CRM Event",
+      "type": "n8n-nodes-base.webhook",
+      "parameters": {
+        "path": "ef-crm-event",
+        "httpMethod": "POST",
+        "responseMode": "onReceived"
+      },
+      "position": [250, 300]
+    },
+    {
+      "name": "HTTP Request — Notify Maestro",
+      "type": "n8n-nodes-base.httpRequest",
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.MAESTRO_BASE_URL }}/webhook/easyfunnels/crm-update",
+        "body": {
+          "contact": "={{ $json }}"
+        },
+        "options": {}
+      },
+      "position": [500, 300]
+    }
+  ],
+  "connections": {
+    "Webhook — EasyFunnels CRM Event": {
+      "main": [[ { "node": "HTTP Request — Notify Maestro", "type": "main", "index": 0 } ]]
+    }
+  }
+}

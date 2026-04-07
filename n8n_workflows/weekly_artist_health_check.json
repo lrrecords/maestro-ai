@@ -1,0 +1,50 @@
+{
+  "name": "Weekly Artist Health Check — Monday 8am AWST",
+  "nodes": [
+    {
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "cronExpression", "expression": "0 0 * * 1" }]
+        }
+      },
+      "position": [250, 300]
+    },
+    {
+      "name": "HTTP Request — Get Artist List",
+      "type": "n8n-nodes-base.httpRequest",
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.MAESTRO_BASE_URL }}/label/api/dashboard"
+      },
+      "position": [500, 300]
+    },
+    {
+      "name": "Split In Batches — Per Artist",
+      "type": "n8n-nodes-base.splitInBatches",
+      "parameters": { "batchSize": 1 },
+      "position": [750, 300]
+    },
+    {
+      "name": "HTTP Request — Fire BRIDGE for Artist",
+      "type": "n8n-nodes-base.httpRequest",
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.MAESTRO_BASE_URL }}/label/api/webhook/{{ $json.slug }}"
+      },
+      "position": [1000, 300]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [[ { "node": "HTTP Request — Get Artist List", "type": "main", "index": 0 } ]]
+    },
+    "HTTP Request — Get Artist List": {
+      "main": [[ { "node": "Split In Batches — Per Artist", "type": "main", "index": 0 } ]]
+    },
+    "Split In Batches — Per Artist": {
+      "main": [[ { "node": "HTTP Request — Fire BRIDGE for Artist", "type": "main", "index": 0 } ]]
+    }
+  }
+}
