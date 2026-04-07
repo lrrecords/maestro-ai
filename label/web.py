@@ -4,11 +4,13 @@ from flask import (
 )
 import datetime
 import logging
+import threading
 import time
 import json
 import os
 import requests
 from pathlib import Path
+from crews.base_crew import get_pending_approvals, approve_task
 
 label_bp = Blueprint("label", __name__)
 
@@ -456,106 +458,106 @@ def build_dashboard_rows():
     rows.sort(key=lambda r: (order.get(r["status"], 9), -(r["score"] or -1)))
     return rows
 
-    # ─────────────────────────────────────────────────────────────────────────────
-    # CrewAI Mission & CEO Approval Routes (appended by Copilot)
-    import threading
-    import datetime
-    from crews.base_crew import get_pending_approvals, approve_task
 
-    # In-memory job tracker — swap for Redis in production
-    _crew_jobs: dict = {}
+# ─────────────────────────────────────────────────────────────────────────────
+# CrewAI Mission & CEO Approval Routes
+# ─────────────────────────────────────────────────────────────────────────────
 
-    @label_bp.route("/api/mission", methods=["POST"])
-    def api_mission():
-        """
-        CEO fires a high-level mission brief.
-        CrewAI crew runs asynchronously. Returns job_id for polling.
-        """
-        data         = request.json or {}
-        slug         = data.get("artist_slug") or ""
-        mission      = data.get("mission", "")
-        release_title = data.get("release_title", "")
+# In-memory job tracker — swap for Redis in production
+_crew_jobs: dict = {}
 
-        if not slug:
-            return jsonify({"error": "artist_slug required"}), 400
 
-        from crews.label_crew import build_release_campaign_crew
+@label_bp.route("/api/mission", methods=["POST"])
+def api_mission():
+    """
+    CEO fires a high-level mission brief.
+    CrewAI crew runs asynchronously. Returns job_id for polling.
+    """
+    data          = request.json or {}
+    slug          = data.get("artist_slug") or ""
+    mission       = data.get("mission", "")
+    release_title = data.get("release_title", "")
 
-        job_id = f"mission_{slug}_{datetime.datetime.utcnow().strftime('%Y%m%d_%H%M%S')}"
-        _crew_jobs[job_id] = {
-            "status": "running", "slug": slug, "mission": mission, "result": None, "started_at": datetime.datetime.utcnow().isoformat()
+    if not slug:
+        return jsonify({"error": "artist_slug required"}), 400
+
+    from crews.label_crew import build_release_campaign_crew
+
+    job_id = f"mission_{slug}_{datetime.datetime.utcnow().strftime('%Y%m%d_%H%M%S')}"
+    _crew_jobs[job_id] = {
+        "status": "running", "slug": slug, "mission": mission,
+        "result": None, "started_at": datetime.datetime.utcnow().isoformat(),
+    }
+
+    def run_crew():
+        try:
+            crew   = build_release_campaign_crew(slug, release_title or mission)
+            result = crew.kickoff()
+            _crew_jobs[job_id]["status"] = "complete"
+            _crew_jobs[job_id]["result"] = str(result)
+        except Exception as e:
+            _crew_jobs[job_id]["status"] = "error"
+            _crew_jobs[job_id]["result"] = str(e)
+
+    threading.Thread(target=run_crew, daemon=True).start()
+    return jsonify({"job_id": job_id, "status": "running"})
+
+
+@label_bp.route("/api/mission/<job_id>", methods=["GET"])
+def api_mission_status(job_id):
+    """Poll mission status."""
+    job = _crew_jobs.get(job_id, {"error": "Job not found"})
+    return jsonify(job)
+
+
+@label_bp.route("/api/mission/list", methods=["GET"])
+def api_mission_list():
+    """List all missions."""
+    return jsonify(list(_crew_jobs.values()))
+
+
+@label_bp.route("/api/ceo/queue", methods=["GET"])
+def api_approval_queue():
+    """Get all pending CEO approvals."""
+    return jsonify(get_pending_approvals())
+
+
+@label_bp.route("/api/ceo/approve/<task_id>", methods=["POST"])
+def api_approve_task(task_id):
+    """
+    Approve or reject a queued agent action.
+    If approved, fires the action via n8n (for mass emails, social posts, etc.)
+    """
+    data     = request.json or {}
+    approved = data.get("approved", False)
+    note     = data.get("note", "")
+    result   = approve_task(task_id, approved, note)
+
+    if result.get("error"):
+        return jsonify(result), 404
+
+    # If approved, execute the action via n8n
+    if approved:
+        action  = result.get("action")
+        payload = result.get("payload", {})
+
+        n8n_action_map = {
+            "send_mass_email":        "send_email_campaign",
+            "publish_public_content": "publish_blog_post",
+            "post_social_media":      "post_social_media",
+            "press_outreach":         "send_email_campaign",
         }
 
-        def run_crew():
+        n8n_workflow = n8n_action_map.get(action)
+        if n8n_workflow:
             try:
-                crew   = build_release_campaign_crew(slug, release_title or mission)
-                result = crew.kickoff()
-                _crew_jobs[job_id]["status"] = "complete"
-                _crew_jobs[job_id]["result"] = str(result)
+                n8n_base = os.getenv("N8N_BASE_URL", "http://localhost:5678")
+                requests.post(
+                    f"{n8n_base}/webhook/maestro-approved-action",
+                    json={"workflow": n8n_workflow, "payload": payload},
+                    timeout=5,
+                )
             except Exception as e:
-                _crew_jobs[job_id]["status"] = "error"
-                _crew_jobs[job_id]["result"] = str(e)
+                logging.warning(f"n8n trigger failed after approval: {e}")
 
-        threading.Thread(target=run_crew, daemon=True).start()
-        return jsonify({"job_id": job_id, "status": "running"})
-
-
-    @label_bp.route("/api/mission/<job_id>", methods=["GET"])
-    def api_mission_status(job_id):
-        """Poll mission status."""
-        job = _crew_jobs.get(job_id, {"error": "Job not found"})
-        return jsonify(job)
-
-
-    @label_bp.route("/api/mission/list", methods=["GET"])
-    def api_mission_list():
-        """List all missions."""
-        return jsonify(list(_crew_jobs.values()))
-
-
-    @label_bp.route("/api/ceo/queue", methods=["GET"])
-    def api_approval_queue():
-        """Get all pending CEO approvals."""
-        return jsonify(get_pending_approvals())
-
-
-    @label_bp.route("/api/ceo/approve/<task_id>", methods=["POST"])
-    def api_approve_task(task_id):
-        """
-        Approve or reject a queued agent action.
-        If approved, fires the action via n8n (for mass emails, social posts, etc.)
-        """
-        data     = request.json or {}
-        approved = data.get("approved", False)
-        note     = data.get("note", "")
-        result   = approve_task(task_id, approved, note)
-
-        if result.get("error"):
-            return jsonify(result), 404
-
-        # If approved, execute the action via n8n
-        if approved:
-            action = result.get("action")
-            payload = result.get("payload", {})
-
-            n8n_action_map = {
-                "send_mass_email":       "send_email_campaign",
-                "publish_public_content": "publish_blog_post",
-                "post_social_media":     "post_social_media",
-                "press_outreach":        "send_email_campaign",
-            }
-
-            n8n_workflow = n8n_action_map.get(action)
-            if n8n_workflow:
-                try:
-                    import os, requests as req
-                    n8n_base = os.getenv("N8N_BASE_URL", "http://localhost:5678")
-                    req.post(
-                        f"{n8n_base}/webhook/maestro-approved-action",
-                        json={"workflow": n8n_workflow, "payload": payload},
-                        timeout=5
-                    )
-                except Exception as e:
-                    logging.warning(f"n8n trigger failed after approval: {e}")
-
-        return jsonify(result)
+    return jsonify(result)
