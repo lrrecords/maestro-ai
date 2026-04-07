@@ -483,37 +483,71 @@ def api_mission():
 
     from crews.label_crew import build_release_campaign_crew
 
-    job_id = f"mission_{slug}_{datetime.datetime.utcnow().strftime('%Y%m%d_%H%M%S')}"
+    _now   = datetime.datetime.utcnow()
+    now    = _now.isoformat()
+    job_id = f"mission_{slug}_{_now.strftime('%Y%m%d_%H%M%S')}"
     _crew_jobs[job_id] = {
-        "status": "running", "slug": slug, "mission": mission,
-        "result": None, "started_at": datetime.datetime.utcnow().isoformat(),
+        "job_id": job_id, "status": "running", "slug": slug,
+        "mission": mission, "release_title": release_title,
+        "result": None, "created_at": now, "updated_at": now, "finished_at": None,
     }
 
     def run_crew():
         try:
             crew   = build_release_campaign_crew(slug, release_title or mission)
             result = crew.kickoff()
-            _crew_jobs[job_id]["status"] = "complete"
-            _crew_jobs[job_id]["result"] = str(result)
+            _crew_jobs[job_id]["status"]      = "complete"
+            _crew_jobs[job_id]["result"]      = str(result)
+            _crew_jobs[job_id]["finished_at"] = datetime.datetime.utcnow().isoformat()
+            _crew_jobs[job_id]["updated_at"]  = datetime.datetime.utcnow().isoformat()
         except Exception as e:
-            _crew_jobs[job_id]["status"] = "error"
-            _crew_jobs[job_id]["result"] = str(e)
+            _crew_jobs[job_id]["status"]      = "error"
+            _crew_jobs[job_id]["result"]      = str(e)
+            _crew_jobs[job_id]["finished_at"] = datetime.datetime.utcnow().isoformat()
+            _crew_jobs[job_id]["updated_at"]  = datetime.datetime.utcnow().isoformat()
 
     threading.Thread(target=run_crew, daemon=True).start()
-    return jsonify({"job_id": job_id, "status": "running"})
+    return jsonify({"ok": True, "job_id": job_id, "status": "running"})
+
+
+@label_bp.route("/api/mission/list", methods=["GET"])
+def api_mission_list():
+    """List all missions, newest first."""
+    jobs = sorted(_crew_jobs.values(), key=lambda j: j.get("created_at", ""), reverse=True)
+    return jsonify({"ok": True, "jobs": jobs})
 
 
 @label_bp.route("/api/mission/<job_id>", methods=["GET"])
 def api_mission_status(job_id):
     """Poll mission status."""
-    job = _crew_jobs.get(job_id, {"error": "Job not found"})
-    return jsonify(job)
+    job = _crew_jobs.get(job_id)
+    if not job:
+        return jsonify({"ok": False, "error": "Job not found"}), 404
+    return jsonify({"ok": True, "job": job})
 
 
-@label_bp.route("/api/mission/list", methods=["GET"])
-def api_mission_list():
-    """List all missions."""
-    return jsonify(list(_crew_jobs.values()))
+@label_bp.route("/api/mission/<job_id>/cancel", methods=["POST"])
+def api_mission_cancel(job_id):
+    """Soft-cancel a running mission."""
+    job = _crew_jobs.get(job_id)
+    if not job:
+        return jsonify({"ok": False, "error": "Job not found"}), 404
+    if job.get("status") != "running":
+        return jsonify({"ok": False, "error": "Job is not running"}), 409
+    now = datetime.datetime.utcnow().isoformat()
+    job["status"]      = "cancelled"
+    job["finished_at"] = now
+    job["updated_at"]  = now
+    return jsonify({"ok": True, "job": job})
+
+
+@label_bp.route("/api/mission/<job_id>", methods=["DELETE"])
+def api_mission_delete(job_id):
+    """Delete / clear a mission record."""
+    if job_id not in _crew_jobs:
+        return jsonify({"ok": False, "error": "Job not found"}), 404
+    del _crew_jobs[job_id]
+    return jsonify({"ok": True, "cleared": True, "job_id": job_id})
 
 
 @label_bp.route("/api/ceo/queue", methods=["GET"])
