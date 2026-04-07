@@ -4,11 +4,13 @@ from flask import (
 )
 import datetime
 import logging
+import threading
 import time
 import json
 import os
 import requests
 from pathlib import Path
+from crews.base_crew import get_pending_approvals, approve_task
 
 label_bp = Blueprint("label", __name__)
 
@@ -455,3 +457,143 @@ def build_dashboard_rows():
     order = {"critical": 0, "monitor": 1, "good": 2, "no-data": 3}
     rows.sort(key=lambda r: (order.get(r["status"], 9), -(r["score"] or -1)))
     return rows
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CrewAI Mission & CEO Approval Routes
+# ─────────────────────────────────────────────────────────────────────────────
+
+# In-memory job tracker — swap for Redis in production
+_crew_jobs: dict = {}
+
+
+@label_bp.route("/api/mission", methods=["POST"])
+def api_mission():
+    """
+    CEO fires a high-level mission brief.
+    CrewAI crew runs asynchronously. Returns job_id for polling.
+    """
+    data          = request.json or {}
+    slug          = data.get("artist_slug") or ""
+    mission       = data.get("mission", "")
+    release_title = data.get("release_title", "")
+
+    if not slug:
+        return jsonify({"error": "artist_slug required"}), 400
+
+    from crews.label_crew import build_release_campaign_crew
+
+    _now   = datetime.datetime.now(datetime.timezone.utc)
+    now    = _now.isoformat()
+    job_id = f"mission_{slug}_{_now.strftime('%Y%m%d_%H%M%S')}"
+    _crew_jobs[job_id] = {
+        "job_id": job_id, "status": "running", "slug": slug,
+        "mission": mission, "release_title": release_title,
+        "result": None, "created_at": now, "updated_at": now, "finished_at": None,
+    }
+
+    def run_crew():
+        try:
+            crew   = build_release_campaign_crew(slug, release_title or mission)
+            result = crew.kickoff()
+            done_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+            _crew_jobs[job_id]["status"]      = "complete"
+            _crew_jobs[job_id]["result"]      = str(result)
+            _crew_jobs[job_id]["finished_at"] = done_at
+            _crew_jobs[job_id]["updated_at"]  = done_at
+        except Exception as e:
+            done_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+            _crew_jobs[job_id]["status"]      = "error"
+            _crew_jobs[job_id]["result"]      = str(e)
+            _crew_jobs[job_id]["finished_at"] = done_at
+            _crew_jobs[job_id]["updated_at"]  = done_at
+
+    threading.Thread(target=run_crew, daemon=True).start()
+    return jsonify({"ok": True, "job_id": job_id, "status": "running"})
+
+
+@label_bp.route("/api/mission/list", methods=["GET"])
+def api_mission_list():
+    """List all missions, newest first."""
+    jobs = sorted(_crew_jobs.values(), key=lambda j: j.get("created_at", ""), reverse=True)
+    return jsonify({"ok": True, "jobs": jobs})
+
+
+@label_bp.route("/api/mission/<job_id>", methods=["GET"])
+def api_mission_status(job_id):
+    """Poll mission status."""
+    job = _crew_jobs.get(job_id)
+    if not job:
+        return jsonify({"ok": False, "error": "Job not found"}), 404
+    return jsonify({"ok": True, "job": job})
+
+
+@label_bp.route("/api/mission/<job_id>/cancel", methods=["POST"])
+def api_mission_cancel(job_id):
+    """Soft-cancel a running mission."""
+    job = _crew_jobs.get(job_id)
+    if not job:
+        return jsonify({"ok": False, "error": "Job not found"}), 404
+    if job.get("status") != "running":
+        return jsonify({"ok": False, "error": "Job is not running"}), 409
+    now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    job["status"]      = "cancelled"
+    job["finished_at"] = now
+    job["updated_at"]  = now
+    return jsonify({"ok": True, "job": job})
+
+
+@label_bp.route("/api/mission/<job_id>", methods=["DELETE"])
+def api_mission_delete(job_id):
+    """Delete / clear a mission record."""
+    if job_id not in _crew_jobs:
+        return jsonify({"ok": False, "error": "Job not found"}), 404
+    del _crew_jobs[job_id]
+    return jsonify({"ok": True, "cleared": True, "job_id": job_id})
+
+
+@label_bp.route("/api/ceo/queue", methods=["GET"])
+def api_approval_queue():
+    """Get all pending CEO approvals."""
+    return jsonify(get_pending_approvals())
+
+
+@label_bp.route("/api/ceo/approve/<task_id>", methods=["POST"])
+def api_approve_task(task_id):
+    """
+    Approve or reject a queued agent action.
+    If approved, fires the action via n8n (for mass emails, social posts, etc.)
+    """
+    data     = request.json or {}
+    approved = data.get("approved", False)
+    note     = data.get("note", "")
+    result   = approve_task(task_id, approved, note)
+
+    if result.get("error"):
+        return jsonify(result), 404
+
+    # If approved, execute the action via n8n
+    if approved:
+        action  = result.get("action")
+        payload = result.get("payload", {})
+
+        n8n_action_map = {
+            "send_mass_email":        "send_email_campaign",
+            "publish_public_content": "publish_blog_post",
+            "post_social_media":      "post_social_media",
+            "press_outreach":         "send_email_campaign",
+        }
+
+        n8n_workflow = n8n_action_map.get(action)
+        if n8n_workflow:
+            try:
+                n8n_base = os.getenv("N8N_BASE_URL", "http://localhost:5678")
+                requests.post(
+                    f"{n8n_base}/webhook/maestro-approved-action",
+                    json={"workflow": n8n_workflow, "payload": payload},
+                    timeout=5,
+                )
+            except Exception as e:
+                logging.warning(f"n8n trigger failed after approval: {e}")
+
+    return jsonify(result)

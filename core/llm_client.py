@@ -149,12 +149,14 @@ def _call_ollama(prompt: str, max_tokens: int) -> str:
         resp = requests.post(url, json=payload, timeout=timeout)
     except requests.exceptions.ConnectionError:
         raise RuntimeError(
-            f"Cannot connect to Ollama at {base_url}."
+            f"Cannot connect to Ollama at {base_url}. "
+            "Is Ollama running? Start it with: ollama serve"
         )
     except requests.exceptions.Timeout:
         raise RuntimeError(
             f"Ollama request timed out after {timeout} s. "
-            "Increase OLLAMA_TIMEOUT_SECONDS in your .env or PLATFORM settings."
+            "Increase OLLAMA_TIMEOUT_SECONDS in your .env or PLATFORM settings, "
+            "or switch to a smaller model via OLLAMA_MODEL."
         )
 
     if resp.status_code == 404:

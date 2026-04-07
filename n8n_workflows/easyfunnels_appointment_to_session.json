@@ -1,0 +1,30 @@
+{
+  "name": "EasyFunnels Appointment → Maestro SESSION",
+  "nodes": [
+    {
+      "name": "Webhook — Appointment Booked",
+      "type": "n8n-nodes-base.webhook",
+      "parameters": {
+        "path": "ef-appointment",
+        "httpMethod": "POST",
+        "responseMode": "onReceived"
+      },
+      "position": [250, 300]
+    },
+    {
+      "name": "HTTP Request — Create Maestro Session",
+      "type": "n8n-nodes-base.httpRequest",
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.MAESTRO_BASE_URL }}/webhook/easyfunnels/appointment",
+        "body": "={{ $json }}"
+      },
+      "position": [500, 300]
+    }
+  ],
+  "connections": {
+    "Webhook — Appointment Booked": {
+      "main": [[ { "node": "HTTP Request — Create Maestro Session", "type": "main", "index": 0 } ]]
+    }
+  }
+}
