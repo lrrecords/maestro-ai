@@ -483,7 +483,7 @@ def api_mission():
 
     from crews.label_crew import build_release_campaign_crew
 
-    _now   = datetime.datetime.utcnow()
+    _now   = datetime.datetime.now(datetime.timezone.utc)
     now    = _now.isoformat()
     job_id = f"mission_{slug}_{_now.strftime('%Y%m%d_%H%M%S')}"
     _crew_jobs[job_id] = {
@@ -496,15 +496,17 @@ def api_mission():
         try:
             crew   = build_release_campaign_crew(slug, release_title or mission)
             result = crew.kickoff()
+            done_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
             _crew_jobs[job_id]["status"]      = "complete"
             _crew_jobs[job_id]["result"]      = str(result)
-            _crew_jobs[job_id]["finished_at"] = datetime.datetime.utcnow().isoformat()
-            _crew_jobs[job_id]["updated_at"]  = datetime.datetime.utcnow().isoformat()
+            _crew_jobs[job_id]["finished_at"] = done_at
+            _crew_jobs[job_id]["updated_at"]  = done_at
         except Exception as e:
+            done_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
             _crew_jobs[job_id]["status"]      = "error"
             _crew_jobs[job_id]["result"]      = str(e)
-            _crew_jobs[job_id]["finished_at"] = datetime.datetime.utcnow().isoformat()
-            _crew_jobs[job_id]["updated_at"]  = datetime.datetime.utcnow().isoformat()
+            _crew_jobs[job_id]["finished_at"] = done_at
+            _crew_jobs[job_id]["updated_at"]  = done_at
 
     threading.Thread(target=run_crew, daemon=True).start()
     return jsonify({"ok": True, "job_id": job_id, "status": "running"})
@@ -534,7 +536,7 @@ def api_mission_cancel(job_id):
         return jsonify({"ok": False, "error": "Job not found"}), 404
     if job.get("status") != "running":
         return jsonify({"ok": False, "error": "Job is not running"}), 409
-    now = datetime.datetime.utcnow().isoformat()
+    now = datetime.datetime.now(datetime.timezone.utc).isoformat()
     job["status"]      = "cancelled"
     job["finished_at"] = now
     job["updated_at"]  = now
