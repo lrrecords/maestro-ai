@@ -1760,172 +1760,62 @@
         <div class="view active" id="view-dashboard">
           <div id="dash-inner" style="padding:24px;">
             <div class="spinner"></div>
+          </div>
 
-            <!-- ══ CEO MISSION BRIEF PANEL ══ -->
-            <div style="background:var(--surface);border:1px solid var(--border);
-                        border-left:3px solid var(--cyan);border-radius:10px;
-                        padding:22px;margin-bottom:22px;">
+          <!-- ══ CEO MISSION BRIEF PANEL ══ -->
+          <div style="background:var(--surface);border:1px solid var(--border);
+                      border-left:3px solid var(--cyan);border-radius:10px;
+                      padding:22px;margin:0 24px 22px;">
+            <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;
+                        text-transform:uppercase;color:var(--cyan);margin-bottom:12px;">
+              🎯 Mission Brief — CEO Command Centre
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 160px auto;gap:10px;margin-bottom:10px;">
+              <textarea id="mission-input"
+                style="background:var(--bg);border:1px solid var(--border);border-radius:8px;
+                       color:var(--white);font-family:var(--mono);font-size:.82rem;
+                       padding:10px;resize:none;height:64px;outline:none;"
+                placeholder="e.g. Run full release campaign for Aria Velvet — Neon Letters, dropping April 18"></textarea>
+              <input id="mission-slug" type="text"
+                style="background:var(--bg);border:1px solid var(--border);border-radius:8px;
+                       color:var(--white);font-family:var(--mono);font-size:.82rem;padding:10px;"
+                placeholder="artist_slug">
+              <button onclick="fireMission()"
+                style="background:linear-gradient(135deg,var(--cyan-dim),#005f65);
+                       border:1px solid var(--cyan-dim);border-radius:8px;color:var(--white);
+                       font-family:var(--mono);font-size:.78rem;font-weight:700;
+                       padding:0 20px;cursor:pointer;white-space:nowrap;">
+                ▶ FIRE MISSION
+              </button>
+            </div>
+            <div id="mission-status" style="font-family:var(--mono);font-size:.74rem;
+                 color:var(--muted);min-height:18px;"></div>
+          </div>
+
+          <!-- ══ CEO APPROVAL QUEUE ══ -->
+          <div style="background:var(--surface);border:1px solid var(--border);
+                      border-left:3px solid var(--yellow);border-radius:10px;
+                      padding:22px;margin:0 24px 22px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
               <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;
-                          text-transform:uppercase;color:var(--cyan);margin-bottom:12px;">
-                🎯 Mission Brief — CEO Command Centre
+                          text-transform:uppercase;color:var(--yellow);">
+                ⏳ CEO Approval Queue
               </div>
-              <div style="display:grid;grid-template-columns:1fr 160px auto;gap:10px;margin-bottom:10px;">
-                <textarea id="mission-input"
-                  style="background:var(--bg);border:1px solid var(--border);border-radius:8px;
-                         color:var(--white);font-family:var(--mono);font-size:.82rem;
-                         padding:10px;resize:none;height:64px;outline:none;"
-                  placeholder="e.g. Run full release campaign for Aria Velvet — Neon Letters, dropping April 18"></textarea>
-                <input id="mission-slug" type="text"
-                  style="background:var(--bg);border:1px solid var(--border);border-radius:8px;
-                         color:var(--white);font-family:var(--mono);font-size:.82rem;padding:10px;"
-                  placeholder="artist_slug">
-                <button onclick="fireMission()"
-                  style="background:linear-gradient(135deg,var(--cyan-dim),#005f65);
-                         border:1px solid var(--cyan-dim);border-radius:8px;color:var(--white);
-                         font-family:var(--mono);font-size:.78rem;font-weight:700;
-                         padding:0 20px;cursor:pointer;white-space:nowrap;">
-                  ▶ FIRE MISSION
+              <div style="display:flex;gap:8px;align-items:center;">
+                <span id="queue-count" style="font-family:var(--mono);font-size:.7rem;
+                      background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);
+                      border-radius:999px;padding:2px 10px;color:var(--yellow);"></span>
+                <button onclick="loadApprovalQueue()"
+                  style="background:none;border:1px solid var(--border);border-radius:6px;
+                         color:var(--muted);font-size:.7rem;padding:4px 10px;cursor:pointer;">
+                  ↺
                 </button>
               </div>
-              <div id="mission-status" style="font-family:var(--mono);font-size:.74rem;
-                   color:var(--muted);min-height:18px;"></div>
             </div>
-
-            <!-- ══ CEO APPROVAL QUEUE ══ -->
-            <div style="background:var(--surface);border:1px solid var(--border);
-                        border-left:3px solid var(--yellow);border-radius:10px;
-                        padding:22px;margin-bottom:22px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-                <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;
-                            text-transform:uppercase;color:var(--yellow);">
-                  ⏳ CEO Approval Queue
-                </div>
-                <div style="display:flex;gap:8px;align-items:center;">
-                  <span id="queue-count" style="font-family:var(--mono);font-size:.7rem;
-                        background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);
-                        border-radius:999px;padding:2px 10px;color:var(--yellow);"></span>
-                  <button onclick="loadApprovalQueue()"
-                    style="background:none;border:1px solid var(--border);border-radius:6px;
-                           color:var(--muted);font-size:.7rem;padding:4px 10px;cursor:pointer;">
-                    ↺
-                  </button>
-                </div>
-              </div>
-              <div id="approval-queue">
-                <div style="color:var(--muted);font-size:.8rem;padding:8px 0;">Loading...</div>
-              </div>
+            <div id="approval-queue">
+              <div style="color:var(--muted);font-size:.8rem;padding:8px 0;">Loading...</div>
             </div>
           </div>
-          <script>
-        // ── Mission Brief ──────────────────────────────────────────────────────
-        async function fireMission() {
-          const mission = document.getElementById('mission-input').value.trim();
-          const slug    = document.getElementById('mission-slug').value.trim() || STATE.slug;
-          const statusEl = document.getElementById('mission-status');
-
-          if (!mission) { toast('Enter a mission brief', 'err'); return; }
-          if (!slug)    { toast('Select an artist or enter a slug', 'err'); return; }
-
-          statusEl.innerHTML = '🚀 <span style="color:var(--cyan)">Launching CrewAI crew...</span>';
-
-          const resp = await fetch(API_PREFIX + '/api/mission', {
-            method:  'POST',
-            headers: {'Content-Type': 'application/json'},
-            body:    JSON.stringify({ artist_slug: slug, mission, release_title: mission })
-          });
-          const data = await resp.json();
-
-          if (data.job_id) {
-            pollMissionStatus(data.job_id, statusEl);
-          } else {
-            statusEl.textContent = '❌ Launch failed: ' + JSON.stringify(data);
-          }
-        }
-
-        function pollMissionStatus(jobId, statusEl) {
-          statusEl.innerHTML = `⏳ Job: <span style="color:var(--cyan);font-family:var(--mono)">${jobId}</span> — running...`;
-          const iv = setInterval(async () => {
-            const r    = await fetch(API_PREFIX + '/api/mission/' + jobId);
-            const data = await r.json();
-            if (data.status === 'complete') {
-              clearInterval(iv);
-              statusEl.innerHTML = `✅ Mission complete — <span style="color:var(--yellow)">check Approval Queue for tasks needing sign-off</span>`;
-              loadApprovalQueue();
-              toast('Mission complete!', 'ok');
-            } else if (data.status === 'error') {
-              clearInterval(iv);
-              statusEl.innerHTML = `❌ Error: ${data.result}`;
-            }
-          }, 3000);
-        }
-
-        // ── Approval Queue ─────────────────────────────────────────────────────
-        async function loadApprovalQueue() {
-          const r     = await fetch(API_PREFIX + '/api/ceo/queue');
-          const tasks = await r.json();
-          const el    = document.getElementById('approval-queue');
-          const countEl = document.getElementById('queue-count');
-
-          countEl.textContent = tasks.length ? `${tasks.length} pending` : '';
-
-          if (!tasks.length) {
-            el.innerHTML = '<div style="color:var(--muted);font-size:.8rem;padding:4px 0;">✅ No pending approvals</div>';
-            return;
-          }
-
-          const actionIcons = {
-            send_mass_email: '📧', publish_public_content: '📝',
-            post_social_media: '📱', press_outreach: '📰',
-            mint_nft: '🔷', spend_money: '💰',
-            bulk_crm_update: '👥', orchard_submission: '🎵',
-            spotify_playlist_pitch: '🎧',
-          };
-
-          el.innerHTML = tasks.map(t => `
-            <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;
-                        padding:12px 14px;margin-bottom:8px;
-                        display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:start;">
-              <div>
-                <div style="font-size:.76rem;font-weight:700;color:var(--white);margin-bottom:3px;">
-                  ${actionIcons[t.action] || '⚡'} [${t.agent}] ${t.action.replaceAll('_',' ').toUpperCase()}
-                </div>
-                <div style="font-size:.7rem;color:var(--muted);font-family:var(--mono);
-                            white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px;">
-                  ${JSON.stringify(t.payload).slice(0, 140)}${JSON.stringify(t.payload).length > 140 ? '…' : ''}
-                </div>
-                <div style="font-size:.64rem;color:#444;margin-top:4px;">${t.queued_at}</div>
-              </div>
-              <button onclick="actionApproval('${t.task_id}', true)"
-                style="background:rgba(0,201,122,.08);border:1px solid var(--green);
-                       border-radius:6px;color:var(--green);padding:7px 16px;
-                       font-size:.76rem;font-weight:700;cursor:pointer;white-space:nowrap;">
-                ✓ Approve
-              </button>
-              <button onclick="actionApproval('${t.task_id}', false)"
-                style="background:rgba(232,69,69,.08);border:1px solid var(--red);
-                       border-radius:6px;color:var(--red);padding:7px 16px;
-                       font-size:.76rem;font-weight:700;cursor:pointer;white-space:nowrap;">
-                ✗ Reject
-              </button>
-            </div>`).join('');
-        }
-
-        async function actionApproval(taskId, approved) {
-          await fetch(API_PREFIX + '/api/ceo/approve/' + taskId, {
-            method:  'POST',
-            headers: {'Content-Type': 'application/json'},
-            body:    JSON.stringify({ approved, note: '' })
-          });
-          toast(approved ? '✅ Approved — executing via n8n' : '✗ Rejected', approved ? 'ok' : 'err');
-          setTimeout(loadApprovalQueue, 500);
-        }
-
-        // Auto-load and auto-refresh
-        document.addEventListener('DOMContentLoaded', () => {
-          loadApprovalQueue();
-          setInterval(loadApprovalQueue, 30000);
-        });
-          </script>
         </div>
 
         <!-- VIEW: Artist -->
@@ -2910,6 +2800,115 @@
         if (!h) h = `<div class="lm-card"><div class="lm-text">Result received — click Show JSON to view the full output.</div></div>`;
         return h;
       }
+
+    // ── Mission Brief ──────────────────────────────────────────────────────
+    async function fireMission() {
+      const mission  = document.getElementById('mission-input').value.trim();
+      const slug     = document.getElementById('mission-slug').value.trim() || STATE.slug;
+      const statusEl = document.getElementById('mission-status');
+
+      if (!mission) { toast('Enter a mission brief', 'err'); return; }
+      if (!slug)    { toast('Select an artist or enter a slug', 'err'); return; }
+
+      statusEl.innerHTML = '🚀 <span style="color:var(--cyan)">Launching CrewAI crew...</span>';
+
+      const resp = await fetch(API_PREFIX + '/api/mission', {
+        method:  'POST',
+        headers: {'Content-Type': 'application/json'},
+        body:    JSON.stringify({ artist_slug: slug, mission, release_title: mission }),
+      });
+      const data = await resp.json();
+
+      if (data.job_id) {
+        pollMissionStatus(data.job_id, statusEl);
+      } else {
+        statusEl.textContent = '❌ Launch failed: ' + JSON.stringify(data);
+      }
+    }
+
+    function pollMissionStatus(jobId, statusEl) {
+      statusEl.innerHTML = `⏳ Job: <span style="color:var(--cyan);font-family:var(--mono)">${jobId}</span> — running...`;
+      const iv = setInterval(async () => {
+        const r    = await fetch(API_PREFIX + '/api/mission/' + jobId);
+        const data = await r.json();
+        if (data.status === 'complete') {
+          clearInterval(iv);
+          statusEl.innerHTML = `✅ Mission complete — <span style="color:var(--yellow)">check Approval Queue for tasks needing sign-off</span>`;
+          loadApprovalQueue();
+          toast('Mission complete!', 'ok');
+        } else if (data.status === 'error') {
+          clearInterval(iv);
+          statusEl.innerHTML = `❌ Error: ${data.result}`;
+        }
+      }, 3000);
+    }
+
+    // ── Approval Queue ─────────────────────────────────────────────────────
+    async function loadApprovalQueue() {
+      const r       = await fetch(API_PREFIX + '/api/ceo/queue');
+      const tasks   = await r.json();
+      const el      = document.getElementById('approval-queue');
+      const countEl = document.getElementById('queue-count');
+
+      countEl.textContent = tasks.length ? `${tasks.length} pending` : '';
+
+      if (!tasks.length) {
+        el.innerHTML = '<div style="color:var(--muted);font-size:.8rem;padding:4px 0;">✅ No pending approvals</div>';
+        return;
+      }
+
+      const actionIcons = {
+        send_mass_email: '📧', publish_public_content: '📝',
+        post_social_media: '📱', press_outreach: '📰',
+        mint_nft: '🔷', spend_money: '💰',
+        bulk_crm_update: '👥', orchard_submission: '🎵',
+        spotify_playlist_pitch: '🎧',
+      };
+
+      el.innerHTML = tasks.map(t => `
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;
+                    padding:12px 14px;margin-bottom:8px;
+                    display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:start;">
+          <div>
+            <div style="font-size:.76rem;font-weight:700;color:var(--white);margin-bottom:3px;">
+              ${actionIcons[t.action] || '⚡'} [${t.agent}] ${t.action.replaceAll('_',' ').toUpperCase()}
+            </div>
+            <div style="font-size:.7rem;color:var(--muted);font-family:var(--mono);
+                        white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px;">
+              ${JSON.stringify(t.payload).slice(0, 140)}${JSON.stringify(t.payload).length > 140 ? '…' : ''}
+            </div>
+            <div style="font-size:.64rem;color:#444;margin-top:4px;">${t.queued_at}</div>
+          </div>
+          <button onclick="actionApproval('${t.task_id}', true)"
+            style="background:rgba(0,201,122,.08);border:1px solid var(--green);
+                   border-radius:6px;color:var(--green);padding:7px 16px;
+                   font-size:.76rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+            ✓ Approve
+          </button>
+          <button onclick="actionApproval('${t.task_id}', false)"
+            style="background:rgba(232,69,69,.08);border:1px solid var(--red);
+                   border-radius:6px;color:var(--red);padding:7px 16px;
+                   font-size:.76rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+            ✗ Reject
+          </button>
+        </div>`).join('');
+    }
+
+    async function actionApproval(taskId, approved) {
+      await fetch(API_PREFIX + '/api/ceo/approve/' + taskId, {
+        method:  'POST',
+        headers: {'Content-Type': 'application/json'},
+        body:    JSON.stringify({ approved, note: '' }),
+      });
+      toast(approved ? '✅ Approved — executing via n8n' : '✗ Rejected', approved ? 'ok' : 'err');
+      setTimeout(loadApprovalQueue, 500);
+    }
+
+    // Auto-load and auto-refresh approval queue
+    document.addEventListener('DOMContentLoaded', () => {
+      loadApprovalQueue();
+      setInterval(loadApprovalQueue, 30000);
+    });
   </script>
 </body>
 
