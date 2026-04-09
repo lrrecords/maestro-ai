@@ -426,38 +426,37 @@ def get_bridge_history(slug):
     return history
 
 def build_dashboard_rows():
-    rows = []
-    slugs = get_artist_slugs()
-    for slug in slugs:
-        artist = load_artist(slug)
-        if not artist: continue
-        name    = artist.get("artist_info", {}).get("name", slug)
-        genre   = artist.get("musical_identity", {}).get("primary_genre", "—")
-        release = artist.get("upcoming_release", {}).get("title", "—")
-
-        bridge   = get_latest_output(slug, "bridge")
-        score    = parse_bridge_score(bridge)
-        trend    = parse_bridge_trend(bridge)
-        last_run = "Never"
-
-        if BRIDGE_DIR.exists():
-            files = sorted(BRIDGE_DIR.glob(f"{slug}_*.json"), reverse=True)
+        rows = []
+        for slug in get_artist_slugs():
+            artist = load_artist(slug)
+            if not artist:
+                continue
+            name = artist.get("artist_info", {}).get("name", slug)
+            genre = artist.get("artist_info", {}).get("genre", "—")
+            release = artist.get("upcoming_release", {}).get("title", "—")
+            bridge = get_latest_output(slug, "bridge")
+            score = parse_bridge_score(bridge)
+            trend = parse_bridge_trend(bridge)
+            status = score_to_status(score)
+            # Find last_run from bridge files
+            last_run = "—"
+            agent_dir = DATA / "bridge"
+            files = sorted(agent_dir.glob(f"{slug}_*.json"), reverse=True)
             if files:
                 last_run = parse_file_timestamp(slug, files[0])
-
-        rows.append({
-            "slug":     slug,
-            "name":     name,
-            "genre":    genre,
-            "release":  release,
-            "score":    score,
-            "trend":    trend,
-            "status":   score_to_status(score),
-            "last_run": last_run,
-        })
-    order = {"critical": 0, "monitor": 1, "good": 2, "no-data": 3}
-    rows.sort(key=lambda r: (order.get(r["status"], 9), -(r["score"] or -1)))
-    return rows
+            rows.append({
+                "slug": slug,
+                "name": name,
+                "genre": genre,
+                "release": release,
+                "score": score,
+                "trend": trend,
+                "status": status,
+                "last_run": last_run,
+            })
+        order = {"critical": 0, "monitor": 1, "good": 2, "no-data": 3}
+        rows.sort(key=lambda r: (order.get(r["status"], 9), -(r["score"] or -1 if r["score"] is not None else -1)))
+        return rows
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -490,10 +489,11 @@ def api_mission():
 
     job_id = f"mission_{slug}_{_now.strftime('%Y%m%d_%H%M%S')}"
     _crew_jobs[job_id] = {
-        "job_id": job_id, "status": "running", "slug": slug,
-        "mission": mission, "release_title": release_title,
-        "result": None, "created_at": now, "updated_at": now, "finished_at": None,
-    }
+    "job_id": job_id, "status": "running", "slug": slug,
+    "mission": mission, "release_title": release_title,
+    "result": None, "created_at": now, "updated_at": now, "finished_at": None,
+    "cancelled": False,  # NEW
+}
 
     # Send Telegram notification for Fire Mission
     try:
@@ -503,13 +503,41 @@ def api_mission():
 
     def run_crew():
         try:
-            crew   = build_release_campaign_crew(slug, release_title or mission)
-            result = crew.kickoff()
+            # Check for cancellation before starting
+            if _crew_jobs[job_id].get("cancelled"):
+                _crew_jobs[job_id]["status"] = "cancelled"
+                _crew_jobs[job_id]["result"] = "Mission cancelled by user."
+                _crew_jobs[job_id]["finished_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+                _crew_jobs[job_id]["updated_at"] = _crew_jobs[job_id]["finished_at"]
+                return
+
+            crew = build_release_campaign_crew(slug, release_title or mission)
+            results = []
+            for task in crew.tasks:
+                if _crew_jobs[job_id].get("cancelled"):
+                    _crew_jobs[job_id]["status"] = "cancelled"
+                    _crew_jobs[job_id]["result"] = "Mission cancelled by user."
+                    _crew_jobs[job_id]["finished_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+                    _crew_jobs[job_id]["updated_at"] = _crew_jobs[job_id]["finished_at"]
+                    return
+                try:
+                    print("DEBUG Task methods:", dir(task))
+                    # Temporarily skip execution to inspect available methods
+                    results.append({ "task": str(task), "result": "DEBUG: See terminal for available methods." })
+                    _crew_jobs[job_id]["result"] = results
+                    _crew_jobs[job_id]["updated_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+                except Exception as e:
+                    _crew_jobs[job_id]["status"] = "error"
+                    _crew_jobs[job_id]["result"] = f"Error in task {task}: {e}"
+                    _crew_jobs[job_id]["finished_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+                    _crew_jobs[job_id]["updated_at"] = _crew_jobs[job_id]["finished_at"]
+                    return
+
             done_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
-            _crew_jobs[job_id]["status"]      = "complete"
-            _crew_jobs[job_id]["result"]      = str(result)
+            _crew_jobs[job_id]["status"] = "complete"
+            _crew_jobs[job_id]["result"] = results
             _crew_jobs[job_id]["finished_at"] = done_at
-            _crew_jobs[job_id]["updated_at"]  = done_at
+            _crew_jobs[job_id]["updated_at"] = done_at
         except Exception as e:
             done_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
             _crew_jobs[job_id]["status"]      = "error"
@@ -549,6 +577,7 @@ def api_mission_cancel(job_id):
     job["status"]      = "cancelled"
     job["finished_at"] = now
     job["updated_at"]  = now
+    job["cancelled"] = True  # NEW
     return jsonify({"ok": True, "job": job})
 
 
