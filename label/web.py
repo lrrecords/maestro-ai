@@ -11,6 +11,7 @@ import os
 import requests
 from pathlib import Path
 from crews.base_crew import get_pending_approvals, approve_task
+from core.telegram_utils import send_telegram_message
 
 label_bp = Blueprint("label", __name__)
 
@@ -481,16 +482,24 @@ def api_mission():
     if not slug:
         return jsonify({"error": "artist_slug required"}), 400
 
+
     from crews.label_crew import build_release_campaign_crew
 
     _now   = datetime.datetime.now(datetime.timezone.utc)
     now    = _now.isoformat()
+
     job_id = f"mission_{slug}_{_now.strftime('%Y%m%d_%H%M%S')}"
     _crew_jobs[job_id] = {
         "job_id": job_id, "status": "running", "slug": slug,
         "mission": mission, "release_title": release_title,
         "result": None, "created_at": now, "updated_at": now, "finished_at": None,
     }
+
+    # Send Telegram notification for Fire Mission
+    try:
+        send_telegram_message(f"🚀 CEO Fire Mission launched for {slug}!\nMission: {mission}\nRelease: {release_title}")
+    except Exception as e:
+        print(f"[Telegram Notify Error] {e}")
 
     def run_crew():
         try:
