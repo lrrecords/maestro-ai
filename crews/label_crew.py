@@ -230,10 +230,13 @@ def build_release_campaign_crew(artist_slug: str, release_title: str) -> Crew:
         agent=vinyl_agent,
     )
 
+    from datetime import date
+    today = date.today().isoformat()
     task_content = Task(
         description=(
             f"Using the release checklist context, build a 14-day content calendar "
             f"for '{artist_slug}' releasing '{release_title}'. "
+            f"Start the calendar from today ({today}) and ensure all dates are in the next 2 weeks (no past dates). "
             f"Plan posts for Instagram, TikTok, and X. "
             f"Queue ALL posts for CEO approval — do not schedule directly. "
             f"Also draft one email campaign announcement brief and queue for CEO approval."

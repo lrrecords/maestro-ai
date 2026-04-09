@@ -1,0 +1,113 @@
+{
+  "artist": "King Juno",
+  "project": "Satellites & Side Streets",
+  "project_type": "Release",
+  "release_date": "TBD",
+  "generated": "2026-04-09",
+  "phases": [
+    {
+      "phase": "Pre-Production",
+      "timeline": "8 weeks before release date",
+      "tasks": [
+        {
+          "task": "Identify and finalize track list for the single",
+          "priority": "HIGH",
+          "status": "PENDING",
+          "notes": "Must happen 4 months in advance to align with distribution schedule"
+        },
+        {
+          "task": "Finalize artwork, including cover art, lyric sheets, and album concept design",
+          "priority": "MEDIUM",
+          "status": "PENDING",
+          "notes": "Artwork needs to be approved by label and distributors 3 weeks before release date"
+        }
+      ]
+    },
+    {
+      "phase": "Distribution & Metadata",
+      "timeline": "4 weeks before release date",
+      "tasks": [
+        {
+          "task": "Complete digital metadata for The Orchard, including song titles, artist names, and track IDs",
+          "priority": "HIGH",
+          "status": "PENDING",
+          "notes": "Needs to be completed 1 month in advance of release date"
+        },
+        {
+          "task": "Submit single artwork and metadata files to The Orchard for digital distribution",
+          "priority": "MEDIUM",
+          "status": "PENDING",
+          "notes": "Artwork approval process can take up to 2 weeks, so must be submitted early"
+        }
+      ]
+    },
+    {
+      "phase": "Marketing & Promo",
+      "timeline": "3 weeks before release date",
+      "tasks": [
+        {
+          "task": "Develop and distribute pre-release singles for radio airplay and playlist submissions",
+          "priority": "HIGH",
+          "status": "PENDING",
+          "notes": "Must be submitted 1 month in advance of release date"
+        },
+        {
+          "task": "Create and execute a social media campaign with artist interviews, behind-the-scenes content, and exclusive sneak peeks",
+          "priority": "MEDIUM",
+          "status": "IN_PROGRESS",
+          "notes": "Focus on generating buzz among the target audience for maximum impact"
+        }
+      ]
+    },
+    {
+      "phase": "Release Day",
+      "timeline": "2 weeks before release date (day of release)",
+      "tasks": [
+        {
+          "task": "Coordinate with The Orchard for final distribution setup and activation",
+          "priority": "MEDIUM",
+          "status": "IN_PROGRESS",
+          "notes": "Ensure all digital platforms are live and ready to go by the day of release"
+        },
+        {
+          "task": "Prepare promotional materials such as posters, flyers, and social media graphics for physical releases (if applicable)",
+          "priority": "LOW",
+          "status": "PENDING",
+          "notes": "Not required if only digital distribution is planned"
+        }
+      ]
+    },
+    {
+      "phase": "Post-Release",
+      "timeline": "1 week after release date",
+      "tasks": [
+        {
+          "task": "Analyze pre-release metrics and adjust marketing strategy for future releases (if applicable)",
+          "priority": "LOW",
+          "status": "PENDING",
+          "notes": "Based on data from the current release to optimize upcoming strategies"
+        },
+        {
+          "task": "Send out post-release surveys to collect feedback from listeners/patrons",
+          "priority": "MEDIUM",
+          "status": "IN_PROGRESS",
+          "notes": "Helps gauge listener satisfaction and identify areas for improvement in future releases"
+        }
+      ]
+    }
+  ],
+  "critical_path": [
+    "Finalize track list and artwork by the end of Phase Pre-Production"
+  ],
+  "immediate_actions": [
+    "Submit all digital metadata to The Orchard no later than 4 weeks before release date"
+  ],
+  "blockers": [
+    "No known blockers at this time"
+  ],
+  "recommendations": [
+    "Plan press outreach 2 weeks before release.",
+    "Engage fans with exclusive behind-the-scenes content.",
+    "Double-check distributor deadline alignment."
+  ]
+}

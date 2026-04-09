@@ -1,5 +1,23 @@
 # 🎼 MAESTRO AI — Release History
 
+## v1.4.0 (April 9, 2026) — CrewAI, CEO Command Centre, and Modular Workflow Release
+
+**Highlights:**
+- **CrewAI Integration:** Modular, role-based agent orchestration for Label, Studio, Live, and Platform Ops. Easily extend or customize agents and workflows per user or label.
+- **CEO Command Centre:** One-click mission orchestration for campaigns, releases, emergencies, and more. Handles approvals, cancellations, and multi-step workflows.
+- **Stepwise Mission Runner:** Improved backend logic for instant cancellation and per-task execution, with robust error handling.
+- **Approval Queue:** All protected actions (mass email, public posts, spend, etc.) routed through a CEO approval queue, with dashboard management.
+- **Run Agents & Full Pipeline:** Directly run any agent or the full pipeline for granular control and testing.
+- **n8n & API Automation:** Seamless integration with n8n and external APIs for notifications, CRM, distribution, and more.
+- **Modernized UI:** “Nice card” output, agent icons, live streaming, and improved navigation.
+- **Documentation Overhaul:** Updated README.md, IMPLEMENTATION_GUIDE.md, and mission briefs for onboarding and demo use.
+- **Artist Onboarding:** Add artist JSON files to `data/artists/` for instant dashboard integration.
+
+**Migration:**
+- No database migration required.
+- Update your repo, install new dependencies, and review `.env.example` for new settings.
+
+---
 ## What is MAESTRO AI?
 
 MAESTRO AI is an AI-powered, multi-agent business operating system designed for independent labels, studios, and live music organizations. The platform provides a unified web dashboard, organizing core operations into four domains (Label, Studio, Live, Platform Ops) each with pluggable agents for end-to-end workflow automation.
