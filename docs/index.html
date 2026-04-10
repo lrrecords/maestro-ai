@@ -168,9 +168,9 @@
       padding: 14px 0;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
+          <div class="hero-bg" aria-hidden="true"></div>
+          <div class="container hero-inner">
+            <div>
       gap: 10px;
       min-width: 160px;
     }
@@ -357,13 +357,17 @@
     /* HERO */
     .hero-bg {
       position: absolute;
-      inset: -40px -40px -40px -40px;
+      inset: 0;
       pointer-events: none;
       z-index: 0;
       opacity: 1;
-      min-height: 300px;
+      min-height: 100%;
       width: 100%;
-      background: url('assets/waveform-bg.jpg') center/cover no-repeat;
+      height: 100%;
+      background: url('assets/waveform-bg.jpg') center/contain no-repeat;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
       filter: none;
     }
     }
