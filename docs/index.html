@@ -54,32 +54,19 @@
       overflow-x: hidden;
     }
 
+
     .hero-bg {
       position: absolute;
       inset: -40px -40px -40px -40px;
       pointer-events: none;
       z-index: 0;
       opacity: 1;
-      background:
-        url('assets/waveform-bg.jpg') center bottom/cover no-repeat,
-        radial-gradient(circle at 15% 30%, rgba(0, 229, 176, .10), rgba(0, 229, 176, 0) 55%),
-        radial-gradient(circle at 85% 15%, rgba(0, 200, 212, .08), rgba(0, 200, 212, 0) 55%),
-        repeating-linear-gradient(90deg,
-          rgba(0, 229, 176, .03) 0px,
-          rgba(0, 229, 176, .03) 2px,
-          transparent 2px,
-          transparent 14px);
-      filter: blur(0.2px);
+      background: url('assets/waveform-bg.jpg') center center/cover no-repeat !important;
+      filter: none;
     }
 
     .hero-bg::after {
-      content: "";
-      position: absolute;
-      left: 0; right: 0; top: 0; bottom: 0;
-      /* Make overlay more transparent for image visibility */
-      background: linear-gradient(180deg, rgba(13,13,13,0.32) 0%, rgba(13,13,13,0.65) 100%);
-      pointer-events: none;
-      z-index: 1;
+      display: none !important;
     }
     
 
