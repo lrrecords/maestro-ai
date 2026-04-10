@@ -59,36 +59,24 @@
       inset: -40px -40px -40px -40px;
       pointer-events: none;
       z-index: 0;
-      opacity: .22;
+      opacity: 1;
       background:
-        radial-gradient(circle at 15% 30%, rgba(0, 229, 176, .18), rgba(0, 229, 176, 0) 55%),
-        radial-gradient(circle at 85% 15%, rgba(0, 200, 212, .14), rgba(0, 200, 212, 0) 55%),
+        url('assets/waveform-bg.jpg') center bottom/cover no-repeat,
+        radial-gradient(circle at 15% 30%, rgba(0, 229, 176, .10), rgba(0, 229, 176, 0) 55%),
+        radial-gradient(circle at 85% 15%, rgba(0, 200, 212, .08), rgba(0, 200, 212, 0) 55%),
         repeating-linear-gradient(90deg,
-          rgba(0, 229, 176, .06) 0px,
-          rgba(0, 229, 176, .06) 2px,
+          rgba(0, 229, 176, .03) 0px,
+          rgba(0, 229, 176, .03) 2px,
           transparent 2px,
           transparent 14px);
-      filter: blur(.2px);
-      /* Add waveform background */
-      background-image:
-        url('assets/waveform.svg'),
-        radial-gradient(circle at 15% 30%, rgba(0, 229, 176, .18), rgba(0, 229, 176, 0) 55%),
-        radial-gradient(circle at 85% 15%, rgba(0, 200, 212, .14), rgba(0, 200, 212, 0) 55%),
-        repeating-linear-gradient(90deg,
-          rgba(0, 229, 176, .06) 0px,
-          rgba(0, 229, 176, .06) 2px,
-          transparent 2px,
-          transparent 14px);
-      background-repeat: no-repeat;
-      background-size: 100% 180px, cover;
-      background-position: bottom center, center;
+      filter: blur(0.2px);
     }
 
     .hero-bg::after {
       content: "";
       position: absolute;
-      left: 0; right: 0; bottom: 0; height: 180px;
-      background: linear-gradient(180deg, rgba(13,13,13,0.0) 0%, rgba(13,13,13,0.85) 100%);
+      left: 0; right: 0; top: 0; bottom: 0;
+      background: linear-gradient(180deg, rgba(13,13,13,0.70) 0%, rgba(13,13,13,0.95) 100%);
       pointer-events: none;
       z-index: 1;
     }
