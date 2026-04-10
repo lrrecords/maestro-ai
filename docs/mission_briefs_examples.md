@@ -21,7 +21,7 @@ Use these for fast Fire Mission testing or when you need a simple, valid brief:
 
 ### Minimal 2
 **Mission:**
-> Quick check: Generate checklist for artist Atlas.
+"Build a 14-day content calendar for [artist] starting from today ([current_date], YYYY-MM-DD). All dates must be in the next 2 weeks."
 
 ---
 

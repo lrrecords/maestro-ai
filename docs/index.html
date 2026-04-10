@@ -69,6 +69,29 @@
           transparent 2px,
           transparent 14px);
       filter: blur(.2px);
+      /* Add waveform background */
+      background-image:
+        url('assets/waveform.svg'),
+        radial-gradient(circle at 15% 30%, rgba(0, 229, 176, .18), rgba(0, 229, 176, 0) 55%),
+        radial-gradient(circle at 85% 15%, rgba(0, 200, 212, .14), rgba(0, 200, 212, 0) 55%),
+        repeating-linear-gradient(90deg,
+          rgba(0, 229, 176, .06) 0px,
+          rgba(0, 229, 176, .06) 2px,
+          transparent 2px,
+          transparent 14px);
+      background-repeat: no-repeat;
+      background-size: 100% 180px, cover;
+      background-position: bottom center, center;
+    }
+
+    .hero-bg::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0; height: 180px;
+      background: linear-gradient(180deg, rgba(13,13,13,0.0) 0%, rgba(13,13,13,0.85) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
     }
 
     .hero-inner {
@@ -1599,6 +1622,35 @@
             <p>Review structured outputs, apply changes explicitly, and build repeatable workflows across
               departments.</p>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONS & DASHBOARDS SECTION -->
+  <section aria-label="Integrations & Dashboards">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Integrations & Dashboards</div>
+          <h2>Connect, automate, and gain insight</h2>
+          <p class="section-sub">
+            Maestro AI now features a <strong>CEO Dashboard</strong> for high-level oversight, deep <strong>crewAI</strong> agent orchestration, and seamless integrations with <strong>n8n</strong> and external APIs. Build custom automations, sync with your favorite tools, and visualize your business in real time.
+          </p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>CEO Dashboard</h3>
+          <p>Monitor label, studio, and live ops at a glance. Track KPIs, agent activity, and operational health in one place.</p>
+        </div>
+        <div class="card">
+          <h3>crewAI Orchestration</h3>
+          <p>Coordinate multiple agents for complex workflows—assign, delegate, and review outputs across departments.</p>
+        </div>
+        <div class="card">
+          <h3>n8n & API Integrations</h3>
+          <p>Automate tasks, connect CRMs, sync calendars, and trigger actions using n8n or direct API hooks—no code required.</p>
         </div>
       </div>
     </div>

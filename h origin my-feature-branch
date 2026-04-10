@@ -1,0 +1,97 @@
+[33m6f527e3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmy-feature-branch[m[33m, [m[1;31morigin/my-feature-branch[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m v1.4.0: CrewAI, CEO Command Centre, modular workflows, UI & docs overhaul
+[33m5f16c47[m Add Telegram utils, update mission logic, and prep for UI state merge
+[33mf7777f8[m Merge pull request #17 from lrrecords/crewai-n8n-telegram
+[33mcaa3e22[m[33m ([m[1;31morigin/crewai-n8n-telegram[m[33m)[m Merge pull request #16 from lrrecords/copilot/add-recent-missions-ui
+[33m7eb70e1[m Configure CrewAI for Ollama; fix LLM error messages; fix utcnow deprecation in mission routes
+[33mee8720a[m Add Recent Missions UI panel and supporting backend routes
+[33mc5e7276[m Initial plan
+[33m6583438[m[33m ([m[1;32mcrewai-n8n-telegram[m[33m)[m docs: link implementation guide from README
+[33m6bbd343[m docs: add implementation guide
+[33me7d2b15[m[33m ([m[1;31morigin/fix-mission-ui-state[m[33m, [m[1;32mfix-mission-ui-state[m[33m)[m Merge pull request #15 from lrrecords/copilot/fix-integration-issues
+[33m6cd730f[m[33m ([m[1;31morigin/copilot/fix-integration-issues[m[33m)[m Fix CrewAI route placement and HTML/JS injection issues
+[33ma7c2c2a[m Initial plan
+[33m17551d7[m WIP: CrewAI + n8n integration (needs route + template fixes)
+[33ma6063d6[m[33m ([m[1;32mcopilot/worktree-2026-04-04T09-48-07[m[33m, [m[1;32mcopilot/worktree-2026-04-04T09-16-45[m[33m)[m docs: fix README screenshot filenames
+[33m1eac5f8[m Merge pull request #14 from lrrecords/docs/readme-screenshots
+[33m5821261[m[33m ([m[1;31morigin/docs/readme-screenshots[m[33m)[m docs: add updated screenshots to README
+[33md881abb[m Merge pull request #13 from lrrecords/fix/label-stream-ui
+[33mec9bd89[m[33m ([m[1;31morigin/fix/label-stream-ui[m[33m)[m Fix LABEL stream handling and results modal
+[33m501d8d4[m Merge pull request #12 from lrrecords/copilot/implement-ui-consistency-improvements
+[33ma622ea3[m feat: UI consistency improvements — SVG icons across dashboards + LABEL result modal
+[33mf68db8b[m feat: add inline SVG icons and LABEL result modal
+[33mfde3748[m Initial plan
+[33m4042379[m[33m ([m[1;33mtag: [m[1;33mv0.1.0-alpha[m[33m)[m Merge pull request #11 from lrrecords/ui/landing-page-tweaks
+[33m2d79302[m[33m ([m[1;31morigin/ui/landing-page-tweaks[m[33m, [m[1;32mui/landing-page-tweaks[m[33m)[m UI: landing logo + hero spacing; docs: list all agents
+[33m0117f67[m Add files via upload
+[33m889717a[m DOCS: polish README; improve dashboard auth UX
+[33mfa58d83[m DOCS: fix README merge conflict + complete SECURITY policy
+[33m46324fc[m CHORE: don't crash when MAESTRO_TOKEN missing; support locked/dev mode
+[33mf7c769e[m LIVE: BOOK uses Ollama + render next actions/risks
+[33mb9ce1f1[m CHORE: ignore local screenshot at repo root
+[33mbc10b6f[m CHORE: ignore local docs screenshot
+[33m7079d84[m STUDIO: refactor agents, remove llm module, add ask_ai
+[33m430a33e[m LIVE: upgrade agent prompt/LLM output + contract logic
+[33me694406[m Merge pull request #9 from lrrecords/copilot/enhance-result-card-view
+[33m5bfaa73[m feat: add BOOK agent card view to LIVE department modal results
+[33m62345cb[m Initial plan
+[33ma443481[m Team handoff: docs overhaul, new logo, env/testing, dashboard/API fixes
+[33m75841ac[m[33m ([m[1;33mtag: [m[1;33mv0.9.0[m[33m)[m v0.9.0: Robust LLM agent streaming, output validation & persistence
+[33mf42449b[m Merge branch 'main' of https://github.com/lrrecords/maestro-ai
+[33mf598778[m Update docs with current screenshots and project state
+[33m71d4db2[m Update README.md with new content
+[33m9aae662[m Improve label parsing and update homepage template
+[33m3c02127[m Refactor: Modularize LABEL, fix API prefixes, restore Label dashboard
+[33md865983[m Chore: Remove legacy scripts/web_app.py after blueprint migration
+[33m77a1630[m Fix JSON syntax errors in artist files and restore dashboard data loading
+[33m1ac6058[m Fix artist data loading and implement /label blueprint prefix
+[33mac1029a[m[33m ([m[1;33mtag: [m[1;33mv0.7.0[m[33m)[m Launch LIVE and STUDIO departments; fix agent registry and base agent inheritance
+[33m7d0f6ff[m Merge pull request #5 from lrrecords/copilot/update-readme-add-replace-screenshots
+[33mb4a91e8[m Merge pull request #8 from lrrecords/dashboard/unified-departments
+[33mcc705f6[m Clarify unified dashboard run command
+[33mfe6dc3b[m Mount MAESTRO blueprint and support API_PREFIX in frontend
+[33m3ef481b[m Add unified dashboard entrypoint and mount MAESTRO under /maestro
+[33m0c445d4[m Merge pull request #7 from lrrecords/fix/logout-link
+[33m3510b67[m[33m ([m[1;32mfix/logout-link[m[33m)[m Fix logout link template syntax
+[33m70a4724[m Refactor LLM client into core with compatibility shims (#6)
+[33m6922a32[m[33m ([m[1;31morigin/copilot/update-readme-add-replace-screenshots[m[33m)[m Update README screenshots section and add 5 new placeholder image files
+[33mf48b8d3[m Initial plan
+[33m5d98c0a[m chore: ignore generated labelgrid metrics
+[33m6c3ea52[m chore: ignore local-only dev folders
+[33mf550242[m Merge pull request #4 from lrrecords/demo-roster
+[33mb95e908[m Merge pull request #3 from lrrecords/copilot/fix-ollama-request-timeout
+[33mcff9282[m fix: update logout route for Auth0
+[33m9469101[m fix: update logout route for Auth0
+[33m9181da1[m docs: add screenshots to README
+[33m077b134[m docs: add dashboard screenshots
+[33m8cf56d8[m[33m ([m[1;31morigin/copilot/fix-ollama-request-timeout[m[33m)[m Add unit tests for Ollama timeout fix and improve multiline error display in maestro.py
+[33m1192737[m Initial plan
+[33m44e003b[m Merge pull request #2 from lrrecords/copilot/update-ollama-timeout-config
+[33m4bb0524[m Make Ollama HTTP timeout configurable via OLLAMA_TIMEOUT_SECONDS (default 900s)
+[33mc0d123c[m Initial plan
+[33m9321438[m Merge pull request #1 from lrrecords/copilot/add-ollama-llm-provider
+[33ma5f960b[m Address code review: improve docstring and .env.example comments
+[33m511825c[m Add Ollama as first-class LLM provider via llm/client.py abstraction
+[33m17b0ffa[m Initial plan
+[33m057945c[m Prepare for open source: update README, add demo artist, clean project structure
+[33mc027849[m Delete MAESTRO_HANDOVER.pdf
+[33m97f55a3[m Delete MAESTRO_Full_context_HANDOVER0603.html
+[33m5d66457[m Delete MAESTRO_Full_context_HANDOVER.txt
+[33md5dd0e7[m Delete MAESTRO_Full_context_HANDOVER.pdf
+[33mbf5543a[m Delete MAESTRO_AI_Handover_Report.html
+[33mfdfbc6d[m Delete MAESTRO_HANDOVER.txt
+[33m60f8ce4[m Delete HANDOVER.md
+[33m52cca6a[m Delete MAESTRO AI — Handover — March 2026.pdf
+[33mbd48990[m Add HTML handover report
+[33m4290067[m Add README
+[33ma93a44e[m Full system operational. Dashboard, CHECKIN, SAGE, BRIDGE integrated.
+[33md550047[m add artist data; ignore other data files
+[33ma407e52[m chore: add gitignore, lock out data/ and .env
+[33m15e23ff[m fix: remove sensitive data from tracking
+[33mfb883fd[m feat: MAESTRO full run with VINYL, ECHO, ATLAS
+[33m87f81b8[m MVP checkpoint: Artist check-in, response tracker, command center working
+[33m5c8d85d[m Add artist check-in workflow, response tracker, and command center
+[33m169a130[m Add project structure documentation
+[33m4fbb172[m Add folder structure with README placeholders
+[33m034fba2[m Merge branch 'main' of https://github.com/lrrecords/maestro-ai :wq
+[33m2c2bed6[m Initial commit - MAESTRO AI v0.5 with 6-agent architecture
+[33m885219b[m Initial commit
