@@ -76,11 +76,12 @@
       content: "";
       position: absolute;
       left: 0; right: 0; top: 0; bottom: 0;
-      background: linear-gradient(180deg, rgba(13,13,13,0.70) 0%, rgba(13,13,13,0.95) 100%);
+      /* Make overlay more transparent for image visibility */
+      background: linear-gradient(180deg, rgba(13,13,13,0.32) 0%, rgba(13,13,13,0.65) 100%);
       pointer-events: none;
       z-index: 1;
     }
-    }
+    
 
     .hero-inner {
       position: relative;
@@ -102,7 +103,7 @@
         linear-gradient(rgba(0, 229, 176, .04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 229, 176, .04) 1px, transparent 1px);
       background-size: 44px 44px;
-      opacity: .35;
+      opacity: .20;
     }
 
     /* glow */
