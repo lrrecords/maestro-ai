@@ -355,15 +355,17 @@
     }
 
     /* HERO */
-    .hero {
-      padding: 34px 0 28px;
+    .hero-bg {
+      position: absolute;
+      inset: -40px -40px -40px -40px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 1;
+      min-height: 300px;
+      width: 100%;
+      background: url('assets/waveform-bg.jpg') center/cover no-repeat;
+      filter: none;
     }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 22px;
-      align-items: start;
     }
 
     h1 {
