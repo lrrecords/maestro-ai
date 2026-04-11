@@ -66,22 +66,18 @@
       background: transparent;
     }
 
-    /* subtle grid background + dark overlay */
+    /* subtle grid background only */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 0;
-      background:
-        linear-gradient(180deg, rgba(13,13,13,0.82) 0%, rgba(13,13,13,0.82) 100%),
+      background-image:
         linear-gradient(rgba(0, 229, 176, .04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 229, 176, .04) 1px, transparent 1px);
-      background-size:
-        100% 100%,
-        44px 44px,
-        44px 44px;
-      opacity: 1;
+      background-size: 44px 44px;
+      opacity: .20;
     }
 
     /* glow */
