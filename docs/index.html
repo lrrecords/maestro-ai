@@ -8,6 +8,19 @@
   <meta name="description"
     content="Maestro AI is an open-source multi-agent AI business operating system for independent music labels, studios, managers, touring operators, and indie artists." />
   <style>
+            /* FORCE background everywhere, with fallback color and image */
+            html, body {
+              height: 100%;
+              margin: 0;
+              background-color: #0d0d0d !important;
+              background-image: url('assets/waveform-bg.jpg') !important;
+              background-repeat: no-repeat !important;
+              background-position: center center !important;
+              background-attachment: fixed !important;
+              background-size: cover !important;
+              color: var(--text);
+              font-family: var(--sans);
+            }
         /* Ensure all major containers and sections are transparent to show body background */
         section, .container, .wrap {
           background: transparent !important;
