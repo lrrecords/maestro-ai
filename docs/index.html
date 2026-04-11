@@ -45,13 +45,16 @@
 
     body {
       margin: 0;
-      background: var(--bg);
       color: var(--text);
       font-family: var(--sans);
       line-height: 1.45;
       overflow-x: hidden;
-      /* Full-page background image with parallax */
-      background: var(--bg) url('assets/waveform-bg.jpg') center center fixed no-repeat;
+      /* Full-page background image with fallback dark color */
+      background-color: var(--bg);
+      background-image: url('assets/waveform-bg.jpg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
       background-size: cover;
     }
 
