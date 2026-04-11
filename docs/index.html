@@ -66,18 +66,22 @@
       background: transparent;
     }
 
-    /* subtle grid background */
+    /* subtle grid background + dark overlay */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 0;
-      background-image:
+      background:
+        linear-gradient(180deg, rgba(13,13,13,0.82) 0%, rgba(13,13,13,0.82) 100%),
         linear-gradient(rgba(0, 229, 176, .04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 229, 176, .04) 1px, transparent 1px);
-      background-size: 44px 44px;
-      opacity: .20;
+      background-size:
+        100% 100%,
+        44px 44px,
+        44px 44px;
+      opacity: 1;
     }
 
     /* glow */
@@ -337,15 +341,8 @@
     }
 
     /* HERO */
-    /* Remove .hero-bg image, repurpose as overlay */
     .hero-bg {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.65;
-      background: linear-gradient(180deg, rgba(13,13,13,0.82) 0%, rgba(13,13,13,0.82) 100%);
-      /* This overlay sits above the image, below content */
+      display: none;
     }
     }
 
@@ -1430,7 +1427,7 @@
 
       <!-- 2) HERO -->
       <section class="hero" aria-label="Hero">
-        <div class="hero-bg" aria-hidden="true"></div>
+        <!-- Overlay now handled by body::before -->
         <div class="container hero-inner">
           <div>
             <div class="pill" style="margin-bottom:14px;">
