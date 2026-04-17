@@ -12,9 +12,28 @@
 git clone https://github.com/lrrecords/maestro-ai.git
 cd maestro-ai
 python -m venv venv
-# Windows:
-venv\Scripts\activate
-# Mac/Linux:
+# macOS/Linux:
 source venv/bin/activate
+# Windows PowerShell:
+# venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
+```
+
+Windows PowerShell equivalent for the copy step:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Playwright install is optional and only needed for browser automation workflows:
+
+```bash
+playwright install chromium
+```
+
+## Run
+
+```bash
+python dashboard/app.py
+```
