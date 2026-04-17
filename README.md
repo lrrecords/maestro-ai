@@ -37,8 +37,8 @@ Maestro AI is a modular, production-ready platform that brings together speciali
 | Department     | Description / Agents                                                       |
 |----------------|---------------------------------------------------------------------------|
 | **Label**      | Core artist and release operations<br>_Agents:_ ATLAS, VINYL, ECHO, FORGE, BRIDGE, SAGE |
-| **Studio**     | Recording, creative, and production ops<br>_Agents:_ CLIENT, CRAFT, LLM, MIX, RATE, SCHEMA, SESSION, SIGNAL, SOUND |
-| **Live**       | Performance and tour management<br>_Agents:_ BOOK, MERCH, PROMO, RIDER, ROUTE, SCHEMA, SETTLE, TOUR |
+| **Studio**     | Recording, creative, and production ops<br>_Agents:_ CLIENT, CRAFT, ASK_AI, MIX, RATE, SESSION, SIGNAL, SOUND<br>_Schema metadata:_ SCHEMA |
+| **Live**       | Performance and tour management<br>_Agents:_ BOOK, MERCH, PROMO, RIDER, ROUTE, SETTLE, TOUR<br>_Schema metadata:_ SCHEMA |
 | **Platform Ops** | Infra/config, model tuning, system health monitoring                     |
 
 _Switch between departments from the Hub. Each dashboard includes agents and real-time data views._
@@ -86,13 +86,17 @@ maestro-ai/
     python -m venv venv
     source venv/bin/activate        # or venv\Scripts\activate on Windows
     pip install -r requirements.txt
-    playwright install chromium
     ```
+
+    Playwright (`playwright install chromium`) is optional and only needed for browser automation workflows, not for core dashboard runtime.
 
 2. **Configure Environment**
 
-    ```
+    ```bash
+    # macOS/Linux
     cp .env.example .env
+    # Windows PowerShell
+    Copy-Item .env.example .env
     # Edit .env for Anthropic (cloud) or Ollama (fast, local)
     ```
 
@@ -109,6 +113,13 @@ maestro-ai/
 
     ```bash
     python scripts/maestro.py <agent> "Artist Name"
+    ```
+
+5. **Container Run (optional)**
+
+    ```bash
+    docker build -t maestro-ai .
+    docker run --env-file .env -p 8080:8080 maestro-ai
     ```
 
 ---
@@ -210,7 +221,7 @@ This explicit “apply” step keeps the dashboard safe: agent runs can be evalu
 - [ ] Advanced analytics & reporting
 - [ ] Plugin/extension API for custom agents
 - [ ] Improved onboarding & demo mode
-- [ ] Containerized/Docker deployment
+- [x] Containerized/Docker deployment
 - [ ] Multi-label & SaaS onboarding
 
 ---
