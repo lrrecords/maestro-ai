@@ -3,13 +3,27 @@ import json
 import logging
 from flask import Flask, request, jsonify
 import requests as _req
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+load_dotenv()
+
+def _webhook_authorized() -> bool:
+    secret = (os.getenv("WEBHOOK_SECRET") or "").strip()
+    if not secret:
+        return False
+    header_secret = (request.headers.get("X-WEBHOOK-SECRET") or "").strip()
+    bearer = (request.headers.get("Authorization") or "").strip()
+    if bearer.startswith("Bearer ") and bearer[7:].strip() == secret:
+        return True
+    return header_secret == secret
 
 # ── Inbound: EasyFunnels → n8n → Maestro ──────────────────────────────────────
 
 @app.route("/webhook/easyfunnels/crm-update", methods=["POST"])
 def ef_crm_update():
+    if not _webhook_authorized():
+        return jsonify({"error": "Unauthorized webhook"}), 401
     """EasyFunnels CRM contact created or updated → log to BRIDGE."""
     data    = request.json or {}
     contact = data.get("contact", {})
@@ -22,6 +36,8 @@ def ef_crm_update():
 
 @app.route("/webhook/easyfunnels/order", methods=["POST"])
 def ef_store_order():
+    if not _webhook_authorized():
+        return jsonify({"error": "Unauthorized webhook"}), 401
     """EasyFunnels store order received → queue for ATLAS revenue tracking."""
     data = request.json or {}
     _save_to_queue("store_order", data)
@@ -29,6 +45,8 @@ def ef_store_order():
 
 @app.route("/webhook/easyfunnels/appointment", methods=["POST"])
 def ef_appointment():
+    if not _webhook_authorized():
+        return jsonify({"error": "Unauthorized webhook"}), 401
     """EasyFunnels appointment booked → trigger SESSION agent."""
     data        = request.json or {}
     maestro_url = os.getenv("MAESTRO_BASE_URL", "http://localhost:8080")
@@ -45,6 +63,8 @@ def ef_appointment():
 
 @app.route("/webhook/maestro-approved-action", methods=["POST"])
 def handle_approved_action():
+    if not _webhook_authorized():
+        return jsonify({"error": "Unauthorized webhook"}), 401
     """
     Called by n8n AFTER CEO approves a task.
     Routes the approved action to the correct EasyFunnels endpoint.

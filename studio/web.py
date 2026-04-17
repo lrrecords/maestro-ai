@@ -1,14 +1,35 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
-from flask import Blueprint, jsonify, render_template, request
+from flask import Blueprint, jsonify, render_template, request, redirect, session, url_for
 
 from studio.agents import REGISTRY
 
 studio_bp = Blueprint("studio", __name__)
 _DATA     = Path(__file__).parent / "data"
+
+def _is_authorized() -> bool:
+    if session.get("authenticated"):
+        return True
+    token = (os.getenv("MAESTRO_TOKEN") or "").strip()
+    if not token:
+        return False
+    auth_header = (request.headers.get("Authorization") or "").strip()
+    if auth_header.startswith("Bearer "):
+        return auth_header[7:].strip() == token
+    return (request.headers.get("X-MAESTRO-TOKEN") or "").strip() == token
+
+
+@studio_bp.before_request
+def require_auth():
+    if _is_authorized():
+        return None
+    if request.path.startswith("/studio/run/") or request.path.startswith("/studio/api/"):
+        return jsonify({"ok": False, "error": "Unauthorized"}), 401
+    return redirect(url_for("login_page", next=request.path))
 
 
 def _load(filename: str) -> list:

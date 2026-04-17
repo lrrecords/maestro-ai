@@ -24,6 +24,26 @@ ARTISTS_DIR = DATA / "artists"
 BRIDGE_DIR  = DATA / "bridge"
 AGENTS      = ["vinyl", "echo", "atlas", "forge", "sage", "bridge"]
 
+def _is_authorized() -> bool:
+    if session.get("authenticated"):
+        return True
+    token = (os.getenv("MAESTRO_TOKEN") or "").strip()
+    if not token:
+        return False
+    auth_header = (request.headers.get("Authorization") or "").strip()
+    if auth_header.startswith("Bearer "):
+        return auth_header[7:].strip() == token
+    return (request.headers.get("X-MAESTRO-TOKEN") or "").strip() == token
+
+
+@label_bp.before_request
+def require_auth():
+    if _is_authorized():
+        return None
+    if request.path.startswith("/label/api/"):
+        return jsonify({"ok": False, "error": "Unauthorized"}), 401
+    return redirect(url_for("login_page", next=request.path))
+
 # --- DASHBOARD INDEX ---
 @label_bp.route("/")
 def index():
@@ -330,7 +350,9 @@ def api_checkin(slug):
 def api_webhook(slug):
     if not slug or slug == "undefined":
         return jsonify({"sent": False, "error": "No artist selected or slug undefined."}), 400
-    WEBHOOK_URL = os.getenv("WEBHOOK_URL", "https://webhook.site/04c2b94a-c4a5-4807-a99e-afad21373ce8")
+    webhook_url = (os.getenv("WEBHOOK_URL") or "").strip()
+    if not webhook_url:
+        return jsonify({"sent": False, "error": "WEBHOOK_URL not configured."}), 503
     payload = {
         "artist":    slug_to_name(slug),
         "slug":      slug,
@@ -339,7 +361,7 @@ def api_webhook(slug):
     }
     try:
         import requests as req_lib
-        r = req_lib.post(WEBHOOK_URL, json=payload, timeout=6)
+        r = req_lib.post(webhook_url, json=payload, timeout=6)
         return jsonify({"sent": True, "http_status": r.status_code})
     except Exception as e:
         logging.warning(f"Webhook call failed: {e}")
@@ -512,30 +534,17 @@ def api_mission():
                 return
 
             crew = build_release_campaign_crew(slug, release_title or mission)
-            results = []
-            for task in crew.tasks:
-                if _crew_jobs[job_id].get("cancelled"):
-                    _crew_jobs[job_id]["status"] = "cancelled"
-                    _crew_jobs[job_id]["result"] = "Mission cancelled by user."
-                    _crew_jobs[job_id]["finished_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
-                    _crew_jobs[job_id]["updated_at"] = _crew_jobs[job_id]["finished_at"]
-                    return
-                try:
-                    print("DEBUG Task methods:", dir(task))
-                    # Temporarily skip execution to inspect available methods
-                    results.append({ "task": str(task), "result": "DEBUG: See terminal for available methods." })
-                    _crew_jobs[job_id]["result"] = results
-                    _crew_jobs[job_id]["updated_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
-                except Exception as e:
-                    _crew_jobs[job_id]["status"] = "error"
-                    _crew_jobs[job_id]["result"] = f"Error in task {task}: {e}"
-                    _crew_jobs[job_id]["finished_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
-                    _crew_jobs[job_id]["updated_at"] = _crew_jobs[job_id]["finished_at"]
-                    return
+            kickoff_output = crew.kickoff()
+            result_payload = {
+                "mission": mission,
+                "release_title": release_title,
+                "output": str(kickoff_output),
+            }
+            _crew_jobs[job_id]["result"] = result_payload
+            _crew_jobs[job_id]["updated_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
 
             done_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
             _crew_jobs[job_id]["status"] = "complete"
-            _crew_jobs[job_id]["result"] = results
             _crew_jobs[job_id]["finished_at"] = done_at
             _crew_jobs[job_id]["updated_at"] = done_at
         except Exception as e:
