@@ -11,6 +11,13 @@ import requests, os, json
 
 
 MAESTRO_BASE = os.getenv("MAESTRO_BASE_URL", "http://localhost:8080")
+MAESTRO_TOKEN = (os.getenv("MAESTRO_TOKEN") or "").strip()
+
+
+def _auth_headers() -> dict:
+    if not MAESTRO_TOKEN:
+        return {}
+    return {"X-MAESTRO-TOKEN": MAESTRO_TOKEN}
 
 
 def _make_crew_llm() -> LLM:
@@ -56,7 +63,11 @@ def run_bridge(artist_slug: str) -> str:
     Run BRIDGE agent to assess artist relationship health score and draft a check-in.
     Returns health score (0-100), trend, and a personalised check-in message draft.
     """
-    r = requests.get(f"{MAESTRO_BASE}/label/api/artist/{artist_slug}", timeout=30)
+    r = requests.get(
+        f"{MAESTRO_BASE}/label/api/artist/{artist_slug}",
+        headers=_auth_headers(),
+        timeout=30,
+    )
     data = r.json()
     bridge_output = data.get("outputs", {}).get("bridge", {})
     return json.dumps(bridge_output, indent=2) if bridge_output else f"No BRIDGE data for {artist_slug}. Run BRIDGE agent first."
@@ -68,7 +79,12 @@ def run_vinyl(artist_slug: str) -> str:
     Generate a complete release checklist for the artist's current project.
     Includes pre-production, distribution metadata, marketing, and post-release phases.
     """
-    r = requests.get(f"{MAESTRO_BASE}/label/api/stream/vinyl/{artist_slug}", stream=True, timeout=120)
+    r = requests.get(
+        f"{MAESTRO_BASE}/label/api/stream/vinyl/{artist_slug}",
+        headers=_auth_headers(),
+        stream=True,
+        timeout=120,
+    )
     result = ""
     for line in r.iter_lines():
         if line:
@@ -86,7 +102,11 @@ def run_vinyl(artist_slug: str) -> str:
 @tool("Get artist profile and metadata")
 def get_artist_profile(artist_slug: str) -> str:
     """Get full artist profile including upcoming release, genre, communication history."""
-    r = requests.get(f"{MAESTRO_BASE}/label/api/artist/{artist_slug}", timeout=15)
+    r = requests.get(
+        f"{MAESTRO_BASE}/label/api/artist/{artist_slug}",
+        headers=_auth_headers(),
+        timeout=15,
+    )
     data = r.json()
     profile = data.get("profile", {})
     return json.dumps({

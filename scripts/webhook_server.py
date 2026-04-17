@@ -8,6 +8,16 @@ from dotenv import load_dotenv
 load_dotenv()
 app = Flask(__name__)
 
+def _webhook_authorized() -> bool:
+    secret = (os.getenv("WEBHOOK_SECRET") or "").strip()
+    if not secret:
+        return False
+    header_secret = (request.headers.get("X-WEBHOOK-SECRET") or "").strip()
+    bearer = (request.headers.get("Authorization") or "").strip()
+    if bearer.startswith("Bearer ") and bearer[7:].strip() == secret:
+        return True
+    return header_secret == secret
+
 def send_email(subject, html_body):
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
@@ -26,6 +36,8 @@ def send_email(subject, html_body):
 
 @app.route("/webhook/health-update", methods=["POST"])
 def health_update():
+    if not _webhook_authorized():
+        return jsonify({"error": "Unauthorized webhook"}), 401
     data = request.json
     score  = data.get("score", 100)
     artist = data.get("artist", "Unknown")

@@ -3,10 +3,13 @@ import sys
 from pathlib import Path
 from functools import wraps
 from flask import Flask, redirect, render_template, session, request, url_for
+from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+
+load_dotenv(ROOT / ".env")
 
 from platform_ops.web import platform_bp
 from live.web import live_bp
@@ -106,4 +109,6 @@ def logout():
     return redirect(url_for("login_page"))
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    port = int(os.getenv("PORT", "8080"))
+    debug = os.getenv("FLASK_DEBUG", "").strip() == "1"
+    app.run(host="0.0.0.0", port=port, debug=debug)
