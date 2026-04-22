@@ -1472,3 +1472,2373 @@ git status
 If it says `nothing to commit, working tree clean`, your local and pushed commit state is good.
 
 If you want, after you run step 6, paste the output and I’ll confirm you’re fully synced.
+
+---
+
+_**User**_
+
+I forgot to paste where Im at here in Cursor terminal: @c:\Users\brett\.cursor\projects\c-Users-brett-Documents-maestro-ai\terminals\3.txt:149-183 
+
+---
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Managing git workflow**
+
+I’m thinking about how an unstaged working tree can prevent checkout due to conflicts. If the same files are involved, maybe I can checkout and carry over changes. However, it feels safer to commit all my changes on the current branch first. So, I should use git add -A to stage, commit, and push updates to the landing branch. Then, I can switch to the main branch, pull the latest, merge, and push. That should handle everything smoothly!</details></think>
+
+_**Agent (default)**_
+
+Perfect — that terminal paste is exactly what I needed.  
+You’re very close; two things tripped you up:
+
+1. You are on `landing-page-update` (not `main`)  
+2. File name typo: you tried `docs/cursor_repository_audit.md`, but actual file is `docs/cursor_repository_audit_for_maestro_ai.md`
+
+If your goal is **“put all my current local work onto remote `main`”**, run this exact sequence:
+
+```powershell
+# 1) Stay on your current branch and commit EVERYTHING local
+git add -A
+git commit -m "Sync local updates from docs and session files"
+
+# 2) Push your branch (safe backup)
+git push
+
+# 3) Move to main and update it
+git checkout main
+git pull origin main
+
+# 4) Merge your branch into main
+git merge landing-page-update
+
+# 5) Push main to GitHub
+git push origin main
+
+# 6) Verify
+git status
+```
+
+You should end with `nothing to commit, working tree clean`.
+
+If any command shows a conflict/error, paste the output and I’ll walk you through the exact next command.
+
+---
+
+_**User**_
+
+@c:\Users\brett\.cursor\projects\c-Users-brett-Documents-maestro-ai\terminals\3.txt:207-341 
+
+---
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Interpreting log status**
+
+I need to respond by interpreting the log and giving guidance. No tools are necessary for this step. I'll mention the successes we've had and the remaining uncommitted modifications for the session, which might be auto-updated. The user has just pasted something, possibly suggesting they're asking for next steps. I’ll provide a concise status update and include optional commands for cleaning up as needed. Let's keep it straightforward!</details></think>
+
+_**Agent (default)**_
+
+You nailed it — this was successful.
+
+What your log shows:
+
+- `landing-page-update` was committed and pushed.
+- You switched to `main`, pulled latest, merged `landing-page-update`.
+- `git push origin main` succeeded:
+  - `3909e83..3385d86  main -> main`
+- So your changes are now on GitHub `main`.
+
+The only thing left is new local edits created **after** that push:
+
+- `.specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md`
+- `.specstory/statistics.json`
+
+That’s why `git status` is not clean right now.
+
+## If you want to sync those too
+
+```powershell
+git add -A
+git commit -m "Update session history files"
+git push origin main
+```
+
+## If you don’t want those on GitHub
+
+Leave them uncommitted, or discard just those files:
+
+```powershell
+git restore ".specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md" ".specstory/statistics.json"
+```
+
+You’re in a good state; main is already updated online.
+
+---
+
+_**User**_
+
+Thankyou.@docs/cursor_repository_audit_for_maestro_ai.md Ok, lets work thru this (Step 4.) Shall I switch to Agent mode?
+
+---
+
+_**Agent (default)**_
+
+Yes — switch to **Agent mode** for Step 4.
+
+That part is implementation-heavy (prioritized todo execution, likely code/doc updates, checks, and iterative fixes), so Agent mode will let me actually make changes and verify them for you.
+
+Once you switch, send:
+- which items from Step 4 you want first (or say “start from top”),
+- whether to focus only on **MUST** items first (recommended),
+- and whether you want commits after each item or one batch commit.
+
+---
+
+_**User**_
+
+Start from top. Focus only on MUST items first. One batch commit please.
+
+---
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Planning batch commit tasks**
+
+I need to execute several tasks in one batch commit. First, I'll tackle mission execution and then focus on authentication protection, specifically for Label/Studio/Live. Next, I need to ensure the webhook signature validation is in place. I’ll also make sure to load environment variables with `load_dotenv` in dashboard/app.py and respect the PORT settings. Additionally, I have to add container deploy artifacts and remove the hardcoded webhook.site fallback. I'll inspect the files around mission code and webhook routes for any existing approval endpoints.</details></think>
+
+_**Agent (default)**_
+
+Great — I’ll implement the MUST items in one pass (mission execution, auth hardening, webhook auth, env loading/PORT, container files, and webhook fallback cleanup), then run a quick verification sweep before preparing one batch commit.
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\dashboard\app.py</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\label\web.py</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\studio\web.py</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\live\web.py</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\webhook_server.py</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\scripts\webhook_server.py</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\requirements.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\.env.example</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Considering file edits and security**
+
+I need to edit multiple files and maybe consider running the app without debug mode. I should include only essential items, such as loading the environment and setting the port. I’m thinking of adding an auth guard in my blueprints. To manage session authentication, I’ll likely use a before_request check. However, I need to ensure that external calls, like webhooks, don’t break the integration. Dual mode might work well, using an API key for integrations and session auth for browser interactions. I'll create a helper utility to streamline this.
+**Creating security functions**
+
+I’m planning to set up core/security.py. I’ll start by importing the necessary Flask components. My goal is to create an `is_authenticated()` function to check if the session is authenticated or if the bearer/header token matches the MAESTRO_TOKEN. I need to handle unauthenticated requests by returning a JSON error for certain paths or redirecting to the login page.
+
+I'll implement an `enforce_auth()` function and maintain simplicity by adding authorization checks in each file. I’ll ensure the dashboard app has a `/login` route available as well. This way, I can secure access to necessary endpoints.
+**Executing the mission**
+
+I need to execute the mission using `crew.kickoff()`, which might return an object. Right now, I have a loop that iterates through `crew.tasks` with debugging, but maybe it’ll be simpler to execute the entire crew and capture the results all at once. 
+
+I’ll set up `run_output = crew.kickoff()` and store the summary in the results dictionary. Although I could include individual task statuses, it isn't necessary. If there's a cancellation in the middle, I can't stop the kickoff, so I'll remove per-task cancellation. I'll also implement input handling to be safe. Lastly, I'll check `crews/label_crew.py` for how it's used.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\crews\label_crew.py</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+I’ve identified concrete edits for all MUST items. I’m starting with `dashboard/app.py` (load `.env` and bind `PORT`) and then will harden auth/webhook paths and mission execution.
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\dashboard\app.py</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\studio\web.py</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Evaluating request paths**
+
+I’m thinking about needing request path prefixes, particularly with the blueprint mounted at /studio. It seems like having that inside a before_request could help me handle the full request path better. I want to ensure I'm effectively managing the requests and that everything is running smoothly. Live patching will be an essential part of this process to keep everything up to date. I feel like I'm on the right track!</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\live\web.py</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Patching the complex label**
+
+I'm thinking about how to make the label patch more complex. I should add `_is_authorized` before the routes, probably near the top and also before the request. I’ll consider mission execution and a fallback for the webhook URL. I need to ensure that imports include `os` and that the session redirect with `url_for` is present. Let’s move forward with patching those sections. It sounds like a solid plan!</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\label\web.py</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Considering webhook auth validation**
+
+I see that I need to implement webhook authentication validation for both files, which could involve using a shared helper function since it seems repetitive. I think it would be more efficient to patch `webhook_server.py` at the root. That way, I can streamline the process without duplicating code. It feels like a solid approach to ensure security while also keeping the implementation organized!</details></think>
+
+_**Agent (default)**_
+
+I’ve finished the auth gates on department blueprints and replaced the mission debug stub with real `crew.kickoff()` execution. Next I’m adding webhook signature/secret checks and container deploy files.
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\webhook_server.py</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\scripts\webhook_server.py</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Setting up Docker files**
+
+I'm thinking I need to set up some container files. Maybe I should include a Dockerfile and a .dockerignore, along with a Procfile and railway.json if that's sufficient. I'll make sure the Dockerfile has the gunicorn command to run dashboard.app:app while specifying the environment variable for the port. Also, I need to ensure that gunicorn is listed in the requirements, and don’t forget to apply the patch to update those requirements!</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\requirements.txt</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\Dockerfile</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Considering files for a project**
+
+I’m thinking it might be a good idea to add a `.dockerignore` file and a `Procfile` to the project. The `.dockerignore` can help in ignoring unnecessary files, which is pretty crucial for keeping the image size down. As for the `Procfile`, it defines how the app should run on platforms like Heroku. I'll look more into what exactly should go into both files to ensure everything is set up correctly!</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\.dockerignore</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Considering railway setup**
+
+I need to think about setting up the railway with a Procfile. Maybe adding railway.json could be optional? I guess starting with the Procfile seems like the simplest way to go. I want to make sure I’m covering all the necessary steps for this. It’s important to keep it straightforward, and I’m looking for an approachable way to handle it without overcomplicating things. I'll focus on making this work best!</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\Procfile</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Updating security measures**
+
+I'm considering whether we could exempt internal requests from localhost, but that doesn't seem secure. I think it’s better to update the crew tools to include the auth header from the MAESTRO_TOKEN environment variable if it’s set. If it’s not set, the request might still be unauthorized. The mission is expecting production with the token set, so I'll patch the requests in crews/label_crew.py to add this header. Time to make these updates!</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\crews\label_crew.py</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Updating environment file**
+
+I'm thinking I need to update the .env.example file. It might be a good idea to include the webhook secret, secret key, and maestro token, perhaps even uncommenting those lines. That way, it’s clearer for anyone who uses this file in the future. Keeping it organized and straightforward is essential! I'll patch it up as soon as I get a chance to ensure everything is in order.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\.env.example</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Considering script modifications**
+
+I'm thinking about whether I need to modify the webhook_server scripts to load environment variables using dotenv. Right now, it seems like there's no dotenv loading happening in the root webhook_server. It might be a good idea to add that functionality when running locally. I could use load_dotenv from dotenv to implement this change. So, I should plan to create a patch to make these adjustments!</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\webhook_server.py</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Planning diagnostics and updates**
+
+I need to ensure that the internal n8n calls remain unaffected after any changes. First, I should run lint diagnostics post-editing, and I might run a quick compile using Python's shell. I'll handle the user updates first, then execute the necessary commands. It could be helpful to check the running processes. I'll do a git status, and while I might run some tests, I should also run ReadLints for the files that have been touched.</details></think>
+
+_**Agent (default)**_
+
+I’ve applied all MUST-scope code changes and now I’m running verification (lint/diagnostics + quick sanity checks) before I stage a single batch commit.
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="read_lints">
+<details>
+<summary>Tool use: **read_lints**</summary>
+
+
+Parameters:
+
+```json
+{
+  "paths": [
+    "dashboard/app.py",
+    "label/web.py",
+    "studio/web.py",
+    "live/web.py",
+    "webhook_server.py",
+    "scripts/webhook_server.py",
+    "crews/label_crew.py"
+  ]
+}
+```
+Result:
+
+```json
+{
+  "linterErrorsByFile": [
+    {
+      "relativeWorkspacePath": "dashboard/app.py"
+    },
+    {
+      "relativeWorkspacePath": "label/web.py"
+    },
+    {
+      "relativeWorkspacePath": "studio/web.py"
+    },
+    {
+      "relativeWorkspacePath": "live/web.py"
+    },
+    {
+      "relativeWorkspacePath": "webhook_server.py"
+    },
+    {
+      "relativeWorkspacePath": "scripts/webhook_server.py"
+    },
+    {
+      "relativeWorkspacePath": "crews/label_crew.py"
+    }
+  ]
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="read_lints"><details>
+<summary>Tool use: **read_lints**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: git status --short</summary>
+
+```bash
+git status --short
+```
+
+```
+ M .env.example
+ M .specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md
+ M .specstory/statistics.json
+ M crews/label_crew.py
+ M dashboard/app.py
+ M label/web.py
+ M live/web.py
+ M requirements.txt
+ M scripts/webhook_server.py
+ M studio/web.py
+ M webhook_server.py
+?? .dockerignore
+?? Dockerfile
+?? Procfile
+]633;C M .env.example
+ M .specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md
+ M .specstory/statistics.json
+ M crews/label_crew.py
+ M dashboard/app.py
+ M label/web.py
+ M live/web.py
+ M requirements.txt
+ M scripts/webhook_server.py
+ M studio/web.py
+ M webhook_server.py
+?? .dockerignore
+?? Dockerfile
+?? Procfile
+]633;C M .env.example
+ M .specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md
+ M .specstory/statistics.json
+ M crews/label_crew.py
+ M dashboard/app.py
+ M label/web.py
+ M live/web.py
+ M requirements.txt
+ M scripts/webhook_server.py
+ M studio/web.py
+ M webhook_server.py
+?? .dockerignore
+?? Dockerfile
+?? Procfile
+]633;D;0
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+I'm realizing I need to commit to something now, but I have some unexpected changes to consider. It seems important to follow the policy closely in this case. I think I need to ensure that no background processes are reading information that's not needed for this task. So, I’ll send a message to the user to ask for clarification on what exactly they need. Let's get this right!</details></think>
+
+_**Agent (default)**_
+
+I’m ready to do the one batch commit, but I need your call on one thing first:
+
+I found **unexpected modified files** that I did not edit directly:
+- `.specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md`
+- `.specstory/statistics.json`
+
+For safety, should I:
+
+1. **Exclude** those `.specstory` files and commit only the MUST-item code/deploy/security changes, or  
+2. **Include everything** currently changed in the batch commit?
+
+Reply `1` or `2`, and I’ll finish immediately.
+
+---
+
+_**User**_
+
+1
+
+---
+
+_**Agent (default)**_
+
+Perfect — I’ll commit only the MUST-item implementation files and leave `.specstory` changes out. I’ll run a quick git check, create one batch commit, and report back the result.
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: git status --short</summary>
+
+```bash
+git status --short
+```
+
+```
+ M .env.example
+ M .specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md
+ M .specstory/statistics.json
+ M crews/label_crew.py
+ M dashboard/app.py
+ M label/web.py
+ M live/web.py
+ M requirements.txt
+ M scripts/webhook_server.py
+ M studio/web.py
+ M webhook_server.py
+?? .dockerignore
+?? Dockerfile
+?? Procfile
+]633;C M .env.example
+ M .specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md
+ M .specstory/statistics.json
+ M crews/label_crew.py
+ M dashboard/app.py
+ M label/web.py
+ M live/web.py
+ M requirements.txt
+ M scripts/webhook_server.py
+ M studio/web.py
+ M webhook_server.py
+?? .dockerignore
+?? Dockerfile
+?? Procfile
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: git diff -- .env.example crews/label_crew.py dashboard/app.py label/web.py live/web.py requirements.txt scripts/webhook_server.py studio/web.py webhook_server.py Dockerfile .dockerignore Procfile</summary>
+
+```bash
+git diff -- .env.example crews/label_crew.py dashboard/app.py label/web.py live/web.py requirements.txt scripts/webhook_server.py studio/web.py webhook_server.py Dockerfile .dockerignore Procfile
+```
+
+```
+diff --git a/.env.example b/.env.example
+index e8df450..2c223c6 100644
+--- a/.env.example
++++ b/.env.example
+@@ -6,6 +6,9 @@ WEBHOOK_URL=http://localhost:5678/webhook/health-update
+ # Flask app port (default: 8080)
+ PORT=8080
+ 
++# Flask secret key for sessions (set in production)
++# SECRET_KEY=replace-with-random-secret
++
+ # LLM config (local Ollama is fastest for dev; set to 'anthropic' for cloud)
+ LLM_PROVIDER=ollama
+ # OLLAMA_BASE_URL=http://127.0.0.1:11434
+@@ -14,6 +17,10 @@ LLM_PROVIDER=ollama
+ 
+ # Token for dashboard (optional, for prod use)
+ # MAESTRO_TOKEN=your-secret-here
++# MAESTRO_DEV_MODE=0
++
++# Shared secret for inbound webhooks
++# WEBHOOK_SECRET=replace-with-shared-secret
+ 
+ # Set log level (optional: DEBUG, INFO, WARNING, ERROR)
+ # LOG_LEVEL=INFO
+diff --git a/crews/label_crew.py b/crews/label_crew.py
+index 094e080..6f0ae6a 100644
+--- a/crews/label_crew.py
++++ b/crews/label_crew.py
+@@ -11,6 +11,13 @@ import requests, os, json
+ 
+ 
+ MAESTRO_BASE = os.getenv("MAESTRO_BASE_URL", "http://localhost:8080")
++MAESTRO_TOKEN = (os.getenv("MAESTRO_TOKEN") or "").strip()
++
++
++def _auth_headers() -&gt; dict:
++    if not MAESTRO_TOKEN:
++        return {}
++    return {"X-MAESTRO-TOKEN": MAESTRO_TOKEN}
+ 
+ 
+ def _make_crew_llm() -&gt; LLM:
+@@ -56,7 +63,11 @@ def run_bridge(artist_slug: str) -&gt; str:
+     Run BRIDGE agent to assess artist relationship health score and draft a check-in.
+     Returns health score (0-100), trend, and a personalised check-in message draft.
+     """
+-    r = requests.get(f"{MAESTRO_BASE}/label/api/artist/{artist_slug}", timeout=30)
++    r = requests.get(
++        f"{MAESTRO_BASE}/label/api/artist/{artist_slug}",
++        headers=_auth_headers(),
++        timeout=30,
++    )
+     data = r.json()
+     bridge_output = data.get("outputs", {}).get("bridge", {})
+     return json.dumps(bridge_output, indent=2) if bridge_output else f"No BRIDGE data for {artist_slug}. Run BRIDGE agent first."
+@@ -68,7 +79,12 @@ def run_vinyl(artist_slug: str) -&gt; str:
+     Generate a complete release checklist for the artist's current project.
+     Includes pre-production, distribution metadata, marketing, and post-release phases.
+     """
+-    r = requests.get(f"{MAESTRO_BASE}/label/api/stream/vinyl/{artist_slug}", stream=True, timeout=120)
++    r = requests.get(
++        f"{MAESTRO_BASE}/label/api/stream/vinyl/{artist_slug}",
++        headers=_auth_headers(),
++        stream=True,
++        timeout=120,
++    )
+     result = ""
+     for line in r.iter_lines():
+         if line:
+@@ -86,7 +102,11 @@ def run_vinyl(artist_slug: str) -&gt; str:
+ @tool("Get artist profile and metadata")
+ def get_artist_profile(artist_slug: str) -&gt; str:
+     """Get full artist profile including upcoming release, genre, communication history."""
+-    r = requests.get(f"{MAESTRO_BASE}/label/api/artist/{artist_slug}", timeout=15)
++    r = requests.get(
++        f"{MAESTRO_BASE}/label/api/artist/{artist_slug}",
++        headers=_auth_headers(),
++        timeout=15,
++    )
+     data = r.json()
+     profile = data.get("profile", {})
+     return json.dumps({
+diff --git a/dashboard/app.py b/dashboard/app.py
+index 8cf8334..dd77b36 100644
+--- a/dashboard/app.py
++++ b/dashboard/app.py
+@@ -3,11 +3,14 @@ import sys
+ from pathlib import Path
+ from functools import wraps
+ from flask import Flask, redirect, render_template, session, request, url_for
++from dotenv import load_dotenv
+ 
+ ROOT = Path(__file__).resolve().parent.parent
+ if str(ROOT) not in sys.path:
+     sys.path.insert(0, str(ROOT))
+ 
++load_dotenv(ROOT / ".env")
++
+ from platform_ops.web import platform_bp
+ from live.web import live_bp
+ from studio.web import studio_bp
+@@ -106,4 +109,6 @@ def logout():
+     return redirect(url_for("login_page"))
+ 
+ if __name__ == "__main__":
+-    app.run(host="0.0.0.0", port=8080, debug=True)
+\ No newline at end of file
++    port = int(os.getenv("PORT", "8080"))
++    debug = os.getenv("FLASK_DEBUG", "").strip() == "1"
++    app.run(host="0.0.0.0", port=port, debug=debug)
+\ No newline at end of file
+diff --git a/label/web.py b/label/web.py
+index ea545ae..11a8098 100644
+--- a/label/web.py
++++ b/label/web.py
+@@ -24,6 +24,26 @@ ARTISTS_DIR = DATA / "artists"
+ BRIDGE_DIR  = DATA / "bridge"
+ AGENTS      = ["vinyl", "echo", "atlas", "forge", "sage", "bridge"]
+ 
++def _is_authorized() -&gt; bool:
++    if session.get("authenticated"):
++        return True
++    token = (os.getenv("MAESTRO_TOKEN") or "").strip()
++    if not token:
++        return False
++    auth_header = (request.headers.get("Authorization") or "").strip()
++    if auth_header.startswith("Bearer "):
++        return auth_header[7:].strip() == token
++    return (request.headers.get("X-MAESTRO-TOKEN") or "").strip() == token
++
++
++@label_bp.before_request
++def require_auth():
++    if _is_authorized():
++        return None
++    if request.path.startswith("/label/api/"):
++        return jsonify({"ok": False, "error": "Unauthorized"}), 401
++    return redirect(url_for("login_page", next=request.path))
++
+ # --- DASHBOARD INDEX ---
+ @label_bp.route("/")
+ def index():
+@@ -330,7 +350,9 @@ def api_checkin(slug):
+ def api_webhook(slug):
+     if not slug or slug == "undefined":
+         return jsonify({"sent": False, "error": "No artist selected or slug undefined."}), 400
+-    WEBHOOK_URL = os.getenv("WEBHOOK_URL", "https://webhook.site/04c2b94a-c4a5-4807-a99e-afad21373ce8")
++    webhook_url = (os.getenv("WEBHOOK_URL") or "").strip()
++    if not webhook_url:
++        return jsonify({"sent": False, "error": "WEBHOOK_URL not configured."}), 503
+     payload = {
+         "artist":    slug_to_name(slug),
+         "slug":      slug,
+@@ -339,7 +361,7 @@ def api_webhook(slug):
+     }
+     try:
+         import requests as req_lib
+-        r = req_lib.post(WEBHOOK_URL, json=payload, timeout=6)
++        r = req_lib.post(webhook_url, json=payload, timeout=6)
+         return jsonify({"sent": True, "http_status": r.status_code})
+     except Exception as e:
+         logging.warning(f"Webhook call failed: {e}")
+@@ -512,30 +534,17 @@ def api_mission():
+                 return
+ 
+             crew = build_release_campaign_crew(slug, release_title or mission)
+-            results = []
+-            for task in crew.tasks:
+-                if _crew_jobs[job_id].get("cancelled"):
+-                    _crew_jobs[job_id]["status"] = "cancelled"
+-                    _crew_jobs[job_id]["result"] = "Mission cancelled by user."
+-                    _crew_jobs[job_id]["finished_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-                    _crew_jobs[job_id]["updated_at"] = _crew_jobs[job_id]["finished_at"]
+-                    return
+-                try:
+-                    print("DEBUG Task methods:", dir(task))
+-                    # Temporarily skip execution to inspect available methods
+-                    results.append({ "task": str(task), "result": "DEBUG: See terminal for available methods." })
+-                    _crew_jobs[job_id]["result"] = results
+-                    _crew_jobs[job_id]["updated_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-                except Exception as e:
+-                    _crew_jobs[job_id]["status"] = "error"
+-                    _crew_jobs[job_id]["result"] = f"Error in task {task}: {e}"
+-                    _crew_jobs[job_id]["finished_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-                    _crew_jobs[job_id]["updated_at"] = _crew_jobs[job_id]["finished_at"]
+-                    return
++            kickoff_output = crew.kickoff()
++            result_payload = {
++                "mission": mission,
++                "release_title": release_title,
++                "output": str(kickoff_output),
++            }
++            _crew_jobs[job_id]["result"] = result_payload
++            _crew_jobs[job_id]["updated_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+ 
+             done_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+             _crew_jobs[job_id]["status"] = "complete"
+-            _crew_jobs[job_id]["result"] = results
+             _crew_jobs[job_id]["finished_at"] = done_at
+             _crew_jobs[job_id]["updated_at"] = done_at
+         except Exception as e:
+diff --git a/live/web.py b/live/web.py
+index 5d42576..2d06460 100644
+--- a/live/web.py
++++ b/live/web.py
+@@ -1,15 +1,40 @@
+ from __future__ import annotations
+ 
+ import json
++import os
+ from datetime import datetime, timezone
+ from pathlib import Path
+-from flask import Blueprint, jsonify, render_template, request
++from flask import Blueprint, jsonify, render_template, request, redirect, session, url_for
+ 
+ from live.agents import REGISTRY   # ← module-level import now
+ 
+ live_bp = Blueprint("live", __name__)
+ _DATA   = Path(__file__).parent / "data"
+ 
++def _is_authorized() -&gt; bool:
++    if session.get("authenticated"):
++        return True
++    token = (os.getenv("MAESTRO_TOKEN") or "").strip()
++    if not token:
++        return False
++    auth_header = (request.headers.get("Authorization") or "").strip()
++    if auth_header.startswith("Bearer "):
++        return auth_header[7:].strip() == token
++    return (request.headers.get("X-MAESTRO-TOKEN") or "").strip() == token
++
++
++@live_bp.before_request
++def require_auth():
++    if _is_authorized():
++        return None
++    if (
++        request.path.startswith("/live/run/")
++        or request.path.startswith("/live/apply/")
++        or request.path.startswith("/live/api/")
++    ):
++        return jsonify({"ok": False, "error": "Unauthorized"}), 401
++    return redirect(url_for("login_page", next=request.path))
++
+ 
+ def _load(filename: str) -&gt; list:
+     path = _DATA / filename
+diff --git a/requirements.txt b/requirements.txt
+index a5748a3..120e371 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,5 +1,6 @@
+ anthropic==0.84.0
+ Flask==3.1.3
++gunicorn==23.0.0
+ python-dotenv==1.2.2
+ requests==2.32.5
+ colorama==0.4.6
+diff --git a/scripts/webhook_server.py b/scripts/webhook_server.py
+index 17c0ce9..1b2af1a 100644
+--- a/scripts/webhook_server.py
++++ b/scripts/webhook_server.py
+@@ -8,6 +8,16 @@ from dotenv import load_dotenv
+ load_dotenv()
+ app = Flask(__name__)
+ 
++def _webhook_authorized() -&gt; bool:
++    secret = (os.getenv("WEBHOOK_SECRET") or "").strip()
++    if not secret:
++        return False
++    header_secret = (request.headers.get("X-WEBHOOK-SECRET") or "").strip()
++    bearer = (request.headers.get("Authorization") or "").strip()
++    if bearer.startswith("Bearer ") and bearer[7:].strip() == secret:
++        return True
++    return header_secret == secret
++
+ def send_email(subject, html_body):
+     msg = MIMEMultipart("alternative")
+     msg["Subject"] = subject
+@@ -26,6 +36,8 @@ def send_email(subject, html_body):
+ 
+ @app.route("/webhook/health-update", methods=["POST"])
+ def health_update():
++    if not _webhook_authorized():
++        return jsonify({"error": "Unauthorized webhook"}), 401
+     data = request.json
+     score  = data.get("score", 100)
+     artist = data.get("artist", "Unknown")
+diff --git a/studio/web.py b/studio/web.py
+index 99cc0e5..d7d038f 100644
+--- a/studio/web.py
++++ b/studio/web.py
+@@ -1,15 +1,36 @@
+ from __future__ import annotations
+ 
+ import json
++import os
+ from datetime import datetime, timezone
+ from pathlib import Path
+-from flask import Blueprint, jsonify, render_template, request
++from flask import Blueprint, jsonify, render_template, request, redirect, session, url_for
+ 
+ from studio.agents import REGISTRY
+ 
+ studio_bp = Blueprint("studio", __name__)
+ _DATA     = Path(__file__).parent / "data"
+ 
++def _is_authorized() -&gt; bool:
++    if session.get("authenticated"):
++        return True
++    token = (os.getenv("MAESTRO_TOKEN") or "").strip()
++    if not token:
++        return False
++    auth_header = (request.headers.get("Authorization") or "").strip()
++    if auth_header.startswith("Bearer "):
++        return auth_header[7:].strip() == token
++    return (request.headers.get("X-MAESTRO-TOKEN") or "").strip() == token
++
++
++@studio_bp.before_request
++def require_auth():
++    if _is_authorized():
++        return None
++    if request.path.startswith("/studio/run/") or request.path.startswith("/studio/api/"):
++        return jsonify({"ok": False, "error": "Unauthorized"}), 401
++    return redirect(url_for("login_page", next=request.path))
++
+ 
+ def _load(filename: str) -&gt; list:
+     path = _DATA / filename
+diff --git a/webhook_server.py b/webhook_server.py
+index 1f19880..e0b9fdb 100644
+--- a/webhook_server.py
++++ b/webhook_server.py
+@@ -3,13 +3,27 @@ import json
+ import logging
+ from flask import Flask, request, jsonify
+ import requests as _req
++from dotenv import load_dotenv
+ 
+ app = Flask(__name__)
++load_dotenv()
++
++def _webhook_authorized() -&gt; bool:
++    secret = (os.getenv("WEBHOOK_SECRET") or "").strip()
++    if not secret:
++        return False
++    header_secret = (request.headers.get("X-WEBHOOK-SECRET") or "").strip()
++    bearer = (request.headers.get("Authorization") or "").strip()
++    if bearer.startswith("Bearer ") and bearer[7:].strip() == secret:
++        return True
++    return header_secret == secret
+ 
+ # ── Inbound: EasyFunnels → n8n → Maestro ──────────────────────────────────────
+ 
+ @app.route("/webhook/easyfunnels/crm-update", methods=["POST"])
+ def ef_crm_update():
++    if not _webhook_authorized():
++        return jsonify({"error": "Unauthorized webhook"}), 401
+     """EasyFunnels CRM contact created or updated → log to BRIDGE."""
+     data    = request.json or {}
+     contact = data.get("contact", {})
+@@ -22,6 +36,8 @@ def ef_crm_update():
+ 
+ @app.route("/webhook/easyfunnels/order", methods=["POST"])
+ def ef_store_order():
++    if not _webhook_authorized():
++        return jsonify({"error": "Unauthorized webhook"}), 401
+     """EasyFunnels store order received → queue for ATLAS revenue tracking."""
+     data = request.json or {}
+     _save_to_queue("store_order", data)
+@@ -29,6 +45,8 @@ def ef_store_order():
+ 
+ @app.route("/webhook/easyfunnels/appointment", methods=["POST"])
+ def ef_appointment():
++    if not _webhook_authorized():
++        return jsonify({"error": "Unauthorized webhook"}), 401
+     """EasyFunnels appointment booked → trigger SESSION agent."""
+     data        = request.json or {}
+     maestro_url = os.getenv("MAESTRO_BASE_URL", "http://localhost:8080")
+@@ -45,6 +63,8 @@ def ef_appointment():
+ 
+ @app.route("/webhook/maestro-approved-action", methods=["POST"])
+ def handle_approved_action():
++    if not _webhook_authorized():
++        return jsonify({"error": "Unauthorized webhook"}), 401
+     """
+     Called by n8n AFTER CEO approves a task.
+     Routes the approved action to the correct EasyFunnels endpoint.
+]633;Cdiff --git a/.env.example b/.env.example
+index e8df450..2c223c6 100644
+--- a/.env.example
++++ b/.env.example
+@@ -6,6 +6,9 @@ WEBHOOK_URL=http://localhost:5678/webhook/health-update
+ # Flask app port (default: 8080)
+ PORT=8080
+ 
++# Flask secret key for sessions (set in production)
++# SECRET_KEY=replace-with-random-secret
++
+ # LLM config (local Ollama is fastest for dev; set to 'anthropic' for cloud)
+ LLM_PROVIDER=ollama
+ # OLLAMA_BASE_URL=http://127.0.0.1:11434
+@@ -14,6 +17,10 @@ LLM_PROVIDER=ollama
+ 
+ # Token for dashboard (optional, for prod use)
+ # MAESTRO_TOKEN=your-secret-here
++# MAESTRO_DEV_MODE=0
++
++# Shared secret for inbound webhooks
++# WEBHOOK_SECRET=replace-with-shared-secret
+ 
+ # Set log level (optional: DEBUG, INFO, WARNING, ERROR)
+ # LOG_LEVEL=INFO
+diff --git a/crews/label_crew.py b/crews/label_crew.py
+index 094e080..6f0ae6a 100644
+--- a/crews/label_crew.py
++++ b/crews/label_crew.py
+@@ -11,6 +11,13 @@ import requests, os, json
+ 
+ 
+ MAESTRO_BASE = os.getenv("MAESTRO_BASE_URL", "http://localhost:8080")
++MAESTRO_TOKEN = (os.getenv("MAESTRO_TOKEN") or "").strip()
++
++
++def _auth_headers() -&gt; dict:
++    if not MAESTRO_TOKEN:
++        return {}
++    return {"X-MAESTRO-TOKEN": MAESTRO_TOKEN}
+ 
+ 
+ def _make_crew_llm() -&gt; LLM:
+@@ -56,7 +63,11 @@ def run_bridge(artist_slug: str) -&gt; str:
+     Run BRIDGE agent to assess artist relationship health score and draft a check-in.
+     Returns health score (0-100), trend, and a personalised check-in message draft.
+     """
+-    r = requests.get(f"{MAESTRO_BASE}/label/api/artist/{artist_slug}", timeout=30)
++    r = requests.get(
++        f"{MAESTRO_BASE}/label/api/artist/{artist_slug}",
++        headers=_auth_headers(),
++        timeout=30,
++    )
+     data = r.json()
+     bridge_output = data.get("outputs", {}).get("bridge", {})
+     return json.dumps(bridge_output, indent=2) if bridge_output else f"No BRIDGE data for {artist_slug}. Run BRIDGE agent first."
+@@ -68,7 +79,12 @@ def run_vinyl(artist_slug: str) -&gt; str:
+     Generate a complete release checklist for the artist's current project.
+     Includes pre-production, distribution metadata, marketing, and post-release phases.
+     """
+-    r = requests.get(f"{MAESTRO_BASE}/label/api/stream/vinyl/{artist_slug}", stream=True, timeout=120)
++    r = requests.get(
++        f"{MAESTRO_BASE}/label/api/stream/vinyl/{artist_slug}",
++        headers=_auth_headers(),
++        stream=True,
++        timeout=120,
++    )
+     result = ""
+     for line in r.iter_lines():
+         if line:
+@@ -86,7 +102,11 @@ def run_vinyl(artist_slug: str) -&gt; str:
+ @tool("Get artist profile and metadata")
+ def get_artist_profile(artist_slug: str) -&gt; str:
+     """Get full artist profile including upcoming release, genre, communication history."""
+-    r = requests.get(f"{MAESTRO_BASE}/label/api/artist/{artist_slug}", timeout=15)
++    r = requests.get(
++        f"{MAESTRO_BASE}/label/api/artist/{artist_slug}",
++        headers=_auth_headers(),
++        timeout=15,
++    )
+     data = r.json()
+     profile = data.get("profile", {})
+     return json.dumps({
+diff --git a/dashboard/app.py b/dashboard/app.py
+index 8cf8334..dd77b36 100644
+--- a/dashboard/app.py
++++ b/dashboard/app.py
+@@ -3,11 +3,14 @@ import sys
+ from pathlib import Path
+ from functools import wraps
+ from flask import Flask, redirect, render_template, session, request, url_for
++from dotenv import load_dotenv
+ 
+ ROOT = Path(__file__).resolve().parent.parent
+ if str(ROOT) not in sys.path:
+     sys.path.insert(0, str(ROOT))
+ 
++load_dotenv(ROOT / ".env")
++
+ from platform_ops.web import platform_bp
+ from live.web import live_bp
+ from studio.web import studio_bp
+@@ -106,4 +109,6 @@ def logout():
+     return redirect(url_for("login_page"))
+ 
+ if __name__ == "__main__":
+-    app.run(host="0.0.0.0", port=8080, debug=True)
+\ No newline at end of file
++    port = int(os.getenv("PORT", "8080"))
++    debug = os.getenv("FLASK_DEBUG", "").strip() == "1"
++    app.run(host="0.0.0.0", port=port, debug=debug)
+\ No newline at end of file
+diff --git a/label/web.py b/label/web.py
+index ea545ae..11a8098 100644
+--- a/label/web.py
++++ b/label/web.py
+@@ -24,6 +24,26 @@ ARTISTS_DIR = DATA / "artists"
+ BRIDGE_DIR  = DATA / "bridge"
+ AGENTS      = ["vinyl", "echo", "atlas", "forge", "sage", "bridge"]
+ 
++def _is_authorized() -&gt; bool:
++    if session.get("authenticated"):
++        return True
++    token = (os.getenv("MAESTRO_TOKEN") or "").strip()
++    if not token:
++        return False
++    auth_header = (request.headers.get("Authorization") or "").strip()
++    if auth_header.startswith("Bearer "):
++        return auth_header[7:].strip() == token
++    return (request.headers.get("X-MAESTRO-TOKEN") or "").strip() == token
++
++
++@label_bp.before_request
++def require_auth():
++    if _is_authorized():
++        return None
++    if request.path.startswith("/label/api/"):
++        return jsonify({"ok": False, "error": "Unauthorized"}), 401
++    return redirect(url_for("login_page", next=request.path))
++
+ # --- DASHBOARD INDEX ---
+ @label_bp.route("/")
+ def index():
+@@ -330,7 +350,9 @@ def api_checkin(slug):
+ def api_webhook(slug):
+     if not slug or slug == "undefined":
+         return jsonify({"sent": False, "error": "No artist selected or slug undefined."}), 400
+-    WEBHOOK_URL = os.getenv("WEBHOOK_URL", "https://webhook.site/04c2b94a-c4a5-4807-a99e-afad21373ce8")
++    webhook_url = (os.getenv("WEBHOOK_URL") or "").strip()
++    if not webhook_url:
++        return jsonify({"sent": False, "error": "WEBHOOK_URL not configured."}), 503
+     payload = {
+         "artist":    slug_to_name(slug),
+         "slug":      slug,
+@@ -339,7 +361,7 @@ def api_webhook(slug):
+     }
+     try:
+         import requests as req_lib
+-        r = req_lib.post(WEBHOOK_URL, json=payload, timeout=6)
++        r = req_lib.post(webhook_url, json=payload, timeout=6)
+         return jsonify({"sent": True, "http_status": r.status_code})
+     except Exception as e:
+         logging.warning(f"Webhook call failed: {e}")
+@@ -512,30 +534,17 @@ def api_mission():
+                 return
+ 
+             crew = build_release_campaign_crew(slug, release_title or mission)
+-            results = []
+-            for task in crew.tasks:
+-                if _crew_jobs[job_id].get("cancelled"):
+-                    _crew_jobs[job_id]["status"] = "cancelled"
+-                    _crew_jobs[job_id]["result"] = "Mission cancelled by user."
+-                    _crew_jobs[job_id]["finished_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-                    _crew_jobs[job_id]["updated_at"] = _crew_jobs[job_id]["finished_at"]
+-                    return
+-                try:
+-                    print("DEBUG Task methods:", dir(task))
+-                    # Temporarily skip execution to inspect available methods
+-                    results.append({ "task": str(task), "result": "DEBUG: See terminal for available methods." })
+-                    _crew_jobs[job_id]["result"] = results
+-                    _crew_jobs[job_id]["updated_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-                except Exception as e:
+-                    _crew_jobs[job_id]["status"] = "error"
+-                    _crew_jobs[job_id]["result"] = f"Error in task {task}: {e}"
+-                    _crew_jobs[job_id]["finished_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-                    _crew_jobs[job_id]["updated_at"] = _crew_jobs[job_id]["finished_at"]
+-                    return
++            kickoff_output = crew.kickoff()
++            result_payload = {
++                "mission": mission,
++                "release_title": release_title,
++                "output": str(kickoff_output),
++            }
++            _crew_jobs[job_id]["result"] = result_payload
++            _crew_jobs[job_id]["updated_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+ 
+             done_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+             _crew_jobs[job_id]["status"] = "complete"
+-            _crew_jobs[job_id]["result"] = results
+             _crew_jobs[job_id]["finished_at"] = done_at
+             _crew_jobs[job_id]["updated_at"] = done_at
+         except Exception as e:
+diff --git a/live/web.py b/live/web.py
+index 5d42576..2d06460 100644
+--- a/live/web.py
++++ b/live/web.py
+@@ -1,15 +1,40 @@
+ from __future__ import annotations
+ 
+ import json
++import os
+ from datetime import datetime, timezone
+ from pathlib import Path
+-from flask import Blueprint, jsonify, render_template, request
++from flask import Blueprint, jsonify, render_template, request, redirect, session, url_for
+ 
+ from live.agents import REGISTRY   # ← module-level import now
+ 
+ live_bp = Blueprint("live", __name__)
+ _DATA   = Path(__file__).parent / "data"
+ 
++def _is_authorized() -&gt; bool:
++    if session.get("authenticated"):
++        return True
++    token = (os.getenv("MAESTRO_TOKEN") or "").strip()
++    if not token:
++        return False
++    auth_header = (request.headers.get("Authorization") or "").strip()
++    if auth_header.startswith("Bearer "):
++        return auth_header[7:].strip() == token
++    return (request.headers.get("X-MAESTRO-TOKEN") or "").strip() == token
++
++
++@live_bp.before_request
++def require_auth():
++    if _is_authorized():
++        return None
++    if (
++        request.path.startswith("/live/run/")
++        or request.path.startswith("/live/apply/")
++        or request.path.startswith("/live/api/")
++    ):
++        return jsonify({"ok": False, "error": "Unauthorized"}), 401
++    return redirect(url_for("login_page", next=request.path))
++
+ 
+ def _load(filename: str) -&gt; list:
+     path = _DATA / filename
+diff --git a/requirements.txt b/requirements.txt
+index a5748a3..120e371 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,5 +1,6 @@
+ anthropic==0.84.0
+ Flask==3.1.3
++gunicorn==23.0.0
+ python-dotenv==1.2.2
+ requests==2.32.5
+ colorama==0.4.6
+diff --git a/scripts/webhook_server.py b/scripts/webhook_server.py
+index 17c0ce9..1b2af1a 100644
+--- a/scripts/webhook_server.py
++++ b/scripts/webhook_server.py
+@@ -8,6 +8,16 @@ from dotenv import load_dotenv
+ load_dotenv()
+ app = Flask(__name__)
+ 
++def _webhook_authorized() -&gt; bool:
++    secret = (os.getenv("WEBHOOK_SECRET") or "").strip()
++    if not secret:
++        return False
++    header_secret = (request.headers.get("X-WEBHOOK-SECRET") or "").strip()
++    bearer = (request.headers.get("Authorization") or "").strip()
++    if bearer.startswith("Bearer ") and bearer[7:].strip() == secret:
++        return True
++    return header_secret == secret
++
+ def send_email(subject, html_body):
+     msg = MIMEMultipart("alternative")
+     msg["Subject"] = subject
+@@ -26,6 +36,8 @@ def send_email(subject, html_body):
+ 
+ @app.route("/webhook/health-update", methods=["POST"])
+ def health_update():
++    if not _webhook_authorized():
++        return jsonify({"error": "Unauthorized webhook"}), 401
+     data = request.json
+     score  = data.get("score", 100)
+     artist = data.get("artist", "Unknown")
+diff --git a/studio/web.py b/studio/web.py
+index 99cc0e5..d7d038f 100644
+--- a/studio/web.py
++++ b/studio/web.py
+@@ -1,15 +1,36 @@
+ from __future__ import annotations
+ 
+ import json
++import os
+ from datetime import datetime, timezone
+ from pathlib import Path
+-from flask import Blueprint, jsonify, render_template, request
++from flask import Blueprint, jsonify, render_template, request, redirect, session, url_for
+ 
+ from studio.agents import REGISTRY
+ 
+ studio_bp = Blueprint("studio", __name__)
+ _DATA     = Path(__file__).parent / "data"
+ 
++def _is_authorized() -&gt; bool:
++    if session.get("authenticated"):
++        return True
++    token = (os.getenv("MAESTRO_TOKEN") or "").strip()
++    if not token:
++        return False
++    auth_header = (request.headers.get("Authorization") or "").strip()
++    if auth_header.startswith("Bearer "):
++        return auth_header[7:].strip() == token
++    return (request.headers.get("X-MAESTRO-TOKEN") or "").strip() == token
++
++
++@studio_bp.before_request
++def require_auth():
++    if _is_authorized():
++        return None
++    if request.path.startswith("/studio/run/") or request.path.startswith("/studio/api/"):
++        return jsonify({"ok": False, "error": "Unauthorized"}), 401
++    return redirect(url_for("login_page", next=request.path))
++
+ 
+ def _load(filename: str) -&gt; list:
+     path = _DATA / filename
+diff --git a/webhook_server.py b/webhook_server.py
+index 1f19880..e0b9fdb 100644
+--- a/webhook_server.py
++++ b/webhook_server.py
+@@ -3,13 +3,27 @@ import json
+ import logging
+ from flask import Flask, request, jsonify
+ import requests as _req
++from dotenv import load_dotenv
+ 
+ app = Flask(__name__)
++load_dotenv()
++
++def _webhook_authorized() -&gt; bool:
++    secret = (os.getenv("WEBHOOK_SECRET") or "").strip()
++    if not secret:
++        return False
++    header_secret = (request.headers.get("X-WEBHOOK-SECRET") or "").strip()
++    bearer = (request.headers.get("Authorization") or "").strip()
++    if bearer.startswith("Bearer ") and bearer[7:].strip() == secret:
++        return True
++    return header_secret == secret
+ 
+ # ── Inbound: EasyFunnels → n8n → Maestro ──────────────────────────────────────
+ 
+ @app.route("/webhook/easyfunnels/crm-update", methods=["POST"])
+ def ef_crm_update():
++    if not _webhook_authorized():
++        return jsonify({"error": "Unauthorized webhook"}), 401
+     """EasyFunnels CRM contact created or updated → log to BRIDGE."""
+     data    = request.json or {}
+     contact = data.get("contact", {})
+@@ -22,6 +36,8 @@ def ef_crm_update():
+ 
+ @app.route("/webhook/easyfunnels/order", methods=["POST"])
+ def ef_store_order():
++    if not _webhook_authorized():
++        return jsonify({"error": "Unauthorized webhook"}), 401
+     """EasyFunnels store order received → queue for ATLAS revenue tracking."""
+     data = request.json or {}
+     _save_to_queue("store_order", data)
+@@ -29,6 +45,8 @@ def ef_store_order():
+ 
+ @app.route("/webhook/easyfunnels/appointment", methods=["POST"])
+ def ef_appointment():
++    if not _webhook_authorized():
++        return jsonify({"error": "Unauthorized webhook"}), 401
+     """EasyFunnels appointment booked → trigger SESSION agent."""
+     data        = request.json or {}
+     maestro_url = os.getenv("MAESTRO_BASE_URL", "http://localhost:8080")
+@@ -45,6 +63,8 @@ def ef_appointment():
+ 
+ @app.route("/webhook/maestro-approved-action", methods=["POST"])
+ def handle_approved_action():
++    if not _webhook_authorized():
++        return jsonify({"error": "Unauthorized webhook"}), 401
+     """
+     Called by n8n AFTER CEO approves a task.
+     Routes the approved action to the correct EasyFunnels endpoint.
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: git log -5 --oneline</summary>
+
+```bash
+git log -5 --oneline
+```
+
+```
+3385d86 Sync local updates from docs and session files
+3909e83 Merge pull request #32 from lrrecords/landing-page-update
+ad2e50c Force background image and dark color on html and body
+da4367f Merge pull request #31 from lrrecords/landing-page-update
+17bf7db Fix: Ensure background image and dark theme show through all sections
+]633;C3385d86 Sync local updates from docs and session files
+3909e83 Merge pull request #32 from lrrecords/landing-page-update
+ad2e50c Force background image and dark color on html and body
+da4367f Merge pull request #31 from lrrecords/landing-page-update
+17bf7db Fix: Ensure background image and dark theme show through all sections
+]633;P;Cwd=C:\\Users\\brett\\Documents\\maestro-ai]633;P;HasRichCommandDetection=True]633;A$ ]633;B]633;E;git log -5 --onelinegit log -5 --oneline
+]633;C3385d86 Sync local updates from docs and session files
+3909e83 Merge pull request #32 from lrrecords/landing-page-update
+ad2e50c Force background image and dark color on html and body
+da4367f Merge pull request #31 from lrrecords/landing-page-update
+17bf7db Fix: Ensure background image and dark theme show through all sections
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Preparing to commit changes**
+
+I need to make a commit now. I want to ensure I include the new files, even if the diff command didn’t show them. So, I'll explicitly stage a list of files while excluding "specstory." 
+
+Once that’s done, I’ll commit using heredoc. Then, I'll check the status to confirm everything is set. It's all about being thorough to make sure nothing gets left behind!</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: git add .env.example crews/label_crew.py dashboard/app.py label/web.py live/web.py requirements.txt scripts/webhook_server.py studio/web.py webhook_server.py .dockerignore Dockerfile Procfile && git commit --trailer "Made-with: Cursor" -m "$(cat <<'EOF'
+Harden MVP deployment and security-critical runtime paths.
+
+Enable authenticated department/webhook access, restore real Label mission execution, load env/PORT correctly, and add container startup artifacts for Railway-style deploys.
+EOF
+)" && git status --short</summary>
+
+```bash
+git add .env.example crews/label_crew.py dashboard/app.py label/web.py live/web.py requirements.txt scripts/webhook_server.py studio/web.py webhook_server.py .dockerignore Dockerfile Procfile && git commit --trailer "Made-with: Cursor" -m "$(cat <<'EOF'
+Harden MVP deployment and security-critical runtime paths.
+
+Enable authenticated department/webhook access, restore real Label mission execution, load env/PORT correctly, and add container startup artifacts for Railway-style deploys.
+EOF
+)" && git status --short
+```
+
+```
+ParserError: C:\Users\brett\AppData\Local\Temp\ps-script-c61cab6d-2895-4620-9806-5c62aaded145.ps1:67
+Line |
+  67 |  . rocfile &amp;&amp; git commit --trailer "Made-with: Cursor" -m "$(cat &lt;&lt;'EOF'
+     |                                                                   ~
+     | Missing file specification after redirection operator.
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+Small hiccup: PowerShell rejected the shell heredoc syntax. I’m re-running the commit with PowerShell-safe multiline message formatting and the same staged file set.
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: git add .env.example crews/label_crew.py dashboard/app.py label/web.py live/web.py requirements.txt scripts/webhook_server.py studio/web.py webhook_server.py .dockerignore Dockerfile Procfile; $msg = @'
+Harden MVP deployment and security-critical runtime paths.
+
+Enable authenticated department/webhook access, restore real Label mission execution, load env/PORT correctly, and add container startup artifacts for Railway-style deploys.
+'@; git commit --trailer "Made-with: Cursor" -m $msg; git status --short</summary>
+
+```bash
+git add .env.example crews/label_crew.py dashboard/app.py label/web.py live/web.py requirements.txt scripts/webhook_server.py studio/web.py webhook_server.py .dockerignore Dockerfile Procfile; $msg = @'
+Harden MVP deployment and security-critical runtime paths.
+
+Enable authenticated department/webhook access, restore real Label mission execution, load env/PORT correctly, and add container startup artifacts for Railway-style deploys.
+'@; git commit --trailer "Made-with: Cursor" -m $msg; git status --short
+```
+
+```
+[main a593d8b] Harden MVP deployment and security-critical runtime paths.
+ 12 files changed, 177 insertions(+), 29 deletions(-)
+ create mode 100644 .dockerignore
+ create mode 100644 Dockerfile
+ create mode 100644 Procfile
+ M .specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md
+ M .specstory/statistics.json
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Finalizing the commit process**
+
+I need to ensure I mention the final commit and handle any leftover files. The user asked about a single batch commit, but it's a bit unclear if they want me to push it now. It might be best to work through must-have items for one batch commit first, and I should probably hold off on pushing unless the user confirms that they want me to. I'll make a note of the commit hash too!</details></think>
+
+_**Agent (default)**_
+
+Implemented all **MUST** items from the audit and created one batch commit (excluding `.specstory` files as requested).
+
+### Commit created
+- **Hash:** `a593d8b`
+- **Message:** `Harden MVP deployment and security-critical runtime paths.`
+
+### Included in this commit
+- `dashboard/app.py`  
+  - Loads `.env` via `load_dotenv`  
+  - Uses `PORT` env var  
+  - Uses `FLASK_DEBUG` instead of hardcoded debug
+- `label/web.py`  
+  - Added auth gate for `/label/api/*`  
+  - Replaced debug mission stub with real `crew.kickoff()` execution  
+  - Removed hardcoded `webhook.site` fallback; requires configured `WEBHOOK_URL`
+- `studio/web.py`, `live/web.py`  
+  - Added auth gates for run/apply/api routes
+- `webhook_server.py`, `scripts/webhook_server.py`  
+  - Added webhook secret validation (`WEBHOOK_SECRET`) via `X-WEBHOOK-SECRET` or `Authorization: Bearer`
+- `crews/label_crew.py`  
+  - Adds token header support for internal API calls (`X-MAESTRO-TOKEN`)
+- `requirements.txt`  
+  - Added `gunicorn`
+- Added deploy artifacts:  
+  - `Dockerfile`  
+  - `.dockerignore`  
+  - `Procfile`
+- `.env.example`  
+  - Added `SECRET_KEY`, `MAESTRO_DEV_MODE`, `WEBHOOK_SECRET` guidance
+
+### Not included (left untouched)
+- `.specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md`
+- `.specstory/statistics.json`
+
+If you want, I can now do the next step: **push this commit to `origin/main`**.
+
+---
+
+_**User**_
+
+yes please
+
+---
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Executing push command**
+
+I need to go ahead and run the shell command to push the changes. That means I’ll be using `git push origin main`. I should also check the status afterward, even though there are no commits to push. I just want to make sure everything is in order and running smoothly. So let's make sure to execute that command correctly. It's all about keeping things tidy!</details></think>
+
+_**Agent (default)**_
+
+Pushing your new batch commit to `origin/main` now, then I’ll confirm sync status.
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: git push origin main && git status -sb</summary>
+
+```bash
+git push origin main && git status -sb
+```
+
+```
+remote: Bypassed rule violations for refs/heads/main:        
+remote: 
+remote: - Changes must be made through a pull request.        
+remote: 
+To https://github.com/lrrecords/maestro-ai.git
+   3385d86..a593d8b  main -&gt; main
+## main...origin/main
+ M .specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md
+ M .specstory/statistics.json
+]633;Cremote: Bypassed rule violations for refs/heads/main:        
+remote: 
+remote: - Changes must be made through a pull request.        
+remote: 
+To https://github.com/lrrecords/maestro-ai.git
+   3385d86..a593d8b  main -&gt; main
+## main...origin/main
+ M .specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md
+ M .specstory/statistics.json
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+Push complete — your commit is now on GitHub `main`.
+
+- **Pushed:** `3385d86..a593d8b  main -> main`
+- **Remote note:** branch protection says PR required, but your push is currently allowed via bypass.
+- **Current local status:** only these unstaged local files remain:
+  - `.specstory/history/2026-04-17_04-18-32Z-repository-audit-for-maestro-ai.md`
+  - `.specstory/statistics.json`
+
+Everything from the MUST batch commit is online.
+
+---
+
+_**User**_
+
+Excellent! Shall we continue thru the list at Step 4
+
+---
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+I'm considering how to respond. I think I should say "yes" and then propose the next steps in a list format. It seems like I don't need any tools for this, but I might want to ask for permission to proceed with implementing the steps. Maybe I can suggest batching the process or making one commit to keep things organized. That could help streamline things! Let's see how to best present this to ensure clarity for the user.</details></think>
+
+_**Agent (default)**_
+
+Yes — great momentum.
+
+Next in Step 4 we should move to the **SHOULD** tier. I recommend this order:
+
+1. Expand `.env.example` to cover all actively referenced env vars.  
+2. Align README agent naming with actual runtime (`ASK_AI` vs `LLM`, clarify `SCHEMA` as metadata).  
+3. Tighten deploy docs (remove/clarify Playwright runtime requirement, add container/Railway startup path).  
+4. Add minimal deploy smoke checks for core routes and protected endpoints.
+
+If you want, I’ll start implementing those now in one pass and do **one batch commit** again.
+
+---
+
+_**User**_
+
+Yes please.
+
+---
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Preparing for edits**
+
+I need to proceed with the edits and send the commentary updates. It's crucial to check for any unexpected changes in the policy; if I notice something unusual, I should ask. We already know the spec story was modified and accepted for exclusion, which seems okay for now. I'll implement the SHOULD items, probably focusing on the docs, environment, tests, and maybe removing Playwright from the requirements. I should gather the necessary files, including the README and tests folder.</details></think>
+
+_**Agent (default)**_
+
+Perfect — I’ll implement the SHOULD set in one pass: broaden `.env.example`, align README agent naming/SCHEMA messaging, update setup/deploy docs (including Playwright guidance), and add a minimal deploy smoke test. Then I’ll commit as one batch.
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\README.md</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\docs\quickstart.md</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search">
+<details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "caseInsensitive": false,
+  "glob": "*.py",
+  "outputMode": "content",
+  "path": "C:\\Users\\brett\\Documents\\maestro-ai",
+  "pattern": "os\\.getenv\\([\"']([A-Z0-9_]+)[\"']"
+}
+```
+Additional data:
+
+```json
+{
+  "isPruned": true,
+  "outputMode": "content",
+  "path": "C:\\Users\\brett\\Documents\\maestro-ai",
+  "pattern": "os\\.getenv\\([\"']([A-Z0-9_]+)[\"']",
+  "topFiles": [
+    {
+      "matchCount": 2,
+      "uri": "core/llm_client.py"
+    },
+    {
+      "matchCount": 5,
+      "uri": "studio/agents/session.py"
+    },
+    {
+      "matchCount": 6,
+      "uri": "crews/internet_crew.py"
+    },
+    {
+      "matchCount": 1,
+      "uri": "studio\\web.py"
+    },
+    {
+      "matchCount": 5,
+      "uri": "studio/agents/mix.py"
+    },
+    {
+      "matchCount": 2,
+      "uri": "core/telegram_utils.py"
+    },
+    {
+      "matchCount": 6,
+      "uri": "scripts/artist_checkin_with_execution.py"
+    },
+    {
+      "matchCount": 5,
+      "uri": "dashboard\\app.py"
+    },
+    {
+      "matchCount": 5,
+      "uri": "studio/agents/sound.py"
+    },
+    {
+      "matchCount": 4,
+      "uri": "webhook_server.py"
+    },
+    {
+      "matchCount": 6,
+      "uri": "scripts/checkin.py"
+    },
+    {
+      "matchCount": 9,
+      "uri": "crews/label_crew.py"
+    },
+    {
+      "matchCount": 6,
+      "uri": "scripts/webhook_server.py"
+    },
+    {
+      "matchCount": 1,
+      "uri": "live/agents/route.py"
+    },
+    {
+      "matchCount": 3,
+      "uri": "core/base_agent.py"
+    },
+    {
+      "matchCount": 3,
+      "uri": "label/web.py"
+    },
+    {
+      "matchCount": 1,
+      "uri": "live\\web.py"
+    },
+    {
+      "matchCount": 4,
+      "uri": "scripts/test_ollama.py"
+    },
+    {
+      "matchCount": 5,
+      "uri": "dashboard/app.py"
+    },
+    {
+      "matchCount": 9,
+      "uri": "scripts/maestro_autopilot.py"
+    }
+  ],
+  "totalFiles": 30,
+  "totalMatches": 131
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ripgrep_raw_search"><details>
+<summary>Tool use: **ripgrep_raw_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search">
+<details>
+<summary>Tool use: **glob_file_search** • Searched codebase "" • **2** results in **1** directory</summary>
+
+Directory: **C:\Users\brett\Documents\maestro-ai** (2 files)
+
+| File |
+|------|
+| `../tests/test_llm_client.py` |
+| `../tests/test_api.py` |
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="search" data-tool-name="glob_file_search"><details>
+<summary>Tool use: **glob_file_search**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Looking at file edits**
+
+I need to edit the README and quickstart files, and maybe also work on the `.env.example` file. Adding a deploy script sounds like a good idea too! I should check the tests to ensure everything is in order. It’s essential to inspect those tests to confirm they’re all functioning correctly. I want to make sure I cover everything to keep the project running smoothly!</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\tests\test_api.py</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\.env.example</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+I found one important follow-on: existing API tests now conflict with the new auth behavior, so I’ll update tests to become proper deploy smoke checks for protected endpoints and webhook config behavior while I adjust docs/env coverage.
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\.env.example</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\README.md</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+Failed to find context:
+pip install -r requirements.txt
+cp .env.example .env
+```
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Considering file reading**
+
+I need to read the full quickstart file, but it seems like it might be truncated at just 20 lines, with no proper closing. I wonder if I should read all with a negative offset? Maybe I should use ReadFile in full because it’s short, but it doesn’t really end with a newline if it's cut off at 20 lines. It might be easiest to replace the whole file, applying a patch with the exact existing lines 1-20.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\brett\Documents\maestro-ai\docs\quickstart.md</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+I'm noticing that my file is incomplete because it's missing closing backticks. I think it would be beneficial to update the whole file with a clean quickstart, making sure everything is properly formatted this time. I want to include the run command too, to ensure clarity for anyone using it. It feels important to make this clear and tidy, so others can follow along easily. Let's get this done!</details></think>
+
+_**Agent (default)**_
+
+Failed to find context:
+# Quickstart: Maestro AI
+
+## Prerequisites
+
+- Python 3.8+ (recommend 3.11)
+- Node.js (only if developing deep frontend upgrades)
+- [Ollama](https://ollama.com/) (optional, for local LLM support)
+
+## Setup
+
+```bash
+git clone https://github.com/lrrecords/maestro-ai.git
+cd maestro-ai
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# Mac/Linux:
+source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+```
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Considering file updates**
+
+I’m thinking about handling a file update, possibly related to CRLF and a missing newline. It seems like the easiest way might be to delete and then add the file using ApplyPatch. I’m wondering if I could use minimal context lines or just line 1. Maybe it’s more straightforward to start with Delete and then Add through ApplyPatch. Let's explore that option further!</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="delete_file">
+<details><summary>Tool use: **delete_file**</summary>
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="delete_file"><details>
+<summary>Tool use: **delete_file**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\docs\quickstart.md</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\tests\test_api.py</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Setting up test environment**
+
+I need to ensure that the `webhook_url` environment variable is properly set for testing. If the actual `.env` is pointing to localhost, the test might fail with a 503 error depending on the environment loaded. So, I should probably use the `monkeypatch` fixture in my test to remove the `WEBHOOK_URL`. It seems like modifying the test to account for this would be a better approach overall to ensure reliability.</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\tests\test_api.py</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Updating README documentation**
+
+I'm thinking it's time to update the README docs to include information about deploying containers, perhaps by adding a command for Railway. It might be sufficient to include this as item #3 under the deploy docs. I should also add a brief section called "Deploy (container)" in the quick start area of the README. It's a simple patch, but I want to make sure it’s clear and helpful!</details></think>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: C:\Users\brett\Documents\maestro-ai\README.md</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Running tests and lints**
+
+I need to run quick pytest tests on `tests/test_api.py`. There’s a possibility they could fail due to a login redirect related to the `/hub` route, which might require a `MAESTRO_TOKEN`. Regardless, I’ll proceed with the tests. Oh, and I should also remember to run linter checks for any edited files to make sure everything's in line. Keeping everything tidy is important!</details></think>
+
+_**Agent (default)**_
+
+I’m running a quick validation now (`pytest` smoke + lint diagnostics) to ensure these SHOULD-item updates are clean before I package a single commit.
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2">
+<details><summary>Tool use: **run_terminal_command_v2** • Run command: pytest tests/test_api.py -q</summary>
+
+```bash
+pytest tests/test_api.py -q
+```
+
+```
+....                                                                     [100%]
+4 passed in 1.29s
+]633;C....                                                                     [100%]
+4 passed in 1.29s
+]633;D;0
+
+```
+</details>
+</tool-use>
+
+<tool-use data-tool-type="shell" data-tool-name="run_terminal_command_v2"><details>
+<summary>Tool use: **run_terminal_command_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="read_lints">
+<details>
+<summary>Tool use: **read_lints**</summary>
+
+
+Parameters:
+
+```json
+{
+  "paths": [
+    ".env.example",
+    "README.md",
+    "docs/quickstart.md",
+    "tests/test_api.py"
+  ]
+}
+```
+Result:
+
+```json
+{
+  "linterErrorsByFile": [
+    {
+      "relativeWorkspacePath": ".env.example"
+    },
+    {
+      "relativeWorkspacePath": "README.md"
+    },
+    {
+      "relativeWorkspacePath": "docs/quickstart.md"
+    },
+    {
+      "relativeWorkspacePath": "tests/test_api.py"
+    }
+  ]
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="read_lints"><details>
+<summary>Tool use: **read_lints**</summary>
+
+</details></tool-use>
+
+_**Agent (default)**_
+
+<think><details><summary>Thought Process</summary>
+**Ensuring test completion**
+
+I need to make sure that I include a mention that tests pass. It’s a crucial point! Tests are such a vital part of the process, right? If they don't pass, it's like, where do we even stand? So, I should definitely highlight that as part of the response. This way, I can assure whoever's reading that everything is in order and functioning as it should. It's all about maintaining confidence!</details></think>
+
+_**Agent (default)**_
+
+Completed the SHOULD pass and verified it.
+
+### What I updated
+
+- **Expanded env coverage** in `.env.example`
+  - Added documented keys for runtime/deploy/auth/webhook/LLM/provider integrations and email settings.
+- **Aligned README agent naming with real implementation** in `README.md`
+  - Studio now lists `ASK_AI` (not `LLM`).
+  - `SCHEMA` called out as metadata, not a runnable agent, for Studio/Live.
+- **Clarified Playwright usage** in `README.md` and `docs/quickstart.md`
+  - It is now marked **optional** (not required for core dashboard runtime).
+- **Improved setup docs for Windows** in `README.md` and `docs/quickstart.md`
+  - Added PowerShell `Copy-Item .env.example .env`.
+- **Added container run docs** in `README.md`
+  - Basic `docker build` / `docker run --env-file .env` flow.
+- **Added deploy smoke checks** in `tests/test_api.py`
+  - Verifies protected routes require auth.
+  - Verifies authenticated check-in works.
+  - Verifies webhook endpoint fails safely when `WEBHOOK_URL` is not configured.
+
+### Verification
+
+- `pytest tests/test_api.py -q` → **4 passed**
+- Lints on changed files → **no issues**
+
+If you want, I can now do a **single batch commit** for these SHOULD-item changes and push to `main` (same as last round).
+
+---
+
+_**User**_
+
+Yes Please
+
+_**User**_
+
+Ok I have usuage limit. Will you be able to compile transcript into a handover style document I can pass onto Chat mode or CoPilot chat in VS Code, so I can keep on working on Maestro AI Audit and MVP.
+
+_**User**_
+
+Ok I have usuage limit. Will you be able to compile transcript into a handover style document I can pass onto Chat mode or CoPilot chat in VS Code, so I can keep on working on Maestro AI Audit and MVP.
