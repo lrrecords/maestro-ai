@@ -22,6 +22,27 @@ Maestro AI is a modular, production-ready platform that brings together speciali
 - **n8n & API Automation:** Seamless integration with n8n and external APIs for notifications, CRM, distribution, and more.
 
 ---
+## 🆕 Current State — v1.4.0 (April 2026)
+
+Maestro AI is live and running operations at [LRRecords](https://lrrecords.com.au) in Rockingham, Western Australia.
+
+**What's working now:**
+- CEO Command Centre with mission orchestration and approval queue
+- 25+ agents across Label, Studio, Live, and Platform Ops departments
+- Redis-backed persistent job store
+- Role-based permissions (CEO / admin / user)
+- Full Swagger/OpenAPI documentation
+- Ollama (local, private) and Anthropic API (cloud) support
+
+**What's coming:**
+- LEDGER agent (financial tracking)
+- SAGE Daily Brief (morning intelligence digest)
+- FOCUS agent (CEO priority queue)
+- Docker deployment to Railway
+- Multi-label SaaS onboarding
+
+If you're running an independent label, studio, or live music organisation and want to try Maestro — star the repo and open an issue. We're actively building from real-world feedback.
+---
 
 ## 🏛️ Platform Architecture
 
