@@ -3,6 +3,8 @@ import sys
 from pathlib import Path
 from functools import wraps
 from flask import Flask, redirect, render_template, session, request, url_for
+# --- Flasgger (Swagger UI) ---
+from flasgger import Swagger
 from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -19,11 +21,29 @@ from label.web import label_bp
 TEMPLATES_DIR = ROOT / "templates"
 STATIC_DIR = ROOT / "static"
 
+
 app = Flask(
     __name__,
     template_folder=str(TEMPLATES_DIR),
     static_folder=str(STATIC_DIR)
 )
+
+# --- Flasgger Swagger UI config ---
+swagger_config = {
+    "headers": [],
+    "specs": [
+        {
+            "endpoint": 'apispec_1',
+            "route": '/apispec_1.json',
+            "rule_filter": lambda rule: True,  # all endpoints
+            "model_filter": lambda tag: True,  # all models
+        }
+    ],
+    "static_url_path": "/flasgger_static",
+    "swagger_ui": True,
+    "specs_route": "/apidocs/"
+}
+swagger = Swagger(app, config=swagger_config)
 
 SECRET_KEY = os.getenv("SECRET_KEY", os.urandom(24).hex())
 app.secret_key = SECRET_KEY

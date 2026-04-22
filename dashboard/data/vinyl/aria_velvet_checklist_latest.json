@@ -3,7 +3,7 @@
   "project": "Neon Letters",
   "project_type": "Release",
   "release_date": "TBD",
-  "generated": "2026-04-09",
+  "generated": "2026-04-18",
   "phases": [
     {
       "phase": "Pre-Production",
@@ -107,7 +107,6 @@
   ],
   "recommendations": [
     "Plan press outreach 2 weeks before release.",
-    "Engage fans with exclusive behind-the-scenes content.",
-    "Double-check distributor deadline alignment."
+    "Engage fans with exclusive behind-the-scenes content."
   ]
 }
