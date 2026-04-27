@@ -1,8 +1,9 @@
 <<<<<<< HEAD
 
 
+</p>
 <p align="center">
-  <img src="docs/assets/maestro_ai_new_logo.png" alt="Maestro AI logo" width="120">
+  <img src="docs/assets/maestro_ai_logo_metallic_neon.png" alt="Maestro AI logo" width="120">
 </p>
 
 # 🎼 Maestro AI — Multi-Agent Business OS for Music Labels
