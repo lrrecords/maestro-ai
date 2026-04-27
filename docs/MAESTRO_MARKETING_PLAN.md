@@ -108,7 +108,10 @@ These 8 posts fill those gaps. Interleave them with the existing 10 as you see f
 ---
 
 
+
 ### 2A. FOUNDER STORY — Tonight's Post (Static or Short Reel)
+
+![Founder Story — Brett at LRRecords](assets/founder_story_static.png)
 
 **Hook:**
 I built Maestro AI to run my own label. Here's what happened.
@@ -126,7 +129,10 @@ Follow to watch it being built. Link in bio for the full story.
 
 ---
 
+
 ### 2B. BUILD IN PUBLIC — Week 1
+
+![Maestro Dashboard Example](assets/Screenshot%20MAESTRO_Dashboard.jpg)
 
 **Hook:**
 I'm building an AI operating system for music labels. In public. No VC. No roadmap deck. Just code.
@@ -141,7 +147,10 @@ Comment "BUILD" if you want weekly updates on what we're shipping.
 
 ---
 
+
 ### 2C. THE AGENT ROSTER VISUAL — Carousel
+
+![Agent Roster Carousel](assets/agent_roster_carousel_updated.png)
 
 **Hook:**
 Your label's dream team doesn't need a salary.
@@ -163,7 +172,10 @@ Which agent would save you the most time? Comment below.
 
 ---
 
+
 ### 2D. THE REAL COST POST — Static
+
+![The Real Cost of Admin](assets/real_cost_static.png)
 
 **Hook:**
 How many hours did admin cost your label last week?
@@ -178,7 +190,10 @@ What would you do with 10 extra hours a week? Drop it in the comments.
 
 ---
 
+
 ### 2E. STACK TRANSPARENCY — For Tech-Curious Followers
+
+![Tech Stack Diagram](assets/tech_stack_diagram.png)
 
 **Hook:**
 What's actually running under the hood of Maestro AI?
@@ -223,7 +238,10 @@ Comment your biggest time killer. We're reading every reply.
 
 ---
 
+
 ### 2H. RESULTS POST — Proof (Use when you have a win to share)
+
+![Outputs Example](assets/MAESTRO_Outputs_Example.jpg)
 
 **Hook:**
 This week Maestro AI saved us [X hours] at LRRecords. Here's exactly what it did.
@@ -271,7 +289,10 @@ Releases, approvals, session bookings, artist communications, tour planning, inv
 - Replace the creative process or the relationships that make music meaningful.
 - Compromise on copyright, ownership, or artistic integrity.
 
+
 **The agents running at LRRecords right now:**
+
+![Departments Overview](assets/Screenshot%20Departments.jpg)
 - **ATLAS** — artist roster and analytics
 - **VINYL** — release planning and checklists
 - **ECHO** — content and marketing automation
@@ -480,7 +501,26 @@ Maestro AI is a multi-agent business operating system. Not a chatbot. Not a prod
 
 The agents handle the execution. You handle the strategy and the creativity.
 
+
 Here's what's running at LRRecords today:
+
+**Label Department:**
+![Label Dashboard](assets/Screenshot%20Departments.jpg)
+
+**Live Department:**
+![Live Dashboard](assets/LIVE_Dashboard.jpg)
+![Live Agents](assets/LIVE_Agents.jpg)
+
+**Studio Department:**
+![Studio Dashboard](assets/STUDIO_Dashboard.jpg)
+![Studio Agents](assets/STUDIO_Agents.jpg)
+
+**Run Agents:**
+![Run Agents](assets/MAESTRO_Run_Agents.jpg)
+
+**Checkin Example:**
+![Checkin](assets/MAESTRO_Checkin.jpg)
+![Checkin Example](assets/MAESTRO_Checkin_Example.jpg)
 
 *Label operations:* ATLAS (roster and analytics), VINYL (release planning), ECHO (content and marketing), BRIDGE (communications and outreach), FORGE (brand and creative), SAGE (daily intelligence briefing)
 
@@ -503,6 +543,12 @@ The code is on GitHub: [github.com/lrrecords/maestro-ai](https://github.com/lrre
 Maestro v1.4.0 is production-ready. The roadmap for 2026 includes: advanced analytics, a plugin API for custom agents, Docker deployment, and eventually a hosted SaaS option for labels that don't want to self-host.
 
 But the foundation — autonomous agents, human approval loops, and a dashboard that tells you what matters every morning — that's built and working.
+
+
+**Demo Artists:**
+![Demo Artist Nova Saint](assets/Screenshot%20Demo_Artist_Nova_Saint.jpg)
+![Demo Artist King Juno](assets/Screenshot%20Demo_Artist_King_Juno.jpg)
+![Demo Artist Aria Velvet](assets/Screenshot%20Demo_Artist_Aria_Velvet.jpg)
 
 **If you're a label owner, studio manager, or artist manager** drowning in admin: this was built for you. Star the repo, open an issue, or reach out directly. We're building from real feedback, from real people in the industry.
 
@@ -658,12 +704,21 @@ Happy to answer questions about the architecture. Also curious what patterns oth
 | Day 23 | Instagram | Existing Post 5: Live Ops |
 | Day 28 | Instagram | Post 2H: Results post (fill in real win) |
 
+
 ### Ongoing — Monthly Rhythm
 
 - **1 email newsletter/month** — agent spotlight or build update
 - **2–3 Instagram posts/week** — mix of existing series, new content above, and real behind-the-scenes
 - **1 blog post/month** — technical or founder perspective
 - **Community posts** — whenever you ship something meaningful
+
+---
+
+## Maestro AI Service Tiers
+
+![Service Tiers Overview](assets/service_tiers_static.png)
+
+*Visual summary of Maestro AI's available service tiers and offerings.*
 
 ---
 
