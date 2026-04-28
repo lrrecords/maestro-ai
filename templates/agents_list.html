@@ -1,0 +1,17 @@
+<!-- templates/agents_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Discovered Agents</title>
+</head>
+<body>
+    <h1>Discovered Agents (Open Core + Premium)</h1>
+    <ul>
+        {% for name in agent_names %}
+            <li>{{ name }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/hub">Back to Hub</a>
+</body>
+</html>

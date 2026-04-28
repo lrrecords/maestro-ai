@@ -33,11 +33,13 @@ We 💜 contributions from the label, studio, and indie music tech community!
 
 ---
 
-## Adding Agents or Pipelines
+
+## Adding Agents, Plugins, or Pipelines
 
 - Extend `/core` for new agent types or runners.
 - Register new agents in the appropriate department module or config.
 - Add CLI scripts to `/scripts/` if automating workflows.
+- For plugins/extensions, see [docs/EXTENDING.md](docs/EXTENDING.md).
 
 ---
 
@@ -58,6 +60,12 @@ We 💜 contributions from the label, studio, and indie music tech community!
 - Someone will review and merge after basic checks.
 
 ---
+
+
+## Open Core & Branding Compliance
+
+- This project is Open Core compliant. Premium/proprietary features are separated and may be disabled via `.env`.
+- Do not use Maestro AI or LRRecords branding for proprietary/premium features without written permission.
 
 ## Need Help?
 
