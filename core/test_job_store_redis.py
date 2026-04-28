@@ -1,4 +1,4 @@
-from job_store import JobStore
+from core.job_store import JobStore
 import os
 
 # Optionally set REDIS_URL here for testing

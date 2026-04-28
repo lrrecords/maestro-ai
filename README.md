@@ -9,9 +9,15 @@
 
 **A powerful, extensible, open-source platform that automates and streamlines operations for modern independent labels, studios, and music organizations using multi-agent AI orchestration.**
 
+
 [![License](https://img.shields.io/github/license/lrrecords/maestro-ai.svg)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/lrrecords/maestro-ai?sort=semver)](https://github.com/lrrecords/maestro-ai/releases)
+![Open Core](https://img.shields.io/badge/open--core-compliant-brightgreen)
 
+
+
+> **Branding/Trademark Notice:**
+> Maestro AI and LRRecords branding may not be used for proprietary or premium features without written permission. The open core is MIT licensed; premium code may have additional restrictions.
 
 ## 🚀 What is Maestro AI?
 
@@ -30,12 +36,15 @@ Maestro AI is live and running operations at [LRRecords](https://lrrecords.com.a
 - Full Swagger/OpenAPI documentation
 - Ollama (local, private) and Anthropic API (cloud) support
 
-**What's coming:**
-- LEDGER agent (financial tracking)
-- SAGE Daily Brief (morning intelligence digest)
-- FOCUS agent (CEO priority queue)
+
+**What's coming (Premium/Proprietary):**
+- LEDGER agent (financial tracking) *(premium_agents/ledger.py)*
+- SAGE Daily Brief (morning intelligence digest) *(premium_agents/sage_daily_brief.py)*
+- FOCUS agent (CEO priority queue) *(premium_agents/focus.py)*
+- Multi-label SaaS onboarding *(premium_agents/multi_label_onboarding.py)*
+
+**What's coming (Open Core):**
 - Docker deployment to Railway
-- Multi-label SaaS onboarding
 
 If you're running an independent label, studio, or live music organisation and want to try Maestro — star the repo and open an issue. We're actively building from real-world feedback.
 ---
@@ -187,7 +196,10 @@ More screenshots: see `docs/assets/`.
 
 ---
 
+
 ## 🧩 Extending Maestro AI
+
+- See [docs/EXTENDING.md](docs/EXTENDING.md) for a full extension/plugin guide.
 
 - **Add new agents:** See `crews/` for examples. Agents are modular and can be customized per user or label.
 - **Integrate with n8n:** Trigger automations, notifications, and external workflows from CrewAI or Flask endpoints.
@@ -250,17 +262,21 @@ Please don’t commit real artist/label data or any credentials.
 
 ---
 
+
 ## 📚 Documentation
 
 - [IMPLEMENTATION_GUIDE.md](docs/IMPLEMENTATION_GUIDE.md): Full CrewAI and approval queue setup.
 - [MISSION_BRIEFS_EXAMPLES.md](docs/mission_briefs_examples.md): Example mission briefs for testing and demos.
 - [RELEASES.md](./RELEASES.md) — detailed changelog & migration notes
+- [RELEASE.md](./RELEASE.md) — Open Core release guide
 - [LICENSE](./LICENSE)
 - [Quickstart Guide](./docs/quickstart.md) (coming soon)
 
 ---
 
 ## 🏷️ License
+
+This project is Open Core compliant. Premium/proprietary features are separated and may be disabled via `.env`.
 
 MIT License © [LRRecords](https://github.com/lrrecords), 2026
 

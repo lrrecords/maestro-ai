@@ -9,7 +9,8 @@ set /p choice="Select an option (1-3): "
 
 if "%choice%"=="1" (
 	echo Starting Dashboard...
-	start "Dashboard" cmd /k "venv\Scripts\activate && cd dashboard && python app.py"
+	cd /d "%~dp0"
+	start "Dashboard" cmd /k "venv\Scripts\activate && python -m dashboard.app"
 	goto :eof
 )
 if "%choice%"=="2" (

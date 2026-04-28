@@ -1,11 +1,16 @@
+from flask import jsonify
 import os
 import sys
 from pathlib import Path
 from functools import wraps
-from flask import Flask, redirect, render_template, session, request, url_for
-# --- Flasgger (Swagger UI) ---
+from flask import Flask, redirect, render_template, session, request, url_for, jsonify
 from flasgger import Swagger
 from dotenv import load_dotenv
+
+# --- Dynamic Agent Loader: MUST be before any Flask app/routes ---
+from core.agent_loader import discover_agents
+AGENT_CLASSES = discover_agents()
+print(f"[AgentLoader] Discovered agents: {list(AGENT_CLASSES.keys())}")
 
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
@@ -21,12 +26,13 @@ from label.web import label_bp
 TEMPLATES_DIR = ROOT / "templates"
 STATIC_DIR = ROOT / "static"
 
-
 app = Flask(
     __name__,
     template_folder=str(TEMPLATES_DIR),
     static_folder=str(STATIC_DIR)
 )
+
+
 
 # --- Flasgger Swagger UI config ---
 swagger_config = {
@@ -127,6 +133,31 @@ def login_page():
 def logout():
     session.clear()
     return redirect(url_for("login_page"))
+
+@app.route("/agents")
+@login_required
+def list_agents():
+    """
+    List all discovered agent class names (open core + premium).
+    """
+    agent_names = list(AGENT_CLASSES.keys())
+    return render_template("agents_list.html", agent_names=agent_names)
+
+# Run an agent by name and return its output as JSON
+@app.route("/agents/run/<agent_name>", methods=["POST", "GET"])
+@login_required
+def run_agent(agent_name):
+    agent_cls = AGENT_CLASSES.get(agent_name)
+    if not agent_cls:
+        return jsonify({"error": f"Agent '{agent_name}' not found."}), 404
+    try:
+        agent = agent_cls()
+        # For demo, use empty context or pass JSON from POST body if desired
+        context = {}
+        result = agent.run(context)
+        return jsonify({"result": result})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "8080"))
