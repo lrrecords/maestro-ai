@@ -1,0 +1,35 @@
+# Maestro-AI CI Pipeline for GitHub Actions
+# This workflow runs verification and checks artifact freshness on every push and PR.
+
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify-and-artifact-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run baseline verification
+        run: |
+          python test_agents.py
+
+      - name: Check artifact freshness
+        run: |
+          git diff --exit-code feature_list.json || (echo "feature_list.json was not updated!" && exit 1)
+          git diff --exit-code claude-progress.md || (echo "claude-progress.md was not updated!" && exit 1)

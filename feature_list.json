@@ -1,0 +1,16 @@
+[
+  {
+    "id": "agent_startup",
+    "priority": 1,
+    "area": "core",
+    "title": "Agent startup and baseline verification",
+    "user_visible_behavior": "Agent starts, loads config, and passes baseline tests.",
+    "status": "not_started",
+    "verification": [
+      "Run ./init.sh or start_maestro_session.ps1",
+      "Run python test_agents.py and confirm all tests pass"
+    ],
+    "evidence": "",
+    "notes": "Replace this example with your own features. Only one feature should be in_progress at a time."
+  }
+]
