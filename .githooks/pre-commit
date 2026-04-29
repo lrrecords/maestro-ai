@@ -1,0 +1,7 @@
+#!/bin/bash
+# Pre-commit hook for maestro-ai: verifies baseline and checks artifact freshness
+
+python test_agents.py || { echo 'Baseline verification failed!'; exit 1; }
+
+git diff --cached --exit-code feature_list.json || { echo 'feature_list.json was not updated!'; exit 1; }
+git diff --cached --exit-code claude-progress.md || { echo 'claude-progress.md was not updated!'; exit 1; }

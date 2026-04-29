@@ -1,7 +1,3 @@
-
-
-</p>
-
 <p align="center">
   <img src="docs/assets/maestro_ai_logo_metallic_neon.png" alt="Maestro AI logo" width="120">
 </p>
@@ -255,10 +251,15 @@ This explicit “apply” step keeps the dashboard safe: agent runs can be evalu
 
 ---
 
+
 ## 🤝 Contributing
 
 We welcome PRs! See [`CONTRIBUTING.md`](CONTRIBUTING.md).  
 Please don’t commit real artist/label data or any credentials.
+
+### Harness Engineering Workflow
+
+This repo uses a Harness Engineering workflow for agent and human collaboration. See [HARNESS_ENGINEERING_WORKFLOW.md](HARNESS_ENGINEERING_WORKFLOW.md) for session rules, automation, and best practices.
 
 ---
 
