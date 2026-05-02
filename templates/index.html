@@ -2038,12 +2038,13 @@
     }
 
  async function loadDashboard() {
+      const content = document.getElementById("dashboard-roster");
+      content.innerHTML = `<div class="spinner"></div>`;
       loadSageBrief();
-      const content = document.getElementById("dashboard-roster");  inner.innerHTML = `<div class="spinner"></div>`;
 
       const rows = await apiFetch(API_PREFIX + "/api/dashboard").catch(() => null);
       if (!rows) {
-        inner.innerHTML = `<div style="color:var(--red);padding:24px;">Failed to load dashboard.</div>`;
+        content.innerHTML = `<div style="color:var(--red);padding:24px;">Failed to load dashboard.</div>`;
         return;
       }
 
@@ -2077,7 +2078,7 @@
       </div>`;
       }).join("");
 
-      inner.innerHTML = `
+      content.innerHTML = `
 <div class="dash-heading">
           <div class="dash-title">Roster Health Dashboard</div>
           <div class="dash-sub">Real-time intelligence across all label artists</div>

@@ -10,7 +10,7 @@ LIVE_AGENT_SCHEMAS: dict[str, dict] = {
         "fields": [
             {"name": "artist",    "label": "Artist",        "type": "text",   "required": True, "placeholder": "Example Artist"},
             {"name": "territory", "label": "Territory",     "type": "text",   "placeholder": "UK / Europe / US"},
-            {"name": "dates",     "label": "Target Dates",  "type": "tags",   "placeholder": "2026-04-02, 2026-04-05"},
+            {"name": "dates",     "label": "Target Dates",  "type": "text",   "placeholder": "2026-04-02, 2026-04-05"},
             {"name": "capacity",  "label": "Min. Capacity", "type": "number", "placeholder": "250"},
             {"name": "deal_type", "label": "Deal Type",     "type": "select", "options": ["flat", "versus", "guarantee"]},
             {"name": "notes",     "label": "Notes",         "type": "textarea", "placeholder": "Constraints, dream venues, supports..."},
@@ -22,7 +22,7 @@ LIVE_AGENT_SCHEMAS: dict[str, dict] = {
         "fields": [
             {"name": "artist",              "label": "Artist",              "type": "text",     "required": True, "placeholder": "e.g. Bicep"},
             {"name": "expected_attendance", "label": "Expected Attendance", "type": "number",   "placeholder": "300"},
-            {"name": "show_dates",          "label": "Show Dates",          "type": "tags",     "placeholder": "2026-04-02, 2026-04-15"},
+            {"name": "show_dates",          "label": "Show Dates",          "type": "text",     "placeholder": "2026-04-02, 2026-04-15"},
             {"name": "price_points",        "label": "Price Points",        "type": "text",     "placeholder": "10, 25, 40"},
             {"name": "existing_inventory",  "label": "Existing Inventory",  "type": "textarea", "placeholder": "T-shirts: 40, Hoodies: 20, Vinyl: 15"},
         ],
@@ -32,11 +32,11 @@ LIVE_AGENT_SCHEMAS: dict[str, dict] = {
     "description": "Marketing and promotional strategy.",
     "fields": [
         {"name": "artist",           "label": "Artist",           "type": "text",    "required": True, "placeholder": "e.g. Bicep"},
-        {"name": "cities",           "label": "Cities",           "type": "tags",    "placeholder": "London, Manchester, Glasgow"},
-        {"name": "show_dates",       "label": "Show Dates",       "type": "tags",    "placeholder": "2026-04-02, 2026-04-15"},
+        {"name": "cities",           "label": "Cities",           "type": "text",    "placeholder": "London, Manchester, Glasgow"},
+        {"name": "show_dates",       "label": "Show Dates",       "type": "text",    "placeholder": "2026-04-02, 2026-04-15"},
         {"name": "target_audience",  "label": "Target Audience",  "type": "text",    "placeholder": "Fans of X / genre / scene"},
         {"name": "budget",           "label": "Budget",           "type": "number",  "placeholder": "500"},
-        {"name": "platforms",        "label": "Platforms",        "type": "tags",    "placeholder": "instagram, tiktok"},
+        {"name": "platforms",        "label": "Platforms",        "type": "text",    "placeholder": "instagram, tiktok"},
         {"name": "objectives",       "label": "Objectives",       "type": "textarea","placeholder": "Sell out first three dates, grow mailing list, etc."},
     ],
 },
@@ -45,7 +45,7 @@ LIVE_AGENT_SCHEMAS: dict[str, dict] = {
         "description": "Tour routing and travel optimisation.",
         "fields": [
             {"name": "home_city",      "label": "Home City",      "type": "text",   "placeholder": "London", "required": True},
-            {"name": "cities",         "label": "Cities",         "type": "tags",   "placeholder": "London, Manchester, Glasgow", "required": True},
+            {"name": "cities",         "label": "Cities",         "type": "text",   "placeholder": "London, Manchester, Glasgow", "required": True},
             {"name": "start_date",     "label": "Start Date",     "type": "text",   "placeholder": "2026-04-02"},
             {"name": "end_date",       "label": "End Date",       "type": "text",   "placeholder": "2026-04-15"},
             {"name": "transport_mode", "label": "Transport",      "type": "select", "options": ["van", "bus", "train", "fly", "mixed"]},
@@ -67,7 +67,7 @@ LIVE_AGENT_SCHEMAS: dict[str, dict] = {
         "description": "Technical and hospitality rider management.",
         "fields": [
             {"name": "artist",                      "label": "Artist",                "type": "text",     "required": True, "placeholder": "e.g. Bicep"},
-            {"name": "show_dates",                  "label": "Show Dates",            "type": "tags",     "placeholder": "e.g. 2026-04-02"},
+            {"name": "show_dates",                  "label": "Show Dates",            "type": "text",     "placeholder": "e.g. 2026-04-02"},
             {"name": "stage_plot",                  "label": "Stage Plot Notes",      "type": "textarea", "placeholder": "e.g. 2x CDJs, 1x DJM mixer, monitors L/R"},
             {"name": "hospitality_requirements",    "label": "Hospitality Notes",     "type": "textarea", "placeholder": "e.g. Vegan catering, 2 private dressing rooms"},
             {"name": "guest_list",                  "label": "Guest List",            "type": "textarea", "placeholder": "Per show: City and names, e.g. Perth: Jason M, Randy L"},
