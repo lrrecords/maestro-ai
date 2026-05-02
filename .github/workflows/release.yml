@@ -1,0 +1,68 @@
+# Maestro AI — Automated Release Workflow
+# Triggered when a version tag (e.g. v1.5.0) is pushed.
+# Creates a GitHub Release with an auto-generated changelog.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          # Match the Python version used in Dockerfile and CI
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run test suite
+        run: python -m pytest tests/ -v --tb=short
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Generate changelog excerpt
+        id: changelog
+        run: |
+          # Pull the top section from RELEASES.md (everything up to the next '---')
+          python - <<'EOF'
+          import re, pathlib, os
+          text = pathlib.Path("RELEASES.md").read_text()
+          # Grab from the first '## v' heading to the next '---' separator
+          match = re.search(r'(## v[\s\S]+?)(?=\n---)', text)
+          excerpt = match.group(1).strip() if match else "See RELEASES.md for details."
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
+              # GitHub multiline output delimiter
+              fh.write("NOTES<<CHANGELOG_EOF\n")
+              fh.write(excerpt + "\n")
+              fh.write("CHANGELOG_EOF\n")
+          EOF
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.VERSION }}
+          name: "Maestro AI ${{ steps.version.outputs.VERSION }}"
+          body: ${{ steps.changelog.outputs.NOTES }}
+          draft: false
+          prerelease: ${{ contains(steps.version.outputs.VERSION, '-') }}

@@ -137,10 +137,30 @@ print(json.dumps(r['data'], indent=2))
 python -m pytest tests/ -v
 ```
 
-All 56 tests should pass. No external services (LLM, Redis) are required —
+All tests should pass. No external services (LLM, Redis) are required —
 all network calls are mocked in the test suite.
 
 ---
+
+## 6b. API Documentation (Swagger/OpenAPI)
+
+Maestro AI ships with full interactive API docs via Flasgger.
+
+Start the dashboard, then visit:
+
+```
+http://localhost:8080/apidocs/
+```
+
+The Swagger UI lists every endpoint with request/response schemas. You can
+execute requests directly from the browser.
+
+The raw OpenAPI spec JSON is available at:
+
+```
+http://localhost:8080/apispec_1.json
+```
+
 
 ## 7. Docker
 

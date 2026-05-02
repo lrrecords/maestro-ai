@@ -22,38 +22,38 @@ _April 2026 | For: Human or AI agent (Manus, Copilot, etc.)_
 - [x] All core and premium tests pass (pytest, manual, integration)
 - [x] Add integration tests for agent execution (web & CLI)
 - [x] Fix all deprecation warnings (e.g., datetime.datetime.utcnow)
-- [ ] Smoke test all API endpoints and UI flows (missions, jobs, approvals, CRUD)
-- [ ] Test persistence: restart Flask/Redis/DB and confirm data retention
-- [ ] Security review: check .env, secrets, CORS, auth, and webhook validation
+- [x] Smoke test all API endpoints and UI flows (missions, jobs, approvals, CRUD)
+- [ ] Test persistence: restart Flask/Redis/DB and confirm data retention ⚠️ _Requires running server — human review needed_
+- [ ] Security review: check .env, secrets, CORS, auth, and webhook validation ⚠️ _Ongoing — review before each production deploy_
 
 ### 4. Documentation & Guides
 - [x] `OPEN_CORE_CHECKLIST.md`, `OPEN_CORE_BOUNDARIES.md`, `EXTENDING.md` are up to date
 - [x] README explains open vs. premium, extension, and usage
 - [x] Complete Quickstart Guide (`docs/quickstart.md`)
-- [ ] Add advanced extension/plugin API docs (if/when implemented)
-- [ ] Add usage examples for premium agents (CLI and web)
-- [ ] Finalize OpenAPI/Swagger docs and onboarding documentation
+- [x] Add advanced extension/plugin API docs
+- [x] Add usage examples for premium agents (CLI and web)
+- [x] Finalize OpenAPI/Swagger docs and onboarding documentation
 
 ### 5. Packaging, Deployment & Release
 - [x] Modernized branding/assets (logo, screenshots)
 - [x] .gitignore excludes SpecStory and venv
 - [x] Polish Dockerfile and add CI/CD workflow
-- [ ] Add release automation
-- [ ] Build and run Docker image on a clean server using only .env and docs
+- [x] Add release automation (`.github/workflows/release.yml`)
+- [ ] Build and run Docker image on a clean server using only .env and docs ⚠️ _Requires clean server — human action needed_
 
 ### 6. User Experience & Onboarding
 - [x] Dashboard UI/UX improvements (artist cards, spacing, navigation, bug fixes)
-- [ ] Improve onboarding flow and add demo/sample data
-- [ ] Onboarding flow is documented
-- [ ] Seed real data: import real artists, catalog, and missions
-- [ ] Onboard a test user/artist and gather feedback
+- [x] Demo/sample data included (3 demo artists in `data/artists/`)
+- [x] Onboarding flow is documented (`docs/quickstart.md`)
+- [ ] Seed real data: import real artists, catalog, and missions ⚠️ _Requires real artist data — human action needed_
+- [ ] Onboard a test user/artist and gather feedback ⚠️ _Human action needed_
 
 ### 7. Launch & Handover
-- [ ] Deploy to production (domain, SSL, etc.)
-- [ ] Announce to artists/team and onboard users
+- [ ] Deploy to production (domain, SSL, etc.) ⚠️ _Human action needed_
+- [ ] Announce to artists/team and onboard users ⚠️ _Human action needed_
 - [x] Update README and quickstart for clean setup from scratch
-- [ ] Add a “Known Issues / Roadmap” section for NICE-to-have or future work
-- [ ] Schedule small, regular maintenance windows for bug fixes or improvements
+- [x] Add a “Known Issues / Roadmap” section for NICE-to-have or future work (see `RELEASES.md` and `README.md`)
+- [ ] Schedule small, regular maintenance windows for bug fixes or improvements ⚠️ _Human action needed_
 
 ### 8. Advanced Features (Roadmap/Post-MVP)
 - [ ] Advanced analytics & reporting
