@@ -362,7 +362,7 @@ def run_report():
 
     # Render
     W   = 74
-    now = datetime.utcnow().strftime("%d %b %Y  %H:%M UTC")
+    now = datetime.now(timezone.utc).strftime("%d %b %Y  %H:%M UTC")
 
     print(f"\n{Fore.CYAN}{'=' * W}{Style.RESET_ALL}")
     print(f"{Fore.CYAN}  MAESTRO AI  -  ARTIST HEALTH DASHBOARD{now:>{W - 40}}{Style.RESET_ALL}")
