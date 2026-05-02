@@ -26,6 +26,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
+          # Match the Python version used in Dockerfile and CI
           python-version: '3.11'
 
       - name: Install dependencies
