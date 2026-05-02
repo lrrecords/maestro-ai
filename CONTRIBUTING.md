@@ -26,10 +26,17 @@ We 💜 contributions from the label, studio, and indie music tech community!
 - All new endpoints require a backend test in `/tests/` (see `test_api.py`).
 - Run tests with:
     ```bash
-    pytest
+    python -m pytest
     ```
 - LLM/agent handlers: test error messages for user guidance. See `test_llm_client.py`.
 - Ensure test coverage for special/edge cases whenever possible.
+- **SAGE agent tests** require no live LLM — the test suite mocks the LLM call automatically.
+  To run a live SAGE test locally, set the required env var:
+    ```bash
+    export OPENAI_API_KEY=sk-...   # if using OpenAI provider
+    # or configure Ollama (see .env.example)
+    python -m pytest tests/test_sage.py -v
+    ```
 
 ---
 
