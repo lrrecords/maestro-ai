@@ -9,7 +9,7 @@ _April 2026 | For: Human or AI agent (Manus, Copilot, etc.)_
 
 ### 1. Open Core & Premium Boundaries
 - [x] All premium/proprietary code is in `premium_agents/` and gated by `.env`
-- [ ] Open core runs and passes tests with premium code removed
+- [x] Open core runs and passes tests with premium code removed
 - [x] Dynamic agent loader discovers both open and premium agents at runtime
 - [x] Handles missing/disabled premium agents gracefully
 - [x] All agent directories have `__init__.py` and robust error handling/logging
