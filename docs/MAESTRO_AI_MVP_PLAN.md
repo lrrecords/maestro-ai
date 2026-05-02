@@ -42,6 +42,7 @@ _April 2026 | For: Human or AI agent (Manus, Copilot, etc.)_
 - [ ] Build and run Docker image on a clean server using only .env and docs
 
 ### 6. User Experience & Onboarding
+- [x] Dashboard UI/UX improvements (artist cards, spacing, navigation, bug fixes)
 - [ ] Improve onboarding flow and add demo/sample data
 - [ ] Onboarding flow is documented
 - [ ] Seed real data: import real artists, catalog, and missions
