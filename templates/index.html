@@ -1728,6 +1728,9 @@
         <button class="nav-btn active" id="nav-dash" onclick="showDashboard()">
           📊 &nbsp;Dashboard
         </button>
+        <a href="/label/ledger" class="nav-btn" style="text-decoration: none; color: inherit;">
+          💰 &nbsp;Ledger
+        </a>
       </nav>
       <div class="sb-roster-label">Roster</div>
       <div class="sb-artists" id="sb-artists">
@@ -2034,9 +2037,9 @@
       loadDashboard();
     }
 
-    async function loadDashboard() {
-      const inner = document.getElementById("dash-inner");
-      inner.innerHTML = `<div class="spinner"></div>`;
+ async function loadDashboard() {
+      loadSageBrief();
+      const content = document.getElementById("dashboard-roster");  inner.innerHTML = `<div class="spinner"></div>`;
 
       const rows = await apiFetch(API_PREFIX + "/api/dashboard").catch(() => null);
       if (!rows) {
@@ -2075,10 +2078,25 @@
       }).join("");
 
       inner.innerHTML = `
-    <div class="dash-heading">
-      <div class="dash-title">Roster Health Dashboard</div>
-      <div class="dash-sub">Updated ${new Date().toLocaleString()}</div>
-    </div>
+<div class="dash-heading">
+          <div class="dash-title">Roster Health Dashboard</div>
+          <div class="dash-sub">Real-time intelligence across all label artists</div>
+        </div>
+
+        <!-- SAGE Daily Brief Section -->
+        <div id="sage-brief-container" style="margin-bottom: 24px; display: none;">
+          <div style="background: rgba(0, 200, 212, 0.05); border: 1px solid var(--cyan-dim); border-radius: 10px; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 1.2rem;">🧠</span>
+                <h3 style="color: var(--cyan); margin: 0; font-size: 1rem; letter-spacing: 0.05em;">SAGE DAILY BRIEF</h3>
+              </div>
+              <div id="sage-date" style="font-family: var(--mono); font-size: 0.7rem; color: var(--muted);"></div>
+            </div>
+            <div id="sage-headline" style="font-size: 1.1rem; font-weight: 600; color: var(--white); margin-bottom: 15px;"></div>
+            <div id="sage-actions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;"></div>
+          </div>
+        </div>
     <div class="stats-row">
       <div class="stat-card"><div class="stat-val cyan">${total}</div><div class="stat-lbl">Artists</div></div>
       <div class="stat-card"><div class="stat-val green">${good}</div><div class="stat-lbl">Healthy</div></div>
@@ -3109,6 +3127,31 @@
       });
       toast(approved ? '✅ Approved — executing via n8n' : '✗ Rejected', approved ? 'ok' : 'err');
       setTimeout(loadApprovalQueue, 500);
+    }
+
+    async function loadSageBrief() {
+      const container = document.getElementById('sage-brief-container');
+      try {
+        const resp = await fetch('/label/sage/api/brief');
+        const data = await resp.json();
+        if (data.error) return;
+
+        document.getElementById('sage-date').textContent = data.date;
+        document.getElementById('sage-headline').textContent = data.headline;
+        
+        const actionsHtml = data.priority_actions.map(a => `
+          <div style="background: var(--surface2); padding: 12px; border-radius: 6px; border-left: 3px solid ${a.urgency === 'high' ? 'var(--red)' : (a.urgency === 'medium' ? 'var(--yellow)' : 'var(--green)')}">
+            <div style="font-size: 0.65rem; text-transform: uppercase; color: var(--muted); margin-bottom: 4px;">Priority ${a.rank}</div>
+            <div style="font-weight: 600; font-size: 0.85rem; margin-bottom: 4px;">${a.action}</div>
+            <div style="font-size: 0.75rem; color: var(--label);">${a.context}</div>
+          </div>
+        `).join('');
+        
+        document.getElementById('sage-actions').innerHTML = actionsHtml;
+        container.style.display = 'block';
+      } catch (err) {
+        console.error('SAGE Brief Error:', err);
+      }
     }
 
     // Auto-load and auto-refresh approval queue and mission list
