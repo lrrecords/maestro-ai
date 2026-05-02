@@ -2,11 +2,13 @@
 
 ## Prerequisites
 
-- Python 3.8+ (recommend 3.11)
-- Node.js (only if developing deep frontend upgrades)
-- [Ollama](https://ollama.com/) (optional, for local LLM support)
+- Python 3.11+ (recommended)
+- [Ollama](https://ollama.com/) (optional — for local LLM support)
+- Node.js (only needed for deep frontend customisation)
 
-## Setup
+---
+
+## 1. Clone & Install
 
 ```bash
 git clone https://github.com/lrrecords/maestro-ai.git
@@ -17,23 +19,170 @@ source venv/bin/activate
 # Windows PowerShell:
 # venv\Scripts\activate
 pip install -r requirements.txt
+```
+
+---
+
+## 2. Configure Environment
+
+```bash
 cp .env.example .env
 ```
 
-Windows PowerShell equivalent for the copy step:
+Windows PowerShell:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Playwright install is optional and only needed for browser automation workflows:
+Open `.env` and set at minimum:
 
+| Variable | Purpose | Example |
+|---|---|---|
+| `MAESTRO_TOKEN` | Dashboard login token | `my-secret-token` |
+| `LLM_PROVIDER` | LLM backend | `ollama` or `anthropic` |
+| `PREMIUM_FEATURES_ENABLED` | Enable premium agents | `true` |
+
+For local development you can instead set `MAESTRO_DEV_MODE=1` to bypass token login (any token accepted).
+
+### LLM options
+
+**Ollama (local, free):**
 ```bash
-playwright install chromium
+ollama pull llama3.1:8b   # or any supported model
 ```
+Set `LLM_PROVIDER=ollama` in `.env`.
 
-## Run
+**Anthropic (cloud):**
+Set `LLM_PROVIDER=anthropic` and `ANTHROPIC_API_KEY=sk-...` in `.env`.
+
+**OpenAI (cloud):**
+Set `LLM_PROVIDER=openai` and `OPENAI_API_KEY=sk-...` in `.env`.
+
+---
+
+## 3. Start the Dashboard
 
 ```bash
 python dashboard/app.py
 ```
+
+Visit [http://localhost:8080](http://localhost:8080) and log in with your `MAESTRO_TOKEN`.
+
+For production use gunicorn (already in `requirements.txt`):
+
+```bash
+gunicorn -w 2 -b 0.0.0.0:8080 dashboard.app:app
+```
+
+---
+
+## 4. Demo Data
+
+Three demo artists are included out of the box:
+
+- `data/artists/aria_velvet.json` — Alt Pop artist, upcoming single
+- `data/artists/king_juno.json`
+- `data/artists/nova_saint.json`
+
+To add your own artist, copy one of the demo files and edit the fields. Use
+`artist_import_template.csv` for bulk imports.
+
+---
+
+## 5. Running Agents
+
+### Via the Dashboard
+
+After login, navigate to `/agents` to see all discovered agents. Click
+**Run** next to any agent to execute it with a default (empty) context.
+
+For LEDGER, SAGE, FOCUS, and MULTI_LABEL_ONBOARDING premium agents, use the
+dedicated dashboard pages under `/label/ledger` and `/label/sage`, or hit
+the `/agents/run/<AgentName>` API endpoint directly.
+
+### Via the CLI
+
+```bash
+# LEDGER — financial summary
+python -c "
+from premium_agents.ledger import LedgerAgent
+import json
+r = LedgerAgent().run({'period': 'last_30_days'})
+print(json.dumps(r['data'], indent=2))
+"
+
+# FOCUS — CEO priority queue
+python -c "
+from premium_agents.focus import FocusAgent
+import json
+r = FocusAgent().run({})
+print(json.dumps(r['data'], indent=2))
+"
+
+# MULTI_LABEL_ONBOARDING — new label onboarding package
+python -c "
+from premium_agents.multi_label_onboarding import MultiLabelOnboardingAgent
+import json
+r = MultiLabelOnboardingAgent().run({'label_name': 'My Label', 'owner_name': 'Jane'})
+print(json.dumps(r['data'], indent=2))
+"
+```
+
+---
+
+## 6. Running Tests
+
+```bash
+python -m pytest tests/ -v
+```
+
+All 56 tests should pass. No external services (LLM, Redis) are required —
+all network calls are mocked in the test suite.
+
+---
+
+## 7. Docker
+
+Build and run the Docker image locally:
+
+```bash
+docker build -t maestro-ai .
+docker run -p 8080:8080 --env-file .env maestro-ai
+```
+
+Visit [http://localhost:8080](http://localhost:8080).
+
+---
+
+## 8. Open Core vs Premium
+
+| Area | Open Core | Premium |
+|---|---|---|
+| Dashboard & routing | ✅ | ✅ |
+| Base agent framework | ✅ | ✅ |
+| LEDGER (financials) | — | ✅ |
+| SAGE (daily brief) | — | ✅ |
+| FOCUS (CEO queue) | — | ✅ |
+| MULTI_LABEL_ONBOARDING | — | ✅ |
+
+Toggle premium features with `PREMIUM_FEATURES_ENABLED=true/false` in `.env`.
+
+---
+
+## 9. Extending Maestro AI
+
+See [`docs/EXTENDING.md`](EXTENDING.md) for the full guide on adding your own
+agents and plugins.
+
+---
+
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| `Dashboard not configured: MAESTRO_TOKEN is missing` | Set `MAESTRO_TOKEN` in `.env`, or set `MAESTRO_DEV_MODE=1` |
+| `LLM returned empty response` | Start Ollama (`ollama serve`) or check your API key |
+| `Agent not found` | Ensure `PREMIUM_FEATURES_ENABLED=true` and the agent file exists in `premium_agents/` |
+| `ModuleNotFoundError` | Run `pip install -r requirements.txt` inside your virtual environment |
+

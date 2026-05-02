@@ -31,13 +31,11 @@ Maestro AI is live and running operations at [LRRecords](https://lrrecords.com.a
 - Role-based permissions (CEO / admin / user)
 - Full Swagger/OpenAPI documentation
 - Ollama (local, private) and Anthropic API (cloud) support
+- LEDGER agent (financial tracking) — `premium_agents/ledger.py`
+- SAGE Daily Brief (morning intelligence digest) — `premium_agents/sage_daily_brief.py`
+- FOCUS agent (CEO priority queue) — `premium_agents/focus.py`
+- Multi-label SaaS onboarding — `premium_agents/multi_label_onboarding.py`
 
-
-**What's coming (Premium/Proprietary):**
-- LEDGER agent (financial tracking) *(premium_agents/ledger.py)*
-- SAGE Daily Brief (morning intelligence digest) *(premium_agents/sage_daily_brief.py)*
-- FOCUS agent (CEO priority queue) *(premium_agents/focus.py)*
-- Multi-label SaaS onboarding *(premium_agents/multi_label_onboarding.py)*
 
 **What's coming (Open Core):**
 - Docker deployment to Railway
@@ -243,11 +241,21 @@ This explicit “apply” step keeps the dashboard safe: agent runs can be evalu
 - [x] Platform Ops (model config, health monitoring)
 - [x] Pluggable agent registry
 - [x] Ollama/Anthropic support for LLMs
+- [x] LEDGER, SAGE, FOCUS, MULTI_LABEL_ONBOARDING premium agents
+- [x] Containerized/Docker deployment
 - [ ] Advanced analytics & reporting
 - [ ] Plugin/extension API for custom agents
-- [ ] Improved onboarding & demo mode
-- [x] Containerized/Docker deployment
-- [ ] Multi-label & SaaS onboarding
+- [ ] Multi-label & SaaS onboarding (SaaS tier)
+
+---
+
+## ⚠️ Known Issues & Future Work
+
+- **Onboarding UI flow:** The web-based onboarding wizard for new labels is not yet built; the `MULTI_LABEL_ONBOARDING` agent produces a JSON checklist only.
+- **SAGE/FOCUS LLM dependency:** SAGE requires a running LLM; FOCUS works fully offline.
+- **Docker healthcheck:** No `HEALTHCHECK` directive in the Dockerfile yet.
+- **Demo seed data:** Only three demo artists are bundled; real data must be imported manually using `artist_import_template.csv`.
+- **CI artifact checks:** The `feature_list.json` and `claude-progress.md` freshness checks in CI will fail unless those files are updated on every push.
 
 ---
 
@@ -271,7 +279,7 @@ This repo uses a Harness Engineering workflow for agent and human collaboration.
 - [RELEASES.md](./RELEASES.md) — detailed changelog & migration notes
 - [RELEASE.md](./RELEASE.md) — Open Core release guide
 - [LICENSE](./LICENSE)
-- [Quickstart Guide](./docs/quickstart.md) (coming soon)
+- [Quickstart Guide](./docs/quickstart.md)
 
 ---
 

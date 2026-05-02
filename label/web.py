@@ -443,7 +443,7 @@ def api_checkin(slug):
     if not slug or slug == "undefined":
         return jsonify({"success": False, "error": "No artist selected or slug undefined."}), 400
     note = (request.json or {}).get("note", "")
-    ts = datetime.datetime.utcnow().isoformat()
+    ts = datetime.datetime.now(datetime.timezone.utc).isoformat()
     logging.info("Check-in logged for %s: %s", slug, note)
     return jsonify({"success": True, "output": f"Check-in saved at {ts}"})
 
@@ -459,7 +459,7 @@ def api_webhook(slug):
     payload = {
         "artist":    slug_to_name(slug),
         "slug":      slug,
-        "timestamp": datetime.datetime.utcnow().isoformat(),
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "source":    "maestro-web-ui",
     }
     try:
