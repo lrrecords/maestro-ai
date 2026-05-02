@@ -1821,6 +1821,70 @@
             automation_targets=["release_board","followups"]</div>
         </div>
       </div>
+
+      <!-- Premium agents -->
+      <div style="margin-top:18px;" aria-label="Premium agents">
+        <div style="font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#888; margin-bottom:10px; padding-left:2px;">
+          Premium Agents — <span style="color:var(--amber);">shipped &amp; enabled via PREMIUM_FEATURES_ENABLED=true</span>
+        </div>
+        <div class="agent-grid">
+          <div class="agent-card" style="border-color:rgba(255,180,0,.18);">
+            <div class="agent-head">
+              <div class="agent-ident">
+                <div class="agent-icon" style="border-color:rgba(255,180,0,.3); background:rgba(255,180,0,.07);" aria-hidden="true">💰</div>
+                <div>
+                  <p class="agent-name">LEDGER</p>
+                  <p class="agent-sub">Financial summaries: revenue, royalties, deal memos, and P&amp;L snapshots.</p>
+                </div>
+              </div>
+              <span class="plan-badge" style="border-color:rgba(255,180,0,.28); color:var(--amber);">PREMIUM</span>
+            </div>
+            <div class="agent-preview"><strong>output</strong>: total_revenue · royalties_due · deal_alerts · period_summary</div>
+          </div>
+
+          <div class="agent-card" style="border-color:rgba(255,180,0,.18);">
+            <div class="agent-head">
+              <div class="agent-ident">
+                <div class="agent-icon" style="border-color:rgba(255,180,0,.3); background:rgba(255,180,0,.07);" aria-hidden="true">📰</div>
+                <div>
+                  <p class="agent-name">SAGE DAILY BRIEF</p>
+                  <p class="agent-sub">Daily AI-generated brief: top priorities, upcoming deadlines, and label pulse.</p>
+                </div>
+              </div>
+              <span class="plan-badge" style="border-color:rgba(255,180,0,.28); color:var(--amber);">PREMIUM</span>
+            </div>
+            <div class="agent-preview"><strong>output</strong>: daily_brief · top_actions · highlights · generated_at</div>
+          </div>
+
+          <div class="agent-card" style="border-color:rgba(255,180,0,.18);">
+            <div class="agent-head">
+              <div class="agent-ident">
+                <div class="agent-icon" style="border-color:rgba(255,180,0,.3); background:rgba(255,180,0,.07);" aria-hidden="true">🎯</div>
+                <div>
+                  <p class="agent-name">FOCUS</p>
+                  <p class="agent-sub">CEO priority queue: pending approvals, overdue tasks, and stale artist contacts.</p>
+                </div>
+              </div>
+              <span class="plan-badge" style="border-color:rgba(255,180,0,.28); color:var(--amber);">PREMIUM</span>
+            </div>
+            <div class="agent-preview"><strong>output</strong>: priority_queue · rank · urgency · artist_filter · total_items</div>
+          </div>
+
+          <div class="agent-card" style="border-color:rgba(255,180,0,.18);">
+            <div class="agent-head">
+              <div class="agent-ident">
+                <div class="agent-icon" style="border-color:rgba(255,180,0,.3); background:rgba(255,180,0,.07);" aria-hidden="true">🏷️</div>
+                <div>
+                  <p class="agent-name">MULTI_LABEL_ONBOARDING</p>
+                  <p class="agent-sub">SaaS onboarding for new labels: 12-step checklist, setup guide, and AI welcome brief.</p>
+                </div>
+              </div>
+              <span class="plan-badge" style="border-color:rgba(255,180,0,.28); color:var(--amber);">PREMIUM</span>
+            </div>
+            <div class="agent-preview"><strong>output</strong>: onboarding_checklist · welcome_message · label_slug · checklist_total</div>
+          </div>
+        </div>
+      </div>
     </div>
     <div style="margin-top:18px;" aria-label="All agents">
       <div class="card">
@@ -1872,6 +1936,18 @@
           <span class="chip">LLM ROUTING</span>
           <span class="chip">MONITORING</span>
         </div>
+
+        <div class="agent-chips">
+          <span class="chip" style="border-color:rgba(255,180,0,.28); color:var(--amber);">PREMIUM</span>
+          <span class="chip" style="border-color:rgba(255,180,0,.16); color:#e8c97a;">LEDGER</span>
+          <span class="chip" style="border-color:rgba(255,180,0,.16); color:#e8c97a;">SAGE DAILY BRIEF</span>
+          <span class="chip" style="border-color:rgba(255,180,0,.16); color:#e8c97a;">FOCUS</span>
+          <span class="chip" style="border-color:rgba(255,180,0,.16); color:#e8c97a;">MULTI_LABEL_ONBOARDING</span>
+        </div>
+        <p style="margin-top:8px; font-size:.8rem; color:#555;">
+          Premium agents require <code style="font-family:var(--mono); background:rgba(255,255,255,.05); padding:1px 6px; border-radius:4px; font-size:.85em; color:var(--accent);">PREMIUM_FEATURES_ENABLED=true</code> in <code style="font-family:var(--mono); background:rgba(255,255,255,.05); padding:1px 6px; border-radius:4px; font-size:.85em; color:var(--accent);">.env</code>.
+          See <a href="quickstart.md" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">docs/quickstart.md</a> for setup.
+        </p>
       </div>
     </div>
   </section>
@@ -2139,6 +2215,70 @@
           </div>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- How to run premium agents -->
+  <section id="premium" aria-label="How to run premium agents">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Premium Agents</div>
+          <h2>Open core + premium: ship what you need</h2>
+          <p class="section-sub">
+            Maestro AI ships with four premium agents—<strong>LEDGER</strong>, <strong>SAGE Daily Brief</strong>,
+            <strong>FOCUS</strong>, and <strong>MULTI_LABEL_ONBOARDING</strong>—gated by a single env flag.
+            Everything else is open-source and free to self-host.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:18px;">
+        <div class="card">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <h3>Enable premium in .env</h3>
+              <p>Set <code style="font-family:var(--mono); background:rgba(255,255,255,.05); padding:1px 6px; border-radius:4px; font-size:.85em; color:var(--accent);">PREMIUM_FEATURES_ENABLED=true</code> in your <code style="font-family:var(--mono); background:rgba(255,255,255,.05); padding:1px 6px; border-radius:4px; font-size:.85em; color:var(--accent);">.env</code> file (copy from <code style="font-family:var(--mono); background:rgba(255,255,255,.05); padding:1px 6px; border-radius:4px; font-size:.85em; color:var(--accent);">.env.example</code>).</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <h3>Open the dashboard</h3>
+              <p>Run <code style="font-family:var(--mono); background:rgba(255,255,255,.05); padding:1px 6px; border-radius:4px; font-size:.85em; color:var(--accent);">python dashboard/app.py</code>, log in, then go to <strong>/agents</strong> — premium agent pages are linked there.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <h3>Run and review output</h3>
+              <p>Each agent page has a form, runs server-side, and displays structured results. Outputs are also saved to disk for audit trail.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:rgba(255,180,0,.04); border-color:rgba(255,180,0,.18);">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+          <span style="font-size:1.1rem;">📖</span>
+          <strong style="color:var(--white);">Full setup guide</strong>
+          <span class="plan-badge" style="border-color:rgba(255,180,0,.28); color:var(--amber); font-size:.68rem;">QUICKSTART</span>
+        </div>
+        <p style="color:var(--muted); font-size:.9rem; margin-bottom:10px;">
+          See <a href="quickstart.md" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">docs/quickstart.md</a> for full setup instructions including env configuration, LLM provider options (Ollama / Anthropic / OpenAI), running agents via CLI or dashboard, Docker, and the open-core vs premium feature table.
+        </p>
+        <div style="font-family:var(--mono); font-size:.8rem; color:#888; background:rgba(0,0,0,.3); border:1px solid #222; border-radius:8px; padding:10px 14px; line-height:1.6;">
+          <span style="color:var(--accent);"># .env — enable premium agents</span><br>
+          PREMIUM_FEATURES_ENABLED=true<br>
+          MAESTRO_TOKEN=your-secret-token<br>
+          LLM_PROVIDER=ollama  <span style="color:#555;"># or anthropic / openai</span>
+        </div>
       </div>
     </div>
   </section>

@@ -2,16 +2,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Discovered Agents</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agents · Maestro AI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0d0d0d;
+      --surface: #141414;
+      --border:  #2a2a2a;
+      --accent:  #00e5b0;
+      --amber:   #ffb400;
+      --white:   #f0f0f0;
+      --muted:   #888;
+      --text:    #d8d8d8;
+      --mono:    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+      --sans:    system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,176,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,176,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .page-sub {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-bottom: 28px;
+    }
+
+    .section-label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      margin-top: 24px;
+    }
+
+    .agent-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .agent-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: border-color .15s, background .15s;
+    }
+
+    .agent-row:hover {
+      border-color: #3a3a3a;
+      background: rgba(255,255,255,.02);
+    }
+
+    .agent-name {
+      font-weight: 700;
+      color: var(--white);
+      font-family: var(--mono);
+      font-size: .9rem;
+      letter-spacing: .02em;
+    }
+
+    .agent-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    .badge-premium {
+      border: 1px solid rgba(255,180,0,.28);
+      background: rgba(255,180,0,.07);
+      color: var(--amber);
+    }
+
+    .btn-page {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border: 1px solid rgba(0,229,176,.35);
+      background: rgba(0,229,176,.07);
+      border-radius: 8px;
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background .15s, box-shadow .15s;
+      white-space: nowrap;
+    }
+
+    .btn-page:hover {
+      background: rgba(0,229,176,.14);
+      box-shadow: 0 0 18px rgba(0,229,176,.1);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: .85rem;
+      text-decoration: none;
+      margin-top: 28px;
+      transition: color .15s;
+    }
+
+    .back-link:hover { color: var(--white); }
+  </style>
 </head>
 <body>
-    <h1>Discovered Agents (Open Core + Premium)</h1>
-    <ul>
-        {% for name in agent_names %}
-            <li>{{ name }}</li>
-        {% endfor %}
-    </ul>
-    <a href="/hub">Back to Hub</a>
+  <div class="page">
+    <h1>Discovered Agents</h1>
+    <p class="page-sub">Open core + premium agents loaded in this instance.</p>
+
+    {% if premium_agent_pages %}
+    <div class="section-label">Premium — Dashboard Pages</div>
+    <div class="agent-grid">
+      {% for page in premium_agent_pages %}
+      <div class="agent-row">
+        <span class="agent-name">{{ page.name }}</span>
+        <div class="agent-badges">
+          <span class="badge badge-premium">Premium</span>
+          <a class="btn-page" href="{{ page.url }}">Open ↗</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="section-label">All Discovered Agents</div>
+    <div class="agent-grid">
+      {% for name in agent_names %}
+      <div class="agent-row">
+        <span class="agent-name">{{ name }}</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <a class="back-link" href="/hub">← Back to Hub</a>
+  </div>
 </body>
 </html>
