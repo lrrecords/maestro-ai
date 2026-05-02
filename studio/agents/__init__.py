@@ -21,6 +21,3 @@ REGISTRY: dict[str, type] = {
     "mix":     MixAgent,
     "ask_ai":  AskAIAgent,
 }
-
-# Add case-insensitive aliases (CLIENT, SESSION, etc.)
-REGISTRY.update({k.upper(): v for k, v in list(REGISTRY.items())})
