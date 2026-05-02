@@ -12,4 +12,7 @@ COPY . .
 
 ENV PORT=8080
 
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+    CMD curl -f http://localhost:${PORT}/login || exit 1
+
 CMD ["sh", "-c", "gunicorn -w 2 -b 0.0.0.0:${PORT} dashboard.app:app"]
