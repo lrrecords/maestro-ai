@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FOCUS — CEO Priority Queue · Maestro AI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0d0d;
+      --surface:  #141414;
+      --border:   #2a2a2a;
+      --accent:   #00e5b0;
+      --accent-dim: rgba(0,229,176,.14);
+      --amber:    #ffb400;
+      --red:      #ff6060;
+      --white:    #f0f0f0;
+      --muted:    #888;
+      --text:     #d8d8d8;
+      --mono:     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+      --sans:     system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,176,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,176,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .page-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,229,176,.35);
+      background: rgba(0,229,176,.08);
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .page-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    .page-sub {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-top: 4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border: 1px solid rgba(255,180,0,.3);
+      background: rgba(255,180,0,.07);
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+
+    .badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+    }
+
+    /* Premium gate banner */
+    .gate-banner {
+      background: rgba(255,96,96,.07);
+      border: 1px solid rgba(255,96,96,.22);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .gate-banner .icon { font-size: 1.4rem; flex-shrink: 0; }
+
+    .gate-banner h3 {
+      color: var(--red);
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .gate-banner p {
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+
+    .gate-banner code {
+      font-family: var(--mono);
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: .85em;
+      color: var(--accent);
+    }
+
+    /* Form card */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    .form-card h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 18px;
+      letter-spacing: .02em;
+    }
+
+    .field { margin-bottom: 16px; }
+
+    label {
+      display: block;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: var(--sans);
+      font-size: .93rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    select:focus, input[type="text"]:focus {
+      border-color: rgba(0,229,176,.45);
+    }
+
+    select option { background: #1a1a1a; }
+
+    .btn-run {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      background: rgba(0,229,176,.12);
+      border: 1px solid rgba(0,229,176,.40);
+      border-radius: 10px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s, box-shadow .2s;
+    }
+
+    .btn-run:hover {
+      background: rgba(0,229,176,.20);
+      box-shadow: 0 0 24px rgba(0,229,176,.12);
+    }
+
+    .btn-run:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Flash messages */
+    .flash {
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: .9rem;
+    }
+
+    .flash.error {
+      background: rgba(255,96,96,.07);
+      border: 1px solid rgba(255,96,96,.22);
+      color: var(--red);
+    }
+
+    /* Results section */
+    .results-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .results-header {
+      background: rgba(26,26,26,.9);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .results-header h2 {
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .results-meta {
+      font-size: .78rem;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .queue-list {
+      padding: 0;
+      list-style: none;
+    }
+
+    .queue-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(42,42,42,.7);
+    }
+
+    .queue-item:last-child { border-bottom: none; }
+
+    .rank-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-family: var(--mono);
+      font-weight: 900;
+      font-size: .85rem;
+      flex-shrink: 0;
+    }
+
+    .rank-badge.approval {
+      background: rgba(255,96,96,.12);
+      border: 1px solid rgba(255,96,96,.3);
+      color: var(--red);
+    }
+
+    .rank-badge.overdue_action {
+      background: rgba(255,180,0,.10);
+      border: 1px solid rgba(255,180,0,.28);
+      color: var(--amber);
+    }
+
+    .rank-badge.stale_contact {
+      background: rgba(0,229,176,.08);
+      border: 1px solid rgba(0,229,176,.22);
+      color: var(--accent);
+    }
+
+    .queue-content { min-width: 0; flex: 1; }
+
+    .queue-title {
+      font-weight: 700;
+      color: var(--white);
+      font-size: .95rem;
+      margin-bottom: 4px;
+    }
+
+    .queue-detail {
+      color: var(--muted);
+      font-size: .84rem;
+      line-height: 1.4;
+    }
+
+    .urgency-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    .urgency-chip.high {
+      background: rgba(255,96,96,.10);
+      border: 1px solid rgba(255,96,96,.25);
+      color: var(--red);
+    }
+
+    .urgency-chip.medium {
+      background: rgba(255,180,0,.08);
+      border: 1px solid rgba(255,180,0,.22);
+      color: var(--amber);
+    }
+
+    .empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: .93rem;
+    }
+
+    .empty-state .icon { font-size: 2rem; margin-bottom: 10px; }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: .85rem;
+      text-decoration: none;
+      margin-top: 24px;
+      transition: color .15s;
+    }
+
+    .back-link:hover { color: var(--white); }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div class="page-icon" aria-hidden="true">🎯</div>
+      <div>
+        <div class="page-title">FOCUS</div>
+        <div class="page-sub">CEO Priority Queue — pending approvals, overdue tasks, stale contacts.</div>
+      </div>
+      <span class="badge"><span class="dot"></span>Premium</span>
+    </div>
+
+    {% if not premium_enabled %}
+    <!-- Premium gate -->
+    <div class="gate-banner" role="alert">
+      <span class="icon">🔒</span>
+      <div>
+        <h3>Premium feature disabled</h3>
+        <p>
+          The FOCUS agent requires premium features to be enabled.<br>
+          Set <code>PREMIUM_FEATURES_ENABLED=true</code> in your <code>.env</code> file and restart the
+          dashboard.
+        </p>
+      </div>
+    </div>
+
+    {% else %}
+
+    {% if error %}
+    <div class="flash error" role="alert">⚠ {{ error }}</div>
+    {% endif %}
+
+    <!-- Run form -->
+    <div class="form-card">
+      <h2>▶ Run FOCUS Agent</h2>
+      <form method="POST" action="/agents/focus">
+        <div class="field">
+          <label for="max_items">Max Priority Items</label>
+          <select id="max_items" name="max_items">
+            <option value="5"  {% if form.max_items == '5'  %}selected{% endif %}>5</option>
+            <option value="10" {% if form.max_items == '10' or not form.max_items %}selected{% endif %}>10</option>
+            <option value="20" {% if form.max_items == '20' %}selected{% endif %}>20</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="artist_slug">Filter by Artist Slug <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+          <input type="text" id="artist_slug" name="artist_slug"
+                 placeholder="e.g. aria_velvet"
+                 value="{{ form.artist_slug or '' }}" />
+        </div>
+        <button type="submit" class="btn-run">▶ &nbsp;Generate Priority Queue</button>
+      </form>
+    </div>
+
+    {% if result %}
+    <!-- Results -->
+    <div class="results-card" aria-label="Priority queue results">
+      <div class="results-header">
+        <h2>Priority Queue</h2>
+        <span class="results-meta">
+          {{ result.data.total_items }} item(s) ·
+          filter: {{ result.data.artist_filter }} ·
+          {{ result.data.generated_at[:10] }}
+        </span>
+      </div>
+
+      {% if result.data.priority_queue %}
+      <ul class="queue-list">
+        {% for item in result.data.priority_queue %}
+        <li class="queue-item">
+          <div class="rank-badge {{ item.rank_type }}" title="{{ item.rank_type }}">#{{ item.rank }}</div>
+          <div class="queue-content">
+            <div class="queue-title">{{ item.title }}</div>
+            <div class="queue-detail">{{ item.detail }}</div>
+            <span class="urgency-chip {{ item.urgency }}">{{ item.urgency }}</span>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div class="empty-state">
+        <div class="icon">✅</div>
+        <p>Nothing urgent found — your queue is clear!</p>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+    <a class="back-link" href="/agents">← Back to All Agents</a>
+  </div>
+</body>
+</html>

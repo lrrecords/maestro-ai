@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multi-Label Onboarding · Maestro AI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0d0d;
+      --surface:  #141414;
+      --border:   #2a2a2a;
+      --accent:   #00e5b0;
+      --accent-dim: rgba(0,229,176,.14);
+      --amber:    #ffb400;
+      --red:      #ff6060;
+      --white:    #f0f0f0;
+      --muted:    #888;
+      --text:     #d8d8d8;
+      --mono:     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+      --sans:     system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,176,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,176,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .page-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,229,176,.35);
+      background: rgba(0,229,176,.08);
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .page-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    .page-sub {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-top: 4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border: 1px solid rgba(255,180,0,.3);
+      background: rgba(255,180,0,.07);
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+
+    .badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+    }
+
+    /* Premium gate banner */
+    .gate-banner {
+      background: rgba(255,96,96,.07);
+      border: 1px solid rgba(255,96,96,.22);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .gate-banner .icon { font-size: 1.4rem; flex-shrink: 0; }
+
+    .gate-banner h3 {
+      color: var(--red);
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .gate-banner p {
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+
+    .gate-banner code {
+      font-family: var(--mono);
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: .85em;
+      color: var(--accent);
+    }
+
+    /* Form card */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    .form-card h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 18px;
+      letter-spacing: .02em;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 560px) {
+      .field-row { grid-template-columns: 1fr; }
+    }
+
+    .field { margin-bottom: 16px; }
+
+    label {
+      display: block;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    label .optional {
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      color: #555;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: var(--sans);
+      font-size: .93rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    select:focus, input[type="text"]:focus {
+      border-color: rgba(0,229,176,.45);
+    }
+
+    select option { background: #1a1a1a; }
+
+    .btn-run {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      background: rgba(0,229,176,.12);
+      border: 1px solid rgba(0,229,176,.40);
+      border-radius: 10px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s, box-shadow .2s;
+      margin-top: 6px;
+    }
+
+    .btn-run:hover {
+      background: rgba(0,229,176,.20);
+      box-shadow: 0 0 24px rgba(0,229,176,.12);
+    }
+
+    /* Flash messages */
+    .flash {
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: .9rem;
+    }
+
+    .flash.error {
+      background: rgba(255,96,96,.07);
+      border: 1px solid rgba(255,96,96,.22);
+      color: var(--red);
+    }
+
+    /* Results */
+    .results-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    .results-header {
+      background: rgba(26,26,26,.9);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .results-header h2 {
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .results-meta {
+      font-size: .78rem;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    /* Welcome message */
+    .welcome-box {
+      margin: 20px 20px 0;
+      background: rgba(0,229,176,.06);
+      border: 1px solid rgba(0,229,176,.18);
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+
+    .welcome-box .label {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .welcome-box p {
+      color: var(--text);
+      font-size: .92rem;
+      line-height: 1.55;
+    }
+
+    /* Checklist */
+    .checklist-section {
+      padding: 20px;
+    }
+
+    .checklist-section h3 {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .checklist {
+      list-style: none;
+    }
+
+    .checklist-category {
+      margin-bottom: 18px;
+    }
+
+    .category-label {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 8px;
+      padding-left: 4px;
+    }
+
+    .checklist-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      border: 1px solid rgba(42,42,42,.6);
+      background: rgba(10,10,10,.4);
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,229,176,.22);
+      background: rgba(0,229,176,.05);
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+      font-family: var(--mono);
+      font-size: .72rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      color: var(--text);
+      font-size: .88rem;
+      line-height: 1.45;
+      padding-top: 2px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: .85rem;
+      text-decoration: none;
+      margin-top: 8px;
+      transition: color .15s;
+    }
+
+    .back-link:hover { color: var(--white); }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div class="page-icon" aria-hidden="true">🏷️</div>
+      <div>
+        <div class="page-title">Multi-Label Onboarding</div>
+        <div class="page-sub">Generate a personalised checklist and welcome brief for a new label joining Maestro AI.</div>
+      </div>
+      <span class="badge"><span class="dot"></span>Premium</span>
+    </div>
+
+    {% if not premium_enabled %}
+    <!-- Premium gate -->
+    <div class="gate-banner" role="alert">
+      <span class="icon">🔒</span>
+      <div>
+        <h3>Premium feature disabled</h3>
+        <p>
+          The Multi-Label Onboarding agent requires premium features to be enabled.<br>
+          Set <code>PREMIUM_FEATURES_ENABLED=true</code> in your <code>.env</code> file and restart the
+          dashboard.
+        </p>
+      </div>
+    </div>
+
+    {% else %}
+
+    {% if error %}
+    <div class="flash error" role="alert">⚠ {{ error }}</div>
+    {% endif %}
+
+    <!-- Run form -->
+    <div class="form-card">
+      <h2>▶ Run Multi-Label Onboarding Agent</h2>
+      <form method="POST" action="/agents/multi-label-onboarding">
+        <div class="field-row">
+          <div class="field">
+            <label for="label_name">Label Name</label>
+            <input type="text" id="label_name" name="label_name"
+                   placeholder="e.g. Neon Horizon Records"
+                   value="{{ form.label_name or '' }}" />
+          </div>
+          <div class="field">
+            <label for="label_slug">Label Slug <span class="optional">(optional — auto-generated)</span></label>
+            <input type="text" id="label_slug" name="label_slug"
+                   placeholder="e.g. neon_horizon"
+                   value="{{ form.label_slug or '' }}" />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="owner_name">Owner / CEO Name</label>
+            <input type="text" id="owner_name" name="owner_name"
+                   placeholder="e.g. Jordan Lee"
+                   value="{{ form.owner_name or '' }}" />
+          </div>
+          <div class="field">
+            <label for="owner_email">Owner Email</label>
+            <input type="text" id="owner_email" name="owner_email"
+                   placeholder="e.g. jordan@neonhorizon.com"
+                   value="{{ form.owner_email or '' }}" />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="genre_focus">Primary Genre Focus</label>
+            <input type="text" id="genre_focus" name="genre_focus"
+                   placeholder="e.g. Indie Pop, Hip-Hop"
+                   value="{{ form.genre_focus or '' }}" />
+          </div>
+          <div class="field">
+            <label for="artist_count">Number of Artists on Roster</label>
+            <input type="text" id="artist_count" name="artist_count"
+                   placeholder="e.g. 5"
+                   value="{{ form.artist_count or '' }}" />
+          </div>
+        </div>
+
+        <div class="field" style="max-width:260px;">
+          <label for="use_llm">Personalise with AI <span class="optional">(requires LLM)</span></label>
+          <select id="use_llm" name="use_llm">
+            <option value="no"  {% if form.use_llm != 'yes' %}selected{% endif %}>No — use default welcome</option>
+            <option value="yes" {% if form.use_llm == 'yes' %}selected{% endif %}>Yes — AI personalised</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-run">▶ &nbsp;Generate Onboarding Package</button>
+      </form>
+    </div>
+
+    {% if result %}
+    <!-- Results -->
+    <div class="results-card" aria-label="Onboarding results">
+      <div class="results-header">
+        <h2>Onboarding Package</h2>
+        <span class="results-meta">
+          {{ result.data.label_name }} · {{ result.data.checklist_total }} steps ·
+          {{ result.data.generated_at[:10] }}
+        </span>
+      </div>
+
+      <!-- Welcome message -->
+      <div class="welcome-box">
+        <div class="label">Welcome Message</div>
+        <p>{{ result.data.welcome_message }}</p>
+      </div>
+
+      <!-- Checklist grouped by category -->
+      <div class="checklist-section">
+        <h3>Setup Checklist ({{ result.data.checklist_total }} steps)</h3>
+        {% set categories = result.data.onboarding_checklist | map(attribute='category') | list | unique %}
+        {% for cat in ['setup', 'data', 'agents', 'integrations', 'review'] %}
+          {% set items = result.data.onboarding_checklist | selectattr('category', 'equalto', cat) | list %}
+          {% if items %}
+          <div class="checklist-category">
+            <div class="category-label">{{ cat }}</div>
+            <ul class="checklist">
+              {% for item in items %}
+              <li class="checklist-item">
+                <span class="step-num">{{ item.step }}</span>
+                <span class="step-text">{{ item.task }}</span>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+    <a class="back-link" href="/agents">← Back to All Agents</a>
+  </div>
+</body>
+</html>
