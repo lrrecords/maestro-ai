@@ -18,6 +18,8 @@ if str(ROOT) not in sys.path:
 
 load_dotenv(ROOT / ".env")
 
+PREMIUM_FEATURES_ENABLED = os.getenv("PREMIUM_FEATURES_ENABLED", "true").lower() == "true"
+
 from platform_ops.web import platform_bp
 from live.web import live_bp
 from studio.web import studio_bp
@@ -145,7 +147,83 @@ def list_agents():
     List all discovered agent class names (open core + premium).
     """
     agent_names = list(AGENT_CLASSES.keys())
-    return render_template("agents_list.html", agent_names=agent_names)
+    premium_agent_pages = []
+    if PREMIUM_FEATURES_ENABLED:
+        premium_agent_pages = [
+            {"name": "FOCUS", "url": "/agents/focus"},
+            {"name": "MULTI_LABEL_ONBOARDING", "url": "/agents/multi-label-onboarding"},
+        ]
+    return render_template("agents_list.html", agent_names=agent_names,
+                           premium_agent_pages=premium_agent_pages)
+
+
+@app.route("/agents/focus", methods=["GET", "POST"])
+@login_required
+def agent_focus():
+    """Dashboard page for the FOCUS (CEO Priority Queue) premium agent."""
+    result = None
+    error = None
+    form = {}
+
+    if PREMIUM_FEATURES_ENABLED and request.method == "POST":
+        form = {
+            "max_items": request.form.get("max_items", "10"),
+            "artist_slug": request.form.get("artist_slug", "").strip() or None,
+        }
+        try:
+            from premium_agents.focus import FocusAgent
+            agent = FocusAgent()
+            context = {k: v for k, v in form.items() if v is not None}
+            result = agent.run(context)
+        except Exception as exc:
+            error = str(exc)
+    elif request.method == "POST":
+        # POST attempted while premium disabled — ignore silently (gate shows)
+        pass
+
+    return render_template(
+        "agents/focus.html",
+        premium_enabled=PREMIUM_FEATURES_ENABLED,
+        result=result,
+        error=error,
+        form=form,
+    )
+
+
+@app.route("/agents/multi-label-onboarding", methods=["GET", "POST"])
+@login_required
+def agent_multi_label_onboarding():
+    """Dashboard page for the Multi-Label Onboarding premium agent."""
+    result = None
+    error = None
+    form = {}
+
+    if PREMIUM_FEATURES_ENABLED and request.method == "POST":
+        form = {
+            "label_name": request.form.get("label_name", "").strip(),
+            "label_slug": request.form.get("label_slug", "").strip(),
+            "owner_name": request.form.get("owner_name", "").strip(),
+            "owner_email": request.form.get("owner_email", "").strip(),
+            "genre_focus": request.form.get("genre_focus", "").strip(),
+            "artist_count": request.form.get("artist_count", "").strip(),
+            "use_llm": request.form.get("use_llm", "no"),
+        }
+        try:
+            from premium_agents.multi_label_onboarding import MultiLabelOnboardingAgent
+            agent = MultiLabelOnboardingAgent()
+            result = agent.run(form)
+        except Exception as exc:
+            error = str(exc)
+    elif request.method == "POST":
+        pass
+
+    return render_template(
+        "agents/multi_label_onboarding.html",
+        premium_enabled=PREMIUM_FEATURES_ENABLED,
+        result=result,
+        error=error,
+        form=form,
+    )
 
 # Run an agent by name and return its output as JSON
 @app.route("/agents/run/<agent_name>", methods=["POST", "GET"])
