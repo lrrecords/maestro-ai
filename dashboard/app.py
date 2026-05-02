@@ -22,6 +22,8 @@ from platform_ops.web import platform_bp
 from live.web import live_bp
 from studio.web import studio_bp
 from label.web import label_bp
+from dashboard.label.ledger import ledger_bp
+from dashboard.label.sage import sage_bp
 
 TEMPLATES_DIR = ROOT / "templates"
 STATIC_DIR = ROOT / "static"
@@ -77,6 +79,8 @@ app.register_blueprint(platform_bp, url_prefix="/platform")
 app.register_blueprint(live_bp, url_prefix="/live")
 app.register_blueprint(studio_bp, url_prefix="/studio")
 app.register_blueprint(label_bp,   url_prefix="/label")
+app.register_blueprint(ledger_bp,  url_prefix="/label/ledger")
+app.register_blueprint(sage_bp,    url_prefix="/label/sage")
 app.config["LABEL_URL_PREFIX"] = "/label"
 
 @app.route("/")

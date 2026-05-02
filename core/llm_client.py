@@ -62,6 +62,10 @@ def call_llm(prompt: str, max_tokens: int = 2048) -> str:
     """
     Send *prompt* to the configured LLM provider and return response text.
     """
+    # Check for Manus OpenAI environment
+    if os.getenv("OPENAI_API_KEY"):
+        return _call_openai_manus(prompt, max_tokens)
+
     provider = get_provider()
     if provider == "anthropic":
         return _call_anthropic(prompt, max_tokens)
@@ -71,6 +75,24 @@ def call_llm(prompt: str, max_tokens: int = 2048) -> str:
         f"Unknown LLM provider: {provider!r}. "
         "Set LLM_PROVIDER in .env or PLATFORM settings."
     )
+
+def _call_openai_manus(prompt: str, max_tokens: int) -> str:
+    try:
+        from openai import OpenAI
+    except ImportError:
+        raise ImportError("The 'openai' package is required for Manus LLM. Run: pip install openai")
+    
+    client = OpenAI()
+    # Manus uses gpt-4.1-mini as default
+    model = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
+    
+    response = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=max_tokens,
+        response_format={"type": "json_object"} if "JSON" in prompt.upper() else None
+    )
+    return response.choices[0].message.content
 
 
 # ── Anthropic ────────────────────────────────────────────────────────────────
