@@ -15,13 +15,13 @@ _April 2026 | For: Human or AI agent (Manus, Copilot, etc.)_
 - [x] All agent directories have `__init__.py` and robust error handling/logging
 
 ### 2. Premium Agent Implementation
-- [ ] Implement and test real premium agents (LEDGER, SAGE, Multi-label, FOCUS)
-- [ ] Add/expand tests for premium agents and endpoints
+- [x] Implement and test real premium agents (LEDGER, SAGE, Multi-label, FOCUS)
+- [x] Add/expand tests for premium agents and endpoints
 
 ### 3. Test Coverage & Quality
-- [ ] All core and premium tests pass (pytest, manual, integration)
-- [ ] Add integration tests for agent execution (web & CLI)
-- [ ] Fix all deprecation warnings (e.g., datetime.datetime.utcnow)
+- [x] All core and premium tests pass (pytest, manual, integration)
+- [x] Add integration tests for agent execution (web & CLI)
+- [x] Fix all deprecation warnings (e.g., datetime.datetime.utcnow)
 - [ ] Smoke test all API endpoints and UI flows (missions, jobs, approvals, CRUD)
 - [ ] Test persistence: restart Flask/Redis/DB and confirm data retention
 - [ ] Security review: check .env, secrets, CORS, auth, and webhook validation
@@ -29,7 +29,7 @@ _April 2026 | For: Human or AI agent (Manus, Copilot, etc.)_
 ### 4. Documentation & Guides
 - [x] `OPEN_CORE_CHECKLIST.md`, `OPEN_CORE_BOUNDARIES.md`, `EXTENDING.md` are up to date
 - [x] README explains open vs. premium, extension, and usage
-- [ ] Complete Quickstart Guide (`docs/quickstart.md`)
+- [x] Complete Quickstart Guide (`docs/quickstart.md`)
 - [ ] Add advanced extension/plugin API docs (if/when implemented)
 - [ ] Add usage examples for premium agents (CLI and web)
 - [ ] Finalize OpenAPI/Swagger docs and onboarding documentation
@@ -37,7 +37,7 @@ _April 2026 | For: Human or AI agent (Manus, Copilot, etc.)_
 ### 5. Packaging, Deployment & Release
 - [x] Modernized branding/assets (logo, screenshots)
 - [x] .gitignore excludes SpecStory and venv
-- [ ] Polish Dockerfile and add CI/CD workflow
+- [x] Polish Dockerfile and add CI/CD workflow
 - [ ] Add release automation
 - [ ] Build and run Docker image on a clean server using only .env and docs
 

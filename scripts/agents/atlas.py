@@ -1,7 +1,7 @@
 import os
 import json
 import csv
-from datetime import datetime
+from datetime import datetime, timezone
 from collections import defaultdict
 from dotenv import load_dotenv
 
@@ -17,7 +17,7 @@ class Atlas:
     def __init__(self, artist_data: dict):
         self.artist   = artist_data
         self.records  = []
-        self.built_at = datetime.utcnow().strftime("%Y-%m-%d")
+        self.built_at = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
     # ── NORMALIZERS ─────────────────────────────────────────────────────────
 
