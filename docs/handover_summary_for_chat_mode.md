@@ -198,4 +198,42 @@ This section provides a clear, actionable roadmap for finalizing Maestro’s MVP
 
 ---
 
-*This checklist is your guide for MVP launch, onboarding, and future handover. Check off items as you go and update for future releases!*
+## 11. Agent Verification Note (May 3, 2026)
+
+### What was verified
+
+A full automated audit of all MUST items was performed against the current `main` branch:
+
+| Item | Status | Notes |
+|------|--------|-------|
+| `.env` loading | ✅ Confirmed | `load_dotenv(ROOT / ".env")` in `dashboard/app.py` line 19 |
+| `PORT` binding | ✅ Confirmed | `int(os.getenv("PORT", "8080"))` in `dashboard/app.py`; Procfile and Dockerfile both use `$PORT` |
+| Auth middleware on all sensitive endpoints | ✅ Confirmed | `label/web.py`, `studio/web.py`, `live/web.py` all have `before_request` guards on `/api/*` paths |
+| Webhook secret validation on all inbound webhooks | ✅ Confirmed | All four routes in `webhook_server.py` call `_webhook_authorized()` before processing; returns 401 if WEBHOOK_SECRET is unset or header doesn't match |
+| Mission execution is not stubbed | ✅ Confirmed | `label/web.py` runs real `build_release_campaign_crew(...).kickoff()` in a background thread |
+| No unsafe hardcoded webhook fallbacks | ✅ Confirmed | Defaults for Ollama/n8n/Maestro base URLs are all localhost only; all overridable via env vars |
+
+### How to reproduce verification
+
+```bash
+# Run the full automated test suite (100 + 27 security tests)
+python3 -m pytest tests/ -v --tb=short
+```
+
+The `tests/test_webhook_security.py` file (added 2026-05-03) specifically validates:
+- All four inbound webhook routes return 401 when WEBHOOK_SECRET is unset
+- All four routes return 401 with missing or wrong secret header
+- All four routes accept both `X-WEBHOOK-SECRET` and `Authorization: Bearer` with the correct secret
+
+The `tests/test_smoke_endpoints.py` validates:
+- Protected routes return 401 without auth
+- Protected routes succeed with a valid session
+
+### Remaining gaps
+
+- `crewai` must be separately installed (`pip install crewai`) before mission creation is functional; it is not bundled in `requirements.txt` by default.
+- Role configuration is static (hardcoded in `label/web.py`); no database-backed role management yet.
+- `scripts/webhook_server.py` binds to port 5678 (hardcoded for n8n) with no env override; acceptable by design but worth noting.
+
+*Verified by Copilot Agent, May 3, 2026*
+

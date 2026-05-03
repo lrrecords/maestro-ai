@@ -197,6 +197,53 @@ agents and plugins.
 
 ---
 
+## 10. Security & Auth
+
+### Dashboard access
+
+All dashboard pages and API routes require authentication. Set `MAESTRO_TOKEN` in `.env`.
+
+**Headers accepted by API clients (no browser session):**
+
+```bash
+# Custom header
+curl -H "X-MAESTRO-TOKEN: your-token" http://localhost:8080/label/api/mission/list
+
+# Bearer token
+curl -H "Authorization: Bearer your-token" http://localhost:8080/label/api/mission/list
+```
+
+Without auth, API routes return `401 Unauthorized`. Browser routes redirect to `/login`.
+
+For local development, set `MAESTRO_DEV_MODE=1` to bypass strict token matching (any token accepted).
+
+### Inbound webhook validation
+
+All routes under `/webhook/*` (served by `webhook_server.py`) require a shared `WEBHOOK_SECRET`.
+
+```bash
+# Without secret — returns 401
+curl -X POST http://localhost:8080/webhook/maestro-approved-action \
+  -H "Content-Type: application/json" -d '{}'
+
+# With X-WEBHOOK-SECRET header — returns 200
+curl -X POST http://localhost:8080/webhook/maestro-approved-action \
+  -H "Content-Type: application/json" \
+  -H "X-WEBHOOK-SECRET: your-webhook-secret" \
+  -d '{"workflow":"noop","payload":{}}'
+```
+
+### Required env vars summary
+
+| Variable | Required for | Notes |
+|---|---|---|
+| `MAESTRO_TOKEN` | Dashboard login | Mandatory in production |
+| `WEBHOOK_SECRET` | Inbound webhooks | All webhook routes return 401 if unset |
+| `SECRET_KEY` | Session security | Auto-generated if omitted (sessions reset on restart) |
+| `LLM_PROVIDER` | Running agents | `ollama` or `anthropic` |
+
+---
+
 ## Troubleshooting
 
 | Problem | Fix |
