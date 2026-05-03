@@ -157,6 +157,82 @@ _Ollama runs on Mac, Linux, or Windows and requires downloading a model._
 
 ---
 
+## 🔐 Security & Auth
+
+### Dashboard Authentication
+
+All dashboard and API routes are protected. Authentication is enforced via Flask session (browser login) or a token header on every request.
+
+**Required env var:** `MAESTRO_TOKEN` — set a strong, unique token in `.env`.
+
+Two auth headers are accepted for API clients:
+
+| Header | Example value |
+|--------|---------------|
+| `X-MAESTRO-TOKEN` | `X-MAESTRO-TOKEN: your-token-here` |
+| `Authorization` | `Authorization: Bearer your-token-here` |
+
+**Example curl calls:**
+
+```bash
+BASE=http://localhost:8080
+TOKEN=your-token-here
+
+# Unauthenticated — should return 401
+curl -i "$BASE/label/api/mission/list"
+
+# Authenticated with custom header — should return 200 + JSON
+curl -i -H "X-MAESTRO-TOKEN: $TOKEN" "$BASE/label/api/mission/list"
+
+# Authenticated with Bearer token — should return 200 + JSON
+curl -i -H "Authorization: Bearer $TOKEN" "$BASE/label/api/mission/list"
+```
+
+### Inbound Webhook Authentication
+
+All inbound webhook routes (`/webhook/*`) require a shared secret. Set `WEBHOOK_SECRET` in `.env`.
+
+Two auth methods are accepted:
+
+| Header | Example value |
+|--------|---------------|
+| `X-WEBHOOK-SECRET` | `X-WEBHOOK-SECRET: your-webhook-secret` |
+| `Authorization` | `Authorization: Bearer your-webhook-secret` |
+
+**Example curl calls:**
+
+```bash
+BASE=http://localhost:8080
+SECRET=your-webhook-secret-here
+
+# Without secret — should return 401
+curl -i -X POST "$BASE/webhook/maestro-approved-action" \
+  -H "Content-Type: application/json" -d '{}'
+
+# With secret header — should return 200
+curl -i -X POST "$BASE/webhook/maestro-approved-action" \
+  -H "Content-Type: application/json" \
+  -H "X-WEBHOOK-SECRET: $SECRET" \
+  -d '{"workflow":"noop","payload":{}}'
+```
+
+### Mandatory vs Optional env vars
+
+| Variable | Mandatory | Notes |
+|----------|-----------|-------|
+| `MAESTRO_TOKEN` | **Yes** (production) | Any token accepted in dev with `MAESTRO_DEV_MODE=1` |
+| `WEBHOOK_SECRET` | **Yes** (if using webhooks) | All inbound webhooks are blocked if unset |
+| `SECRET_KEY` | Recommended | Random key auto-generated if omitted (sessions reset on restart) |
+| `LLM_PROVIDER` | **Yes** (for agents) | `ollama` or `anthropic` |
+| `ANTHROPIC_API_KEY` | If `LLM_PROVIDER=anthropic` | |
+| `OLLAMA_BASE_URL` | If `LLM_PROVIDER=ollama` | Default: `http://127.0.0.1:11434` |
+| `OLLAMA_MODEL` | If `LLM_PROVIDER=ollama` | Default: `qwen2.5:3b` |
+| `PORT` | No | Default: `8080` |
+| `N8N_BASE_URL` | If using n8n | Default: `http://localhost:5678` |
+| `MAESTRO_BASE_URL` | If using webhooks that call back | Default: `http://localhost:8080` |
+
+---
+
 ## 🧬 Typical Workflows
 
 - **Run a pipeline for one artist:**  
@@ -253,7 +329,7 @@ This explicit “apply” step keeps the dashboard safe: agent runs can be evalu
 
 - **Onboarding UI flow:** The web-based onboarding wizard for new labels is not yet built; the `MULTI_LABEL_ONBOARDING` agent produces a JSON checklist only.
 - **SAGE/FOCUS LLM dependency:** SAGE requires a running LLM; FOCUS works fully offline.
-- **Docker healthcheck:** No `HEALTHCHECK` directive in the Dockerfile yet.
+- **Docker healthcheck:** Dockerfile includes a `HEALTHCHECK` on `/login`; ensure `curl` is available in the base image if customised.
 - **Demo seed data:** Only three demo artists are bundled; real data must be imported manually using `artist_import_template.csv`.
 - **CI artifact checks:** The `feature_list.json` and `claude-progress.md` freshness checks in CI will fail unless those files are updated on every push.
 
