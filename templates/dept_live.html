@@ -1288,8 +1288,19 @@
         // ROUTE: reconcile inconsistent fields between result.data and result.message
         // + add sanity block for travel time vs distance
         let routeSanityHtml = '';
+        let routeUrlHtml = '';
 
         if ((envelope?.agent || '').toUpperCase() === 'ROUTE') {
+          // Show the OSM/ORS route URL as a clickable link if present
+          if (data.route_url) {
+            routeUrlHtml = `
+              <div class="gen-card-section">
+                <div class="gen-card-title">Route Map</div>
+                <a href="${escapeHtml(data.route_url)}" target="_blank" rel="noopener" style="word-break:break-all;">Open route in OpenStreetMap</a>
+              </div>
+            `;
+          }
+
           const msgObj = tryParseJson(result?.message);
 
           const dataVal = Number(data.estimated_travel_time_hr);
@@ -1522,6 +1533,10 @@
     `);
         }
 
+        // For ROUTE, always show the route URL section at the top if present
+        if (routeUrlHtml) {
+          sections.unshift(routeUrlHtml);
+        }
         return sections.join('') || '';
       }
 
