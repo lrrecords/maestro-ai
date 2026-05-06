@@ -45,7 +45,11 @@ LIVE_AGENT_SCHEMAS: dict[str, dict] = {
         "description": "Tour routing and travel optimisation.",
         "fields": [
             {"name": "home_city",      "label": "Home City",      "type": "text",   "placeholder": "London", "required": True},
+            {"name": "home_state",     "label": "Home State",     "type": "text",   "placeholder": "Western Australia"},
+            {"name": "home_country",   "label": "Home Country",   "type": "text",   "placeholder": "Australia"},
             {"name": "cities",         "label": "Cities",         "type": "text",   "placeholder": "London, Manchester, Glasgow", "required": True},
+            {"name": "states",         "label": "States",         "type": "text",   "placeholder": "Western Australia, South Australia"},
+            {"name": "countries",      "label": "Countries",      "type": "text",   "placeholder": "Australia, Australia"},
             {"name": "start_date",     "label": "Start Date",     "type": "text",   "placeholder": "2026-04-02"},
             {"name": "end_date",       "label": "End Date",       "type": "text",   "placeholder": "2026-04-15"},
             {"name": "transport_mode", "label": "Transport",      "type": "select", "options": ["van", "bus", "train", "fly", "mixed"]},

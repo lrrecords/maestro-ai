@@ -2,77 +2,102 @@ from core.base_agent import BaseAgent
 import os
 from urllib.parse import quote_plus
 
-# Google Maps client setup
+
+# OpenRouteService client setup
 try:
-    import googlemaps
+    import openrouteservice
 except ImportError:
-    googlemaps = None
+    openrouteservice = None
 
-def get_gmaps_client():
-    api_key = os.getenv("GOOGLE_MAPS_API_KEY")
-    if not api_key or not googlemaps:
+def get_ors_client():
+    api_key = os.getenv("ORS_API_KEY")
+    if not api_key or not openrouteservice:
         return None
-    return googlemaps.Client(key=api_key)
+    return openrouteservice.Client(key=api_key)
 
-def get_distance_and_duration(from_city, to_city):
-    if not from_city or not to_city or from_city == to_city or not googlemaps:
+def get_distance_and_duration(from_city, to_city, from_state=None, to_state=None, from_country=None, to_country=None):
+    if not from_city or not to_city or from_city == to_city or not openrouteservice:
         return 0, 0.0
 
-    gmaps = get_gmaps_client()
-    if not gmaps:
+    ors = get_ors_client()
+    if not ors:
         return None, None
     try:
-        directions_result = gmaps.directions(
-            from_city, to_city, mode="driving", units="metric"
+        # Compose full location strings
+        from_full = ", ".join([v for v in [from_city, from_state, from_country] if v])
+        to_full = ", ".join([v for v in [to_city, to_state, to_country] if v])
+        # Geocode cities to coordinates
+        geocode = ors.pelias_search
+        from_res = geocode(text=from_full)
+        to_res = geocode(text=to_full)
+        from_coords = from_res['features'][0]['geometry']['coordinates']
+        to_coords = to_res['features'][0]['geometry']['coordinates']
+        # Get route
+        route = ors.directions(
+            coordinates=[from_coords, to_coords],
+            profile='driving-car',
+            format='geojson'
         )
-        if directions_result and "legs" in directions_result[0]:
-            leg = directions_result[0]["legs"][0]
-            distance_km = leg["distance"]["value"] / 1000.0  # meters to km
-            duration_hr = leg["duration"]["value"] / 3600.0  # seconds to hours
-            return distance_km, duration_hr
+        summary = route['features'][0]['properties']['summary']
+        distance_km = summary['distance'] / 1000.0  # meters to km
+        duration_hr = summary['duration'] / 3600.0  # seconds to hours
+        return distance_km, duration_hr
     except Exception as e:
-        print(f"Google Maps API error: {e}")
+        print(f"OpenRouteService API error: {e}")
     return None, None
 
-def build_google_maps_route_url(home_city, cities):
-    points = [home_city] + [c for c in cities if c and c != home_city]
+def build_osm_route_url(home_city, cities, home_state=None, home_country=None, states=None, countries=None):
+    # Compose full location strings
+    points = []
+    if home_city:
+        home_full = ", ".join([v for v in [home_city, home_state, home_country] if v])
+        points.append(home_full)
+    for idx, c in enumerate(cities):
+        state = states[idx] if states and idx < len(states) else None
+        country = countries[idx] if countries and idx < len(countries) else None
+        city_full = ", ".join([v for v in [c, state, country] if v])
+        if city_full and city_full != points[0]:
+            points.append(city_full)
     if len(points) < 2:
         return ""
     quoted_points = [quote_plus(pt) for pt in points]
-    url = "https://www.google.com/maps/dir/" + "/".join(quoted_points)
+    url = "https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=" + "%3B".join(quoted_points)
     return url
 
 def patch_route_with_real_distance(structured, context):
     total_km = 0
     total_hours = 0.0
     route_plan = structured.get("route_plan", [])
+    states = context.get("states")
+    countries = context.get("countries")
     for idx, leg in enumerate(route_plan):
         from_city = leg.get("travel_from", "")
         to_city = leg.get("travel_to", "")
+        from_state = states[idx] if states and idx < len(states) else None
+        to_state = states[idx+1] if states and idx+1 < len(states) else None
+        from_country = countries[idx] if countries and idx < len(countries) else None
+        to_country = countries[idx+1] if countries and idx+1 < len(countries) else None
         if from_city and to_city and from_city != to_city:
-            distance_km, duration_hr = get_distance_and_duration(from_city, to_city)
+            distance_km, duration_hr = get_distance_and_duration(from_city, to_city, from_state, to_state, from_country, to_country)
             if distance_km is not None:
+                # Always overwrite with API value, ignore LLM guess
                 leg["km"] = round(distance_km)
-                leg["notes"] = (leg.get("notes", "") + " | Verified via Google Maps").strip()
+                leg["notes"] = (leg.get("notes", "") + " | Distance/time set via OpenRouteService").strip()
                 total_km += distance_km
                 if duration_hr:
                     total_hours += duration_hr
                 leg["travel_time_hr"] = round(duration_hr, 2) if duration_hr else 0
             else:
-                try:
-                    total_km += float(leg.get("km", 0))
-                except Exception:
-                    pass
-        else:
-            try:
-                total_km += float(leg.get("km", 0))
-            except Exception:
-                pass
+                leg["notes"] = (leg.get("notes", "") + " | OpenRouteService lookup failed").strip()
+        # If not a valid leg, do not use LLM's km at all
+        # (skip adding to total_km)
     structured["total_km"] = round(total_km)
     structured["estimated_travel_time_hr"] = round(total_hours, 2)
     home_city = context.get("home_city") or ""
+    home_state = context.get("home_state")
+    home_country = context.get("home_country")
     cities_order = [step["city"] for step in structured.get("route_plan", [])]
-    structured["route_url"] = build_google_maps_route_url(home_city, cities_order)
+    structured["route_url"] = build_osm_route_url(home_city, cities_order, home_state, home_country, states, countries)
     return structured
 
 # ------------- AGENT --------------
