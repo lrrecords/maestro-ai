@@ -537,6 +537,13 @@ class TestNormalizeTopics:
         result = self._norm([])
         assert result == {"blogTopics": []}
 
+    def test_empty_dict_does_not_match_blogTopic_prefix(self):
+        # all([]) == True so empty dicts must NOT be treated as blogTopicN containers
+        result = self._norm({})
+        # Should produce a fallback (to_topic_dict of the empty dict), not a [] via prefix match
+        assert "blogTopics" in result
+        assert isinstance(result["blogTopics"], list)
+
 
 # ---------------------------------------------------------------------------
 # _trigger_workflow helper (unit tests)

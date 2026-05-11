@@ -35,7 +35,7 @@ def _normalize_topics(raw):
                     return {'blogTopics': [to_topic_dict(t) for t in parsed['blogTopics']]}
                 if 'topics' in parsed and isinstance(parsed['topics'], list):
                     return {'blogTopics': [to_topic_dict(t) for t in parsed['topics']]}
-                if all(k.startswith('blogTopic') for k in parsed.keys()):
+                if parsed.keys() and all(k.startswith('blogTopic') for k in parsed.keys()):
                     return {'blogTopics': [to_topic_dict(v) for v in parsed.values()]}
                 if 'title' in parsed:
                     return {'blogTopics': [to_topic_dict(parsed)]}
@@ -48,7 +48,7 @@ def _normalize_topics(raw):
                     return {'blogTopics': [to_topic_dict(t) for t in parsed['blogTopics']]}
                 if 'topics' in parsed and isinstance(parsed['topics'], list):
                     return {'blogTopics': [to_topic_dict(t) for t in parsed['topics']]}
-                if all(k.startswith('blogTopic') for k in parsed.keys()):
+                if parsed.keys() and all(k.startswith('blogTopic') for k in parsed.keys()):
                     return {'blogTopics': [to_topic_dict(v) for v in parsed.values()]}
                 if 'title' in parsed:
                     return {'blogTopics': [to_topic_dict(parsed)]}
@@ -70,7 +70,7 @@ def _normalize_topics(raw):
             return {'blogTopics': [to_topic_dict(t) for t in raw['blogTopics']]}
         if 'topics' in raw and isinstance(raw['topics'], list):
             return {'blogTopics': [to_topic_dict(t) for t in raw['topics']]}
-        if all(k.startswith('blogTopic') for k in raw.keys()):
+        if raw.keys() and all(k.startswith('blogTopic') for k in raw.keys()):
             return {'blogTopics': [to_topic_dict(v) for v in raw.values()]}
         if 'title' in raw:
             return {'blogTopics': [to_topic_dict(raw)]}
