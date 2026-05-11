@@ -25,21 +25,33 @@ def discover_agents():
     Returns a dict of agent_name: agent_class.
     """
     agent_classes = {}
+    def recursive_discover(module_path, package_path):
+        for _, name, is_pkg in pkgutil.iter_modules([str(package_path)]):
+            full_module = f"{module_path}.{name}"
+            if is_pkg:
+                try:
+                    submodule = importlib.import_module(full_module)
+                    subpackage_path = Path(submodule.__file__).parent
+                    recursive_discover(full_module, subpackage_path)
+                except Exception:
+                    pass
+                continue
+            if name.startswith('_'):
+                continue
+            try:
+                mod = importlib.import_module(full_module)
+                for attr in dir(mod):
+                    obj = getattr(mod, attr)
+                    if isinstance(obj, type) and hasattr(obj, 'run'):
+                        agent_classes[obj.__name__] = obj
+            except Exception:
+                pass
+
     for module_path in AGENT_MODULE_PATHS:
         try:
             module = importlib.import_module(module_path)
         except ModuleNotFoundError:
             continue
         package_path = Path(module.__file__).parent
-        for _, name, is_pkg in pkgutil.iter_modules([str(package_path)]):
-            if is_pkg or name.startswith('_'):
-                continue
-            try:
-                mod = importlib.import_module(f"{module_path}.{name}")
-                for attr in dir(mod):
-                    obj = getattr(mod, attr)
-                    if isinstance(obj, type) and hasattr(obj, 'run'):
-                        agent_classes[obj.__name__] = obj
-            except Exception as e:
-                print(f"[AgentLoader] Failed to import {module_path}.{name}: {e}")
+        recursive_discover(module_path, package_path)
     return agent_classes

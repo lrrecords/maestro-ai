@@ -24,8 +24,10 @@ from platform_ops.web import platform_bp
 from live.web import live_bp
 from studio.web import studio_bp
 from label.web import label_bp
+
 from dashboard.label.ledger import ledger_bp
 from dashboard.label.sage import sage_bp
+from dashboard.label.scribe import scribe_bp
 
 TEMPLATES_DIR = ROOT / "templates"
 STATIC_DIR = ROOT / "static"
@@ -83,6 +85,7 @@ app.register_blueprint(studio_bp, url_prefix="/studio")
 app.register_blueprint(label_bp,   url_prefix="/label")
 app.register_blueprint(ledger_bp,  url_prefix="/label/ledger")
 app.register_blueprint(sage_bp,    url_prefix="/label/sage")
+app.register_blueprint(scribe_bp,  url_prefix="/label/scribe")
 app.config["LABEL_URL_PREFIX"] = "/label"
 
 @app.route("/")
@@ -152,6 +155,7 @@ def list_agents():
         premium_agent_pages = [
             {"name": "FOCUS", "url": "/agents/focus"},
             {"name": "MULTI_LABEL_ONBOARDING", "url": "/agents/multi-label-onboarding"},
+            {"name": "SCRIBE", "url": "/label/scribe/"},
         ]
     return render_template("agents_list.html", agent_names=agent_names,
                            premium_agent_pages=premium_agent_pages)
@@ -241,6 +245,9 @@ def run_agent(agent_name):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+print("Registered routes:")
+for rule in app.url_map.iter_rules():
+    print(rule)
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "8080"))
     debug = os.getenv("FLASK_DEBUG", "").strip() == "1"

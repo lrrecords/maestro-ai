@@ -1,0 +1,47 @@
+{
+  "name": "SCRIBE Blog Publish",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "webhook_1",
+      "name": "SCRIBE Blog Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {},
+      "id": "easyfunnels_api",
+      "name": "EasyFunnels Blog API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [400, 200]
+    },
+    {
+      "parameters": {},
+      "id": "google_business_api",
+      "name": "Google Business Profile API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [400, 400]
+    }
+  ],
+  "connections": {
+    "SCRIBE Blog Webhook": {
+      "main": [
+        [
+          {
+            "node": "EasyFunnels Blog API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Business Profile API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
