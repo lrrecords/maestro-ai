@@ -88,7 +88,7 @@ class ScribeAgent(BaseAgent):
                 if (s.startswith('{') and s.endswith('}')) and ("blogTopic" in s or "title" in s):
                     try:
                         parsed = ast.literal_eval(s)
-                        if all(k.startswith('blogTopic') for k in parsed.keys()):
+                        if parsed.keys() and all(k.startswith('blogTopic') for k in parsed.keys()):
                             topics = [to_topic_dict(v) for v in parsed.values()]
                             return {'blogTopics': topics}
                         if 'title' in parsed:
@@ -103,7 +103,7 @@ class ScribeAgent(BaseAgent):
                             return {'blogTopics': [to_topic_dict(t) for t in parsed['blogTopics']]}
                         if 'topics' in parsed and isinstance(parsed['topics'], list):
                             return {'blogTopics': [to_topic_dict(t) for t in parsed['topics']]}
-                        if all(k.startswith('blogTopic') for k in parsed.keys()):
+                        if parsed.keys() and all(k.startswith('blogTopic') for k in parsed.keys()):
                             topics = [to_topic_dict(v) for v in parsed.values()]
                             return {'blogTopics': topics}
                         if 'title' in parsed:
@@ -119,7 +119,7 @@ class ScribeAgent(BaseAgent):
                     return {'blogTopics': [to_topic_dict(t) for t in raw['blogTopics']]}
                 if 'topics' in raw and isinstance(raw['topics'], list):
                     return {'blogTopics': [to_topic_dict(t) for t in raw['topics']]}
-                if all(k.startswith('blogTopic') for k in raw.keys()):
+                if raw.keys() and all(k.startswith('blogTopic') for k in raw.keys()):
                     topics = [to_topic_dict(v) for v in raw.values()]
                     return {'blogTopics': topics}
                 if 'title' in raw:
@@ -147,12 +147,75 @@ class ScribeAgent(BaseAgent):
 
     def generate_blog_versions(self, approved_topic):
         """Step 2: Generate blog in EasyFunnels and Google Business Profile formats, submit for CEO approval."""
-        pass
+        import uuid
+        from datetime import datetime
+        prompt = (
+            "You are SCRIBE. Write a full blog post (800-1200 words) for the LRRecords blog "
+            "based on the following approved topic. "
+            "Provide two versions: one for EasyFunnels (HTML-formatted) and one for Google Business Profile (plain text, ~500 words). "
+            "Strictly follow the LRRecords brand voice: authoritative but accessible, music-industry focus, human-first, no AI hype.\n\n"
+            f"Approved topic: {approved_topic}"
+        )
+        response = self.llm(prompt, system=SCRIBE_SYSTEM_PROMPT)
+        try:
+            output = self.parse_json(response)
+        except Exception:
+            output = {"easyfunnels_version": response, "google_business_version": response}
+        job_id = str(uuid.uuid4())
+        job_data = {
+            "id": job_id,
+            "agent": "SCRIBE",
+            "type": "blog_versions",
+            "status": "pending_approval",
+            "input": {"approved_topic": approved_topic},
+            "output": output,
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+        }
+        self.job_store.add_job(job_id, job_data)
+        return output
 
     def generate_social_campaign(self, approved_blog):
         """Step 3: Generate social posts for all platforms, submit for CEO approval."""
-        pass
+        import uuid
+        from datetime import datetime
+        prompt = (
+            "You are SCRIBE. Based on the following approved blog post, generate a social media campaign. "
+            "Provide short posts for: X/Twitter (280 chars), Facebook, Instagram (with hashtags), "
+            "Telegram, and Mastodon. Keep the LRRecords brand voice.\n\n"
+            f"Blog content: {approved_blog}"
+        )
+        response = self.llm(prompt, system=SCRIBE_SYSTEM_PROMPT)
+        try:
+            output = self.parse_json(response)
+        except Exception:
+            output = {"social_posts": response}
+        job_id = str(uuid.uuid4())
+        job_data = {
+            "id": job_id,
+            "agent": "SCRIBE",
+            "type": "social_campaign",
+            "status": "pending_approval",
+            "input": {"approved_blog": str(approved_blog)[:500]},
+            "output": output,
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+        }
+        self.job_store.add_job(job_id, job_data)
+        return output
 
     def dispatch_publish(self, approved_social):
         """Step 4: POST to n8n webhook with all approved content, log results to Redis."""
-        pass
+        import os
+        import json
+        try:
+            import requests
+        except ImportError:
+            return {"ok": False, "error": "requests library not available"}
+        webhook_url = os.environ.get("SCRIBE_N8N_WEBHOOK_URL", "")
+        if not webhook_url:
+            return {"ok": False, "error": "SCRIBE_N8N_WEBHOOK_URL not configured"}
+        payload = {"approved_social": approved_social}
+        try:
+            resp = requests.post(webhook_url, json=payload, timeout=10)
+            return {"ok": resp.ok, "status_code": resp.status_code}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCRIBE — Blog Master · Maestro AI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0d0d0d;
+      --surface:    #141414;
+      --border:     #2a2a2a;
+      --accent:     #00e5b0;
+      --accent-dim: rgba(0,229,176,.14);
+      --amber:      #ffb400;
+      --red:        #ff6060;
+      --white:      #f0f0f0;
+      --muted:      #888;
+      --text:       #d8d8d8;
+      --mono:       ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+      --sans:       system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,176,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,176,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .page-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,229,176,.35);
+      background: rgba(0,229,176,.08);
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .page-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    .page-sub {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-top: 4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border: 1px solid rgba(255,180,0,.3);
+      background: rgba(255,180,0,.07);
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+    }
+
+    /* Flash messages */
+    .flash-list { list-style: none; margin-bottom: 20px; }
+
+    .flash {
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: .9rem;
+      margin-bottom: 8px;
+    }
+
+    .flash.success {
+      background: rgba(0,229,176,.07);
+      border: 1px solid rgba(0,229,176,.22);
+      color: var(--accent);
+    }
+
+    .flash.error {
+      background: rgba(255,96,96,.07);
+      border: 1px solid rgba(255,96,96,.22);
+      color: var(--red);
+    }
+
+    /* Stats row */
+    .stats-row {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      flex: 1;
+      min-width: 140px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+
+    .stat-label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--white);
+      font-family: var(--mono);
+    }
+
+    .stat-value.accent { color: var(--accent); }
+    .stat-value.amber  { color: var(--amber); }
+
+    /* Action buttons */
+    .actions { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-family: var(--mono);
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid;
+      transition: background .2s, box-shadow .2s;
+    }
+
+    .btn-primary {
+      background: rgba(0,229,176,.12);
+      border-color: rgba(0,229,176,.40);
+      color: var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: rgba(0,229,176,.20);
+      box-shadow: 0 0 18px rgba(0,229,176,.12);
+    }
+
+    .btn-secondary {
+      background: rgba(255,180,0,.07);
+      border-color: rgba(255,180,0,.25);
+      color: var(--amber);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,180,0,.14);
+    }
+
+    .btn-danger {
+      background: rgba(255,96,96,.07);
+      border-color: rgba(255,96,96,.25);
+      color: var(--red);
+    }
+
+    .btn-danger:hover {
+      background: rgba(255,96,96,.14);
+    }
+
+    /* Generate form */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    .form-card h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 18px;
+      letter-spacing: .02em;
+    }
+
+    .field { margin-bottom: 16px; }
+
+    label {
+      display: block;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    textarea, select, input[type="text"] {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: var(--sans);
+      font-size: .93rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    textarea:focus, select:focus, input[type="text"]:focus {
+      border-color: rgba(0,229,176,.45);
+    }
+
+    select option { background: #1a1a1a; }
+
+    /* Jobs table */
+    .jobs-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .jobs-header {
+      background: rgba(26,26,26,.9);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .jobs-header h2 {
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .jobs-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .jobs-table th {
+      padding: 10px 16px;
+      text-align: left;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      background: rgba(20,20,20,.8);
+    }
+
+    .jobs-table td {
+      padding: 12px 16px;
+      font-size: .88rem;
+      border-bottom: 1px solid rgba(42,42,42,.5);
+      vertical-align: top;
+    }
+
+    .jobs-table tr:last-child td { border-bottom: none; }
+
+    .jobs-table tr:hover td { background: rgba(255,255,255,.025); }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .status-pending_approval {
+      background: rgba(255,180,0,.10);
+      border: 1px solid rgba(255,180,0,.3);
+      color: var(--amber);
+    }
+
+    .status-approved {
+      background: rgba(0,229,176,.08);
+      border: 1px solid rgba(0,229,176,.25);
+      color: var(--accent);
+    }
+
+    .status-rejected {
+      background: rgba(255,96,96,.08);
+      border: 1px solid rgba(255,96,96,.25);
+      color: var(--red);
+    }
+
+    .status-workflow_triggered {
+      background: rgba(100,180,255,.08);
+      border: 1px solid rgba(100,180,255,.25);
+      color: #64b4ff;
+    }
+
+    .ts { font-family: var(--mono); font-size: .78rem; color: var(--muted); }
+
+    .empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: .93rem;
+    }
+
+    .empty-state .icon { font-size: 2rem; margin-bottom: 10px; }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: .85rem;
+      text-decoration: none;
+      margin-top: 24px;
+      transition: color .15s;
+    }
+
+    .back-link:hover { color: var(--white); }
+
+    .cb { vertical-align: middle; accent-color: var(--accent); }
+
+    /* Inline delete form */
+    .delete-form { display: inline; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div class="page-icon" aria-hidden="true">✍️</div>
+      <div>
+        <div class="page-title">SCRIBE</div>
+        <div class="page-sub">Blog Master &amp; Content Strategist — LRRecords Label Department</div>
+      </div>
+      <span class="badge"><span class="dot"></span>Premium</span>
+    </div>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-list">
+          {% for category, message in messages %}
+            <li class="flash {{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Status</div>
+        <div class="stat-value {% if status.pending_approvals %}amber{% else %}accent{% endif %}">
+          {{ status.status }}
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Pending Approvals</div>
+        <div class="stat-value amber">{{ status.pending_approvals }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Last Run</div>
+        <div class="stat-value" style="font-size:1rem;color:var(--muted);">
+          {% if status.last_run %}{{ status.last_run[:10] }}{% else %}—{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="actions">
+      <a class="btn btn-secondary" href="{{ url_for('scribe.approvals') }}">📋 Approval Queue ({{ status.pending_approvals }})</a>
+      <a class="btn btn-primary" href="{{ url_for('scribe.admin_export_jobs') }}">⬇ Export Jobs (JSON)</a>
+      <a class="btn btn-primary" href="{{ url_for('scribe.admin_normalize_propose_topics') }}">🔧 Normalize Jobs</a>
+    </div>
+
+    <!-- Generate Topics Form -->
+    <div class="form-card">
+      <h2>▶ Generate Blog Topic Proposals</h2>
+      <form method="POST" action="{{ url_for('scribe.propose_topics') }}">
+        <div class="field">
+          <label for="topic_preferences">Topic Preferences <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+          <textarea id="topic_preferences" name="topic_preferences"
+            placeholder="e.g. focus on mixing techniques for electronic music, or gear reviews for home studios"></textarea>
+        </div>
+        <div class="field">
+          <label for="llm_choice">LLM Provider</label>
+          <select id="llm_choice" name="llm_choice">
+            <option value="anthropic">Anthropic (Claude)</option>
+            <option value="ollama">Ollama (local)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">✍️ &nbsp;Propose Topics</button>
+      </form>
+    </div>
+
+    <!-- Recent Jobs -->
+    <div class="jobs-card">
+      <div class="jobs-header">
+        <h2>Recent SCRIBE Jobs</h2>
+        {% if recent_jobs %}
+        <form method="POST" action="{{ url_for('scribe.admin_batch_delete') }}" id="batch-delete-form">
+          <button type="submit" class="btn btn-danger" style="padding:6px 12px;font-size:.75rem;"
+            onclick="return confirm('Delete selected jobs?')">🗑 Delete Selected</button>
+        </form>
+        {% endif %}
+      </div>
+
+      {% if recent_jobs %}
+      <form method="POST" action="{{ url_for('scribe.admin_batch_delete') }}">
+        <table class="jobs-table">
+          <thead>
+            <tr>
+              <th style="width:36px;"><input type="checkbox" class="cb" id="select-all" title="Select all" /></th>
+              <th>ID</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Timestamp</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for job in recent_jobs %}
+            <tr>
+              <td><input type="checkbox" class="cb job-cb" name="delete_job_id" value="{{ job.id }}" /></td>
+              <td><span class="ts">{{ job.id[:8] }}…</span></td>
+              <td>{{ job.get('type', '—') }}</td>
+              <td>
+                <span class="status-chip status-{{ job.get('status','') }}">
+                  {{ job.get('status','unknown') | replace('_', ' ') }}
+                </span>
+              </td>
+              <td><span class="ts">{{ job.get('timestamp','')[:19] | replace('T',' ') }}</span></td>
+              <td>
+                {% if job.get('status') == 'pending_approval' %}
+                  <a class="btn btn-secondary" href="{{ url_for('scribe.edit_approval', job_id=job.id) }}"
+                     style="padding:4px 10px;font-size:.72rem;">✏️ Edit</a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <!-- Hidden submit for batch delete (triggered from header button) -->
+        <button type="submit" style="display:none;" id="batch-delete-btn">Delete</button>
+      </form>
+      {% else %}
+      <div class="empty-state">
+        <div class="icon">📭</div>
+        <p>No SCRIBE jobs yet. Generate blog topic proposals above to get started.</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <a class="back-link" href="{{ url_for('label.index') }}">← Back to Label</a>
+  </div>
+
+  <script>
+    // Select-all checkbox
+    const selectAll = document.getElementById('select-all');
+    if (selectAll) {
+      selectAll.addEventListener('change', function() {
+        document.querySelectorAll('.job-cb').forEach(cb => { cb.checked = selectAll.checked; });
+      });
+    }
+    // Wire header delete button to the batch-delete form
+    const headerForm = document.getElementById('batch-delete-form');
+    if (headerForm) {
+      headerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        document.getElementById('batch-delete-btn').click();
+      });
+    }
+  </script>
+</body>
+</html>
