@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCRIBE — Edit Approval · Maestro AI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0d0d0d;
+      --surface:    #141414;
+      --border:     #2a2a2a;
+      --accent:     #00e5b0;
+      --amber:      #ffb400;
+      --red:        #ff6060;
+      --white:      #f0f0f0;
+      --muted:      #888;
+      --text:       #d8d8d8;
+      --mono:       ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+      --sans:       system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+    }
+
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,176,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,176,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    .page-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+    .page-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      border: 1px solid rgba(255,180,0,.35);
+      background: rgba(255,180,0,.08);
+      display: grid; place-items: center; font-size: 1.4rem; flex-shrink: 0;
+    }
+    .page-title { font-size: 1.6rem; font-weight: 900; color: var(--white); }
+    .page-sub   { color: var(--muted); font-size: .9rem; margin-top: 4px; }
+
+    .flash-list { list-style: none; margin-bottom: 20px; }
+    .flash { border-radius: 10px; padding: 12px 16px; font-size: .9rem; margin-bottom: 8px; }
+    .flash.success { background: rgba(0,229,176,.07); border: 1px solid rgba(0,229,176,.22); color: var(--accent); }
+    .flash.error   { background: rgba(255,96,96,.07);  border: 1px solid rgba(255,96,96,.22);  color: var(--red); }
+
+    .meta-row {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .meta-item { font-size: .82rem; color: var(--muted); }
+    .meta-item span { color: var(--white); font-family: var(--mono); }
+
+    /* Topic editor */
+    .topics-editor { margin-bottom: 28px; }
+
+    .topics-editor h2 {
+      font-size: 1rem; font-weight: 700; color: var(--white);
+      margin-bottom: 16px; letter-spacing: .02em;
+    }
+
+    .topic-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .topic-row-label {
+      font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 6px; display: block;
+    }
+
+    .topic-input {
+      width: 100%;
+      padding: 9px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: var(--sans);
+      font-size: .93rem;
+      outline: none;
+      transition: border-color .2s;
+      margin-bottom: 10px;
+    }
+
+    .topic-input:focus { border-color: rgba(0,229,176,.45); }
+    .topic-input:last-child { margin-bottom: 0; }
+
+    textarea.topic-input { resize: vertical; min-height: 70px; }
+
+    .remove-topic-btn {
+      position: absolute;
+      top: 10px; right: 12px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      transition: color .15s;
+    }
+    .remove-topic-btn:hover { color: var(--red); }
+
+    /* Fallback raw editor */
+    .raw-editor h2 { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+
+    textarea.raw-content {
+      width: 100%;
+      min-height: 200px;
+      padding: 12px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: var(--mono);
+      font-size: .85rem;
+      outline: none;
+      resize: vertical;
+      transition: border-color .2s;
+      margin-bottom: 16px;
+    }
+    textarea.raw-content:focus { border-color: rgba(0,229,176,.45); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-family: var(--mono);
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid;
+      transition: background .2s;
+    }
+
+    .btn-primary {
+      background: rgba(0,229,176,.12);
+      border-color: rgba(0,229,176,.40);
+      color: var(--accent);
+    }
+    .btn-primary:hover { background: rgba(0,229,176,.20); }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.04);
+      border-color: var(--border);
+      color: var(--muted);
+    }
+    .btn-secondary:hover { color: var(--white); background: rgba(255,255,255,.07); }
+
+    .btn-add {
+      background: rgba(0,229,176,.06);
+      border-color: rgba(0,229,176,.22);
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .btn-add:hover { background: rgba(0,229,176,.12); }
+
+    .form-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--muted); font-size: .85rem; text-decoration: none;
+      margin-top: 24px; transition: color .15s;
+    }
+    .back-link:hover { color: var(--white); }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div class="page-icon" aria-hidden="true">✏️</div>
+      <div>
+        <div class="page-title">Edit Job</div>
+        <div class="page-sub">SCRIBE — Review and refine content before approval</div>
+      </div>
+    </div>
+
+    <!-- Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-list">
+          {% for category, message in messages %}
+            <li class="flash {{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Meta -->
+    <div class="meta-row">
+      <div class="meta-item">Job ID: <span>{{ job.id }}</span></div>
+      <div class="meta-item">Type: <span>{{ job.get('type', '—') }}</span></div>
+      <div class="meta-item">Status: <span>{{ job.get('status', '—') }}</span></div>
+      <div class="meta-item">Created: <span>{{ job.get('timestamp','')[:10] }}</span></div>
+    </div>
+
+    {% if job.get('type') == 'propose_topics' and job.get('output') and job['output'].get('blogTopics') %}
+    <!-- Structured topic editor -->
+    <form method="POST" action="{{ url_for('scribe.edit_approval', job_id=job.id) }}">
+      <input type="hidden" name="edit_mode" value="structured" />
+      <div class="topics-editor">
+        <h2>✍️ Edit Blog Topic Proposals</h2>
+        <div id="topics-container">
+          {% for topic in job['output']['blogTopics'] %}
+          <div class="topic-row" data-index="{{ loop.index0 }}">
+            <button type="button" class="remove-topic-btn" title="Remove topic">✕</button>
+            <label class="topic-row-label">Title</label>
+            <input type="text" class="topic-input"
+                   name="topic_title_{{ loop.index0 }}"
+                   value="{{ topic.get('title', '') }}" required />
+            <label class="topic-row-label">Rationale</label>
+            <textarea class="topic-input"
+                      name="topic_rationale_{{ loop.index0 }}">{{ topic.get('rationale', '') }}</textarea>
+          </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="btn btn-add" id="add-topic-btn">＋ Add Topic</button>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">💾 Save &amp; Return to Queue</button>
+        <a class="btn btn-secondary" href="{{ url_for('scribe.approvals') }}">Cancel</a>
+      </div>
+    </form>
+
+    {% else %}
+    <!-- Raw / fallback editor -->
+    <form method="POST" action="{{ url_for('scribe.edit_approval', job_id=job.id) }}">
+      <input type="hidden" name="edit_mode" value="raw" />
+      <div class="raw-editor">
+        <h2>✍️ Edit Content</h2>
+        <textarea class="raw-content" name="content">{% if job.get('output') %}{{ job['output'] | tojson(indent=2) }}{% endif %}</textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">💾 Save &amp; Return to Queue</button>
+        <a class="btn btn-secondary" href="{{ url_for('scribe.approvals') }}">Cancel</a>
+      </div>
+    </form>
+    {% endif %}
+
+    <a class="back-link" href="{{ url_for('scribe.approvals') }}">← Back to Approval Queue</a>
+  </div>
+
+  <script>
+    // Add topic button
+    const container = document.getElementById('topics-container');
+    const addBtn = document.getElementById('add-topic-btn');
+    if (addBtn && container) {
+      addBtn.addEventListener('click', function() {
+        const existing = container.querySelectorAll('.topic-row');
+        const idx = existing.length;
+        const row = document.createElement('div');
+        row.className = 'topic-row';
+        row.setAttribute('data-index', idx);
+        row.innerHTML = `
+          <button type="button" class="remove-topic-btn" title="Remove topic">✕</button>
+          <label class="topic-row-label">Title</label>
+          <input type="text" class="topic-input" name="topic_title_${idx}" required />
+          <label class="topic-row-label">Rationale</label>
+          <textarea class="topic-input" name="topic_rationale_${idx}"></textarea>
+        `;
+        container.appendChild(row);
+        row.querySelector('.remove-topic-btn').addEventListener('click', removeRow);
+        row.querySelector('input').focus();
+      });
+    }
+
+    // Remove topic rows
+    function removeRow(e) {
+      const row = e.target.closest('.topic-row');
+      if (document.querySelectorAll('.topic-row').length > 1) {
+        row.remove();
+        reindex();
+      } else {
+        row.querySelector('input[type="text"]').value = '';
+        row.querySelector('textarea').value = '';
+      }
+    }
+
+    document.querySelectorAll('.remove-topic-btn').forEach(btn => {
+      btn.addEventListener('click', removeRow);
+    });
+
+    // Reindex input names after removal so server can read them sequentially
+    function reindex() {
+      document.querySelectorAll('.topic-row').forEach((row, i) => {
+        row.setAttribute('data-index', i);
+        const titleInput = row.querySelector('input[type="text"]');
+        const rationaleInput = row.querySelector('textarea');
+        if (titleInput) titleInput.name = `topic_title_${i}`;
+        if (rationaleInput) rationaleInput.name = `topic_rationale_${i}`;
+      });
+    }
+  </script>
+</body>
+</html>

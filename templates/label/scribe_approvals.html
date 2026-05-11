@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCRIBE — Approval Queue · Maestro AI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0d0d0d;
+      --surface:    #141414;
+      --border:     #2a2a2a;
+      --accent:     #00e5b0;
+      --accent-dim: rgba(0,229,176,.14);
+      --amber:      #ffb400;
+      --red:        #ff6060;
+      --white:      #f0f0f0;
+      --muted:      #888;
+      --text:       #d8d8d8;
+      --mono:       ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+      --sans:       system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,176,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,176,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .page-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,180,0,.35);
+      background: rgba(255,180,0,.08);
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .page-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    .page-sub { color: var(--muted); font-size: .9rem; margin-top: 4px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border: 1px solid rgba(255,180,0,.3);
+      background: rgba(255,180,0,.07);
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-left: auto;
+    }
+
+    .badge .dot { width:6px; height:6px; border-radius:50%; background:var(--amber); }
+
+    .flash-list { list-style: none; margin-bottom: 20px; }
+    .flash { border-radius: 10px; padding: 12px 16px; font-size: .9rem; margin-bottom: 8px; }
+    .flash.success { background: rgba(0,229,176,.07); border: 1px solid rgba(0,229,176,.22); color: var(--accent); }
+    .flash.error   { background: rgba(255,96,96,.07);  border: 1px solid rgba(255,96,96,.22);  color: var(--red); }
+
+    /* Approval cards */
+    .approval-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 22px;
+      overflow: hidden;
+    }
+
+    .approval-card-header {
+      background: rgba(20,20,20,.9);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .approval-card-title {
+      font-size: .92rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .approval-card-meta {
+      font-size: .78rem;
+      color: var(--muted);
+      font-family: var(--mono);
+      margin-left: auto;
+    }
+
+    .approval-card-body { padding: 20px; }
+
+    /* Topic blocks */
+    .topic-block {
+      background: rgba(0,229,176,.04);
+      border: 1px solid rgba(0,229,176,.12);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+
+    .topic-block:last-child { margin-bottom: 0; }
+
+    .topic-title {
+      font-weight: 700;
+      color: var(--white);
+      font-size: .97rem;
+      margin-bottom: 6px;
+    }
+
+    .topic-rationale {
+      font-style: italic;
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.5;
+    }
+
+    /* Approval actions */
+    .approval-actions {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 16px;
+      border-radius: 10px;
+      font-family: var(--mono);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid;
+      transition: background .2s;
+    }
+
+    .btn-approve {
+      background: rgba(0,229,176,.10);
+      border-color: rgba(0,229,176,.35);
+      color: var(--accent);
+    }
+    .btn-approve:hover { background: rgba(0,229,176,.18); }
+
+    .btn-edit {
+      background: rgba(255,180,0,.07);
+      border-color: rgba(255,180,0,.28);
+      color: var(--amber);
+    }
+    .btn-edit:hover { background: rgba(255,180,0,.14); }
+
+    .btn-reject {
+      background: rgba(255,96,96,.06);
+      border-color: rgba(255,96,96,.22);
+      color: var(--red);
+    }
+    .btn-reject:hover { background: rgba(255,96,96,.12); }
+
+    /* Rejection note field */
+    .rejection-note {
+      width: 100%;
+      padding: 8px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: var(--sans);
+      font-size: .88rem;
+      outline: none;
+      display: none;
+      margin-top: 8px;
+    }
+    .rejection-note.visible { display: block; }
+
+    .empty-state {
+      padding: 48px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+    .empty-state .icon { font-size: 2.4rem; margin-bottom: 12px; }
+    .empty-state p { line-height: 1.6; }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: .85rem;
+      text-decoration: none;
+      margin-top: 24px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: var(--white); }
+
+    .batch-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .cb { accent-color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div class="page-icon" aria-hidden="true">📋</div>
+      <div>
+        <div class="page-title">Approval Queue</div>
+        <div class="page-sub">SCRIBE — Blog &amp; Content pending CEO sign-off</div>
+      </div>
+      <span class="badge"><span class="dot"></span>{{ approvals | length }} Pending</span>
+    </div>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-list">
+          {% for category, message in messages %}
+            <li class="flash {{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if approvals %}
+
+    <!-- Batch actions -->
+    <form method="POST" action="{{ url_for('scribe.admin_batch_approve') }}" id="batch-approve-form">
+      <div class="batch-bar">
+        <label style="display:flex;align-items:center;gap:6px;font-size:.82rem;text-transform:none;letter-spacing:0;color:var(--text);">
+          <input type="checkbox" class="cb" id="select-all" />
+          Select all
+        </label>
+        <button type="submit" class="btn btn-approve" style="padding:7px 14px;"
+          onclick="return confirm('Approve all selected jobs?')">✅ Approve Selected</button>
+      </div>
+
+      {% for job in approvals %}
+      <div class="approval-card">
+        <div class="approval-card-header">
+          <input type="checkbox" class="cb job-cb" name="approve_job_id" value="{{ job.id }}" />
+          <div class="approval-card-title">
+            {% if job.get('type') == 'propose_topics' %}
+              📝 Blog Topic Proposals
+            {% else %}
+              {{ job.get('type', 'unknown') | replace('_', ' ') | title }}
+            {% endif %}
+          </div>
+          <div class="approval-card-meta">
+            <span style="font-family:var(--mono);">{{ job.id[:8] }}…</span>
+            &nbsp;·&nbsp;
+            {{ job.get('timestamp','')[:10] }}
+          </div>
+        </div>
+
+        <div class="approval-card-body">
+          {% if job.get('type') == 'propose_topics' and job.get('output') and job['output'].get('blogTopics') %}
+            {% for topic in job['output']['blogTopics'] %}
+              <div class="topic-block">
+                <div class="topic-title">{{ topic.get('title', '—') }}</div>
+                {% if topic.get('rationale') %}
+                  <div class="topic-rationale">{{ topic.get('rationale') }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <pre style="font-family:var(--mono);font-size:.82rem;color:var(--text);white-space:pre-wrap;word-break:break-word;">{{ job.get('output') | tojson(indent=2) if job.get('output') else '(no output)' }}</pre>
+          {% endif %}
+        </div>
+
+        <div class="approval-actions">
+          <!-- Approve -->
+          <form method="POST" action="{{ url_for('scribe.approve') }}">
+            <input type="hidden" name="approval_id" value="{{ job.id }}" />
+            <input type="hidden" name="action" value="approve" />
+            <button type="submit" class="btn btn-approve">✅ Approve</button>
+          </form>
+          <!-- Edit -->
+          <a class="btn btn-edit" href="{{ url_for('scribe.edit_approval', job_id=job.id) }}">✏️ Edit</a>
+          <!-- Reject -->
+          <form method="POST" action="{{ url_for('scribe.approve') }}" class="reject-form">
+            <input type="hidden" name="approval_id" value="{{ job.id }}" />
+            <input type="hidden" name="action" value="reject" />
+            <button type="button" class="btn btn-reject reject-toggle">✗ Reject</button>
+            <input type="text" name="rejection_note" class="rejection-note" placeholder="Reason for rejection (optional)" />
+            <button type="submit" class="btn btn-reject confirm-reject" style="display:none;margin-top:8px;">Confirm Reject</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </form>
+
+    {% else %}
+    <div class="empty-state">
+      <div class="icon">✅</div>
+      <p>No jobs pending approval.<br>Generate blog topic proposals from the <a href="{{ url_for('scribe.index') }}" style="color:var(--accent);">SCRIBE dashboard</a>.</p>
+    </div>
+    {% endif %}
+
+    <a class="back-link" href="{{ url_for('scribe.index') }}">← Back to SCRIBE Dashboard</a>
+  </div>
+
+  <script>
+    // Select-all
+    const selectAll = document.getElementById('select-all');
+    if (selectAll) {
+      selectAll.addEventListener('change', function() {
+        document.querySelectorAll('.job-cb').forEach(cb => { cb.checked = selectAll.checked; });
+      });
+    }
+    // Reject toggle — reveal note field and confirm button
+    document.querySelectorAll('.reject-toggle').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const form = btn.closest('.reject-form');
+        const note = form.querySelector('.rejection-note');
+        const confirm = form.querySelector('.confirm-reject');
+        note.classList.toggle('visible');
+        confirm.style.display = confirm.style.display === 'none' ? 'inline-flex' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
