@@ -1,0 +1,66 @@
+{
+  "name": "SCRIBE Social Dispatch",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "webhook_1",
+      "name": "SCRIBE Social Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {},
+      "id": "x_api",
+      "name": "X (Twitter) API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [400, 100]
+    },
+    {
+      "parameters": {},
+      "id": "facebook_api",
+      "name": "Facebook API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [400, 200]
+    },
+    {
+      "parameters": {},
+      "id": "instagram_api",
+      "name": "Instagram API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [400, 300]
+    },
+    {
+      "parameters": {},
+      "id": "telegram_api",
+      "name": "Telegram API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [400, 400]
+    },
+    {
+      "parameters": {},
+      "id": "mastodon_api",
+      "name": "Mastodon API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [400, 500]
+    }
+  ],
+  "connections": {
+    "SCRIBE Social Webhook": {
+      "main": [
+        [
+          { "node": "X (Twitter) API", "type": "main", "index": 0 },
+          { "node": "Facebook API", "type": "main", "index": 0 },
+          { "node": "Instagram API", "type": "main", "index": 0 },
+          { "node": "Telegram API", "type": "main", "index": 0 },
+          { "node": "Mastodon API", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  }
+}
