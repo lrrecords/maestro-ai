@@ -51,55 +51,54 @@ If you're running an independent label, studio, or live music organisation and w
 - **Agent Registry:** Python-driven framework for pluggable, composable agent logic per business domain.
 - **Live Dashboards:** Browser-based dashboard for real-time agent orchestration, workflow viz, and data inspection.
 
----
+## 🟡 FOCUS Brief API & Widget (v1.5.0)
 
-## 🏢 Departments & Agents
-
-| Department     | Description / Agents                                                       |
-|----------------|---------------------------------------------------------------------------|
-| **Label**      | Core artist and release operations<br>_Agents:_ ATLAS, VINYL, ECHO, FORGE, BRIDGE, SAGE, **SCRIBE** |
-| **Studio**     | Recording, creative, and production ops<br>_Agents:_ CLIENT, CRAFT, ASK_AI, MIX, RATE, SESSION, SIGNAL, SOUND<br>_Schema metadata:_ SCHEMA |
-| **Live**       | Performance and tour management<br>_Agents:_ BOOK, MERCH, PROMO, RIDER, ROUTE, SETTLE, TOUR<br>_Schema metadata:_ SCHEMA |
-| **Platform Ops** | Infra/config, model tuning, system health monitoring                     |
-
-_Switch between departments from the Hub. Each dashboard includes agents and real-time data views._
-
----
-
-## ✍️ SCRIBE — Blog Master & Content Strategist (Premium)
-
-SCRIBE is a premium Label Department agent that manages the full blog and social content workflow for LRRecords.
+The FOCUS Brief is a CEO dashboard widget and API endpoint that aggregates operational signals (approvals, missions, shows, etc.) from configurable data sources, with optional LLM/AI summarization and robust error handling.
 
 ### Features
+- **Configurable Data Sources:**
+  - Sources are defined in `dashboard/label/focus_config.py` as a list of loaders or file paths.
+  - Add/remove sources by editing the config file—no code changes needed.
+- **API Endpoint:**
+  - `GET /label/api/focus/brief` returns a JSON summary of all configured sources.
+  - Returns a `headline` field (LLM/AI summary or fallback string).
+  - Returns `status: ok` on success, or `status: error` and HTTP 500 on failure.
+- **Rate Limiting:**
+  - API is rate-limited (default: 10 requests/minute per IP) using Flask-Limiter.
+- **Widget UI:**
+  - Hub dashboard widget fetches the brief, shows a loading spinner, error state, and the LLM-generated headline.
 
-| Feature | Detail |
-|---------|--------|
-| **Topic proposals** | Generate 3 music-industry blog topic options (with rationale) via Anthropic or Ollama |
-| **CEO approval queue** | All content flows through an explicit approval step before publication |
-| **Rich topic editor** | Add, remove, and edit topics inline in the approval queue |
-| **Workflow trigger** | On approval, automatically creates a `blog_versions` job (EasyFunnels + Google Business Profile) and POSTs to n8n |
-| **Batch operations** | Approve or delete multiple jobs at once from the dashboard |
-| **JSON export** | Download all SCRIBE jobs as `scribe_jobs.json` for audit/backup |
-| **Admin normalize** | Migrate legacy/malformed job output to the canonical `{blogTopics: [{title, rationale}]}` format |
-| **Persistent storage** | Redis-backed (in-memory fallback for dev/test) |
-| **LLM-agnostic** | Switch between Anthropic (Claude) and Ollama (local) in the UI |
-
-### Workflow
-
+### Configuration Example
+```python
+# dashboard/label/focus_config.py
+FOCUS_DATA_SOURCES = [
+    {"name": "approvals", "loader": "crews.base_crew.get_pending_approvals", "summary_key": "approvals"},
+    {"name": "missions", "path": "data/missions/missions.json", "summary_key": "missions"},
+    {"name": "upcoming_shows", "path": "live/data/shows.json", "summary_key": "upcoming_shows"},
+    # Add more sources as needed
+]
 ```
-1. Propose Topics  →  2. CEO Approves  →  3. Generate Blog Versions  →  4. CEO Approves  →  5. Social Campaign  →  6. Dispatch (n8n)
-```
 
-1. **Propose Topics** — SCRIBE generates 3 music-industry blog topics with rationale, submits to approval queue.
-2. **CEO Approval** — Topics are displayed in the approval queue with bold titles and italic rationale. CEO can approve, edit, or reject.
-3. **Workflow Trigger** — On approval, a `blog_versions` job is created (EasyFunnels HTML + Google Business Profile plain-text formats) and an n8n webhook is fired if `SCRIBE_N8N_WEBHOOK_URL` is set.
-4. **Iterate** — Blog versions and social campaigns follow the same propose → approve → trigger pattern.
+### Error Handling
+- If any data source fails to load, the endpoint returns HTTP 500 and a JSON error message.
+- All errors are logged and surfaced in the widget UI.
 
-### Setup
+### Testing
+- See `tests/test_focus_brief.py` for deterministic, isolated tests covering normal and error cases.
+- Run: `pytest tests/test_focus_brief.py`
 
-1. Enable premium features in `.env`:
-   ```
-   PREMIUM_FEATURES_ENABLED=true
+### Extending
+- Add new data sources by editing `focus_config.py`.
+- To add a new widget or dashboard view, see `templates/hub.html` and associated JS/CSS.
+
+---
+
+## 🏷️ License
+
+This project is Open Core compliant. Premium/proprietary features are separated and may be disabled via `.env`.
+
+MIT License © [LRRecords](https://github.com/lrrecords), 2026
+
    ```
 
 2. Configure LLM:
@@ -147,6 +146,49 @@ Navigate to `/label/scribe/` after login:
 | `templates/label/scribe_approvals.html` | Approval queue UI |
 | `templates/label/scribe_edit_approval.html` | Structured topic editor UI |
 | `n8n/workflows/scribe_blog_publish.json` | n8n workflow stub for blog publishing |
+
+---
+
+
+## 🟡 FOCUS Brief API & Widget (v1.5.0)
+
+The FOCUS Brief is a CEO dashboard widget and API endpoint that aggregates operational signals (approvals, missions, shows, etc.) from configurable data sources, with optional LLM/AI summarization and robust error handling.
+
+### Features
+- **Configurable Data Sources:**
+  - Sources are defined in `dashboard/label/focus_config.py` as a list of loaders or file paths.
+  - Add/remove sources by editing the config file—no code changes needed.
+- **API Endpoint:**
+  - `GET /label/api/focus/brief` returns a JSON summary of all configured sources.
+  - Returns a `headline` field (LLM/AI summary or fallback string).
+  - Returns `status: ok` on success, or `status: error` and HTTP 500 on failure.
+- **Rate Limiting:**
+  - API is rate-limited (default: 10 requests/minute per IP) using Flask-Limiter.
+- **Widget UI:**
+  - Hub dashboard widget fetches the brief, shows a loading spinner, error state, and the LLM-generated headline.
+
+### Configuration Example
+```python
+# dashboard/label/focus_config.py
+FOCUS_DATA_SOURCES = [
+    {"name": "approvals", "loader": "crews.base_crew.get_pending_approvals", "summary_key": "approvals"},
+    {"name": "missions", "path": "data/missions/missions.json", "summary_key": "missions"},
+    {"name": "upcoming_shows", "path": "live/data/shows.json", "summary_key": "upcoming_shows"},
+    # Add more sources as needed
+]
+```
+
+### Error Handling
+- If any data source fails to load, the endpoint returns HTTP 500 and a JSON error message.
+- All errors are logged and surfaced in the widget UI.
+
+### Testing
+- See `tests/test_focus_brief.py` for deterministic, isolated tests covering normal and error cases.
+- Run: `pytest tests/test_focus_brief.py`
+
+### Extending
+- Add new data sources by editing `focus_config.py`.
+- To add a new widget or dashboard view, see `templates/hub.html` and associated JS/CSS.
 
 ---
 
@@ -488,44 +530,3 @@ MIT License © [LRRecords](https://github.com/lrrecords), 2026
 
 ---
 
-## 🟡 FOCUS Brief API & Widget (v1.5.0)
-
-The FOCUS Brief is a CEO dashboard widget and API endpoint that aggregates operational signals (approvals, missions, shows, etc.) from configurable data sources, with optional LLM/AI summarization and robust error handling.
-
-### Features
-- **Configurable Data Sources:**
-  - Sources are defined in `dashboard/label/focus_config.py` as a list of loaders or file paths.
-  - Add/remove sources by editing the config file—no code changes needed.
-- **API Endpoint:**
-  - `GET /label/api/focus/brief` returns a JSON summary of all configured sources.
-  - Returns a `headline` field (LLM/AI summary or fallback string).
-  - Returns `status: ok` on success, or `status: error` and HTTP 500 on failure.
-- **Rate Limiting:**
-  - API is rate-limited (default: 10 requests/minute per IP) using Flask-Limiter.
-- **Widget UI:**
-  - Hub dashboard widget fetches the brief, shows a loading spinner, error state, and the LLM-generated headline.
-
-### Configuration Example
-```python
-# dashboard/label/focus_config.py
-FOCUS_DATA_SOURCES = [
-    {"name": "approvals", "loader": "crews.base_crew.get_pending_approvals", "summary_key": "approvals"},
-    {"name": "missions", "path": "data/missions/missions.json", "summary_key": "missions"},
-    {"name": "upcoming_shows", "path": "live/data/shows.json", "summary_key": "upcoming_shows"},
-    # Add more sources as needed
-]
-```
-
-### Error Handling
-- If any data source fails to load, the endpoint returns HTTP 500 and a JSON error message.
-- All errors are logged and surfaced in the widget UI.
-
-### Testing
-- See `tests/test_focus_brief.py` for deterministic, isolated tests covering normal and error cases.
-- Run: `pytest tests/test_focus_brief.py`
-
-### Extending
-- Add new data sources by editing `focus_config.py`.
-- To add a new widget or dashboard view, see `templates/hub.html` and associated JS/CSS.
-
----
