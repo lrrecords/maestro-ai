@@ -1,0 +1,15 @@
+{
+  "case_id": "009_mixed_request_should_filter",
+  "agent": "SCRIBE",
+  "method": "propose_topics",
+  "input": {
+    "topic_preferences": "music distribution advice plus general entrepreneur productivity habits"
+  },
+  "expected": {
+    "should_succeed": true,
+    "expected_topic_count": 3,
+    "required_domain_tags": ["music distribution"],
+    "forbidden_domain_tags": ["productivity", "morning routine", "life hacks"]
+  },
+  "notes": "Tests whether SCRIBE filters mixed prompts toward allowed music-domain output."
+}

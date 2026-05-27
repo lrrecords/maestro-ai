@@ -80,21 +80,26 @@ def _normalize_topics(raw):
     return {'blogTopics': []}
 
 
-def _trigger_workflow(job):
+def trigger_n8n_webhook(job, scribe_agent_cls=None):
     """
     Fire the post-approval workflow for a job.
 
     For propose_topics: kick off generate_blog_versions and (if configured)
     POST a trigger to the SCRIBE n8n webhook.
     Returns a dict with trigger result info.
+    Accepts scribe_agent_cls for dependency injection (default: ScribeAgent).
     """
+    if scribe_agent_cls is None:
+        from agents.label.scribe.scribe_agent import ScribeAgent as DefaultScribeAgent
+        scribe_agent_cls = DefaultScribeAgent
+
     result = {"triggered": False, "method": None, "error": None}
 
     if job.get('type') == 'propose_topics':
         topics = job.get('output', {}).get('blogTopics', [])
         approved_topic = topics[0].get('title', '') if topics else ''
         try:
-            agent = ScribeAgent(job_store)
+            agent = scribe_agent_cls(job_store)
             agent.generate_blog_versions(approved_topic)
             result["triggered"] = True
             result["method"] = "generate_blog_versions"
@@ -120,7 +125,20 @@ def _trigger_workflow(job):
             result["n8n_error"] = str(exc)
 
     return result
-
+def _trigger_workflow(job, scribe_agent_cls=None):
+    """
+    Alias for trigger_n8n_webhook for backward compatibility with tests.
+    Always returns a dict.
+    Accepts scribe_agent_cls for dependency injection.
+    """
+    if scribe_agent_cls is not None:
+        result = trigger_n8n_webhook(job, scribe_agent_cls=scribe_agent_cls)
+    else:
+        result = trigger_n8n_webhook(job)
+    if result is None:
+        # Return a default dict if nothing was triggered
+        return {"triggered": False, "method": None, "error": None}
+    return result
 
 # ---------------------------------------------------------------------------
 # Admin: normalize all propose_topics jobs
@@ -339,3 +357,11 @@ def propose_topics():
     agent.propose_topics(topic_preferences=topic_preferences)
     flash("Blog topic options generated and submitted for CEO approval.", "success")
     return redirect(url_for("scribe.index"))
+# TODO: Implement n8n webhook trigger logic if needed
+    pass
+# TODO: Implement n8n webhook trigger logic if needed
+    pass
+# TODO: Implement n8n webhook trigger logic if needed
+    pass
+# TODO: Implement n8n webhook trigger logic if needed
+    pass

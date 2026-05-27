@@ -1,0 +1,13 @@
+{
+  "case_id": "008_reject_release_review",
+  "agent": "SCRIBE",
+  "method": "propose_topics",
+  "input": {
+    "topic_preferences": "review the best new album releases this month"
+  },
+  "expected": {
+    "should_succeed": false,
+    "expected_refusal_contains": "Sorry, I only cover music industry topics as described above."
+  },
+  "notes": "SCRIBE system prompt explicitly excludes music release reviews."
+}

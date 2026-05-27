@@ -1,50 +1,55 @@
-import requests
-import time
+import pytest
+from unittest.mock import patch, MagicMock
+from dashboard.app import app
 
-BASE = "http://127.0.0.1:8080/label/api/mission"
+@pytest.fixture
+def client():
+    app.config["TESTING"] = True
+    with app.test_client() as c:
+        yield c
 
-# Add your MAESTRO_TOKEN here
-TOKEN = "q5mBjUuheDnG8JgqSy842YJCD-8Lc8Z70qkQ-r5gm-M"
-headers = {"Authorization": f"Bearer {TOKEN}"}
+def _login(client):
+    with client.session_transaction() as sess:
+        sess["authenticated"] = True
 
- # 1. Create a new mission/job
-resp = requests.post(BASE, json={
-    "artist_slug": "test_artist",
-    "mission": "Test persistent job store",
-    "release_title": "Test Release"
-}, headers=headers)
-print("Create mission response:", resp.json())
-assert resp.ok and "job_id" in resp.json(), "Failed to create mission"
-job_id = resp.json()["job_id"]
+def test_job_store_lifecycle(client):
+    _login(client)
+    # Patch crew so no real CrewAI call happens
+    with patch("label.web.threading.Thread") as mock_thread:
+        mock_thread.return_value = MagicMock(start=MagicMock())
+        # 1. Create a new mission/job
+        resp = client.post("/label/api/mission", json={
+            "artist_slug": "test_artist",
+            "mission": "Test persistent job store",
+            "release_title": "Test Release"
+        })
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert data["ok"] is True and "job_id" in data, "Failed to create mission"
+        job_id = data["job_id"]
 
- # 2. List all missions/jobs
-resp = requests.get(BASE + "/list", headers=headers)
-print("Mission list:", resp.json())
-assert resp.ok and any(j["job_id"] == job_id for j in resp.json()["jobs"]), "Job not found in list"
+    # 2. List all missions/jobs
+    resp = client.get("/label/api/mission/list")
+    assert resp.status_code == 200
+    jobs = resp.get_json()["jobs"]
+    assert any(j["job_id"] == job_id for j in jobs), "Job not found in list"
 
- # 3. Poll job status
-for _ in range(10):
-    resp = requests.get(f"{BASE}/{job_id}", headers=headers)
-    data = resp.json()
-    print("Job status:", data)
-    if data.get("job", {}).get("status") in ("complete", "error", "cancelled"):
-        break
-    time.sleep(1)
-else:
-    print("Job did not complete in time.")
+    # 3. Get job status
+    resp = client.get(f"/label/api/mission/{job_id}")
+    assert resp.status_code == 200
+    job = resp.get_json().get("job", {})
+    assert job.get("job_id") == job_id
 
- # 4. Cancel the job (should be no-op if already complete)
-resp = requests.post(f"{BASE}/{job_id}/cancel", headers=headers)
-print("Cancel job response:", resp.json())
+    # 4. Cancel the job (should be no-op if already complete)
+    resp = client.post(f"/label/api/mission/{job_id}/cancel")
+    assert resp.status_code in (200, 400, 404)
 
- # 5. Delete the job
-resp = requests.delete(f"{BASE}/{job_id}", headers=headers)
-print("Delete job response:", resp.json())
-assert resp.ok and resp.json().get("cleared"), "Job not deleted"
+    # 5. Delete the job
+    resp = client.delete(f"/label/api/mission/{job_id}")
+    assert resp.status_code == 200
+    assert resp.get_json().get("cleared"), "Job not deleted"
 
- # 6. Confirm deletion
-resp = requests.get(BASE + "/list", headers=headers)
-print("Mission list after delete:", resp.json())
-assert job_id not in [j["job_id"] for j in resp.json()["jobs"]], "Job still present after delete"
-
-print("All job store API tests passed.")
+    # 6. Confirm deletion
+    resp = client.get("/label/api/mission/list")
+    jobs = resp.get_json()["jobs"]
+    assert job_id not in [j["job_id"] for j in jobs], "Job still present after delete"

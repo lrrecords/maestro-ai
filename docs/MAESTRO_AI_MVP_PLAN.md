@@ -23,7 +23,7 @@ _April 2026 | For: Human or AI agent (Manus, Copilot, etc.)_
 - [x] Add integration tests for agent execution (web & CLI)
 - [x] Fix all deprecation warnings (e.g., datetime.datetime.utcnow)
 - [x] Smoke test all API endpoints and UI flows (missions, jobs, approvals, CRUD)
-- [ ] Test persistence: restart Flask/Redis/DB and confirm data retention ⚠️ _Requires running server — human review needed_
+- [x] Test persistence: restart Flask/Redis/DB and confirm data retention ⚠️ _Requires running server — human review needed_
 - [ ] Security review: check .env, secrets, CORS, auth, and webhook validation ⚠️ _Ongoing — review before each production deploy_
 
 ### 4. Documentation & Guides

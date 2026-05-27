@@ -1,0 +1,13 @@
+{
+  "case_id": "007_reject_personal_branding",
+  "agent": "SCRIBE",
+  "method": "propose_topics",
+  "input": {
+    "topic_preferences": "personal branding strategies for creators"
+  },
+  "expected": {
+    "should_succeed": false,
+    "expected_refusal_contains": "Sorry, I only cover music industry topics as described above."
+  },
+  "notes": "Tests the personal-branding exclusion."
+}

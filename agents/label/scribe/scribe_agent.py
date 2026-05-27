@@ -72,31 +72,32 @@ class ScribeAgent(BaseAgent):
         # Robust normalization: always produce a list of dicts with title/rationale
         def normalize_topics(raw):
             import ast
-            import re
+            import json
             def to_topic_dict(item):
                 if isinstance(item, dict):
                     title = item.get('title') or item.get('option') or str(item)
                     rationale = item.get('rationale') or item.get('reason') or ''
                     return {'title': title, 'rationale': rationale}
-                elif isinstance(item, str):
+                if isinstance(item, str):
                     return {'title': item, 'rationale': ''}
                 return {'title': str(item), 'rationale': ''}
 
-            # Handle stringified Python dicts from Ollama
             if isinstance(raw, str):
                 s = raw.strip()
                 if (s.startswith('{') and s.endswith('}')) and ("blogTopic" in s or "title" in s):
                     try:
                         parsed = ast.literal_eval(s)
+                        if 'blogTopics' in parsed and isinstance(parsed['blogTopics'], list):
+                            return {'blogTopics': [to_topic_dict(t) for t in parsed['blogTopics']]}
+                        if 'topics' in parsed and isinstance(parsed['topics'], list):
+                            return {'blogTopics': [to_topic_dict(t) for t in parsed['topics']]}
                         if parsed.keys() and all(k.startswith('blogTopic') for k in parsed.keys()):
-                            topics = [to_topic_dict(v) for v in parsed.values()]
-                            return {'blogTopics': topics}
+                            return {'blogTopics': [to_topic_dict(v) for v in parsed.values()]}
                         if 'title' in parsed:
                             return {'blogTopics': [to_topic_dict(parsed)]}
                     except Exception:
                         pass
                 try:
-                    import json
                     parsed = json.loads(s)
                     if isinstance(parsed, dict):
                         if 'blogTopics' in parsed and isinstance(parsed['blogTopics'], list):
@@ -104,15 +105,22 @@ class ScribeAgent(BaseAgent):
                         if 'topics' in parsed and isinstance(parsed['topics'], list):
                             return {'blogTopics': [to_topic_dict(t) for t in parsed['topics']]}
                         if parsed.keys() and all(k.startswith('blogTopic') for k in parsed.keys()):
-                            topics = [to_topic_dict(v) for v in parsed.values()]
-                            return {'blogTopics': topics}
+                            return {'blogTopics': [to_topic_dict(v) for v in parsed.values()]}
                         if 'title' in parsed:
                             return {'blogTopics': [to_topic_dict(parsed)]}
                     if isinstance(parsed, list):
                         return {'blogTopics': [to_topic_dict(t) for t in parsed]}
                 except Exception:
                     pass
-                return {'blogTopics': [{'title': raw, 'rationale': ''}]}
+                # Fallback: treat as plain string with possible multiple lines in 'title: rationale' format
+                lines = [line for line in raw.split('\n') if line.strip()]
+                topics = []
+                for line in lines:
+                    parts = line.split(':', 1)
+                    title = parts[0].strip()
+                    rationale = parts[1].strip() if len(parts) > 1 else ''
+                    topics.append({'title': title, 'rationale': rationale})
+                return {'blogTopics': topics} if topics else {'blogTopics': [{'title': raw, 'rationale': ''}]}
 
             if isinstance(raw, dict):
                 if 'blogTopics' in raw and isinstance(raw['blogTopics'], list):
@@ -120,8 +128,7 @@ class ScribeAgent(BaseAgent):
                 if 'topics' in raw and isinstance(raw['topics'], list):
                     return {'blogTopics': [to_topic_dict(t) for t in raw['topics']]}
                 if raw.keys() and all(k.startswith('blogTopic') for k in raw.keys()):
-                    topics = [to_topic_dict(v) for v in raw.values()]
-                    return {'blogTopics': topics}
+                    return {'blogTopics': [to_topic_dict(v) for v in raw.values()]}
                 if 'title' in raw:
                     return {'blogTopics': [to_topic_dict(raw)]}
                 return {'blogTopics': [to_topic_dict(raw)]}

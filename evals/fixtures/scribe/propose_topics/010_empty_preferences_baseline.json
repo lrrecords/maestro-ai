@@ -1,0 +1,14 @@
+{
+  "case_id": "010_empty_preferences_baseline",
+  "agent": "SCRIBE",
+  "method": "propose_topics",
+  "input": {
+    "topic_preferences": null
+  },
+  "expected": {
+    "should_succeed": true,
+    "expected_topic_count": 3,
+    "forbidden_domain_tags": ["productivity", "personal branding", "release reviews"]
+  },
+  "notes": "Checks default behavior with no explicit preference input."
+}

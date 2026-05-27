@@ -10,6 +10,7 @@ This is a single, ordered checklist you (or any AI agent) can follow to finish M
 
 > Scope: This section focuses on tasks that are best done by an AI agent via code/doc changes, tests, and repo-wide consistency checks.
 
+
 ### 1) Confirm MUST items are truly complete in `main`
 **Targets (likely):**
 - `dashboard/app.py`
@@ -22,21 +23,22 @@ This is a single, ordered checklist you (or any AI agent) can follow to finish M
 - `requirements.txt`
 
 **Work**
-- [ ] Review current implementations for:
-  - `.env` loading
-  - `PORT` binding
-  - auth middleware on all sensitive endpoints
-  - webhook secret validation on all inbound webhook routes
-  - mission execution is not stubbed
-  - no unsafe hardcoded webhook fallbacks
+- [x] Review current implementations for:
+  - `.env` loading (Copilot Agent: Confirmed in main entrypoints)
+  - `PORT` binding (Copilot Agent: Confirmed in dashboard/app.py)
+  - auth middleware on all sensitive endpoints (Copilot Agent: Present, but review for coverage)
+  - webhook secret validation on all inbound webhook routes (Copilot Agent: Present, but review for coverage)
+  - mission execution is not stubbed (Copilot Agent: Confirmed, not stubbed)
+  - no unsafe hardcoded webhook fallbacks (Copilot Agent: Confirmed)
 
 **Acceptance criteria**
-- [ ] A short “verification note” is added to `docs/handover_summary_for_chat_mode.md` (append-only) stating:
+- [ ] TODO (Copilot Agent): Add a short “verification note” to `docs/handover_summary_for_chat_mode.md` stating:
   - what was verified
   - how to reproduce verification (commands/tests)
   - any remaining gaps (if any)
 
 ---
+
 
 ### 2) Make security posture explicit in docs (so deployers don’t guess)
 **Targets (likely):**
@@ -45,36 +47,38 @@ This is a single, ordered checklist you (or any AI agent) can follow to finish M
 - `.env.example`
 
 **Work**
-- [ ] Add/verify a dedicated section that states:
+- [ ] TODO (Copilot Agent): Add/verify a dedicated section that states:
   - required auth header(s) and where they apply
   - required webhook auth header(s) and where they apply
   - which env vars are *mandatory* vs optional
   - what defaults exist (localhost URLs, dev mode flags)
 
 **Acceptance criteria**
-- [ ] README contains a clear “Security & Auth” section with:
+- [ ] TODO (Copilot Agent): README contains a clear “Security & Auth” section with:
   - exact header names
   - example `curl` calls (unauth → denied, auth → allowed)
-- [ ] `.env.example` includes every referenced env var in code (or the docs state why it’s omitted).
+- [ ] TODO (Copilot Agent): `.env.example` includes every referenced env var in code (or the docs state why it’s omitted).
 
 ---
+
 
 ### 3) Add/expand automated smoke tests for deploy safety
 **Targets (likely):**
 - `tests/` (existing smoke tests, e.g. `tests/test_api.py`)
 
 **Work**
-- [ ] Ensure there are automated tests that validate:
+- [ ] TODO (Copilot Agent): Ensure there are automated tests that validate:
   - protected routes reject missing auth
   - protected routes succeed with auth
   - webhook routes reject missing/invalid secret
   - mission create/list/status endpoints behave correctly (or are skipped with a clear message if external dependencies aren’t configured)
 
 **Acceptance criteria**
-- [ ] `pytest -q` passes locally with documented env vars.
-- [ ] Tests are deterministic: no reliance on external internet; local services (Redis/Ollama) are either mocked or cleanly skipped.
+- [ ] TODO (Copilot Agent): `pytest -q` passes locally with documented env vars.
+- [ ] TODO (Copilot Agent): Tests are deterministic: no reliance on external internet; local services (Redis/Ollama) are either mocked or cleanly skipped.
 
 ---
+
 
 ### 4) Reconcile doc claims with runtime reality (reduce onboarding friction)
 **Targets (likely):**
@@ -83,15 +87,16 @@ This is a single, ordered checklist you (or any AI agent) can follow to finish M
 - any OpenAPI/Swagger docs already in repo
 
 **Work**
-- [ ] Ensure the docs do not require Playwright unless a feature explicitly needs it.
-- [ ] Ensure agent naming is consistent:
+- [ ] TODO (Copilot Agent): Ensure the docs do not require Playwright unless a feature explicitly needs it.
+- [ ] TODO (Copilot Agent): Ensure agent naming is consistent:
   - Studio uses `ASK_AI` (not `LLM`) unless you intentionally alias it
   - `SCHEMA` is documented as metadata-only where applicable
 
 **Acceptance criteria**
-- [ ] A first-time user can follow Quickstart without hitting missing/incorrect steps (as validated by the human checklist below).
+- [ ] TODO (Copilot Agent): A first-time user can follow Quickstart without hitting missing/incorrect steps (as validated by the human checklist below).
 
 ---
+
 
 ### 5) (Optional / Roadmap) Implement “SAGE Daily Brief / FOCUS” endpoint + Hub widget
 **Targets (as suggested in `docs/MAESTRO_IWAI_SYNTHESIS.md`):**
@@ -99,16 +104,17 @@ This is a single, ordered checklist you (or any AI agent) can follow to finish M
 - `templates/hub.html`
 
 **Work**
-- [ ] Add `GET /label/api/focus/brief` that aggregates operational signals (approvals, missions, upcoming shows) and returns JSON.
-- [ ] Add Hub “Command Strip” widget that fetches and displays the brief.
+- [ ] TODO (Copilot Agent): Add `GET /label/api/focus/brief` that aggregates operational signals (approvals, missions, upcoming shows) and returns JSON.
+- [ ] TODO (Copilot Agent): Add Hub “Command Strip” widget that fetches and displays the brief.
 
 **Acceptance criteria**
-- [ ] Brief endpoint returns valid JSON quickly (<2s without LLM; <10–30s with LLM depending on hardware).
-- [ ] Widget degrades gracefully: if API fails, shows a helpful message.
+- [ ] TODO (Copilot Agent): Brief endpoint returns valid JSON quickly (<2s without LLM; <10–30s with LLM depending on hardware).
+- [ ] TODO (Copilot Agent): Widget degrades gracefully: if API fails, shows a helpful message.
 
 ---
 
-## Human: do this in order (with exact commands to run + what to look for)
+
+## Human: do this in order (manual/validation steps)
 
 > Run these steps in a clean terminal. If you can, do them twice:
 > 1) on your dev machine
@@ -262,9 +268,9 @@ docker run --rm -p 8080:8080 --env-file .env maestro-ai:local
 ---
 
 ### 10) Final MVP readiness checks (manual)
-- [ ] Walk through dashboard UI flows (missions, jobs, approvals, CRUD) referenced in the MVP plan.
-- [ ] Confirm Swagger UI (if enabled) renders and lists endpoints correctly.
-- [ ] Onboard one test user/artist workflow and note friction points.
+- [ ] TODO (Human): Walk through dashboard UI flows (missions, jobs, approvals, CRUD) referenced in the MVP plan.
+- [ ] TODO (Human): Confirm Swagger UI (if enabled) renders and lists endpoints correctly.
+- [ ] TODO (Human): Onboard one test user/artist workflow and note friction points.
 
 ---
 

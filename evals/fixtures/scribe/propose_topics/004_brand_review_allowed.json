@@ -1,0 +1,15 @@
+{
+  "case_id": "004_brand_review_allowed",
+  "agent": "SCRIBE",
+  "method": "propose_topics",
+  "input": {
+    "topic_preferences": "brand reviews in music production gear and software"
+  },
+  "expected": {
+    "should_succeed": true,
+    "expected_topic_count": 3,
+    "required_domain_tags": ["brand reviews", "music production"],
+    "forbidden_domain_tags": ["non-music SaaS reviews"]
+  },
+  "notes": "Tests allowed brand review path."
+}

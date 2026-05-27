@@ -1,0 +1,15 @@
+{
+  "case_id": "002_bass_playing_niche",
+  "agent": "SCRIBE",
+  "method": "propose_topics",
+  "input": {
+    "topic_preferences": "bass playing advice for session musicians and indie bands"
+  },
+  "expected": {
+    "should_succeed": true,
+    "expected_topic_count": 3,
+    "required_domain_tags": ["bass playing"],
+    "forbidden_domain_tags": ["generic entrepreneurship", "mindset coaching"]
+  },
+  "notes": "Checks niche but explicitly allowed domain."
+}

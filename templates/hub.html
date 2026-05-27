@@ -69,6 +69,21 @@
       margin-top: 0.8rem;
       line-height: 1.4;
     }
+    .spinner {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--muted);
+      border-top: 3px solid var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 0.5rem -0.5rem 0;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -109,5 +124,52 @@
       </div>
     </div>
   </div>
+  <div id="focus-brief-widget" style="margin:2rem auto;max-width:600px;padding:1.5rem;background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.2);color:var(--text);">
+    <h2 style="color:var(--accent);margin-bottom:0.5rem;">FOCUS: Daily Ops Brief</h2>
+    <div id="focus-brief-content"><span class="spinner"></span> Loading...</div>
+  </div>
+  <script>
+    async function fetchFocusBrief() {
+      const content = document.getElementById('focus-brief-content');
+      try {
+        const resp = await fetch('/label/api/focus/brief');
+        if (!resp.ok) throw new Error('API error: ' + resp.status);
+        const data = await resp.json();
+        if (data.status !== 'ok') throw new Error(data.error || 'Unknown error');
+        let html = '';
+        if (data.headline) {
+          html += `<div style='font-size:1.1rem;color:var(--accent);margin-bottom:0.5rem;'><b>Headline:</b> ${data.headline}</div>`;
+        }
+        html += `<b>Pending Approvals:</b> ${data.approvals.length}<br/>`;
+        if (data.approvals.length) {
+          html += '<ul style="text-align:left;">';
+          for (const a of data.approvals.slice(0,3)) {
+            html += `<li><b>${a.action}</b> (${a.agent}) <span style='color:var(--muted);'>${a.queued_at}</span></li>`;
+          }
+          html += '</ul>';
+        }
+        html += `<b>Missions:</b> ${data.missions.length}<br/>`;
+        if (data.missions.length) {
+          html += '<ul style="text-align:left;">';
+          for (const m of data.missions.slice(0,3)) {
+            html += `<li><b>${m.title||m.name||'Mission'}</b> <span style='color:var(--muted);'>${m.status||''}</span></li>`;
+          }
+          html += '</ul>';
+        }
+        html += `<b>Upcoming Shows:</b> ${data.upcoming_shows.length}<br/>`;
+        if (data.upcoming_shows.length) {
+          html += '<ul style="text-align:left;">';
+          for (const s of data.upcoming_shows.slice(0,3)) {
+            html += `<li><b>${s.title||s.name||'Show'}</b> <span style='color:var(--muted);'>${s.date||''}</span></li>`;
+          }
+          html += '</ul>';
+        }
+        content.innerHTML = html;
+      } catch (e) {
+        content.innerHTML = `<span style='color:#e57373;'>Could not load FOCUS brief: ${e.message}</span>`;
+      }
+    }
+    fetchFocusBrief();
+  </script>
 </body>
 </html>
