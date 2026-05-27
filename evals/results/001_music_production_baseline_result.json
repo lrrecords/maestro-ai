@@ -1,0 +1,39 @@
+{
+  "case_id": "001_music_production_baseline",
+  "input": {
+    "topic_preferences": "music production tips for independent artists recording at home"
+  },
+  "expected": {
+    "should_succeed": true,
+    "expected_topic_count": 3,
+    "required_domain_tags": [
+      "music production",
+      "recording"
+    ],
+    "forbidden_domain_tags": [
+      "productivity",
+      "personal branding",
+      "release reviews"
+    ]
+  },
+  "output": {
+    "blogTopics": [
+      {
+        "title": "{'topic1': {'title': 'Mastering Your Home Studio: Tips and Tricks for Independent Artists', 'rationale': 'This topic focuses on the practical aspects of setting up and using a home studio, which is crucial for many independent musicians. It can cover equipment selection, room acoustics, software choices, and workflow optimization, all tailored to help artists produce high-quality recordings without professional facilities.'}, 'topic2': {'title': 'DIY Vocal Production Techniques: Crafting Your Unique Sound', 'rationale': 'This topic delves into vocal production techniques that can be applied in a home setting. It covers everything from mic placement and vocal tuning to layering and processing, providing independent artists with the tools they need to create standout vocals without professional studio access.'}, 'topic3': {'title': 'Creative Sampling and Looping Techniques for Home Recording Artists', 'rationale': 'This topic explores the art of sampling and looping using affordable technology available in home studios. It can include tips on finding unique samples, creative use of loops, and integrating these elements into original music tracks, offering artists a way to add complexity and interest to their productions.'}}",
+        "rationale": ""
+      }
+    ]
+  },
+  "score": {
+    "schema_valid": true,
+    "topic_count_valid": false,
+    "forbidden_theme_found": false,
+    "required_domain_missing": true,
+    "refusal_valid": null,
+    "pass": false,
+    "reasons": [
+      "Expected 3 topics, got 1.",
+      "Required domain 'music production' missing from output."
+    ]
+  }
+}

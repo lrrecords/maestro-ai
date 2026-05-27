@@ -1,0 +1,15 @@
+{
+  "case_id": "005_gear_review_allowed",
+  "agent": "SCRIBE",
+  "method": "propose_topics",
+  "input": {
+    "topic_preferences": "gear reviews for home studio recording and mixing"
+  },
+  "expected": {
+    "should_succeed": true,
+    "expected_topic_count": 3,
+    "required_domain_tags": ["gear reviews", "recording", "mixing"],
+    "forbidden_domain_tags": ["consumer electronics unrelated to music"]
+  },
+  "notes": "Checks that allowed gear review prompts stay music-specific."
+}

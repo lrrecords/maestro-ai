@@ -1,10 +1,13 @@
 # Quickstart: Maestro AI
 
+
 ## Prerequisites
 
 - Python 3.11+ (recommended)
 - [Ollama](https://ollama.com/) (optional — for local LLM support)
 - Node.js (only needed for deep frontend customisation)
+
+> **Note:** Playwright is NOT required unless you are customizing frontend tests or running advanced browser automation. Most users do not need to install Playwright.
 
 ---
 
@@ -39,9 +42,15 @@ Open `.env` and set at minimum:
 
 | Variable | Purpose | Example |
 |---|---|---|
+
 | `MAESTRO_TOKEN` | Dashboard login token | `my-secret-token` |
 | `LLM_PROVIDER` | LLM backend | `ollama` or `anthropic` |
 | `PREMIUM_FEATURES_ENABLED` | Enable premium agents | `true` |
+
+### Agent Naming
+
+- Studio uses `ASK_AI` (not `LLM`) as the agent name unless intentionally aliased.
+- `SCHEMA` agents are for metadata only and are not runnable.
 
 For local development you can instead set `MAESTRO_DEV_MODE=1` to bypass token login (any token accepted).
 

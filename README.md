@@ -179,6 +179,42 @@ maestro-ai/
 - Health monitoring for core platform services
 - Easy integration with n8n and external automations
 
+## Security & Auth
+
+### Required Headers
+
+- **Dashboard/API Auth:**
+  - `X-MAESTRO-TOKEN: <your-token>` (set in `.env` as `MAESTRO_TOKEN`)
+- **Webhook Auth:**
+  - `X-WEBHOOK-SECRET: <your-webhook-secret>` (set in `.env` as `WEBHOOK_SECRET`)
+
+### Example curl calls
+
+```bash
+# Unauthenticated request (should be denied)
+curl -i http://localhost:8080/label/api/mission/list
+
+# Authenticated request (should succeed)
+curl -i -H "X-MAESTRO-TOKEN: $TOKEN" http://localhost:8080/label/api/mission/list
+
+# Webhook without secret (should be denied)
+curl -i -X POST http://localhost:8080/webhook/maestro-approved-action -H "Content-Type: application/json" -d '{}'
+
+# Webhook with secret (should succeed)
+curl -i -X POST http://localhost:8080/webhook/maestro-approved-action \
+  -H "Content-Type: application/json" \
+  -H "X-WEBHOOK-SECRET: $SECRET" \
+  -d '{"workflow":"noop","payload":{}}'
+```
+
+### Environment Variables
+
+See `.env.example` for all referenced variables. Mandatory for production:
+- `SECRET_KEY`
+- `MAESTRO_TOKEN`
+- `WEBHOOK_SECRET`
+
+Defaults exist for localhost URLs and dev mode flags. See `docs/quickstart.md` for setup instructions.
 ---
 
 ## ⚡ Quick Start
@@ -449,5 +485,47 @@ This repo uses a Harness Engineering workflow for agent and human collaboration.
 This project is Open Core compliant. Premium/proprietary features are separated and may be disabled via `.env`.
 
 MIT License © [LRRecords](https://github.com/lrrecords), 2026
+
+---
+
+## 🟡 FOCUS Brief API & Widget (v1.5.0)
+
+The FOCUS Brief is a CEO dashboard widget and API endpoint that aggregates operational signals (approvals, missions, shows, etc.) from configurable data sources, with optional LLM/AI summarization and robust error handling.
+
+### Features
+- **Configurable Data Sources:**
+  - Sources are defined in `dashboard/label/focus_config.py` as a list of loaders or file paths.
+  - Add/remove sources by editing the config file—no code changes needed.
+- **API Endpoint:**
+  - `GET /label/api/focus/brief` returns a JSON summary of all configured sources.
+  - Returns a `headline` field (LLM/AI summary or fallback string).
+  - Returns `status: ok` on success, or `status: error` and HTTP 500 on failure.
+- **Rate Limiting:**
+  - API is rate-limited (default: 10 requests/minute per IP) using Flask-Limiter.
+- **Widget UI:**
+  - Hub dashboard widget fetches the brief, shows a loading spinner, error state, and the LLM-generated headline.
+
+### Configuration Example
+```python
+# dashboard/label/focus_config.py
+FOCUS_DATA_SOURCES = [
+    {"name": "approvals", "loader": "crews.base_crew.get_pending_approvals", "summary_key": "approvals"},
+    {"name": "missions", "path": "data/missions/missions.json", "summary_key": "missions"},
+    {"name": "upcoming_shows", "path": "live/data/shows.json", "summary_key": "upcoming_shows"},
+    # Add more sources as needed
+]
+```
+
+### Error Handling
+- If any data source fails to load, the endpoint returns HTTP 500 and a JSON error message.
+- All errors are logged and surfaced in the widget UI.
+
+### Testing
+- See `tests/test_focus_brief.py` for deterministic, isolated tests covering normal and error cases.
+- Run: `pytest tests/test_focus_brief.py`
+
+### Extending
+- Add new data sources by editing `focus_config.py`.
+- To add a new widget or dashboard view, see `templates/hub.html` and associated JS/CSS.
 
 ---

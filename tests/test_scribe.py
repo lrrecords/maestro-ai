@@ -550,17 +550,23 @@ class TestNormalizeTopics:
 # ---------------------------------------------------------------------------
 
 class TestTriggerWorkflow:
-    def _trigger(self, job):
+    def _trigger(self, job, scribe_agent_cls=None):
         from dashboard.label.scribe import _trigger_workflow
+        if scribe_agent_cls is not None:
+            return _trigger_workflow(job, scribe_agent_cls=scribe_agent_cls)
         return _trigger_workflow(job)
 
     def test_propose_topics_creates_blog_versions_job(self):
         job = _make_propose_topics_job("trigger-unit-001")
         from dashboard.label.scribe import job_store
         job_store.add_job("trigger-unit-001", job)
+        class MockScribeAgent:
+            def __init__(self, job_store):
+                self.job_store = job_store
+            def generate_blog_versions(self, approved_topic):
+                return {"easyfunnels_version": "..."}
         try:
-            with patch.object(ScribeAgent, 'generate_blog_versions', return_value={"easyfunnels_version": "..."}):
-                result = self._trigger(job)
+            result = self._trigger(job, scribe_agent_cls=MockScribeAgent)
             assert result["triggered"] is True
             assert "generate_blog_versions" in result["method"]
         finally:
@@ -582,14 +588,18 @@ class TestTriggerWorkflow:
         job = _make_propose_topics_job("trigger-n8n-001")
         from dashboard.label.scribe import job_store
         job_store.add_job("trigger-n8n-001", job)
+        class MockScribeAgent:
+            def __init__(self, job_store):
+                self.job_store = job_store
+            def generate_blog_versions(self, approved_topic):
+                return {}
         try:
             mock_resp = MagicMock()
             mock_resp.ok = True
             mock_resp.status_code = 200
             with patch.dict(os.environ, {"SCRIBE_N8N_WEBHOOK_URL": "http://n8n.test/webhook/scribe"}):
-                with patch("dashboard.label.scribe.ScribeAgent.generate_blog_versions", return_value={}):
-                    with patch("requests.post", return_value=mock_resp) as mock_post:
-                        result = self._trigger(job)
+                with patch("requests.post", return_value=mock_resp) as mock_post:
+                    result = self._trigger(job, scribe_agent_cls=MockScribeAgent)
             mock_post.assert_called_once()
             assert result.get("n8n_status") == 200
         finally:

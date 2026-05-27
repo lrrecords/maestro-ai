@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SCRIBE eval case",
+  "type": "object",
+  "required": ["case_id", "agent", "method", "input", "expected"],
+  "properties": {
+    "case_id": { "type": "string" },
+    "agent": { "type": "string", "const": "SCRIBE" },
+    "method": { "type": "string", "const": "propose_topics" },
+    "input": {
+      "type": "object",
+      "properties": {
+        "topic_preferences": {
+          "type": ["string", "null"]
+        }
+      },
+      "required": ["topic_preferences"]
+    },
+    "expected": {
+      "type": "object",
+      "properties": {
+        "should_succeed": { "type": "boolean" },
+        "expected_topic_count": { "type": "integer" },
+        "expected_refusal_contains": { "type": "string" },
+        "required_domain_tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "forbidden_domain_tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["should_succeed"]
+    },
+    "notes": { "type": "string" }
+  },
+  "additionalProperties": true
+}

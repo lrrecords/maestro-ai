@@ -1,0 +1,15 @@
+{
+  "case_id": "003_music_business_baseline",
+  "agent": "SCRIBE",
+  "method": "propose_topics",
+  "input": {
+    "topic_preferences": "music business topics for independent record labels"
+  },
+  "expected": {
+    "should_succeed": true,
+    "expected_topic_count": 3,
+    "required_domain_tags": ["music business", "record labels"],
+    "forbidden_domain_tags": ["generic sales", "startup productivity"]
+  },
+  "notes": "Checks alignment with label-focused business topics."
+}

@@ -56,7 +56,8 @@ class TestFocusBasic:
         agent = FocusAgent(data_root=tmp_path)
         agent.artists_dir = tmp_path / "artists"
         agent.artists_dir.mkdir()
-        data = agent.run({})["data"]
+        with patch("premium_agents.focus.get_pending_approvals", return_value=[]):
+            data = agent.run({})["data"]
         assert data["priority_queue"] == []
         assert data["total_items"] == 0
 

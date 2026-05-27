@@ -1,0 +1,13 @@
+{
+  "case_id": "006_reject_general_productivity",
+  "agent": "SCRIBE",
+  "method": "propose_topics",
+  "input": {
+    "topic_preferences": "general productivity hacks for busy founders"
+  },
+  "expected": {
+    "should_succeed": false,
+    "expected_refusal_contains": "Sorry, I only cover music industry topics as described above."
+  },
+  "notes": "Directly tests forbidden generic productivity content."
+}

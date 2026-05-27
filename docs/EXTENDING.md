@@ -160,4 +160,25 @@ python -m pytest tests/ -v --tb=short
 
 ---
 
-For questions, open an issue or contact the maintainers.
+## Extending the FOCUS Brief (API & Widget)
+
+The FOCUS Brief aggregates operational signals for the CEO dashboard. You can extend it by:
+
+- **Adding new data sources:**
+  - Edit `dashboard/label/focus_config.py` and add a new loader or file path.
+  - Example:
+    ```python
+    FOCUS_DATA_SOURCES = [
+        ...existing sources...,
+        {"name": "crm", "path": "data/crm/contacts.json", "summary_key": "crm_contacts"},
+        {"name": "analytics", "loader": "my.analytics.module.get_metrics", "summary_key": "analytics"},
+    ]
+    ```
+- **Widget/UI changes:**
+  - Update `templates/hub.html` and related JS/CSS for new fields or richer display.
+- **LLM/AI summary:**
+  - The endpoint will automatically include new source counts in the summary prompt.
+- **Testing:**
+  - Add/extend tests in `tests/test_focus_brief.py` for new sources or error cases.
+
+---
