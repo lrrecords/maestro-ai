@@ -1,1 +1,1 @@
-web: python dashboard/app.py
+web: gunicorn -w 2 -b 0.0.0.0:$PORT dashboard.app:app
