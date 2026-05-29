@@ -1,1 +1,1 @@
-web: PYTHONPATH=/app gunicorn -w 2 -b 0.0.0.0:$PORT dashboard.app:app
+web: PYTHONPATH=/app gunicorn -w 2 -b 0.0.0.0:$PORT app:app
