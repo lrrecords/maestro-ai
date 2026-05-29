@@ -1,8 +1,5 @@
 from flask import jsonify
-import sys
-print("PYTHONPATH:", sys.path)
 import os
-import sys
 from pathlib import Path
 from functools import wraps
 from flask import Flask, redirect, render_template, session, request, url_for, jsonify
@@ -11,14 +8,11 @@ from flask_limiter.util import get_remote_address
 from flasgger import Swagger
 from dotenv import load_dotenv
 
+
 # --- Dynamic Agent Loader: MUST be before any Flask app/routes ---
 from core.agent_loader import discover_agents
 AGENT_CLASSES = discover_agents()
 print(f"[AgentLoader] Discovered agents: {list(AGENT_CLASSES.keys())}")
-
-ROOT = Path(__file__).resolve().parent.parent
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
 
 load_dotenv(ROOT / ".env")
 
