@@ -1,4 +1,6 @@
 from flask import jsonify
+import sys
+print("PYTHONPATH:", sys.path)
 import os
 import sys
 from pathlib import Path
