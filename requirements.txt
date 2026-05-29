@@ -11,3 +11,5 @@ litellm>=1.0.0
 playwright>=1.40.0
 google-analytics-data>=0.18.0
 redis>=5.0.0
+flask-limiter>=2.0.0
+flask-cors>=3.0.0
