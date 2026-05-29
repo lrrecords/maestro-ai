@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from flask import jsonify
 import os
 from pathlib import Path
+ROOT = Path(__file__).resolve().parent.parent
 from functools import wraps
 from flask import Flask, redirect, render_template, session, request, url_for, jsonify
 from flask_limiter import Limiter
