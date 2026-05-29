@@ -42,10 +42,13 @@ app = Flask(
     static_folder=str(STATIC_DIR)
 )
 
-# --- Flask-Limiter setup ---
+
+# --- Flask-Limiter setup with Redis backend ---
+redis_url = os.getenv("REDIS_URL")
 limiter = Limiter(
     get_remote_address,
     app=app,
+    storage_uri=redis_url,
     default_limits=["60 per minute"]
 )
 
