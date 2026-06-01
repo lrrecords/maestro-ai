@@ -80,8 +80,13 @@
 
     /* ── Logo ── */
     .logo-wrap {
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
       margin-bottom: 36px;
+      text-align: center;
     }
 
     .logo-icon {
@@ -278,7 +283,7 @@
 
       <!-- Logo -->
       <div class="logo-wrap">
-        <img class="logo-icon" src="/static/assets/maestro_ai_icon_metallic_neon.png" alt="Maestro AI Logo" style="width:64px;height:auto;margin-bottom:0.5rem;" />
+        <img class="logo-icon" src="/static/assets/maestro_ai_icon_metallic_neon.png" alt="Maestro AI Logo" />
         <div class="logo-text">MAESTRO <span>AI</span></div>
         <div class="logo-sub">LRRecords · Artist Intelligence Platform</div>
       </div>
