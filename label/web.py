@@ -336,13 +336,162 @@ def extract_json_from_llm(raw):
     return s.strip()
 
 
+_RELEASE_TOP_KEYS = [
+    "artist",
+    "project",
+    "project_type",
+    "release_date",
+    "generated",
+    "phases",
+    "critical_path",
+    "immediate_actions",
+    "blockers",
+    "recommendations",
+]
+
+_PRIORITY_ALLOWED = {"LOW", "MEDIUM", "HIGH"}
+_STATUS_MAP = {
+    "PENDING": "PENDING",
+    "IN_PROGRESS": "IN_PROGRESS",
+    "INPROGRESS": "IN_PROGRESS",
+    "DONE": "DONE",
+    "COMPLETED": "DONE",
+    "COMPLETE": "DONE",
+    "BLOCKED": "BLOCKED",
+    "TODO": "PENDING",
+}
+
+
+def _as_clean_string(value, default=""):
+    text = str(value or "").strip()
+    return text if text else default
+
+
+def _as_string_list(value):
+    if isinstance(value, list):
+        return [str(v).strip() for v in value if str(v).strip()]
+    if value is None:
+        return []
+    text = str(value).strip()
+    return [text] if text else []
+
+
+def _normalize_release_date(value):
+    text = _as_clean_string(value, "UNSCHEDULED")
+    if text.lower() in {"tbd", "tba", "unknown", "n/a", "na"}:
+        return "UNSCHEDULED"
+    return text
+
+
+def _normalize_phase_timeline(phase_name, timeline):
+    cleaned = _as_clean_string(timeline, "TBD")
+    lower = cleaned.lower()
+    phase_lower = _as_clean_string(phase_name).lower()
+
+    # Resolve contradictory wording like "2 weeks before release date (day of release)".
+    if "day of release" in lower and "before release" in lower:
+        return "Release day"
+    if phase_lower == "release day" and "before release" in lower:
+        return "Release day"
+    return cleaned
+
+
+def normalize_release_json(obj):
+    if not isinstance(obj, dict):
+        raise ValueError("Release payload must be a JSON object")
+
+    normalized = {
+        "artist": _as_clean_string(obj.get("artist"), "Unknown Artist"),
+        "project": _as_clean_string(obj.get("project"), "Untitled Release"),
+        "project_type": _as_clean_string(obj.get("project_type"), "Release"),
+        "release_date": _normalize_release_date(obj.get("release_date")),
+        "generated": _as_clean_string(obj.get("generated"), datetime.date.today().isoformat()),
+        "critical_path": _as_string_list(obj.get("critical_path")),
+        "immediate_actions": _as_string_list(obj.get("immediate_actions")),
+        "blockers": _as_string_list(obj.get("blockers")),
+        "recommendations": _as_string_list(obj.get("recommendations")),
+    }
+
+    phases = []
+    raw_phases = obj.get("phases", [])
+    if not isinstance(raw_phases, list):
+        raw_phases = []
+
+    for idx, raw_phase in enumerate(raw_phases):
+        if not isinstance(raw_phase, dict):
+            raw_phase = {"phase": f"Phase {idx + 1}", "timeline": "TBD", "tasks": [raw_phase]}
+
+        phase_name = _as_clean_string(raw_phase.get("phase"), f"Phase {idx + 1}")
+        timeline = _normalize_phase_timeline(phase_name, raw_phase.get("timeline"))
+
+        tasks = []
+        raw_tasks = raw_phase.get("tasks", [])
+        if not isinstance(raw_tasks, list):
+            raw_tasks = []
+
+        for raw_task in raw_tasks:
+            if not isinstance(raw_task, dict):
+                raw_task = {"task": raw_task}
+
+            priority = _as_clean_string(raw_task.get("priority"), "MEDIUM").upper()
+            if priority not in _PRIORITY_ALLOWED:
+                priority = "MEDIUM"
+
+            status_key = _as_clean_string(raw_task.get("status"), "PENDING").upper().replace(" ", "_")
+            status = _STATUS_MAP.get(status_key, "PENDING")
+
+            tasks.append(
+                {
+                    "task": _as_clean_string(raw_task.get("task"), "TBD"),
+                    "priority": priority,
+                    "status": status,
+                    "notes": _as_clean_string(raw_task.get("notes"), ""),
+                }
+            )
+
+        phases.append({"phase": phase_name, "timeline": timeline, "tasks": tasks})
+
+    normalized["phases"] = phases
+    return normalized
+
+
 def validate_release_json(obj):
-    """Schema validator stub — expand to real schema as needed."""
-    top_keys = ["artist", "phases", "critical_path", "immediate_actions", "blockers", "recommendations"]
-    for key in top_keys:
+    """Validate normalized release JSON shape before persisting/sending to UI."""
+    for key in _RELEASE_TOP_KEYS:
         if key not in obj:
             raise ValueError(f"Missing top-level key: {key}")
+
+    if not isinstance(obj["phases"], list):
+        raise ValueError("'phases' must be a list")
+
+    for i, phase in enumerate(obj["phases"]):
+        if not isinstance(phase, dict):
+            raise ValueError(f"Phase at index {i} must be an object")
+        for phase_key in ("phase", "timeline", "tasks"):
+            if phase_key not in phase:
+                raise ValueError(f"Phase at index {i} missing key: {phase_key}")
+        if not isinstance(phase["tasks"], list):
+            raise ValueError(f"Phase at index {i} has non-list 'tasks'")
+
+        for j, task in enumerate(phase["tasks"]):
+            if not isinstance(task, dict):
+                raise ValueError(f"Task at phase {i}, index {j} must be an object")
+            for task_key in ("task", "priority", "status", "notes"):
+                if task_key not in task:
+                    raise ValueError(f"Task at phase {i}, index {j} missing key: {task_key}")
+
+    for list_key in ("critical_path", "immediate_actions", "blockers", "recommendations"):
+        if not isinstance(obj[list_key], list):
+            raise ValueError(f"'{list_key}' must be a list")
+
     return True
+
+
+def quality_gate_release_json(obj):
+    """Normalize + validate LLM output before UI display and persistence."""
+    normalized = normalize_release_json(obj)
+    validate_release_json(normalized)
+    return normalized
 
 
 def save_agent_output(agent, artist_slug, output_object, data_dir="data"):
@@ -361,9 +510,9 @@ def handle_agent_llm_output(agent, artist, artist_slug, raw_llm_output):
     try:
         cleaned = extract_json_from_llm(raw_llm_output)
         obj = json.loads(cleaned)
-        validate_release_json(obj)
-        save_agent_output(agent, artist_slug, obj)
-        return obj
+        gated = quality_gate_release_json(obj)
+        save_agent_output(agent, artist_slug, gated)
+        return gated
     except Exception as ex:
         print("LLM output parse/validate failed:", ex)
         return None
@@ -389,9 +538,9 @@ def api_stream(agent, slug):
                 cleaned = extract_json_from_llm(json_buffer)
                 print("DEBUG: Cleaned LLM output:\n", cleaned)
                 obj = json.loads(cleaned)
-                validate_release_json(obj)
-                dated_fn, latest_fn = save_agent_output(agent, slug, obj)
-                yield f'data: {json.dumps({"result": obj, "done": True})}\n\n'
+                gated = quality_gate_release_json(obj)
+                dated_fn, latest_fn = save_agent_output(agent, slug, gated)
+                yield f'data: {json.dumps({"result": gated, "done": True})}\n\n'
                 print(f"Agent output saved to: {dated_fn} and {latest_fn}")
             except Exception as e:
                 print("PARSE ERROR DEBUG: raw json_buffer=\n", repr(json_buffer))
