@@ -71,10 +71,40 @@ These 8 posts fill those gaps. Interleave them with the existing 10 as you see f
 
 Use this if you are actively sharing the hosted deployment:
 
-1. Add live app link in every CTA where relevant: `https://maestro-ai.up.railway.app`
-2. Use the onboarding runbook for invites and walkthroughs: `docs/LIVE_USER_ONBOARDING.md`
-3. Keep social and email copy aligned with current release state (v1.5.0)
-4. Capture each onboarding call outcome and convert feedback into roadmap items
+1. Use landing page in public posts: `https://lrrecords.github.io/maestro-ai/`
+2. Use live app for direct early-user invites only: `https://maestro-ai.up.railway.app`
+3. Use the onboarding runbook for invites and walkthroughs: `docs/LIVE_USER_ONBOARDING.md`
+4. Keep social and email copy aligned with current release state (v1.5.0)
+5. Capture each onboarding call outcome and convert feedback into roadmap items
+
+### Copy/Paste CTA Blocks (2-link model)
+
+**Public post CTA (top of funnel):**
+
+```text
+Learn more about Maestro AI:
+https://lrrecords.github.io/maestro-ai/
+
+If you want early access to test the live app, DM me "EARLY ACCESS".
+```
+
+**Warm audience CTA (qualified traffic):**
+
+```text
+See what Maestro AI does:
+https://lrrecords.github.io/maestro-ai/
+
+Want to test the live MVP? Reply "TEST" and I will send the invite flow.
+```
+
+**Direct invite CTA (activation):**
+
+```text
+Live app:
+https://maestro-ai.up.railway.app
+
+I will send your login token separately for security.
+```
 
 ---
 
