@@ -84,9 +84,35 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+    .hub-actions {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 10;
+    }
+    .logout-btn {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .logout-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 <body>
+  <div class="hub-actions">
+    <button class="logout-btn" onclick="location.href='/logout'" aria-label="Log out of Maestro AI">
+      Log out
+    </button>
+  </div>
   <div>
     <img src="/static/assets/maestro_ai_icon_metallic_neon.png" alt="Maestro AI Logo" style="width:64px;height:auto;margin-bottom:0.5rem;" />
     <h1>Maestro AI</h1>
