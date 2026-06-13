@@ -49,6 +49,18 @@ Maestro AI is live and running operations at [LRRecords](https://lrrecords.com.a
 If you're running an independent label, studio, or live music organisation and want to try Maestro — star the repo and open an issue. We're actively building from real-world feedback.
 ---
 
+## Start Here For Live Access
+
+If you are onboarding someone to the hosted MVP, use this order:
+
+1. Share the live URL: https://maestro-ai.up.railway.app
+2. Share the login token via a separate secure channel
+3. Start at `/hub`, then run one starter workflow from `/agents`
+
+Operator guide for onboarding users:
+
+- [docs/LIVE_USER_ONBOARDING.md](docs/LIVE_USER_ONBOARDING.md)
+
 ## 🏛️ Platform Architecture
 
 - **Department Hub:** Central landing page after login. Navigate between departments (Label, Studio, Live, Platform Ops) with ease.
@@ -524,6 +536,7 @@ This repo uses a Harness Engineering workflow for agent and human collaboration.
 - [RELEASE.md](./RELEASE.md) — Open Core release guide
 - [LICENSE](./LICENSE)
 - [Quickstart Guide](./docs/quickstart.md)
+- [Live User Onboarding Guide](docs/LIVE_USER_ONBOARDING.md)
 
 ---
 

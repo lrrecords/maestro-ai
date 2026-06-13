@@ -1,5 +1,17 @@
 # Quickstart: Maestro AI
 
+## Hosted MVP Access (No Local Install)
+
+If you are trying the live hosted deployment, use this guide instead:
+
+- [LIVE_USER_ONBOARDING.md](LIVE_USER_ONBOARDING.md)
+
+Live app URL:
+
+- https://maestro-ai.up.railway.app
+
+Then return to this quickstart only if you want to self-host locally.
+
 
 ## Prerequisites
 

@@ -67,43 +67,14 @@ These 8 posts fill those gaps. Interleave them with the existing 10 as you see f
 
 ---
 
----
+## Launch Week Add-On (Live MVP)
 
-## ⚡ DO TONIGHT (30–60 min, max)
+Use this if you are actively sharing the hosted deployment:
 
-If you only do one thing tonight, do this stack in order:
-
-| # | Action | Where | Time |
-|---|---|---|---|
-| 1 | Post **Founder Story** (Section 2A below) | Instagram static | 5 min |
-| 2 | Send **Launch Email** (Section 3A below) | Email list | 10 min |
-| 3 | Post **GitHub README update note** (Section 5A) | GitHub Discussions or README | 5 min |
-| 4 | Send **Artist DM** (Section 4A below) | WhatsApp/SMS to your roster | 5 min |
-| 5 | Commit + push to GitHub | Terminal | 5 min |
-
-That's it. Everything else below is the full plan to execute over the coming weeks.
-
----
-
-## 1. Audience Segments & What They Need to Hear
-
-| Segment | Core Need | Tone | Primary Channel |
-|---|---|---|---|
-| **Social Followers** (music/tech curious) | "Is this real? Is it for me?" | Exciting, visual, human | Instagram / TikTok |
-| **Email Subscribers** (warm, opted-in) | "What does this mean for me specifically?" | Direct, personal, honest | Email newsletter |
-| **Label Artists** (your roster) | "Does this change how we work together?" | Reassuring, creative, personal | DM / WhatsApp |
-| **Music Industry End Users** (potential buyers) | "Does this solve a real problem I have?" | Problem-first, credibility, demo | Blog / LinkedIn / GitHub |
-| **AI Builder Community** | "Is this architecturally interesting?" | Technical, peer-to-peer, open | Discord / GitHub / Reddit |
-
----
-
-## 2. SOCIAL MEDIA — Complement to Existing Series
-
-Your existing 10-post series covers: agents intro, CEO Command Centre, live ops, studio ops, open source, before/after, and demo CTA.
-
-**What's missing from the series:** the founder voice, the "why it exists," the behind-the-scenes build journey, and community/UGC hooks.
-
-These 8 posts fill those gaps. Interleave them with the existing 10 as you see fit.
+1. Add live app link in every CTA where relevant: `https://maestro-ai.up.railway.app`
+2. Use the onboarding runbook for invites and walkthroughs: `docs/LIVE_USER_ONBOARDING.md`
+3. Keep social and email copy aligned with current release state (v1.5.0)
+4. Capture each onboarding call outcome and convert feedback into roadmap items
 
 ---
 
