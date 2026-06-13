@@ -71,3 +71,19 @@ Based on the analysis, Maestro AI is in a **strong state for confident sharing a
 3.  **Integrate More Screenshots into GitHub README:** Make the GitHub repository even more accessible by embedding more of the existing screenshots directly into the `README.md`.
 
 By addressing these recommendations, the marketing impact of Maestro AI can be significantly amplified, allowing for confident sharing and broader reach.
+
+---
+
+## 6. June 2026 Launch Status Update
+
+Current status:
+
+- Hosted MVP is live and publicly accessible.
+- Authenticated smoke checks for protected routes are passing.
+- New user onboarding now has a dedicated runbook at `docs/LIVE_USER_ONBOARDING.md`.
+
+Recommended immediate execution:
+
+1. Use `docs/LIVE_USER_ONBOARDING.md` as the standard process for all first-user invites.
+2. Add the live deployment URL in launch posts where conversion is desired.
+3. Log onboarding feedback from each user session and feed into roadmap priorities.
