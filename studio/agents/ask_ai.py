@@ -1,6 +1,5 @@
 import os
 import json
-import requests
 from datetime import datetime, timezone
 from core.base_agent import BaseAgent
 
@@ -97,12 +96,6 @@ class AskAIAgent(BaseAgent):
         }
 
     def _llm_answer(self, question, context_notes, answer_style):
-        provider = os.getenv("LLM_PROVIDER", "ollama").strip().lower()
-        base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
-        model = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
-        num_ctx = int(os.getenv("OLLAMA_NUM_CTX", "4096"))
-        timeout = int(os.getenv("OLLAMA_TIMEOUT_SECONDS", "1800"))
-
         style_pref = {
             "concise": "Reply concisely.",
             "detailed": "Provide a detailed, thorough answer.",
@@ -126,18 +119,7 @@ No markdown headings, just plain text.
 """.strip()
 
         try:
-            resp = requests.post(
-                f"{base_url}/api/generate",
-                json={
-                    "model": model,
-                    "prompt": prompt,
-                    "stream": False,
-                    "options": {"num_ctx": num_ctx, "temperature": 0.7}
-                },
-                timeout=timeout
-            )
-            resp.raise_for_status()
-            text = (resp.json().get("response") or "").strip()
+            text = self.llm(prompt).strip()
             # Heuristically split into answer and recs
             lines = [l.strip("•- \t") for l in text.splitlines() if l.strip()]
             answer, recs = "", []

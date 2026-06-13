@@ -41,6 +41,11 @@ Maestro AI is live and running operations at [LRRecords](https://lrrecords.com.a
 **What's coming (Open Core):**
 - Docker deployment to Railway
 
+**Railway deployment and smoke testing:**
+- Canonical launch path: `Procfile -> app.py -> dashboard.app:app`
+- Live smoke runner: `python scripts/maestro_railway_smoke.py --base-url https://maestro-ai.up.railway.app`
+- Add `--login-token <token>` when you have a documented test token for authenticated checks
+
 If you're running an independent label, studio, or live music organisation and want to try Maestro — star the repo and open an issue. We're actively building from real-world feedback.
 ---
 

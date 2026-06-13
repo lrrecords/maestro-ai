@@ -1,7 +1,21 @@
 [
   {
-    "id": "agent_startup",
+    "id": "railway_autotest_loop",
     "priority": 1,
+    "area": "deployment",
+    "title": "Railway automated smoke testing and debug prompt loop",
+    "user_visible_behavior": "The live Railway deployment can be checked automatically and converted into a Copilot-ready bug report.",
+    "status": "in_progress",
+    "verification": [
+      "Run pytest tests/test_maestro_railway_smoke.py -q",
+      "Run python scripts/maestro_railway_smoke.py --help"
+    ],
+    "evidence": "tests/test_maestro_railway_smoke.py",
+    "notes": "Keeps the canonical Procfile -> app.py -> dashboard.app:app deployment path."
+  },
+  {
+    "id": "agent_startup",
+    "priority": 2,
     "area": "core",
     "title": "Agent startup and baseline verification",
     "user_visible_behavior": "Agent starts, loads config, and passes baseline tests.",
@@ -11,6 +25,6 @@
       "Run python test_agents.py and confirm all tests pass"
     ],
     "evidence": "",
-    "notes": "Replace this example with your own features. Only one feature should be in_progress at a time."
+    "notes": "Example baseline feature entry."
   }
 ]

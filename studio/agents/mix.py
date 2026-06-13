@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import os
-import requests
 from datetime import datetime, timezone
 from core.base_agent import BaseAgent
 
@@ -97,15 +96,6 @@ class MixAgent(BaseAgent):
         }
 
     def _generate_strategy(self, record: dict) -> dict:
-        provider = os.getenv("LLM_PROVIDER", "ollama").strip().lower()
-        if provider != "ollama":
-            return self._fallback_strategy(record)
-
-        base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
-        model    = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
-        num_ctx  = int(os.getenv("OLLAMA_NUM_CTX", "4096"))
-        timeout  = int(os.getenv("OLLAMA_TIMEOUT_SECONDS", "1800"))
-
         prompt = f"""
 You are MAESTRO MIX — a senior studio strategy synthesiser coordinating session planning,
 pricing, marketing, and operations for a professional recording studio.
@@ -141,18 +131,7 @@ Be direct, practical, and specific to a professional recording studio context.
 """.strip()
 
         try:
-            resp = requests.post(
-                f"{base_url}/api/generate",
-                json={
-                    "model":   model,
-                    "prompt":  prompt,
-                    "stream":  False,
-                    "options": {"num_ctx": num_ctx, "temperature": 0.65},
-                },
-                timeout=timeout,
-            )
-            resp.raise_for_status()
-            text = (resp.json().get("response") or "").strip()
+            text = self.llm(prompt).strip()
             return self._parse_strategy(text, record)
         except Exception as exc:
             s = self._fallback_strategy(record)

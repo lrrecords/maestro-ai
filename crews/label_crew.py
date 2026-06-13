@@ -25,11 +25,11 @@ def _make_crew_llm() -> LLM:
     Build a crewai.LLM instance from environment variables.
 
     Supported providers (via LLM_PROVIDER env var):
-      - ollama  (default): uses OLLAMA_BASE_URL + OLLAMA_MODEL
-      - openai           : uses OPENAI_API_KEY
-      - anthropic        : uses ANTHROPIC_API_KEY + ANTHROPIC_MODEL
+      - anthropic (default): uses ANTHROPIC_API_KEY + ANTHROPIC_MODEL
+      - ollama            : uses OLLAMA_BASE_URL + OLLAMA_MODEL
+      - openai            : uses OPENAI_API_KEY
     """
-    provider = os.getenv("LLM_PROVIDER", "ollama").lower().strip()
+    provider = os.getenv("LLM_PROVIDER", "anthropic").lower().strip()
 
     if provider == "ollama":
         base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")

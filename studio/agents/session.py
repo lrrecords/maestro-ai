@@ -2,7 +2,6 @@ from pathlib import Path
 from datetime import datetime, timezone
 import os
 import json
-import requests
 from core.base_agent import BaseAgent
 
 class SessionAgent(BaseAgent):
@@ -29,8 +28,6 @@ class SessionAgent(BaseAgent):
         super().__init__(*args, **kwargs)
         self.agent_name = self.name
         self.data_root = Path(data_root) if data_root else Path("studio") / "data"
-        self.ollama_base_url = "http://localhost:11434"
-        self.ollama_model = "llama3"
         self.data_root.mkdir(parents=True, exist_ok=True)
 
     def run(self, context: dict) -> dict:
@@ -124,14 +121,6 @@ class SessionAgent(BaseAgent):
 
     def _generate_recommendations(self, session: dict, audit_trail: list) -> list[str]:
         # LLM-powered or fallback scheduling/session prep advice
-        provider = os.getenv("LLM_PROVIDER", "ollama").strip().lower()
-        if provider != "ollama":
-            return self._fallback(session, audit_trail)
-
-        base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
-        model = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
-        num_ctx = int(os.getenv("OLLAMA_NUM_CTX", "4096"))
-        timeout = int(os.getenv("OLLAMA_TIMEOUT_SECONDS", "1800"))
 
         audit_lines = ""
         if audit_trail:
@@ -163,18 +152,7 @@ Plain text only, no markdown headings.
 """.strip()
 
         try:
-            resp = requests.post(
-                f"{base_url}/api/generate",
-                json={
-                    "model": model,
-                    "prompt": prompt,
-                    "stream": False,
-                    "options": {"num_ctx": num_ctx, "temperature": 0.7},
-                },
-                timeout=timeout,
-            )
-            resp.raise_for_status()
-            text = (resp.json().get("response") or "").strip()
+            text = self.llm(prompt).strip()
             lines = [l.strip("•- \t") for l in text.splitlines() if l.strip()]
             return lines[:9] or self._fallback(session, audit_trail)
         except Exception as exc:
