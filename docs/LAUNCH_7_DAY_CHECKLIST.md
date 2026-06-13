@@ -13,7 +13,8 @@ A practical one-week launch sprint for sharing the live MVP and converting early
 - Post Founder Story on primary social channel.
 - Send launch email to warm list.
 - Send 10 direct invites (DM/SMS/WhatsApp).
-- Share live app URL in launch posts: https://maestro-ai.up.railway.app
+- Share landing page in public launch posts: https://lrrecords.github.io/maestro-ai/
+- Share live app only in direct early-user invites: https://maestro-ai.up.railway.app
 - Use invite templates from `docs/LAUNCH_INVITE_TEMPLATES.md`.
 
 Success criteria:
@@ -105,7 +106,7 @@ Track daily in one note/spreadsheet:
 
 ## Fast rules for launch week
 
-- Keep CTA simple: "Try live app + share one like/one confusion".
+- Use a 2-link CTA model: landing page for public posts, live app for direct invites.
 - Keep onboarding friction low: separate token message, quick guided flow.
 - Respond fast to early users (same day whenever possible).
 - Convert feedback into visible changes quickly.
