@@ -49,6 +49,11 @@ class TestLoginFlow:
             resp = client.post("/login", data={"token": "correct-token"})
         assert resp.status_code == 302
 
+    def test_login_post_accepts_config_token_with_wrapping_quotes(self, client):
+        with patch("dashboard.app.MAESTRO_TOKEN", '"correct-token"'):
+            resp = client.post("/login", data={"token": "correct-token"})
+        assert resp.status_code == 302
+
     def test_logout_clears_session_and_redirects(self, client):
         _login(client)
         resp = client.get("/logout")

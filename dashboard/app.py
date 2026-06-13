@@ -92,6 +92,14 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+
+def _normalize_token(value: str) -> str:
+    """Normalize token strings for safe exact-match comparisons."""
+    token = (value or "").strip()
+    if len(token) >= 2 and token[0] == token[-1] and token[0] in {"'", '"'}:
+        token = token[1:-1].strip()
+    return token
+
 # Register blueprints
 app.register_blueprint(platform_bp, url_prefix="/platform")
 app.register_blueprint(live_bp, url_prefix="/live")
@@ -124,9 +132,10 @@ def login_page():
     next_url = request.form.get("next") or request.args.get("next", url_for("hub"))
     error = None
 
-    token_configured = bool(MAESTRO_TOKEN)
+    configured_token = _normalize_token(MAESTRO_TOKEN)
+    token_configured = bool(configured_token)
     if request.method == "POST":
-        token = request.form.get("token", "").strip()
+        token = _normalize_token(request.form.get("token", ""))
 
         # Dev bypass: if explicitly enabled and no real token is configured
         if MAESTRO_DEV_MODE and not token_configured:
@@ -139,7 +148,7 @@ def login_page():
             # Normal mode: must have MAESTRO_TOKEN configured and match exactly
             if not token_configured:
                 error = "Dashboard not configured: MAESTRO_TOKEN is missing. Set it in your .env."
-            elif token == MAESTRO_TOKEN:
+            elif token == configured_token:
                 session["authenticated"] = True
                 return redirect(next_url)
             else:
