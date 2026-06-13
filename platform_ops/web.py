@@ -340,7 +340,7 @@ def api_settings():
 @login_required
 def api_health():
     cfg = load_settings()
-  llm_provider = str(cfg.get("llm", {}).get("provider", "ollama")).lower().strip()
+    llm_provider = str(cfg.get("llm", {}).get("provider", "ollama")).lower().strip()
 
     ollama = {"ok": False, "models": [], "version": None, "error": None}
     base = cfg.get("llm", {}).get("base_url") or DEFAULT_OLLAMA_BASE_URL
@@ -359,7 +359,12 @@ def api_health():
         except Exception as e:
             ollama["error"] = str(e)
     else:
-        ollama = {"ok": True, "models": [], "version": None, "error": f"Skipped (provider={llm_provider})"}
+        ollama = {
+            "ok": True,
+            "models": [],
+            "version": None,
+            "error": f"Skipped (provider={llm_provider})",
+        }
 
     n8n = {"ok": False, "base_url": None, "error": None}
     n8n_base = _detect_n8n_base_url(cfg)
