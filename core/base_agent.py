@@ -35,16 +35,6 @@ class BaseAgent:
         self.data_root = Path(data_root) if data_root else Path("studio") / "data"
         self.data_root.mkdir(parents=True, exist_ok=True)
 
-        # Legacy fields kept for compatibility, though centralized LLM config now lives in core.llm_client
-        self.ollama_base_url = kwargs.get(
-            "ollama_base_url",
-            cfg.get("ollama_base_url", os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")),
-        )
-        self.ollama_model = kwargs.get(
-            "ollama_model",
-            cfg.get("ollama_model", os.getenv("OLLAMA_MODEL", "llama3.1:8b")),
-        )
-
     def run(self, context: dict) -> dict:
         raise NotImplementedError("Agent must implement run(context).")
 

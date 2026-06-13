@@ -23,10 +23,14 @@ SETTINGS_DIR = Path(__file__).parent / "data"
 SETTINGS_DIR.mkdir(parents=True, exist_ok=True)
 SETTINGS_FILE = SETTINGS_DIR / "platform_settings.json"
 
+DEFAULT_OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
+DEFAULT_WEBHOOK_URL = os.getenv("WEBHOOK_URL", "http://127.0.0.1:5678/webhook/health-update")
+DEFAULT_N8N_BASE_URL = "http://127.0.0.1:5678"
+
 DEFAULT_SETTINGS = {
     "llm": {
         "provider": "ollama",
-        "base_url": "http://localhost:11434",
+    "base_url": DEFAULT_OLLAMA_BASE_URL,
         "model": "qwen2.5:3b",
         "temperature": 0.2,
         "num_ctx": 8192,
@@ -34,7 +38,7 @@ DEFAULT_SETTINGS = {
     },
     "integrations": {
         "n8n_base_url": None,
-        "webhook_url": os.getenv("WEBHOOK_URL", "http://localhost:5678/webhook/health-update"),
+    "webhook_url": DEFAULT_WEBHOOK_URL,
     },
 }
 
@@ -76,7 +80,7 @@ def _detect_n8n_base_url(cfg: dict) -> str:
         parts = urlsplit(webhook_url)
         return urlunsplit((parts.scheme, parts.netloc, "", "", ""))
 
-    return "http://localhost:5678"
+    return DEFAULT_N8N_BASE_URL
 
 
 @platform_bp.route("/")
@@ -189,9 +193,12 @@ def index():
           <option value="ollama">Ollama (local)</option>
           <option value="anthropic">Anthropic</option>
         </select>
+        <p class="muted" style="font-size:.8rem; margin:8px 0 0;">
+          Anthropic API keys are read from server environment secrets (`ANTHROPIC_API_KEY`), not entered here.
+        </p>
 
         <label>Base URL</label>
-        <input id="base_url" placeholder="http://localhost:11434"/>
+        <input id="base_url" placeholder="http://127.0.0.1:11434"/>
 
         <label>Model</label>
         <input id="model" placeholder="qwen2.5:3b"/>
@@ -226,7 +233,7 @@ def index():
       const res = await fetch("/platform/api/settings");
       const cfg = await res.json();
       document.getElementById("provider").value = cfg.llm.provider || "ollama";
-      document.getElementById("base_url").value = cfg.llm.base_url || "http://localhost:11434";
+      document.getElementById("base_url").value = cfg.llm.base_url || "http://127.0.0.1:11434";
       document.getElementById("model").value = cfg.llm.model || "qwen2.5:3b";
       document.getElementById("temperature").value = cfg.llm.temperature ?? 0.2;
       document.getElementById("num_ctx").value = cfg.llm.num_ctx ?? 8192;
@@ -302,7 +309,7 @@ def api_health():
     cfg = load_settings()
 
     ollama = {"ok": False, "models": [], "version": None, "error": None}
-    base = cfg.get("llm", {}).get("base_url") or "http://localhost:11434"
+    base = cfg.get("llm", {}).get("base_url") or DEFAULT_OLLAMA_BASE_URL
 
     try:
       r = req.get(f"{base.rstrip('/')}/api/tags", timeout=3)

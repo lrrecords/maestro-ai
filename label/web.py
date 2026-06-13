@@ -15,6 +15,7 @@ from functools import wraps
 import base64
 import json as _json
 from crews.base_crew import get_pending_approvals, approve_task
+from core.llm_client import call_llm
 from core.telegram_utils import send_telegram_message
 
 label_bp = Blueprint("label", __name__)
@@ -381,50 +382,29 @@ def api_stream(agent, slug):
 
     prompt = build_agent_prompt(agent, artist)
 
-    ollama_url     = os.environ.get('OLLAMA_BASE_URL', 'http://127.0.0.1:11434').rstrip('/')
-    ollama_model   = os.environ.get('OLLAMA_MODEL', 'qwen2.5:3b')
-    ollama_timeout = int(os.environ.get('OLLAMA_TIMEOUT_SECONDS', '1800'))
-    generate_url   = f"{ollama_url}/api/generate"
-
-    payload = {
-        "model": ollama_model,
-        "prompt": prompt,
-        "stream": True
-    }
-
     def generate():
-        buffer = ""
         try:
-            with requests.post(generate_url, json=payload, stream=True, timeout=ollama_timeout) as r:
-                for line in r.iter_lines():
-                    if not line:
-                        continue
-                    part = line.decode()
-                    data = json.loads(part)
-                    if "response" in data:
-                        buffer += data["response"]
-                    if data.get("done"):
-                        json_buffer = buffer.strip()
-                        try:
-                            cleaned = extract_json_from_llm(json_buffer)
-                            print("DEBUG: Cleaned LLM output:\n", cleaned)
-                            obj = json.loads(cleaned)
-                            validate_release_json(obj)
-                            dated_fn, latest_fn = save_agent_output(agent, slug, obj)
-                            yield f'data: {json.dumps({"result": obj, "done": True})}\n\n'
-                            print(f"Agent output saved to: {dated_fn} and {latest_fn}")
-                        except Exception as e:
-                            print("PARSE ERROR DEBUG: raw json_buffer=\n", repr(json_buffer))
-                            print("PARSE ERROR EXCEPTION:", e)
-                            err_info = {
-                                "error": "Failed to parse or save JSON from LLM",
-                                "output": json_buffer,
-                                "exception": str(e),
-                                "done": True
-                            }
-                            yield f'data: {json.dumps(err_info)}\n\n'
-                        yield 'data: [DONE]\n\n'
-                        return
+            json_buffer = call_llm(prompt, max_tokens=2048).strip()
+            try:
+                cleaned = extract_json_from_llm(json_buffer)
+                print("DEBUG: Cleaned LLM output:\n", cleaned)
+                obj = json.loads(cleaned)
+                validate_release_json(obj)
+                dated_fn, latest_fn = save_agent_output(agent, slug, obj)
+                yield f'data: {json.dumps({"result": obj, "done": True})}\n\n'
+                print(f"Agent output saved to: {dated_fn} and {latest_fn}")
+            except Exception as e:
+                print("PARSE ERROR DEBUG: raw json_buffer=\n", repr(json_buffer))
+                print("PARSE ERROR EXCEPTION:", e)
+                err_info = {
+                    "error": "Failed to parse or save JSON from LLM",
+                    "output": json_buffer,
+                    "exception": str(e),
+                    "done": True
+                }
+                yield f'data: {json.dumps(err_info)}\n\n'
+            yield 'data: [DONE]\n\n'
+            return
         except Exception as e:
             err_info = {
                 "error": "LLM error: " + str(e),

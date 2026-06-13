@@ -1,7 +1,6 @@
 from __future__ import annotations
 import json
 import os
-import requests
 from datetime import datetime, timezone
 from core.base_agent import BaseAgent
 
@@ -199,14 +198,6 @@ class RateAgent(BaseAgent):
         }
 
     def _generate_recommendations(self, quote: dict, context: dict, audit_trail: list) -> list[str]:
-        provider = os.getenv("LLM_PROVIDER", "ollama").strip().lower()
-        if provider != "ollama":
-            return self._fallback(quote, context, audit_trail)
-
-        base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
-        model = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
-        num_ctx = int(os.getenv("OLLAMA_NUM_CTX", "4096"))
-        timeout = int(os.getenv("OLLAMA_TIMEOUT_SECONDS", "1800"))
         audit_lines = ""
         if audit_trail:
             audit_lines = "\nRecent similar quotes: " + " | ".join(
@@ -238,18 +229,7 @@ Plain text only, no markdown headings.
 """.strip()
 
         try:
-            resp = requests.post(
-                f"{base_url}/api/generate",
-                json={
-                    "model": model,
-                    "prompt": prompt,
-                    "stream": False,
-                    "options": {"num_ctx": num_ctx, "temperature": 0.65},
-                },
-                timeout=timeout,
-            )
-            resp.raise_for_status()
-            text = (resp.json().get("response") or "").strip()
+            text = self.llm(prompt).strip()
             lines = [l.strip("•- \t") for l in text.splitlines() if l.strip()]
             return lines[:9] or self._fallback(quote, context, audit_trail)
         except Exception as exc:

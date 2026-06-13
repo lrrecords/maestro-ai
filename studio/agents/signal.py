@@ -2,7 +2,6 @@ from pathlib import Path
 from datetime import datetime, timezone
 import json
 import os
-import requests
 from core.base_agent import BaseAgent
 
 class SignalAgent(BaseAgent):
@@ -104,30 +103,10 @@ class SignalAgent(BaseAgent):
         }
 
     def _generate_strategy(self, record: dict, previous_campaigns: list) -> dict:
-        provider = os.getenv("LLM_PROVIDER", "ollama").strip().lower()
-        if provider != "ollama":
-            return self._fallback_strategy(record, previous_campaigns)
-
-        base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
-        model    = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
-        num_ctx  = int(os.getenv("OLLAMA_NUM_CTX", "4096"))
-        timeout  = int(os.getenv("OLLAMA_TIMEOUT_SECONDS", "1800"))
-
         prompt = self._build_prompt(record, previous_campaigns)
 
         try:
-            resp = requests.post(
-                f"{base_url}/api/generate",
-                json={
-                    "model":   model,
-                    "prompt":  prompt,
-                    "stream":  False,
-                    "options": {"num_ctx": num_ctx, "temperature": 0.7},
-                },
-                timeout=timeout,
-            )
-            resp.raise_for_status()
-            text = (resp.json().get("response") or "").strip()
+            text = self.llm(prompt).strip()
             return self._parse_strategy(text, record, previous_campaigns)
         except Exception as exc:
             fallback = self._fallback_strategy(record, previous_campaigns)
