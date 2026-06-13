@@ -71,6 +71,35 @@ If a user cannot log in:
 - Add one follow-up action to roadmap/backlog.
 - Confirm next check-in date.
 
+## 7. Token rotation (shared login model)
+
+Maestro currently uses one shared app login token (`MAESTRO_TOKEN`) for hosted access.
+
+When to rotate:
+
+- A token was shared in the wrong place.
+- A user leaves your pilot group.
+- You want to regularly refresh access.
+
+### Local/self-host rotation
+
+1. Update `MAESTRO_TOKEN` in your `.env`.
+2. Restart the app.
+3. Send the new token to current approved users only.
+
+### Railway rotation
+
+1. Open Railway project environment variables.
+2. Set a new value for `MAESTRO_TOKEN`.
+3. Redeploy/restart service.
+4. Verify login with the new token.
+5. Re-share token via a separate secure channel.
+
+Optional helper scripts:
+
+- `scripts/set_railway_env_vars.ps1`
+- `scripts/set_railway_env_vars.sh`
+
 ---
 
 For local/self-host onboarding, use docs/quickstart.md.

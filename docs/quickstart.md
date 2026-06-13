@@ -238,6 +238,27 @@ Without auth, API routes return `401 Unauthorized`. Browser routes redirect to `
 
 For local development, set `MAESTRO_DEV_MODE=1` to bypass strict token matching (any token accepted).
 
+### Rotating the login token
+
+Maestro currently uses one shared login token (`MAESTRO_TOKEN`) for app access.
+
+**Local/self-host:**
+
+1. Update `MAESTRO_TOKEN` in `.env`.
+2. Restart the app.
+3. Share the new token securely with approved users.
+
+**Railway/hosted:**
+
+1. Update `MAESTRO_TOKEN` in Railway environment variables.
+2. Redeploy/restart the service.
+3. Confirm `/login` accepts the new token.
+
+Optional helper scripts:
+
+- `scripts/set_railway_env_vars.ps1`
+- `scripts/set_railway_env_vars.sh`
+
 ### Inbound webhook validation
 
 All routes under `/webhook/*` (served by `webhook_server.py`) require a shared `WEBHOOK_SECRET`.
