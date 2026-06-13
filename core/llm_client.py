@@ -115,14 +115,30 @@ def _call_anthropic(prompt: str, max_tokens: int) -> str:
     configured_model = os.getenv("ANTHROPIC_MODEL")
     if not configured_model:
         # Platform Ops currently saves model under llm.model; keep llm.anthropic_model for compatibility.
-        configured_model = str(_get_plat_val("llm", "anthropic_model", _get_plat_val("llm", "model", "")))
+        configured_model = str(
+            _get_plat_val("llm", "anthropic_model", _get_plat_val("llm", "model", ""))
+        )
+
+    # Optional comma-separated fallback list for account-specific model access.
+    # Example: ANTHROPIC_MODEL_CANDIDATES=claude-3-5-sonnet-20241022,claude-3-haiku-20240307
+    env_candidates = [
+        m.strip()
+        for m in (os.getenv("ANTHROPIC_MODEL_CANDIDATES") or "").split(",")
+        if m.strip()
+    ]
 
     model_candidates = [
         configured_model,
-        "claude-3-5-haiku-latest",
+        *env_candidates,
+        "claude-3-5-sonnet-20241022",
         "claude-3-5-sonnet-latest",
+        "claude-3-5-haiku-20241022",
+        "claude-3-5-haiku-latest",
+        "claude-3-sonnet-20240229",
+        "claude-3-haiku-20240307",
     ]
-    model_candidates = [m for i, m in enumerate(model_candidates) if m and m not in model_candidates[:i]]
+    seen = set()
+    model_candidates = [m for m in model_candidates if m and not (m in seen or seen.add(m))]
 
     client = _anthropic.Anthropic(api_key=api_key)
     last_exc = None
@@ -137,7 +153,12 @@ def _call_anthropic(prompt: str, max_tokens: int) -> str:
         except Exception as exc:
             last_exc = exc
             text = str(exc).lower()
-            if "not_found_error" in text or "model:" in text:
+            if (
+                "not_found_error" in text
+                or "model:" in text
+                or "model_not_found" in text
+                or "invalid model" in text
+            ):
                 continue
             raise
 
@@ -145,7 +166,8 @@ def _call_anthropic(prompt: str, max_tokens: int) -> str:
     raise RuntimeError(
         "Anthropic model not found for this account. "
         f"Attempted: {attempted}. "
-        "Set ANTHROPIC_MODEL (or Platform Ops model) to a model your Anthropic account can access."
+        "Set ANTHROPIC_MODEL (or Platform Ops model) to a model your Anthropic account can access. "
+        "You can also set ANTHROPIC_MODEL_CANDIDATES as a comma-separated fallback list."
     ) from last_exc
 
 
