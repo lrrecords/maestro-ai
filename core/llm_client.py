@@ -112,18 +112,41 @@ def _call_anthropic(prompt: str, max_tokens: int) -> str:
             "ANTHROPIC_API_KEY is required for anthropic provider."
         )
 
-    model = os.getenv(
-        "ANTHROPIC_MODEL",
-        str(_get_plat_val("llm", "anthropic_model", "claude-sonnet-4-20250514"))
-    )
+    configured_model = os.getenv("ANTHROPIC_MODEL")
+    if not configured_model:
+        # Platform Ops currently saves model under llm.model; keep llm.anthropic_model for compatibility.
+        configured_model = str(_get_plat_val("llm", "anthropic_model", _get_plat_val("llm", "model", "")))
+
+    model_candidates = [
+        configured_model,
+        "claude-3-5-haiku-latest",
+        "claude-3-5-sonnet-latest",
+    ]
+    model_candidates = [m for i, m in enumerate(model_candidates) if m and m not in model_candidates[:i]]
 
     client = _anthropic.Anthropic(api_key=api_key)
-    msg = client.messages.create(
-        model=model,
-        max_tokens=max_tokens,
-        messages=[{"role": "user", "content": prompt}],
-    )
-    return msg.content[0].text
+    last_exc = None
+    for model in model_candidates:
+        try:
+            msg = client.messages.create(
+                model=model,
+                max_tokens=max_tokens,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            return msg.content[0].text
+        except Exception as exc:
+            last_exc = exc
+            text = str(exc).lower()
+            if "not_found_error" in text or "model:" in text:
+                continue
+            raise
+
+    attempted = ", ".join(model_candidates) if model_candidates else "(none)"
+    raise RuntimeError(
+        "Anthropic model not found for this account. "
+        f"Attempted: {attempted}. "
+        "Set ANTHROPIC_MODEL (or Platform Ops model) to a model your Anthropic account can access."
+    ) from last_exc
 
 
 # ── Ollama ───────────────────────────────────────────────────────────────────

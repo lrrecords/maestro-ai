@@ -75,6 +75,10 @@ def _detect_n8n_base_url(cfg: dict) -> str:
     if base:
         return base
 
+    env_base = (os.getenv("N8N_BASE_URL") or "").strip()
+    if env_base:
+        return env_base
+
     webhook_url = cfg.get("integrations", {}).get("webhook_url") or os.getenv("WEBHOOK_URL")
     if webhook_url:
         parts = urlsplit(webhook_url)
@@ -216,6 +220,7 @@ def index():
           <button onclick="saveSettings()">Save</button>
           <button onclick="refreshSettings()">Reset</button>
         </div>
+        <p id="action-status" class="muted" style="font-size:.8rem; margin:8px 0 0;"></p>
       </div>
 
       <div class="card">
@@ -229,15 +234,28 @@ def index():
   </div>
 
   <script>
+    function setStatus(message, isError = false) {
+      const el = document.getElementById("action-status");
+      el.textContent = message || "";
+      el.style.color = isError ? "#ff6b6b" : "#888";
+    }
+
     async function refreshSettings() {
-      const res = await fetch("/platform/api/settings");
-      const cfg = await res.json();
-      document.getElementById("provider").value = cfg.llm.provider || "ollama";
-      document.getElementById("base_url").value = cfg.llm.base_url || "http://127.0.0.1:11434";
-      document.getElementById("model").value = cfg.llm.model || "qwen2.5:3b";
-      document.getElementById("temperature").value = cfg.llm.temperature ?? 0.2;
-      document.getElementById("num_ctx").value = cfg.llm.num_ctx ?? 8192;
-      document.getElementById("timeout_seconds").value = cfg.llm.timeout_seconds ?? 900;
+      try {
+        const res = await fetch("/platform/api/settings", { credentials: "same-origin" });
+        if (!res.ok) throw new Error(`settings request failed: ${res.status}`);
+        const cfg = await res.json();
+        const llm = cfg.llm || {};
+        document.getElementById("provider").value = llm.provider || "ollama";
+        document.getElementById("base_url").value = llm.base_url || "http://127.0.0.1:11434";
+        document.getElementById("model").value = llm.model || "qwen2.5:3b";
+        document.getElementById("temperature").value = llm.temperature ?? 0.2;
+        document.getElementById("num_ctx").value = llm.num_ctx ?? 8192;
+        document.getElementById("timeout_seconds").value = llm.timeout_seconds ?? 900;
+        setStatus("Settings loaded.");
+      } catch (err) {
+        setStatus(`Failed to load settings: ${err.message}`, true);
+      }
     }
 
     async function saveSettings() {
@@ -252,29 +270,44 @@ def index():
         }
       };
 
-      await fetch("/platform/api/settings", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      refreshHealth();
+      try {
+        const res = await fetch("/platform/api/settings", {
+          method:"POST",
+          headers:{ "Content-Type":"application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error(`save failed: ${res.status}`);
+        setStatus("Settings saved.");
+        await refreshSettings();
+        await refreshHealth();
+      } catch (err) {
+        setStatus(`Failed to save settings: ${err.message}`, true);
+      }
     }
 
     async function refreshHealth() {
-      const res = await fetch("/platform/api/health");
-      const h = await res.json();
+      try {
+        const res = await fetch("/platform/api/health", { credentials: "same-origin" });
+        if (!res.ok) throw new Error(`health request failed: ${res.status}`);
+        const h = await res.json();
 
-      const ollamaEl = document.getElementById("ollama-status");
-      const n8nEl = document.getElementById("n8n-status");
+        const ollamaEl = document.getElementById("ollama-status");
+        const n8nEl = document.getElementById("n8n-status");
 
-      ollamaEl.textContent = h.ollama.ok ? "ok" : "down";
-      ollamaEl.className = "status " + (h.ollama.ok ? "ok" : "bad");
+        const ollamaOk = Boolean(h.ollama && h.ollama.ok);
+        const n8nOk = Boolean(h.n8n && h.n8n.ok);
 
-      n8nEl.textContent = h.n8n.ok ? "ok" : "down";
-      n8nEl.className = "status " + (h.n8n.ok ? "ok" : "bad");
+        ollamaEl.textContent = ollamaOk ? "ok" : "down";
+        ollamaEl.className = "status " + (ollamaOk ? "ok" : "bad");
 
-      document.getElementById("details").textContent = JSON.stringify(h, null, 2);
+        n8nEl.textContent = n8nOk ? "ok" : "down";
+        n8nEl.className = "status " + (n8nOk ? "ok" : "bad");
+
+        document.getElementById("details").textContent = JSON.stringify(h, null, 2);
+      } catch (err) {
+        setStatus(`Failed to refresh health: ${err.message}`, true);
+      }
     }
 
     refreshSettings();
@@ -307,22 +340,26 @@ def api_settings():
 @login_required
 def api_health():
     cfg = load_settings()
+  llm_provider = str(cfg.get("llm", {}).get("provider", "ollama")).lower().strip()
 
     ollama = {"ok": False, "models": [], "version": None, "error": None}
     base = cfg.get("llm", {}).get("base_url") or DEFAULT_OLLAMA_BASE_URL
 
-    try:
-      r = req.get(f"{base.rstrip('/')}/api/tags", timeout=3)
-      if r.ok:
-          data = r.json()
-          ollama["ok"] = True
-          ollama["models"] = [m.get("name") for m in data.get("models", [])]
+    if llm_provider == "ollama":
+        try:
+            r = req.get(f"{base.rstrip('/')}/api/tags", timeout=3)
+            if r.ok:
+                data = r.json()
+                ollama["ok"] = True
+                ollama["models"] = [m.get("name") for m in data.get("models", [])]
 
-      v = req.get(f"{base.rstrip('/')}/api/version", timeout=3)
-      if v.ok:
-          ollama["version"] = v.json().get("version")
-    except Exception as e:
-      ollama["error"] = str(e)
+            v = req.get(f"{base.rstrip('/')}/api/version", timeout=3)
+            if v.ok:
+                ollama["version"] = v.json().get("version")
+        except Exception as e:
+            ollama["error"] = str(e)
+    else:
+        ollama = {"ok": True, "models": [], "version": None, "error": f"Skipped (provider={llm_provider})"}
 
     n8n = {"ok": False, "base_url": None, "error": None}
     n8n_base = _detect_n8n_base_url(cfg)
