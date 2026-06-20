@@ -173,7 +173,68 @@ def list_agents():
     """
     List all discovered agent class names (open core + premium).
     """
-    agent_names = list(AGENT_CLASSES.keys())
+    page_routes = {
+        "FOCUS": "/agents/focus",
+        "MULTI_LABEL_ONBOARDING": "/agents/multi-label-onboarding",
+        "SCRIBE": "/label/scribe/",
+        "LEDGER": "/label/ledger/",
+    }
+    department_routes = {
+        "label": "/label",
+        "studio": "/studio",
+        "live": "/live",
+        "platform": "/platform",
+        "platform_ops": "/platform",
+    }
+
+    agent_entries = []
+    for class_name, agent_cls in AGENT_CLASSES.items():
+        display_name = getattr(agent_cls, "name", class_name.replace("Agent", "").upper())
+        department = str(getattr(agent_cls, "department", "") or "").strip().lower()
+        is_premium = bool(getattr(agent_cls, "premium", False))
+        fields = getattr(agent_cls, "FIELDS", [])
+        if not isinstance(fields, list):
+            fields = []
+
+        # Hide framework/internal entries from the user-facing list.
+        if class_name == "BaseAgent" or display_name in {"BASE", "BASEAGENT"} or department == "core":
+            continue
+
+        action_label = "UNAVAILABLE"
+        action_url = None
+        action_enabled = False
+        action_kind = "disabled"
+
+        if display_name in page_routes:
+            action_label = "OPEN"
+            action_url = page_routes[display_name]
+            action_enabled = True
+            action_kind = "open"
+        elif department in department_routes:
+            action_label = "OPEN"
+            action_url = department_routes[department]
+            action_enabled = True
+            action_kind = "open"
+        else:
+            action_label = "RUN"
+            action_url = f"/agents/run/{class_name}"
+            action_enabled = True
+            action_kind = "run"
+
+        agent_entries.append({
+            "name": display_name,
+            "class_name": class_name,
+            "department": department or "unknown",
+            "premium": is_premium,
+            "fields": fields,
+            "action_label": action_label,
+            "action_url": action_url,
+            "action_enabled": action_enabled,
+            "action_kind": action_kind,
+        })
+
+    agent_entries.sort(key=lambda item: item["name"])
+
     premium_agent_pages = []
     if PREMIUM_FEATURES_ENABLED:
         premium_agent_pages = [
@@ -181,8 +242,11 @@ def list_agents():
             {"name": "MULTI_LABEL_ONBOARDING", "url": "/agents/multi-label-onboarding"},
             {"name": "SCRIBE", "url": "/label/scribe/"},
         ]
-    return render_template("agents_list.html", agent_names=agent_names,
-                           premium_agent_pages=premium_agent_pages)
+    return render_template(
+        "agents_list.html",
+        agent_entries=agent_entries,
+        premium_agent_pages=premium_agent_pages,
+    )
 
 
 @app.route("/agents/focus", methods=["GET", "POST"])

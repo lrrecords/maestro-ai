@@ -19,8 +19,8 @@ I will send your login token separately for security.
 
 When you get in:
 1) Open /hub
-2) Go to /agents
-3) Run one starter workflow (ATLAS or VINYL)
+2) Go to any department dashboard
+3) Run one agent workflow (ATLAS or VINYL)
 
 If login fails, message me straight away and I will sort it fast.
 ```
@@ -62,8 +62,8 @@ I will send your login token in a separate secure message.
 If you have 5 minutes, this is the ideal test flow:
 1) Log in
 2) Open /hub
-3) Open /agents
-4) Run one starter workflow (ATLAS or VINYL)
+3) Open any department dashboard
+4) Run one agent workflow (e.g. ATLAS or VINYL)
 5) Reply with: one thing you liked, one thing that was unclear
 
 Important: Maestro is human-first and does not generate music/art; it focuses on operations and workflow support.
