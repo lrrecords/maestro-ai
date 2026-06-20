@@ -123,6 +123,12 @@
       color: var(--amber);
     }
 
+    .badge-core {
+      border: 1px solid rgba(0,229,176,.22);
+      background: rgba(0,229,176,.06);
+      color: var(--accent);
+    }
+
     .btn-page {
       display: inline-flex;
       align-items: center;
@@ -144,6 +150,158 @@
     .btn-page:hover {
       background: rgba(0,229,176,.14);
       box-shadow: 0 0 18px rgba(0,229,176,.1);
+    }
+
+    .btn-page-disabled {
+      border-color: rgba(136,136,136,.26);
+      background: rgba(136,136,136,.06);
+      color: var(--muted);
+      cursor: not-allowed;
+      box-shadow: none;
+      pointer-events: none;
+    }
+
+    .btn-run {
+      cursor: pointer;
+    }
+
+    .run-result {
+      margin-top: 18px;
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: none;
+    }
+
+    .run-result.open {
+      display: block;
+    }
+
+    .run-result-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: .76rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .run-result-meta {
+      color: var(--accent);
+    }
+
+    .run-result pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: var(--mono);
+      font-size: .78rem;
+      color: var(--white);
+      line-height: 1.35;
+      max-height: 280px;
+      overflow: auto;
+      background: rgba(0,0,0,.22);
+      border-radius: 8px;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,.05);
+    }
+
+    .run-error pre {
+      color: #ffb3b3;
+    }
+
+    .run-context {
+      margin-top: 18px;
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: none;
+    }
+
+    .run-context.open {
+      display: block;
+    }
+
+    .run-context-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .run-context-title {
+      font-size: .78rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .run-context-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .run-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .run-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .run-field label {
+      font-size: .72rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .run-field input,
+    .run-field textarea,
+    .run-field select {
+      width: 100%;
+      background: rgba(0,0,0,.3);
+      border: 1px solid var(--border);
+      color: var(--white);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: .86rem;
+      font-family: var(--sans);
+    }
+
+    .run-field textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .run-context-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .run-note {
+      font-size: .78rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .run-preset-status {
+      font-size: .78rem;
+      color: var(--muted);
+      margin-top: 8px;
+      min-height: 1.1em;
     }
 
     .back-link {
@@ -182,14 +340,332 @@
 
     <div class="section-label">All Discovered Agents</div>
     <div class="agent-grid">
-      {% for name in agent_names %}
+      {% for agent in agent_entries %}
       <div class="agent-row">
-        <span class="agent-name">{{ name }}</span>
+        <span class="agent-name">{{ agent.name }}</span>
+        <div class="agent-badges">
+          {% if agent.premium %}
+          <span class="badge badge-premium">Premium</span>
+          {% else %}
+          <span class="badge badge-core">Core</span>
+          {% endif %}
+
+          {% if agent.action_enabled and agent.action_url %}
+            {% if agent.action_kind == "run" %}
+          <button
+            type="button"
+            class="btn-page btn-run"
+            data-run-url="{{ agent.action_url }}"
+            data-agent-name="{{ agent.name }}"
+            data-agent-fields='{{ agent.fields | tojson | forceescape }}'
+          >{{ agent.action_label }}</button>
+            {% else %}
+          <a class="btn-page" href="{{ agent.action_url }}">{{ agent.action_label }} ↗</a>
+            {% endif %}
+          {% else %}
+          <span class="btn-page btn-page-disabled">{{ agent.action_label }}</span>
+          {% endif %}
+        </div>
       </div>
       {% endfor %}
     </div>
 
+    <div id="run-context" class="run-context" aria-live="polite">
+      <div class="run-context-head">
+        <span class="run-context-title">Run Context</span>
+        <span id="run-context-agent" class="run-result-meta"></span>
+      </div>
+      <p id="run-context-note" class="run-note"></p>
+      <form id="run-context-form">
+        <div id="run-context-fields" class="run-context-grid"></div>
+        <div class="run-context-actions">
+          <button id="run-submit" type="submit" class="btn-page">Run Agent</button>
+          <button id="preset-save" type="button" class="btn-page">Save Preset</button>
+          <button id="preset-load" type="button" class="btn-page">Load Preset</button>
+          <button id="preset-clear" type="button" class="btn-page">Clear Preset</button>
+        </div>
+        <p id="run-preset-status" class="run-preset-status"></p>
+      </form>
+    </div>
+
+    <div id="run-result" class="run-result" aria-live="polite">
+      <div class="run-result-head">
+        <span>Run Result</span>
+        <span id="run-result-meta" class="run-result-meta"></span>
+      </div>
+      <pre id="run-result-body">{}</pre>
+    </div>
+
     <a class="back-link" href="/hub">← Back to Hub</a>
   </div>
+
+  <script>
+    (function () {
+      const runContext = document.getElementById("run-context");
+      const runContextAgent = document.getElementById("run-context-agent");
+      const runContextNote = document.getElementById("run-context-note");
+      const runContextFields = document.getElementById("run-context-fields");
+      const runContextForm = document.getElementById("run-context-form");
+      const runSubmitBtn = document.getElementById("run-submit");
+      const presetSaveBtn = document.getElementById("preset-save");
+      const presetLoadBtn = document.getElementById("preset-load");
+      const presetClearBtn = document.getElementById("preset-clear");
+      const runPresetStatus = document.getElementById("run-preset-status");
+      const resultWrap = document.getElementById("run-result");
+      const resultMeta = document.getElementById("run-result-meta");
+      const resultBody = document.getElementById("run-result-body");
+      const runButtons = document.querySelectorAll(".btn-run[data-run-url]");
+      let activeRun = null;
+
+      function setPresetStatus(msg) {
+        runPresetStatus.textContent = msg || "";
+      }
+
+      function presetKey(agent) {
+        return "maestro:agents:run-preset:" + String(agent || "unknown").toUpperCase();
+      }
+
+      function getContextInputs() {
+        return runContextFields.querySelectorAll("input, textarea, select");
+      }
+
+      function readRawFormValues() {
+        const values = {};
+        getContextInputs().forEach((el) => {
+          if (!el.name) return;
+          const value = String(el.value || "");
+          if (value.trim() === "") return;
+          values[el.name] = value;
+        });
+        return values;
+      }
+
+      function applyRawFormValues(values) {
+        if (!values || typeof values !== "object") return;
+        getContextInputs().forEach((el) => {
+          if (!el.name) return;
+          if (Object.prototype.hasOwnProperty.call(values, el.name)) {
+            el.value = String(values[el.name] == null ? "" : values[el.name]);
+          }
+        });
+      }
+
+      function savePreset() {
+        if (!activeRun || !activeRun.agent) return;
+        const values = readRawFormValues();
+        try {
+          localStorage.setItem(presetKey(activeRun.agent), JSON.stringify(values));
+          setPresetStatus("Preset saved for " + activeRun.agent + ".");
+        } catch (_e) {
+          setPresetStatus("Could not save preset in this browser.");
+        }
+      }
+
+      function loadPreset() {
+        if (!activeRun || !activeRun.agent) return;
+        let raw = null;
+        try {
+          raw = localStorage.getItem(presetKey(activeRun.agent));
+        } catch (_e) {
+          raw = null;
+        }
+        if (!raw) {
+          setPresetStatus("No saved preset for " + activeRun.agent + ".");
+          return;
+        }
+        try {
+          const values = JSON.parse(raw);
+          applyRawFormValues(values);
+          setPresetStatus("Preset loaded for " + activeRun.agent + ".");
+        } catch (_e) {
+          setPresetStatus("Saved preset is invalid. Clear and re-save.");
+        }
+      }
+
+      function clearPreset() {
+        if (!activeRun || !activeRun.agent) return;
+        try {
+          localStorage.removeItem(presetKey(activeRun.agent));
+        } catch (_e) {
+          // no-op
+        }
+        setPresetStatus("Preset cleared for " + activeRun.agent + ".");
+      }
+
+      function parseFields(raw) {
+        if (!raw) return [];
+        try {
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (_e) {
+          return [];
+        }
+      }
+
+      function createFieldElement(field, index) {
+        const key = field.key || ("field_" + index);
+        const labelText = field.label || key;
+        const type = (field.type || "text").toLowerCase();
+        const required = !!field.required;
+        const options = Array.isArray(field.options) ? field.options : [];
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "run-field" + (type === "textarea" ? " full" : "");
+
+        const label = document.createElement("label");
+        label.setAttribute("for", "run-field-" + key);
+        label.textContent = labelText + (required ? " *" : "");
+        wrapper.appendChild(label);
+
+        let input;
+        if (type === "textarea") {
+          input = document.createElement("textarea");
+        } else if (type === "select") {
+          input = document.createElement("select");
+          const empty = document.createElement("option");
+          empty.value = "";
+          empty.textContent = "Select...";
+          input.appendChild(empty);
+          options.forEach((opt) => {
+            const o = document.createElement("option");
+            o.value = String(opt);
+            o.textContent = String(opt);
+            input.appendChild(o);
+          });
+        } else {
+          input = document.createElement("input");
+          input.type = type === "number" || type === "date" || type === "time" ? type : "text";
+        }
+
+        input.id = "run-field-" + key;
+        input.name = key;
+        input.dataset.fieldType = type;
+        if (field.placeholder) input.placeholder = String(field.placeholder);
+        if (required) input.required = true;
+
+        wrapper.appendChild(input);
+        return wrapper;
+      }
+
+      function openRunContext(btn) {
+        const url = btn.getAttribute("data-run-url");
+        const agent = btn.getAttribute("data-agent-name") || "agent";
+        const fields = parseFields(btn.getAttribute("data-agent-fields"));
+
+        activeRun = { url, agent, fields };
+        runContext.classList.add("open");
+        runContextAgent.textContent = agent;
+        runContextFields.innerHTML = "";
+        setPresetStatus("");
+
+        if (!fields.length) {
+          runContextNote.textContent = "No specific fields for this agent. Run will use empty context.";
+        } else {
+          runContextNote.textContent = "Fill any context fields below, then run.";
+          fields.forEach((field, idx) => {
+            runContextFields.appendChild(createFieldElement(field, idx));
+          });
+        }
+
+        loadPreset();
+      }
+
+      function buildPayload() {
+        const payload = {};
+        const formData = new FormData(runContextForm);
+        for (const [key, raw] of formData.entries()) {
+          const input = runContextForm.elements.namedItem(key);
+          const type = input && input.dataset ? input.dataset.fieldType : "text";
+          const value = String(raw || "").trim();
+          if (!value) continue;
+
+          if (type === "number") {
+            const n = Number(value);
+            if (!Number.isNaN(n)) payload[key] = n;
+            continue;
+          }
+          if (type === "tags") {
+            payload[key] = value.split(",").map((v) => v.trim()).filter(Boolean);
+            continue;
+          }
+          payload[key] = value;
+        }
+        return payload;
+      }
+
+      async function executeRun() {
+        if (!activeRun || !activeRun.url) return;
+        const url = activeRun.url;
+        const agent = activeRun.agent || "agent";
+        const payload = buildPayload();
+        const original = runSubmitBtn.textContent;
+
+        runSubmitBtn.disabled = true;
+        runSubmitBtn.textContent = "RUNNING...";
+
+        resultWrap.classList.add("open");
+        resultWrap.classList.remove("run-error");
+        resultMeta.textContent = agent;
+        resultBody.textContent = "Running " + agent + "...";
+
+        try {
+          const res = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+          });
+
+          const text = await res.text();
+          let data;
+          try {
+            data = JSON.parse(text);
+          } catch (_e) {
+            data = { raw: text };
+          }
+
+          resultMeta.textContent = agent + " · HTTP " + res.status;
+          resultBody.textContent = JSON.stringify(data, null, 2);
+
+          if (!res.ok) {
+            resultWrap.classList.add("run-error");
+          } else {
+            resultWrap.classList.remove("run-error");
+          }
+        } catch (err) {
+          resultWrap.classList.add("run-error");
+          resultMeta.textContent = agent + " · Request Failed";
+          resultBody.textContent = JSON.stringify({ error: String(err) }, null, 2);
+        } finally {
+          runSubmitBtn.disabled = false;
+          runSubmitBtn.textContent = original;
+        }
+      }
+
+      runButtons.forEach((btn) => {
+        btn.addEventListener("click", function () {
+          openRunContext(btn);
+        });
+      });
+
+      runContextForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        executeRun();
+      });
+
+      presetSaveBtn.addEventListener("click", function () {
+        savePreset();
+      });
+
+      presetLoadBtn.addEventListener("click", function () {
+        loadPreset();
+      });
+
+      presetClearBtn.addEventListener("click", function () {
+        clearPreset();
+      });
+    })();
+  </script>
 </body>
 </html>
