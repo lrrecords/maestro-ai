@@ -9,6 +9,7 @@
 - **SCRIBE content pipeline expanded:** Dedicated SCRIBE dashboard/approval/edit/admin workflows documented and integrated (`/label/scribe/`, approvals, normalization, export).
 - **FOCUS Brief hardening:** Config-driven data sources, API endpoint, and widget flow documented and tested (`/label/api/focus/brief`, `tests/test_focus_brief.py`).
 - **Documentation refresh:** README and onboarding flow streamlined for both self-hosted and hosted users, with consolidated auth/security guidance.
+- **Compliance evidence archive:** ISO 27001 evidence pack, crosswalk, release approval, backup restore proof, incident drill, and supplier review records were added for audit-oriented traceability.
 
 **Migration:**
 - No database migration required.

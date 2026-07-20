@@ -1,0 +1,41 @@
+{
+  "base_url": "https://maestro-ai.up.railway.app",
+  "tests_attempted": 3,
+  "tests_completed": 3,
+  "blockers": [],
+  "errors": [],
+  "working": [
+    "Root redirects unauthenticated users to /login.",
+    "Login page renders successfully."
+  ],
+  "unable_to_test": [
+    "Browser console errors cannot be observed with requests-only smoke checks.",
+    "Raw HTML source and hidden client-side secrets cannot be verified from rendered responses alone.",
+    "/hub: requires documented credentials or a valid login token.",
+    "/agents: requires documented credentials or a valid login token.",
+    "/platform: requires documented credentials or a valid login token."
+  ],
+  "attempts": [
+    {
+      "path": "/",
+      "method": "GET",
+      "status_code": 302,
+      "location": "/login?next=/",
+      "snippet": "<!doctype html> <html lang=en> <title>Redirecting...</title> <h1>Redirecting...</h1> <p>You should be redirected automatically to the target URL: <a href=\"/login?next=/\">/login?next=/</a>. If not, click the link."
+    },
+    {
+      "path": "/login",
+      "method": "GET",
+      "status_code": 200,
+      "location": null,
+      "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>MAESTRO AI \u2014 Login</title> <style> *, *::before, *::after { box-sizing: border-box; margin: ..."
+    },
+    {
+      "path": "/platform/api/health",
+      "method": "GET",
+      "status_code": 302,
+      "location": "/login?next=/platform/api/health",
+      "snippet": "<!doctype html> <html lang=en> <title>Redirecting...</title> <h1>Redirecting...</h1> <p>You should be redirected automatically to the target URL: <a href=\"/login?next=/platform/api/health\">/login?next=/platform/api/health</a>. If not, cl..."
+    }
+  ]
+}
