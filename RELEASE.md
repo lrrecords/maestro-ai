@@ -14,7 +14,7 @@ This guide covers the steps to publish, announce, and maintain the Open Core ver
 
 ## 2. Publishing
 
-- Tag a release in GitHub (e.g., `v1.4.0-opencore`).
+- Tag a release in GitHub (e.g., `v1.5.0-opencore`).
 - Push all docs and code to the public repo.
 - Optionally, publish a Docker image to Docker Hub.
 

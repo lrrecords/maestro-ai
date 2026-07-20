@@ -1,5 +1,21 @@
 # 🎼 MAESTRO AI — Release History
 
+## v1.5.0 (July 2026) — Open Core Maturity, SCRIBE Pipeline, and Hosted Operations
+
+**Highlights:**
+- **Open Core release maturity:** Clearer boundary between open core and premium modules, with release and maintenance documentation tightened for public contributors.
+- **Hosted operations validated:** Live hosted environment (`https://maestro-ai.up.railway.app`) verified with smoke testing workflows and reporting artifacts for repeatable checks.
+- **Canonical deployment path standardized:** `Procfile -> app.py -> dashboard.app:app` documented as the authoritative launch chain for Railway and production-aligned environments.
+- **SCRIBE content pipeline expanded:** Dedicated SCRIBE dashboard/approval/edit/admin workflows documented and integrated (`/label/scribe/`, approvals, normalization, export).
+- **FOCUS Brief hardening:** Config-driven data sources, API endpoint, and widget flow documented and tested (`/label/api/focus/brief`, `tests/test_focus_brief.py`).
+- **Documentation refresh:** README and onboarding flow streamlined for both self-hosted and hosted users, with consolidated auth/security guidance.
+
+**Migration:**
+- No database migration required.
+- Pull latest changes, review `.env.example`, and verify required auth values (`MAESTRO_TOKEN`, `WEBHOOK_SECRET`, `SECRET_KEY`) before production deploy.
+
+---
+
 ## v1.4.0 (April 9, 2026) — CrewAI, CEO Command Centre, and Modular Workflow Release
 
 **Highlights:**
@@ -63,7 +79,7 @@ MAESTRO AI is an AI-powered, multi-agent business operating system designed for 
 **Migration:**  
 Just update local repo, install any new dependencies, and copy `.env.example` to `.env` as needed.
 
-## 🚦 Project Current State (as of March 27, 2026)
+## 🚦 Project Current State (as of July 2026)
 
 **Core Features:**
 - **Department Hub:** A central page for navigation between four business domains (Label, Studio, Live, Platform Ops), each with its own dashboard and agent suite.
@@ -72,6 +88,9 @@ Just update local repo, install any new dependencies, and copy `.env.example` to
 - **LLM & Service Configuration:** In-app management of language model settings and service health monitoring.
 - **Real-Time Operations:** Agent tasks and business workflows update dashboards live.
 - **Robust Agent Output (NEW):** Agents now use LLM streaming to generate, validate, and persist actionable checklists and recommendations as structured JSON, automatically saved for artist/project history and dashboard integration.
+- **Hosted Access (NEW):** Railway-hosted MVP is available for guided onboarding and operational smoke testing.
+- **SCRIBE Content Operations (NEW):** Structured proposal generation, approval queue, editor flow, and admin normalization/export paths are active.
+- **Containerized Deployment (NEW):** Dockerfile and Procfile paths are documented and operational for deployment workflows.
 
 **Recent Focus Areas:**
 - Navigation overhaul: Hub-and-spoke navigation, department blueprints, and improved dashboard “Back to Departments” UX.
@@ -119,6 +138,7 @@ No data migration required; dependency update and web dashboard restart only.
 
 **Full changelogs:**  
 - [Releases page](https://github.com/lrrecords/maestro-ai/releases)
+- [Changelog for v1.5.0](https://github.com/lrrecords/maestro-ai/releases/tag/v1.5.0)
 - [Changelog for v0.8.0](https://github.com/lrrecords/maestro-ai/releases/tag/v0.8.0)
 - [Changelog for v0.7.0](https://github.com/lrrecords/maestro-ai/releases/tag/v0.7.0)
 
