@@ -32,7 +32,7 @@ This is a single, ordered checklist you (or any AI agent) can follow to finish M
   - no unsafe hardcoded webhook fallbacks (Copilot Agent: Confirmed)
 
 **Acceptance criteria**
-- [ ] TODO (Copilot Agent): Add a short “verification note” to `docs/handover_summary_for_chat_mode.md` stating:
+- [x] TODO (Copilot Agent): Add a short “verification note” to `docs/handover_summary_for_chat_mode.md` stating:
   - what was verified
   - how to reproduce verification (commands/tests)
   - any remaining gaps (if any)
@@ -110,6 +110,26 @@ This is a single, ordered checklist you (or any AI agent) can follow to finish M
 **Acceptance criteria**
 - [ ] TODO (Copilot Agent): Brief endpoint returns valid JSON quickly (<2s without LLM; <10–30s with LLM depending on hardware).
 - [ ] TODO (Copilot Agent): Widget degrades gracefully: if API fails, shows a helpful message.
+
+---
+
+### 6) Phase 3 evidence pack
+
+**Targets (likely):**
+- `docs/DEPLOYMENT_EVIDENCE.md`
+- `docs/CONTROL_EVIDENCE_CHECKLIST.md`
+- `docs/ISO27001_RISK_REGISTER.md`
+- `docs/ISO27001_STATEMENT_OF_APPLICABILITY.md`
+- `docs/handover_summary_for_chat_mode.md`
+
+**Work**
+- [x] TODO (Copilot Agent): Create a deployment evidence pack tied to the actual runtime files.
+- [x] TODO (Copilot Agent): Create a control evidence checklist for release packaging.
+- [x] TODO (Copilot Agent): Update the ISO 27001 risk register and SoA so the evidence pack is reflected.
+
+**Acceptance criteria**
+- [x] TODO (Copilot Agent): The handover summary contains a current verification note.
+- [x] TODO (Copilot Agent): The checklist makes the remaining archived-evidence gaps explicit.
 
 ---
 

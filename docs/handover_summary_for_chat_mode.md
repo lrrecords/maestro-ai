@@ -18,6 +18,34 @@ This document summarizes the Maestro AI repository audit, MVP deployment readine
 
 ## 3. Deployment Readiness Checklist
 
+### Phase 3 Evidence Pack
+
+The following deployment and control evidence artifacts now exist in the repository:
+
+- [docs/DEPLOYMENT_EVIDENCE.md](docs/DEPLOYMENT_EVIDENCE.md)
+- [docs/CONTROL_EVIDENCE_CHECKLIST.md](docs/CONTROL_EVIDENCE_CHECKLIST.md)
+
+### Verification Note
+
+What was verified:
+
+- `dashboard/app.py` loads `.env`, honors `PORT`, and uses authenticated login gates for the dashboard.
+- `webhook_server.py` rejects inbound webhook calls unless the shared secret is present.
+- `requirements.txt`, `Dockerfile`, and `Procfile` describe a production launch path with `gunicorn`.
+- `.env.example` documents the mandatory secrets and the main optional integrations.
+
+How to reproduce verification:
+
+```bash
+python -m pytest tests -q
+python dashboard/app.py
+```
+
+Remaining gaps:
+
+- Operational evidence still needs to be archived outside the repository if you want audit-grade proof for every release.
+- Backup restore tests, incident drills, and supplier review records are documented now, but they still need regular execution.
+
 
 ## 4. Next Steps for Chat/Copilot
   - Persistent mission/job store (Redis/DB)
@@ -39,6 +67,10 @@ This document summarizes the Maestro AI repository audit, MVP deployment readine
 
 
 ## 7. How to Continue
+
+1. Keep the evidence pack current after each release.
+2. Capture real backup restore, incident drill, and supplier review artifacts.
+3. Use the checklist in `docs/CONTROL_EVIDENCE_CHECKLIST.md` when packaging compliance evidence.
 
 
 ## 8. Current State & LLM Note (April 18, 2026)

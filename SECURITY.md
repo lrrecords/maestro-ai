@@ -20,3 +20,17 @@ MAESTRO AI is a self-hosted app intended to run locally or in your own infrastru
 
 **Never commit secrets** (API keys, tokens, passwords) to this repository.
 Use `.env` (see `.env.example`) and keep your `.env` out of git.
+
+## Governance Docs
+
+For formal ISO 27001 working documents, see:
+
+- [docs/ISO27001_SCOPE.md](docs/ISO27001_SCOPE.md)
+- [docs/ISO27001_RISK_REGISTER.md](docs/ISO27001_RISK_REGISTER.md)
+- [docs/ISO27001_STATEMENT_OF_APPLICABILITY.md](docs/ISO27001_STATEMENT_OF_APPLICABILITY.md)
+- [docs/ACCESS_CONTROL_POLICY.md](docs/ACCESS_CONTROL_POLICY.md)
+- [docs/INCIDENT_RESPONSE.md](docs/INCIDENT_RESPONSE.md)
+- [docs/BACKUP_RECOVERY.md](docs/BACKUP_RECOVERY.md)
+- [docs/RETENTION_POLICY.md](docs/RETENTION_POLICY.md)
+- [docs/SUPPLIER_SECURITY.md](docs/SUPPLIER_SECURITY.md)
+- [docs/COMPLIANCE_CROSSWALK.md](docs/COMPLIANCE_CROSSWALK.md)
