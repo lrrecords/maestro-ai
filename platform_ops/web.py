@@ -196,9 +196,14 @@ def index():
         <select id="provider">
           <option value="ollama">Ollama (local)</option>
           <option value="anthropic">Anthropic</option>
+          <option value="openai">OpenAI / ChatGPT</option>
+          <option value="deepseek">DeepSeek</option>
+          <option value="gemini">Gemini</option>
+          <option value="openai_compatible">OpenAI-compatible endpoint</option>
+          <option value="litellm">LiteLLM Router (many providers)</option>
         </select>
         <p class="muted" style="font-size:.8rem; margin:8px 0 0;">
-          Anthropic API keys are read from server environment secrets (`ANTHROPIC_API_KEY`), not entered here.
+          API keys are read from server environment secrets (for example: ANTHROPIC_API_KEY, OPENAI_API_KEY, DEEPSEEK_API_KEY, GEMINI_API_KEY, LLM_API_KEY).
         </p>
 
         <label>Base URL</label>

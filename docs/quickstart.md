@@ -56,7 +56,7 @@ Open `.env` and set at minimum:
 |---|---|---|
 
 | `MAESTRO_TOKEN` | Dashboard login token | `my-secret-token` |
-| `LLM_PROVIDER` | LLM backend | `ollama` or `anthropic` |
+| `LLM_PROVIDER` | LLM backend | `ollama`, `anthropic`, `openai`, `deepseek`, `gemini`, `openai_compatible`, or `litellm` |
 | `PREMIUM_FEATURES_ENABLED` | Enable premium agents | `true` |
 
 ### Agent Naming
@@ -67,6 +67,8 @@ Open `.env` and set at minimum:
 For local development you can instead set `MAESTRO_DEV_MODE=1` to bypass token login (any token accepted).
 
 ### LLM options
+
+For provider-by-provider copy/paste configuration, see [LLM_PROVIDER_SETUP_MATRIX.md](LLM_PROVIDER_SETUP_MATRIX.md).
 
 **Ollama (local, free):**
 ```bash
@@ -79,6 +81,18 @@ Set `LLM_PROVIDER=anthropic` and `ANTHROPIC_API_KEY=sk-...` in `.env`.
 
 **OpenAI (cloud):**
 Set `LLM_PROVIDER=openai` and `OPENAI_API_KEY=sk-...` in `.env`.
+
+**DeepSeek (cloud):**
+Set `LLM_PROVIDER=deepseek`, `DEEPSEEK_API_KEY=...`, and optionally `DEEPSEEK_MODEL=deepseek-chat`.
+
+**Gemini (cloud):**
+Set `LLM_PROVIDER=gemini`, `GEMINI_API_KEY=...` (or `GOOGLE_API_KEY=...`), and optionally `GEMINI_MODEL=gemini-2.5-flash`.
+
+**OpenAI-compatible endpoints (OpenRouter/self-hosted):**
+Set `LLM_PROVIDER=openai_compatible`, `LLM_API_BASE_URL=...`, `LLM_API_KEY=...`, and `LLM_MODEL=...`.
+
+**LiteLLM router:**
+Set `LLM_PROVIDER=litellm` and `LITELLM_MODEL=<provider>/<model>`.
 
 ---
 

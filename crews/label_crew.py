@@ -27,9 +27,17 @@ def _make_crew_llm() -> LLM:
     Supported providers (via LLM_PROVIDER env var):
       - anthropic (default): uses ANTHROPIC_API_KEY + ANTHROPIC_MODEL
       - ollama            : uses OLLAMA_BASE_URL + OLLAMA_MODEL
-      - openai            : uses OPENAI_API_KEY
+      - openai/chatgpt    : uses OPENAI_API_KEY + OPENAI_MODEL
+      - deepseek          : uses DEEPSEEK_API_KEY + DEEPSEEK_MODEL
+      - gemini            : uses GEMINI_API_KEY/GOOGLE_API_KEY + GEMINI_MODEL
+      - openai_compatible : uses LLM_API_BASE_URL + LLM_API_KEY + LLM_MODEL
+      - litellm           : uses LITELLM_MODEL (+ provider-specific env vars)
     """
     provider = os.getenv("LLM_PROVIDER", "anthropic").lower().strip()
+    if provider == "claude":
+        provider = "anthropic"
+    elif provider in {"chatgpt", "gpt"}:
+        provider = "openai"
 
     if provider == "ollama":
         base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
@@ -47,11 +55,42 @@ def _make_crew_llm() -> LLM:
             api_key=os.getenv("ANTHROPIC_API_KEY", ""),
         )
 
+    if provider == "deepseek":
+        model = os.getenv("DEEPSEEK_MODEL", os.getenv("LLM_MODEL", "deepseek-chat"))
+        return LLM(
+            model=f"deepseek/{model}",
+            api_key=os.getenv("DEEPSEEK_API_KEY", ""),
+            base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1").rstrip("/"),
+        )
+
+    if provider == "gemini":
+        model = os.getenv("GEMINI_MODEL", os.getenv("LLM_MODEL", "gemini-2.5-flash"))
+        return LLM(
+            model=f"gemini/{model}",
+            api_key=os.getenv("GEMINI_API_KEY", os.getenv("GOOGLE_API_KEY", "")),
+        )
+
+    if provider == "openai_compatible":
+        model = os.getenv("LLM_MODEL", os.getenv("OPENAI_COMPAT_MODEL", "gpt-4o-mini"))
+        return LLM(
+            model=f"openai/{model}",
+            api_key=os.getenv("LLM_API_KEY", os.getenv("OPENAI_COMPAT_API_KEY", "")),
+            base_url=os.getenv(
+                "LLM_API_BASE_URL",
+                os.getenv("OPENAI_COMPAT_BASE_URL", "https://api.openai.com/v1"),
+            ).rstrip("/"),
+        )
+
+    if provider == "litellm":
+        model = os.getenv("LITELLM_MODEL", os.getenv("LLM_MODEL", "openai/gpt-4o-mini"))
+        return LLM(model=model)
+
     # openai / default
-    model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+    model = os.getenv("OPENAI_MODEL", os.getenv("LLM_MODEL", "gpt-4o-mini"))
     return LLM(
-        model=model,
+        model=f"openai/{model}",
         api_key=os.getenv("OPENAI_API_KEY", ""),
+        base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1").rstrip("/"),
     )
 
 
