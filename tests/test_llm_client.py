@@ -196,3 +196,24 @@ class TestGetProvider:
     def test_provider_is_lowercased(self, monkeypatch):
         monkeypatch.setenv("LLM_PROVIDER", "OLLAMA")
         assert get_provider() == "ollama"
+
+    def test_chatgpt_alias_maps_to_openai(self, monkeypatch):
+        monkeypatch.setenv("LLM_PROVIDER", "chatgpt")
+        assert get_provider() == "openai"
+
+    def test_claude_alias_maps_to_anthropic(self, monkeypatch):
+        monkeypatch.setenv("LLM_PROVIDER", "claude")
+        assert get_provider() == "anthropic"
+
+    def test_extended_providers_are_supported(self, monkeypatch):
+        monkeypatch.setenv("LLM_PROVIDER", "deepseek")
+        assert get_provider() == "deepseek"
+
+        monkeypatch.setenv("LLM_PROVIDER", "gemini")
+        assert get_provider() == "gemini"
+
+        monkeypatch.setenv("LLM_PROVIDER", "openai_compatible")
+        assert get_provider() == "openai_compatible"
+
+        monkeypatch.setenv("LLM_PROVIDER", "litellm")
+        assert get_provider() == "litellm"

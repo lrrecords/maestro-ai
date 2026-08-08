@@ -26,7 +26,7 @@ Maestro AI is live and operating at [LRRecords](https://lrrecords.com.au) in Roc
 - Redis-backed persistent job store
 - Role-based permissions (CEO / admin / user)
 - Swagger/OpenAPI documentation
-- Anthropic API (cloud) and Ollama (local/private) model support
+- Multi-provider LLM support: Ollama, Anthropic, OpenAI/ChatGPT, DeepSeek, Gemini, and OpenAI-compatible endpoints
 - Premium agents including LEDGER, SAGE Daily Brief, FOCUS, and multi-label onboarding
 - SCRIBE content pipeline at `agents/label/scribe/`
 - Container deployment support via Dockerfile + Procfile + Railway
@@ -74,7 +74,26 @@ Maestro AI is live and operating at [LRRecords](https://lrrecords.com.au) in Roc
    # LLM_PROVIDER=ollama
    # OLLAMA_BASE_URL=http://127.0.0.1:11434
    # OLLAMA_MODEL=qwen2.5:3b
+   # or
+   # LLM_PROVIDER=openai
+   # OPENAI_API_KEY=sk-...
+   # OPENAI_MODEL=gpt-4o-mini
+   # or
+   # LLM_PROVIDER=deepseek
+   # DEEPSEEK_API_KEY=...
+   # DEEPSEEK_MODEL=deepseek-chat
+   # or
+   # LLM_PROVIDER=gemini
+   # GEMINI_API_KEY=...
+   # GEMINI_MODEL=gemini-2.5-flash
+   # or
+   # LLM_PROVIDER=openai_compatible
+   # LLM_API_BASE_URL=https://your-endpoint/v1
+   # LLM_API_KEY=...
+   # LLM_MODEL=gpt-4o-mini
    ```
+
+   Full provider setup matrix: [docs/LLM_PROVIDER_SETUP_MATRIX.md](docs/LLM_PROVIDER_SETUP_MATRIX.md)
 
 4. **Run the dashboard**
 

@@ -1,12 +1,17 @@
 """core/llm_client.py
 MAESTRO AI — LLM provider abstraction.
 
-Routes agent prompts to either Anthropic Claude or a local Ollama server,
-selected via the PLATFORM settings (or env vars).
+Routes agent prompts to the configured provider, selected via env vars or
+PLATFORM settings.
 
 Supported providers:
-  anthropic  — Anthropic Claude API (requires ANTHROPIC_API_KEY)
-  ollama     — Local Ollama HTTP server (requires Ollama running locally)
+    anthropic         — Anthropic Claude API (requires ANTHROPIC_API_KEY)
+    ollama            — Local Ollama HTTP server
+    openai            — OpenAI Chat Completions API (ChatGPT)
+    deepseek          — DeepSeek Chat API
+    gemini            — Gemini OpenAI-compatible endpoint
+    openai_compatible — Generic OpenAI-compatible endpoint
+    litellm           — LiteLLM router for broad provider support
 
 Usage:
     from core.llm_client import call_llm
@@ -17,6 +22,7 @@ Usage:
 import os
 import json
 from pathlib import Path
+from typing import Any
 
 import requests
 from dotenv import load_dotenv
@@ -49,50 +55,191 @@ def _get_plat_val(section: str, key: str, default=None):
 
 
 def get_provider() -> str:
-    """Return the active LLM provider name ('anthropic' or 'ollama')."""
+    """Return the active LLM provider name (canonicalized)."""
     provider = os.getenv("LLM_PROVIDER")
     if provider is not None:
-        return provider.lower().strip()
+        return _canonical_provider(provider)
 
     plat_llm = _get_plat_val("llm", "provider", "anthropic")
-    return str(plat_llm).lower().strip() if plat_llm else "anthropic"
+    return _canonical_provider(str(plat_llm)) if plat_llm else "anthropic"
+
+
+def _canonical_provider(provider: str) -> str:
+    normalized = (provider or "anthropic").lower().strip()
+    aliases = {
+        "claude": "anthropic",
+        "chatgpt": "openai",
+        "gpt": "openai",
+    }
+    return aliases.get(normalized, normalized)
+
+
+def _llm_model(default: str = "") -> str:
+    model = os.getenv("LLM_MODEL")
+    if model:
+        return model.strip()
+    from_platform = _get_plat_val("llm", "model", default)
+    return str(from_platform).strip() if from_platform else str(default)
 
 
 def call_llm(prompt: str, max_tokens: int = 2048) -> str:
     """
     Send *prompt* to the configured LLM provider and return response text.
     """
-    # Check for Manus OpenAI environment
-    if os.getenv("OPENAI_API_KEY"):
-        return _call_openai_manus(prompt, max_tokens)
-
     provider = get_provider()
     if provider == "anthropic":
         return _call_anthropic(prompt, max_tokens)
     if provider == "ollama":
         return _call_ollama(prompt, max_tokens)
+    if provider == "openai":
+        return _call_openai(prompt, max_tokens)
+    if provider == "deepseek":
+        return _call_deepseek(prompt, max_tokens)
+    if provider == "gemini":
+        return _call_gemini(prompt, max_tokens)
+    if provider == "openai_compatible":
+        return _call_openai_compatible(prompt, max_tokens)
+    if provider == "litellm":
+        return _call_litellm(prompt, max_tokens)
     raise ValueError(
         f"Unknown LLM provider: {provider!r}. "
         "Set LLM_PROVIDER in .env or PLATFORM settings."
     )
 
-def _call_openai_manus(prompt: str, max_tokens: int) -> str:
+
+def _call_openai(prompt: str, max_tokens: int) -> str:
+    model = os.getenv("OPENAI_MODEL", _llm_model("gpt-4o-mini"))
+    return _call_openai_sdk(
+        prompt=prompt,
+        max_tokens=max_tokens,
+        model=model,
+        api_key_env="OPENAI_API_KEY",
+        base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
+        provider_name="OpenAI",
+    )
+
+
+def _call_deepseek(prompt: str, max_tokens: int) -> str:
+    model = os.getenv("DEEPSEEK_MODEL", _llm_model("deepseek-chat"))
+    return _call_openai_sdk(
+        prompt=prompt,
+        max_tokens=max_tokens,
+        model=model,
+        api_key_env="DEEPSEEK_API_KEY",
+        base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1"),
+        provider_name="DeepSeek",
+    )
+
+
+def _call_gemini(prompt: str, max_tokens: int) -> str:
+    model = os.getenv("GEMINI_MODEL", _llm_model("gemini-2.5-flash"))
+    api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        raise ValueError(
+            "GEMINI_API_KEY (or GOOGLE_API_KEY) is required for gemini provider."
+        )
+    return _call_openai_sdk(
+        prompt=prompt,
+        max_tokens=max_tokens,
+        model=model,
+        api_key=api_key,
+        base_url=os.getenv(
+            "GEMINI_BASE_URL",
+            "https://generativelanguage.googleapis.com/v1beta/openai/",
+        ),
+        provider_name="Gemini",
+    )
+
+
+def _call_openai_compatible(prompt: str, max_tokens: int) -> str:
+    model = _llm_model(os.getenv("OPENAI_COMPAT_MODEL", "gpt-4o-mini"))
+    base_url = os.getenv(
+        "LLM_API_BASE_URL",
+        os.getenv("OPENAI_COMPAT_BASE_URL", "https://api.openai.com/v1"),
+    )
+    api_key = os.getenv("LLM_API_KEY", os.getenv("OPENAI_COMPAT_API_KEY"))
+    if not api_key:
+        raise ValueError(
+            "LLM_API_KEY (or OPENAI_COMPAT_API_KEY) is required when "
+            "LLM_PROVIDER=openai_compatible."
+        )
+    return _call_openai_sdk(
+        prompt=prompt,
+        max_tokens=max_tokens,
+        model=model,
+        api_key=api_key,
+        base_url=base_url,
+        provider_name="OpenAI-compatible",
+    )
+
+
+def _call_openai_sdk(
+    prompt: str,
+    max_tokens: int,
+    model: str,
+    provider_name: str,
+    base_url: str,
+    api_key_env: str | None = None,
+    api_key: str | None = None,
+) -> str:
     try:
         from openai import OpenAI
-    except ImportError:
-        raise ImportError("The 'openai' package is required for Manus LLM. Run: pip install openai")
-    
-    client = OpenAI()
-    # Manus uses gpt-4.1-mini as default
-    model = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
-    
+    except ImportError as exc:
+        raise ImportError(
+            "The 'openai' package is required for OpenAI-compatible providers. "
+            "Run: pip install openai"
+        ) from exc
+
+    if api_key is None and api_key_env:
+        api_key = os.getenv(api_key_env)
+    if not api_key:
+        required = api_key_env or "LLM_API_KEY"
+        raise ValueError(f"{required} is required for {provider_name} provider.")
+
+    client = OpenAI(api_key=api_key, base_url=base_url.rstrip("/"))
+
     response = client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": prompt}],
         max_tokens=max_tokens,
-        response_format={"type": "json_object"} if "JSON" in prompt.upper() else None
     )
-    return response.choices[0].message.content
+
+    text = response.choices[0].message.content
+    if not text:
+        raise RuntimeError(f"{provider_name} returned an empty response.")
+    return text
+
+
+def _call_litellm(prompt: str, max_tokens: int) -> str:
+    try:
+        from litellm import completion
+    except ImportError as exc:
+        raise ImportError(
+            "The 'litellm' package is required when LLM_PROVIDER=litellm. "
+            "Run: pip install litellm"
+        ) from exc
+
+    model = os.getenv("LITELLM_MODEL", _llm_model("openai/gpt-4o-mini"))
+
+    kwargs: dict[str, Any] = {
+        "model": model,
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": max_tokens,
+    }
+
+    # Optional generic overrides for custom endpoints.
+    api_key = os.getenv("LITELLM_API_KEY")
+    api_base = os.getenv("LITELLM_API_BASE")
+    if api_key:
+        kwargs["api_key"] = api_key
+    if api_base:
+        kwargs["api_base"] = api_base.rstrip("/")
+
+    response = completion(**kwargs)
+    text = response.choices[0].message.content
+    if not text:
+        raise RuntimeError("LiteLLM returned an empty response.")
+    return text
 
 
 # ── Anthropic ────────────────────────────────────────────────────────────────
