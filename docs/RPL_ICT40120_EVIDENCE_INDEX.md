@@ -37,20 +37,20 @@ This index is designed to be submitted with the RPL package and used as a checkl
 | ICTICT451 | `README.md`, `docs/quickstart.md` | security/auth sections in docs |
 | ICTAII401 | `core/llm_client.py`, `agents/` | architecture notes |
 | BSBXCS404 | auth + webhook controls in `dashboard/app.py` and route layers | `.env.example`, onboarding runbook |
-| ICTICT443 | documentation + open-source workflow artifacts | release notes and commit log |
+| ICTICT443 | documentation + open-source workflow artifacts | release notes, commit log, public website updates, GitHub profile activity |
 | ICTSAS432 | troubleshooting and onboarding docs | issue/change evidence |
 | BSBCRT404 | fallback and architecture trade-offs in `core/job_store.py` and `core/llm_client.py` | release rationale |
 | ICTCLD301 | hosted deployment docs and launch chain | onboarding + quickstart |
 | ICTWEB432 | layout templates | screenshots and UI walkthrough |
 | ICTWEB431 | template markup and style assets | rendered pages |
-| ICTWEB434 | deployed content changes and release updates | hosted docs/workflows |
+| ICTWEB434 | deployed content changes and release updates | hosted docs/workflows, live site publishing evidence, Wayback timeline continuity |
 | ICTWEB433 | documented UI states and validation support | test and QA notes |
 | ICTWEB450 | hosting strategy in README/quickstart | Procfile and deployment docs |
 | ICTWEB452 | authored template/pages | page-level changes |
 | ICTWEB443 | public-facing page optimization evidence (if available) | supplementary landing-page work |
 | ICTDBS416 | `supabase-short-links.sql`, `SET_UP_GUIDE.md` (Artist-Pages) | `supabase-seed.sql`, `SUPABASE_SCHEMA.md` |
 | ICTWEB451 | `supabase-seed.sql`, `supabase-short-links.sql` (Artist-Pages) | `artist-page.js` data read patterns |
-| ICTICT435 | `README.md`, `docs/*`, `RELEASES.md` | this RPL evidence pack |
+| ICTICT435 | `README.md`, `docs/*`, `RELEASES.md` | this RPL evidence pack, GitHub profile/repository portfolio |
 | ICTCLD401 | `supabase-config.js`, `README.md` (Artist-Pages) | `SET_UP_GUIDE.md`, deployment notes |
 
 ---
@@ -66,6 +66,10 @@ Add one PDF or image set with these captures:
 - [ ] Terminal output showing test execution (for example `pytest`).
 - [ ] Environment configuration example (with secrets redacted).
 - [ ] Git commit history snippet showing your authored changes.
+- [ ] Wayback screenshot showing earliest and latest `lrrecords.com.au` captures.
+- [ ] Live site screenshot showing established branding and current operations.
+- [ ] GitHub profile screenshot showing repository count and contribution activity.
+- [ ] Screenshot of at least 3 representative repositories with short role notes.
 
 ---
 
@@ -128,7 +132,33 @@ Suggested appendix naming:
 
 ---
 
-## 6. Candidate Declaration Template
+## 6. Public Presence and Long-Term Practice Evidence
+
+Purpose:
+- Provide independent, third-party evidence of sustained web operations, publishing, and software delivery over time.
+
+Evidence sources:
+- Live website: `https://lrrecords.com.au`
+- Wayback timeline: `https://web.archive.org/web/*/https://lrrecords.com.au`
+- GitHub profile: `https://github.com/lrrecords`
+- GitHub repositories: `https://github.com/lrrecords?tab=repositories`
+
+Observed support evidence:
+- Wayback captures show archived continuity from 2002 through 2025.
+- The live website demonstrates active operation with maintained services, portfolio content, and product/tool pages.
+- The GitHub profile shows active repositories and recent contribution history, supporting ongoing development practice.
+
+RPL relevance:
+- Supports authenticity and recency of practical web and platform work.
+- Supports website maintenance and content lifecycle evidence.
+- Supports software workflow evidence through visible repository, commit, and release activity.
+
+Suggested appendix naming:
+- `09_Public_Web_and_GitHub_Continuity_Evidence.pdf`
+
+---
+
+## 7. Candidate Declaration Template
 
 I confirm that the listed artifacts represent work I completed or directly contributed to, and that all submitted evidence is authentic and accurate.
 
