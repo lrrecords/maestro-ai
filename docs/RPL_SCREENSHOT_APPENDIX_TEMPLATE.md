@@ -47,24 +47,32 @@ Examples:
 
 ---
 
-## 3. Representative Repository Notes (Paste Under Screenshot 11)
+## 3. Representative Repository Notes (Pre-Filled Draft)
 
-Use this mini-template under the repository screenshot:
+Use or edit the following under screenshot 11.
 
-1. Repository: [name]
-- Purpose: [one-line summary]
-- My contribution: [one-line summary]
-- Skills evidenced: [web/backend/frontend/devops/docs/testing]
+1. Repository: `lrrecords/maestro-ai`
+- Purpose: Multi-agent AI business operating system for independent music label operations.
+- My contribution: Built and maintained core Python/Flask application flows, agent orchestration, deployment docs, and ongoing release updates.
+- Skills evidenced: backend, web application architecture, documentation, testing, deployment.
 
-2. Repository: [name]
-- Purpose: [one-line summary]
-- My contribution: [one-line summary]
-- Skills evidenced: [web/backend/frontend/devops/docs/testing]
+2. Repository: `lrrecords/second-brain-blitz`
+- Purpose: Self-hosted persistent memory platform for AI tools using Cloudflare Workers and MCP-compatible workflows.
+- My contribution: Managed repository-level integration/adoption work and contributed ongoing updates in my GitHub activity stream.
+- Skills evidenced: cloud services, TypeScript ecosystem exposure, integration workflows, platform operations.
 
-3. Repository: [name]
-- Purpose: [one-line summary]
-- My contribution: [one-line summary]
-- Skills evidenced: [web/backend/frontend/devops/docs/testing]
+3. Repository: `lrrecords/doomcharts-number1albums-2025`
+- Purpose: Responsive web app presenting curated 2025 DoomCharts #1 albums with embedded media and source-linked data.
+- My contribution: Delivered and maintained static-web implementation, content integration, and deployment/live-demo linkage.
+- Skills evidenced: frontend web development, content publishing, responsive design, release packaging.
+
+4. Repository: `lrrecords/its-mytabs` (fork)
+- Purpose: Open-source, self-hostable guitar/bass tab viewer and player.
+- My contribution: Maintained a fork within my portfolio to support evaluation, experimentation, and practical comparison of music-focused web tooling.
+- Skills evidenced: open-source workflow literacy, technical evaluation, web tooling ecosystem familiarity.
+
+Assessor note:
+- Mark forked repositories clearly as fork/evaluation evidence and distinguish them from original authored systems.
 
 ---
 
