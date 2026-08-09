@@ -759,5 +759,127 @@ The human-in-the-loop approval model is your biggest differentiator. Lead with i
 
 ---
 
+## 10. AUGUST 2026 UPDATE PACK (READY TO POST)
+
+Use these as copy/paste updates that reflect current state after multi-provider routing was added.
+
+### 10A. DISCORD UPDATE (BUILDER COMMUNITY)
+
+Hey everyone - quick build update from Maestro AI.
+
+We just expanded model routing so teams can run the same agent workflows across multiple LLM providers, not just one stack.
+
+Current support includes:
+- Ollama (local-first)
+- Anthropic
+- OpenAI/ChatGPT
+- DeepSeek
+- Gemini
+- OpenAI-compatible endpoints
+- LiteLLM routing
+
+Maestro is still focused on music-business operations, not generative art/music:
+- Multi-agent orchestration for Label, Studio, Live, and Platform Ops
+- Human approval queue for protected actions
+- Redis-backed job/mission persistence
+- Local-first deployment path with optional cloud inference
+
+Why this matters: different teams have different infrastructure, model access, and privacy constraints. We wanted one orchestration layer that can swap inference backends without rewriting agent logic.
+
+If you're building multi-agent systems, I'd love input on:
+1. provider failover patterns
+2. output validation at scale
+3. long-running mission state design
+
+Repo: https://github.com/lrrecords/maestro-ai
+
+---
+
+### 10B. LINKEDIN UPDATE (PROFESSIONAL / INDUSTRY)
+
+After recent updates to Maestro AI, one of the biggest improvements is now live: flexible LLM provider routing.
+
+Maestro can now run the same operational agent workflows across:
+- Ollama (local/private)
+- Anthropic
+- OpenAI/ChatGPT
+- DeepSeek
+- Gemini
+- OpenAI-compatible endpoints
+- LiteLLM routing
+
+This mattered to us because every label, studio, or ops team has different requirements around cost, latency, privacy, and deployment model.
+
+Maestro remains purpose-built for music operations and human-in-the-loop execution:
+- It automates admin and workflow load
+- It does not generate music or art
+- It keeps decisions and creative control with people
+
+If you run a label/studio/live operation and want to reduce ops overhead without compromising creative integrity, I'd value your feedback.
+
+GitHub: https://github.com/lrrecords/maestro-ai
+
+#musictech #opensource #aiagents #operations #indielabel #crewai #python #productbuild
+
+---
+
+### 10C. ALTERNATE VERSION 1 - LINKEDIN (FOUNDER TONE, SHORT)
+
+Quick founder update from LRRecords.
+
+I built Maestro AI because label admin was taking too much time away from music.
+
+This week we shipped a major upgrade: flexible LLM routing. Maestro now supports Ollama, Anthropic, OpenAI/ChatGPT, DeepSeek, Gemini, OpenAI-compatible endpoints, and LiteLLM.
+
+The goal is simple: one multi-agent operating layer, with freedom to choose the inference backend that fits your workflow, budget, and privacy needs.
+
+Maestro still does what it was built for: automate admin, not art. It does not generate music or replace creative work.
+
+If you're an indie label, studio, or live ops team and want early access feedback loops, I'd love to connect.
+
+https://github.com/lrrecords/maestro-ai
+
+---
+
+### 10D. ALTERNATE VERSION 2 - DISCORD (TECHNICAL)
+
+Technical update on Maestro AI architecture:
+
+We added provider-agnostic LLM routing in the runtime layer and Crew orchestration path.
+
+What changed:
+- Canonical `LLM_PROVIDER` routing with alias handling (`chatgpt` -> `openai`, `claude` -> `anthropic`)
+- Provider handlers for `openai`, `deepseek`, `gemini`, `openai_compatible`, and `litellm`
+- Existing `ollama` and `anthropic` paths preserved for backward compatibility
+- Updated config matrix and env templates for copy/paste onboarding
+
+Design intent:
+- keep agent/business logic provider-agnostic
+- move provider-specific concerns to adapter layer
+- support local-first defaults with cloud optionality
+
+Open question for other builders: what are your best patterns for deterministic output validation across heterogeneous providers?
+
+Repo: https://github.com/lrrecords/maestro-ai
+
+---
+
+### 10E. ALTERNATE VERSION 3 - NON-TECH MUSIC INDUSTRY GROUPS
+
+We've just updated Maestro AI with more flexibility behind the scenes so labels and studios can choose how they run it.
+
+In plain terms: Maestro now works with multiple AI providers, while keeping the same workflow system for release planning, artist comms, scheduling, and operations.
+
+What has not changed:
+- Maestro does not create music or art
+- your team remains in control of decisions
+- the platform is built to give you more time for creativity, not replace it
+
+If you run an independent label or studio and admin is eating your week, this is exactly what Maestro is built for.
+
+Learn more: https://github.com/lrrecords/maestro-ai
+
+---
+
 *Marketing plan generated: April 22, 2026*
 *Pair with: `maestro_ai_social_series.md` and `MAESTRO_IWAI_SYNTHESIS.md`*
