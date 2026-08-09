@@ -76,6 +76,23 @@ Assessor note:
 
 ---
 
+## 3A. Candidate Personalization Block (2-Minute Final Pass)
+
+Before submission, add one short personalized line under each repository note:
+
+- My role level: [founder / maintainer / contributor / evaluator]
+- Date range of contribution: [month/year to month/year]
+- Typical weekly activity: [for example: planning, coding, testing, docs, deployment]
+- Verification reference: [commit link, release tag, or dated screenshot filename]
+
+Example line format:
+- `Personalized statement:` I maintained this repository as [role] from [date range], focusing on [top 2-3 responsibilities], with evidence shown in [verification reference].
+
+For forked repositories, add this disclosure line:
+- `Fork disclosure:` This repository is a fork used for evaluation/learning and is included as ecosystem literacy evidence, not as sole-authored product evidence.
+
+---
+
 ## 4. Export and Packaging Guide
 
 1. Capture all screenshots in PNG format where possible.
