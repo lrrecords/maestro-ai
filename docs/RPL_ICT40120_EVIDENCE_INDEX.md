@@ -59,6 +59,9 @@ This index is designed to be submitted with the RPL package and used as a checkl
 
 Add one PDF or image set with these captures:
 
+Template support:
+- Use `docs/RPL_SCREENSHOT_APPENDIX_TEMPLATE.md` for filename conventions, caption text, and assessor-ready packaging.
+
 - [ ] Running app login page and successful login flow.
 - [ ] Hub page and at least one department dashboard.
 - [ ] Agents list page and one executed agent result.
