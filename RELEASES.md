@@ -1,5 +1,21 @@
 # 🎼 MAESTRO AI — Release History
 
+## v1.5.1 (August 2026) — Multi-Provider LLM Routing + Marketing Update Pack
+
+**Highlights:**
+- **LLM provider expansion:** Runtime routing now supports `openai` (ChatGPT), `deepseek`, `gemini`, `openai_compatible`, and `litellm` in addition to existing `ollama` and `anthropic` paths.
+- **Provider aliases added:** `chatgpt`/`gpt` map to `openai`, and `claude` maps to `anthropic` for smoother config migration.
+- **Crew orchestration parity:** Crew-level LLM configuration now mirrors provider flexibility so the same business workflows can run across local-first and cloud model backends.
+- **Platform Ops provider options updated:** Provider selector now lists expanded model backends, with API key handling kept in environment secrets.
+- **New setup guide:** Added a dedicated provider matrix and copy/paste env blocks at `docs/LLM_PROVIDER_SETUP_MATRIX.md`, linked from README and quickstart.
+- **Marketing update pack added:** `docs/MAESTRO_MARKETING_PLAN.md` now includes an August 2026 ready-to-post Discord/LinkedIn update set, plus three alternate variants.
+- **Repository hygiene:** `.specstory` artifacts were removed from git tracking to prevent noisy non-product file churn.
+
+**Migration:**
+- No database migration required.
+- Review `.env.example` and choose `LLM_PROVIDER` based on your deployment goals.
+- For cloud providers, set the corresponding API key env vars (`OPENAI_API_KEY`, `DEEPSEEK_API_KEY`, `GEMINI_API_KEY`/`GOOGLE_API_KEY`, or generic OpenAI-compatible values).
+
 ## v1.5.0 (July 2026) — Open Core Maturity, SCRIBE Pipeline, and Hosted Operations
 
 **Highlights:**
