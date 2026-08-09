@@ -48,10 +48,10 @@ This index is designed to be submitted with the RPL package and used as a checkl
 | ICTWEB450 | hosting strategy in README/quickstart | Procfile and deployment docs |
 | ICTWEB452 | authored template/pages | page-level changes |
 | ICTWEB443 | public-facing page optimization evidence (if available) | supplementary landing-page work |
-| ICTDBS416 | supplementary relational DB project evidence | Artist-Pages/Supabase pack |
-| ICTWEB451 | supplementary SQL query evidence | Artist-Pages/Supabase pack |
+| ICTDBS416 | `supabase-short-links.sql`, `SET_UP_GUIDE.md` (Artist-Pages) | `supabase-seed.sql`, `SUPABASE_SCHEMA.md` |
+| ICTWEB451 | `supabase-seed.sql`, `supabase-short-links.sql` (Artist-Pages) | `artist-page.js` data read patterns |
 | ICTICT435 | `README.md`, `docs/*`, `RELEASES.md` | this RPL evidence pack |
-| ICTCLD401 | environment and deployment configuration docs | hosted runbooks |
+| ICTCLD401 | `supabase-config.js`, `README.md` (Artist-Pages) | `SET_UP_GUIDE.md`, deployment notes |
 
 ---
 
@@ -96,15 +96,32 @@ Important:
 Purpose:
 - Strengthen evidence for relational database and SQL-focused units.
 
-Current workspace status:
-- `artist-pages/admin/` exists but is empty in this snapshot.
+External evidence location provided by candidate:
+- `c:\Users\brett\Documents\lrrecords-artist-pages\artist-pages`
 
-When available, include:
-- Supabase migration/schema files.
-- SQL query examples used by features.
-- Table relationship diagrams.
-- CRUD forms and data-flow screenshots.
-- Auth and row-level security configuration evidence.
+Concrete evidence to attach:
+- `README.md`: Supabase data model summary (`public.artists`) and security model (RLS and owner-scoped writes).
+- `SET_UP_GUIDE.md`: SQL DDL for table creation, RLS activation, and policy definitions.
+- `supabase-seed.sql`: practical SQL `insert` and `on conflict do update` usage for application data.
+- `supabase-short-links.sql`: relational SQL for `public.short_links` with primary key, `owner_id` foreign key, unique index, and RLS policies.
+- `SUPABASE_SCHEMA.md`: structured schema extension documentation and operational review-state contract.
+- `supabase-config.js`: cloud runtime integration and environment configuration.
+- `artist-page.js`: Supabase client initialization and application-side data mapping.
+
+Assessment-relevant SQL features demonstrated:
+- `create table if not exists`.
+- `references auth.users(id) on delete cascade`.
+- `create unique index if not exists`.
+- `insert ... on conflict (...) do update`.
+- `alter table ... enable row level security`.
+- `create policy` with `using` and `with check` owner constraints.
+
+Recommended screenshot set for this supplementary pack:
+- [ ] Supabase SQL editor showing `public.short_links` table and index.
+- [ ] Supabase RLS policy screen for owner read/insert enforcement.
+- [ ] Supabase table view showing seeded artist data rows.
+- [ ] Admin portal save flow writing updated artist profile data.
+- [ ] Public artist page rendering that data from Supabase.
 
 Suggested appendix naming:
 - `08_ArtistPages_Supabase_SQL_Evidence.pdf`
