@@ -248,6 +248,12 @@ Supplementary evidence plan:
 - I can include a second project evidence set (Artist-Pages) for SQL/Supabase-focused units.
 - This is especially useful for `ICTDBS416`, `ICTWEB451`, and cloud configuration evidence where relational data modeling/query work is required.
 
+Concrete supplementary evidence identified:
+- Artist-Pages README and setup documentation describe a Supabase-backed artist platform (auth, database, storage, RLS).
+- SQL setup scripts include table creation, policy definitions, and idempotent schema operations.
+- Seed scripts demonstrate practical SQL usage for inserts/upserts and JSONB-based application data structures.
+- Short-link SQL script demonstrates relational table design with primary key, foreign key, index, and row-level security policy controls.
+
 ---
 
 ## 12. Evidence Portfolio Checklist (RPL Submission Support)
@@ -303,20 +309,29 @@ This evidence package demonstrates my applied, workplace-relevant web developmen
 
 ## 16. Supplementary Project Integration (Artist-Pages / Supabase)
 
-I plan to attach Artist-Pages as supplementary evidence to strengthen relational database and cloud-backend competencies.
+I am attaching Artist-Pages as supplementary evidence to strengthen relational database and cloud-backend competencies.
 
-Current status at the time of writing:
-- The attached `artist-pages/admin/` folder is present but contains no source files yet in this workspace snapshot.
+Supplementary project location:
+- External folder provided by candidate: `c:\Users\brett\Documents\lrrecords-artist-pages\artist-pages`
 
-Once available, I will include the following evidence from Artist-Pages:
-- Supabase schema/migration files (table design, relationships, constraints).
-- SQL queries and data-access code used by application features.
-- Authentication/authorization rules and row-level security configuration.
-- Frontend-to-database integration examples (forms, CRUD workflows).
-- Deployment or environment setup steps specific to Supabase.
+Evidence currently available from Artist-Pages:
+- `README.md`: project architecture, Supabase data model, and security model.
+- `SET_UP_GUIDE.md`: SQL table creation, RLS enablement, and policy setup workflow.
+- `supabase-seed.sql`: practical SQL `insert` and `on conflict do update` examples using JSONB fields.
+- `supabase-short-links.sql`: relational table setup with foreign key to `auth.users`, unique index, RLS, and per-owner policies.
+- `SUPABASE_SCHEMA.md`: Web3-related schema extension approach and operational review-state contract.
+- `artist-page.js` + `supabase-config.js`: frontend integration with Supabase client and runtime configuration.
 
 How this strengthens ICT40120 RPL:
 - Direct relational database creation/query evidence for `ICTDBS416` and `ICTWEB451`.
 - Additional cloud service configuration evidence for `ICTCLD301` and `ICTCLD401`.
 - Broader end-to-end web application evidence across both Flask-based and Supabase-backed stacks.
+
+Practical SQL features demonstrated in supplementary evidence:
+- `create table if not exists`.
+- `primary key` and `references ... on delete cascade`.
+- `create unique index if not exists`.
+- `insert into ... values ... on conflict (...) do update`.
+- `alter table ... enable row level security`.
+- `create policy ... using ... with check ...` for owner-scoped access control.
 
