@@ -93,6 +93,41 @@ For forked repositories, add this disclosure line:
 
 ---
 
+## 3B. Personalization Draft (Pre-Filled)
+
+Use these lines as a starting point and adjust exact dates if needed.
+
+1. `lrrecords/maestro-ai`
+- My role level: founder and primary maintainer
+- Date range of contribution: approximately Feb 2026 to Aug 2026 (ongoing)
+- Typical weekly activity: planning, Python/Flask coding, agent workflow changes, testing, documentation, release notes, deployment maintenance
+- Verification reference: `07_git_log_authored_changes.png`, `10_github_profile_contributions.png`, commits on `main` including recent `docs(rpl)` and `feat(llm)` updates
+- Personalized statement: I maintained this repository as founder and primary maintainer from approximately Feb 2026 to Aug 2026 (ongoing), focusing on backend architecture, agent workflows, and release/documentation quality, with evidence shown in `07_git_log_authored_changes.png` and recent `main` commits.
+
+2. `lrrecords/second-brain-blitz`
+- My role level: contributor and integration adopter
+- Date range of contribution: Aug 2026 to present
+- Typical weekly activity: integration/adoption updates, config review, validation of deployment and client connection documentation
+- Verification reference: GitHub contribution activity for Aug 2026 and repository commit history
+- Personalized statement: I contributed to this repository as an integration adopter from Aug 2026 onward, focusing on practical setup and workflow alignment for AI tooling, with evidence shown in my GitHub contribution activity and repository commit history.
+
+3. `lrrecords/doomcharts-number1albums-2025`
+- My role level: author and maintainer
+- Date range of contribution: Jan 2026 to present (maintenance)
+- Typical weekly activity: content/data updates, static web adjustments, live demo link and publishing upkeep
+- Verification reference: repository README live-demo references, release tag (`public`), and commit history
+- Personalized statement: I authored and maintained this static web project from Jan 2026 onward, focusing on content publishing, responsive frontend updates, and live deployment upkeep, with evidence shown in the repository release and commit history.
+
+4. `lrrecords/its-mytabs` (fork)
+- My role level: evaluator (fork maintainer)
+- Date range of contribution: approximately Sep 2025 to Aug 2026
+- Typical weekly activity: technical evaluation, feature comparison, deployment/testing experimentation for music-tooling use cases
+- Verification reference: fork status on GitHub profile and repository metadata
+- Personalized statement: I used this fork as evaluation evidence from approximately Sep 2025 to Aug 2026 to compare open-source music web tooling and deployment options relevant to my workflow.
+- Fork disclosure: This repository is a fork used for evaluation/learning and is included as ecosystem literacy evidence, not as sole-authored product evidence.
+
+---
+
 ## 4. Export and Packaging Guide
 
 1. Capture all screenshots in PNG format where possible.
