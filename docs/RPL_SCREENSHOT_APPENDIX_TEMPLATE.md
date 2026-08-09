@@ -99,10 +99,10 @@ Use these lines as a starting point and adjust exact dates if needed.
 
 1. `lrrecords/maestro-ai`
 - My role level: founder and primary maintainer
-- Date range of contribution: approximately Feb 2026 to Aug 2026 (ongoing)
+- Date range of contribution: at least Dec 2025 to Aug 2026 (ongoing, possibly earlier)
 - Typical weekly activity: planning, Python/Flask coding, agent workflow changes, testing, documentation, release notes, deployment maintenance
 - Verification reference: `07_git_log_authored_changes.png`, `10_github_profile_contributions.png`, commits on `main` including recent `docs(rpl)` and `feat(llm)` updates
-- Personalized statement: I maintained this repository as founder and primary maintainer from approximately Feb 2026 to Aug 2026 (ongoing), focusing on backend architecture, agent workflows, and release/documentation quality, with evidence shown in `07_git_log_authored_changes.png` and recent `main` commits.
+- Personalized statement: I maintained this repository as founder and primary maintainer from at least Dec 2025 (possibly earlier) through Aug 2026 and ongoing, focusing on backend architecture, agent workflows, and release/documentation quality, with evidence shown in `07_git_log_authored_changes.png` and recent `main` commits.
 
 2. `lrrecords/second-brain-blitz`
 - My role level: contributor and integration adopter
