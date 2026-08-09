@@ -335,3 +335,24 @@ Practical SQL features demonstrated in supplementary evidence:
 - `alter table ... enable row level security`.
 - `create policy ... using ... with check ...` for owner-scoped access control.
 
+---
+
+## 17. Public Evidence Corroboration (Website + Wayback + GitHub)
+
+To strengthen authenticity and continuity claims for my RPL application, I am including independent public evidence alongside repository artifacts.
+
+Public corroboration sources:
+- Live website: `https://lrrecords.com.au`
+- Wayback calendar: `https://web.archive.org/web/*/https://lrrecords.com.au`
+- GitHub profile: `https://github.com/lrrecords`
+
+Corroboration points:
+- Website continuity: Wayback captures demonstrate long-term published web presence from 2002 onward.
+- Ongoing maintenance: the live website contains active service pages, blog/news updates, and product/tool pages.
+- Development practice: public repositories and contribution activity support ongoing version-controlled software development.
+
+RPL value:
+- Provides third-party verification of sustained web operations and publishing over time.
+- Reinforces evidence for units related to web content publishing, documentation, and operational practice.
+- Complements code-level evidence with public, independently verifiable continuity evidence.
+
