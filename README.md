@@ -16,9 +16,15 @@
 
 Maestro AI brings specialized agents for Label, Studio, Live, and Platform Ops into one web dashboard and mission workflow system. It is designed for real operator workflows, not just demos, with auth, job persistence, and production deployment paths already in place.
 
-## 🆕 Current State — v1.5.0 (July 2026)
+## 🆕 Current State — v1.5.1 (August 2026)
 
 Maestro AI is live and operating at [LRRecords](https://lrrecords.com.au) in Rockingham, Western Australia.
+
+**Latest release highlights:**
+- Multi-provider LLM routing now supports OpenAI/ChatGPT, DeepSeek, Gemini, OpenAI-compatible endpoints, and LiteLLM in addition to Ollama and Anthropic
+- Provider aliases for `chatgpt`/`gpt` and `claude` make config migration smoother
+- Expanded setup guidance is available in [docs/LLM_PROVIDER_SETUP_MATRIX.md](docs/LLM_PROVIDER_SETUP_MATRIX.md)
+- A new marketing update pack has been added in [docs/MAESTRO_MARKETING_PLAN.md](docs/MAESTRO_MARKETING_PLAN.md)
 
 **Working now:**
 - CEO Command Centre with mission orchestration and approval queue
@@ -26,7 +32,7 @@ Maestro AI is live and operating at [LRRecords](https://lrrecords.com.au) in Roc
 - Redis-backed persistent job store
 - Role-based permissions (CEO / admin / user)
 - Swagger/OpenAPI documentation
-- Multi-provider LLM support: Ollama, Anthropic, OpenAI/ChatGPT, DeepSeek, Gemini, and OpenAI-compatible endpoints
+- Multi-provider LLM support: Ollama, Anthropic, OpenAI/ChatGPT, DeepSeek, Gemini, OpenAI-compatible endpoints, and LiteLLM
 - Premium agents including LEDGER, SAGE Daily Brief, FOCUS, and multi-label onboarding
 - SCRIBE content pipeline at `agents/label/scribe/`
 - Container deployment support via Dockerfile + Procfile + Railway
@@ -35,6 +41,8 @@ Maestro AI is live and operating at [LRRecords](https://lrrecords.com.au) in Roc
 - Canonical launch path: `Procfile -> app.py -> dashboard.app:app`
 - Live smoke runner: `python scripts/maestro_railway_smoke.py --base-url https://maestro-ai.up.railway.app`
 - Add `--login-token <token>` for authenticated checks when you have a test token
+
+For the full changelog and release history, see [RELEASES.md](RELEASES.md).
 
 ## ⚡ Quick Start (Self-Host)
 
