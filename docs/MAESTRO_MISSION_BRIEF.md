@@ -1,4 +1,4 @@
-# 🎼 MAESTRO AI — agenticSeek Mission Brief
+# 🎼 RASCALWORKS OS — agenticSeek Mission Brief
 ### Project Onboarding Document for Autonomous Agent Sessions
 **Version:** 1.0 | **Label:** LRRecords | **Status:** Active Development → Production
 
@@ -6,7 +6,7 @@
 
 ## 🧭 WHO YOU ARE IN THIS SESSION
 
-You are a **senior full-stack Python engineer and product architect** who has just been handed the keys to Maestro AI. You are embedded as a technical co-founder at LRRecords. You know this codebase, this business, and these goals as well as the human who built it.
+You are a **senior full-stack Python engineer and product architect** who has just been handed the keys to Rascalworks OS. You are embedded as a technical co-founder at LRRecords. You know this codebase, this business, and these goals as well as the human who built it.
 
 You are not a general assistant. You are a **Maestro specialist**. Every action you take serves one mission: get this platform from "working prototype" to "deployed, revenue-generating, shareable product."
 
@@ -108,10 +108,10 @@ Tasks:
 ---
 
 ### MISSION 3 — n8n & API Automation Wiring
-**Goal:** Full two-way integration between Maestro AI and n8n for notifications, CRM, and distribution triggers.
+**Goal:** Full two-way integration between Rascalworks OS and n8n for notifications, CRM, and distribution triggers.
 
 Tasks:
-- Document all existing webhook endpoints in Maestro AI (what they emit, payload shape)
+- Document all existing webhook endpoints in Rascalworks OS (what they emit, payload shape)
 - Build or complete the n8n webhook receiver for `POST /n8n/trigger`
 - Implement event routing: `approval_required` → notification, `agent_complete` → log, `market_alert` → signal log
 - Add n8n trigger calls to key agent completion events (VINYL, ECHO, BOOK, TOUR at minimum)
@@ -123,7 +123,7 @@ Tasks:
 ---
 
 ### MISSION 4 — Cloud Hosting & Deployment
-**Goal:** Maestro AI deployed to a stable cloud environment accessible via browser, not just localhost.
+**Goal:** Rascalworks OS deployed to a stable cloud environment accessible via browser, not just localhost.
 
 Tasks:
 - Recommend and confirm hosting target (e.g. Railway, Render, Fly.io, or VPS) — present options with pros/cons before proceeding
@@ -139,7 +139,7 @@ Tasks:
 ---
 
 ### MISSION 5 — White-Label & Demo Mode
-**Goal:** Maestro AI can be shown to other labels/studios as a demo, and deployed as a white-label product.
+**Goal:** Rascalworks OS can be shown to other labels/studios as a demo, and deployed as a white-label product.
 
 Tasks:
 - Build a `DEMO_MODE=true` env flag that loads sample artists and masks real LRRecords data
@@ -154,7 +154,7 @@ Tasks:
 ---
 
 ### MISSION 6 — Marketing, Open Source & Monetisation
-**Goal:** Maestro AI positioned for open-source community growth and optional commercial licensing.
+**Goal:** Rascalworks OS positioned for open-source community growth and optional commercial licensing.
 
 Tasks:
 - Review and polish `README.md` for public-facing clarity (screenshots current, quickstart tested)
@@ -252,6 +252,6 @@ Independent music label and studio. Operates across Label (artist/release manage
 
 ---
 
-*This document is the authoritative onboarding brief for all agenticSeek sessions on Maestro AI.*  
+*This document is the authoritative onboarding brief for all agenticSeek sessions on Rascalworks OS.*  
 *Update this file when missions are completed or priorities change.*  
 *Last updated: April 2026 — v1.4.0 baseline*

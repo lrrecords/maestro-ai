@@ -1,4 +1,4 @@
-# 🎼 MAESTRO AI — Release History
+# 🎼 RASCALWORKS OS — Release History
 
 ## v1.5.1 (August 2026) — Multi-Provider LLM Routing + Marketing Update Pack
 
@@ -51,9 +51,9 @@
 - Update your repo, install new dependencies, and review `.env.example` for new settings.
 
 ---
-## What is MAESTRO AI?
+## What is RASCALWORKS OS?
 
-MAESTRO AI is an AI-powered, multi-agent business operating system designed for independent labels, studios, and live music organizations. The platform provides a unified web dashboard, organizing core operations into four domains (Label, Studio, Live, Platform Ops) each with pluggable agents for end-to-end workflow automation.
+RASCALWORKS OS is an AI-powered, multi-agent business operating system designed for independent labels, studios, and live music organizations. The platform provides a unified web dashboard, organizing core operations into four domains (Label, Studio, Live, Platform Ops) each with pluggable agents for end-to-end workflow automation.
 
 ---
 ## v1.3.0 (April 1, 2026) — LIVE Dashboard Agent Cards + Apply Workflow

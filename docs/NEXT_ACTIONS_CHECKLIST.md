@@ -1,4 +1,4 @@
-# Maestro AI — Next Actions Checklist
+# Rascalworks OS — Next Actions Checklist
 
 **Generated:** 2026-05-03
 

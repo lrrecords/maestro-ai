@@ -2,11 +2,11 @@
 
 ## Purpose
 
-This document defines the information security management scope for Maestro AI so the repository can be assessed consistently against ISO 27001 controls.
+This document defines the information security management scope for Rascalworks OS so the repository can be assessed consistently against ISO 27001 controls.
 
 ## In Scope
 
-- The Maestro AI application source code in this repository.
+- The Rascalworks OS application source code in this repository.
 - The Flask dashboard, API routes, agent orchestration code, and supporting scripts.
 - Configuration files and deployment artifacts that affect security posture, including `.env.example`, `Dockerfile`, `Procfile`, and Railway-related deployment notes.
 - Documentation that defines security, access, and operational control expectations.

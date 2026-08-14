@@ -1,7 +1,7 @@
 <p align="center">
-  <img src="docs/assets/maestro_ai_logo_metallic_neon.png" alt="Maestro AI logo" width="120">
+  <img src="docs/assets/rascalworks_os_logo.png" alt="Rascalworks OS logo" width="120">
 </p>
-<h1 align="center">🎼 Maestro AI — The AI Operating System for Independent Music</h1>
+<h1 align="center">🎼 Rascalworks OS — The AI Operating System for Independent Music</h1>
 
 [![License](https://img.shields.io/github/license/lrrecords/maestro-ai.svg)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/lrrecords/maestro-ai?sort=semver)](https://github.com/lrrecords/maestro-ai/releases)
@@ -10,15 +10,15 @@
 **A modular, production-ready, open-source platform for independent labels, studios, and live teams, powered by multi-agent AI orchestration.**
 
 > **Branding/Trademark Notice**
-> Maestro AI and LRRecords branding may not be used for proprietary or premium features without written permission. The open core is MIT licensed; premium code may have additional restrictions.
+> Rascalworks OS and LRRecords branding may not be used for proprietary or premium features without written permission. The open core is MIT licensed; premium code may have additional restrictions.
 
-## 🚀 What is Maestro AI?
+## 🚀 What is Rascalworks OS?
 
-Maestro AI brings specialized agents for Label, Studio, Live, and Platform Ops into one web dashboard and mission workflow system. It is designed for real operator workflows, not just demos, with auth, job persistence, and production deployment paths already in place.
+Rascalworks OS brings specialized agents for Label, Studio, Live, and Platform Ops into one web dashboard and mission workflow system. It is designed for real operator workflows, not just demos, with auth, job persistence, and production deployment paths already in place.
 
 ## 🆕 Current State — v1.5.1 (August 2026)
 
-Maestro AI is live and operating at [LRRecords](https://lrrecords.com.au) in Rockingham, Western Australia.
+Rascalworks OS is live and operating at [LRRecords](https://lrrecords.com.au) in Rockingham, Western Australia.
 
 **Latest release highlights:**
 - Multi-provider LLM routing now supports OpenAI/ChatGPT, DeepSeek, Gemini, OpenAI-compatible endpoints, and LiteLLM in addition to Ollama and Anthropic

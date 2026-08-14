@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This archive captures the release-specific proof currently available in the repository for the Maestro AI compliance crosswalk.
+This archive captures the release-specific proof currently available in the repository for the Rascalworks OS compliance crosswalk.
 
 ## Verification Environment
 

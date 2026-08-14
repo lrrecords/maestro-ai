@@ -1,4 +1,4 @@
-# MAESTRO AI — Full Implementation Guide
+# RASCALWORKS OS — Full Implementation Guide
 > All code produced in the design session. Ready to paste into your repo.
 
 ---
@@ -24,7 +24,7 @@ google-analytics-data>=0.18.0
 ### `crews/__init__.py`
 ```python
 """
-Maestro AI — CrewAI integration layer.
+Rascalworks OS — CrewAI integration layer.
 Maps existing Maestro agents to CrewAI role-based crews.
 DO NOT import from here at app startup — import inside route handlers to avoid circular deps.
 """
@@ -639,7 +639,7 @@ internet_agent = Agent(
         "Pull analytics, identify opportunities, draft outreach, and surface everything for CEO decision."
     ),
     backstory=(
-        "You are the internet arm of Maestro AI. "
+        "You are the internet arm of Rascalworks OS. "
         "You track Spotify streams, Instagram engagement, Bandcamp sales, and website traffic. "
         "You know the heavy music press scene — Doom Charts is a key target. "
         "You draft content and press pitches but NEVER publish without CEO approval. "

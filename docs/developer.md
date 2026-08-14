@@ -3,7 +3,7 @@
 ### **B. DEVELOPER.md**
 
 ```markdown name=DEVELOPER.md
-# Developer Guide: Maestro AI
+# Developer Guide: Rascalworks OS
 
 ## Repository Structure
 

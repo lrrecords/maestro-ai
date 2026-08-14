@@ -1,4 +1,4 @@
-# Maestro AI API Reference (Stub)
+# Rascalworks OS API Reference (Stub)
 
 This is a placeholder for a future OpenAPI/endpoint reference for external integrators.
 

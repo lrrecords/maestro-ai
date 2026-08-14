@@ -132,7 +132,7 @@ def save_draft(artist_key: str, payload: dict) -> str:
 
 def run(args: list):
     print("\n" + "="*52)
-    print("      MAESTRO AI  -  Check-in Drafter")
+    print("      RASCALWORKS OS  -  Check-in Drafter")
     print("="*52)
 
     # Non-interactive mode for web/dashboard use

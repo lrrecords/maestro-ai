@@ -15,7 +15,7 @@ To whom it may concern,
 I am writing to confirm that I know [Candidate Full Name] and have observed their work in relation to ICT/web development projects.
 
 I have seen or reviewed work related to:
-- Maestro AI
+- Rascalworks OS
 - Artist Pages / Supabase
 - LRRecords public website and related published web content
 - GitHub-based project history and documentation
@@ -59,7 +59,7 @@ Subject: Confirmation of ICT work experience for RPL
 
 Hi,
 
-I confirm that I have seen [Candidate Name]'s work on Maestro AI, Artist Pages, and related web/digital projects. I can verify that they have been actively building and maintaining real web systems, documentation, and deployment-related work over time.
+I confirm that I have seen [Candidate Name]'s work on Rascalworks OS, Artist Pages, and related web/digital projects. I can verify that they have been actively building and maintaining real web systems, documentation, and deployment-related work over time.
 
 They have shown practical experience relevant to ICT40120, including web development, documentation, cloud/database integration, and ongoing maintenance.
 

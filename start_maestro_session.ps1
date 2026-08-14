@@ -1,5 +1,5 @@
 # start_maestro_session.ps1
-# This script runs the Maestro AI session checklist, opens the dashboard in Brave, and launches FORGE (Open Interpreter with maestro profile).
+# This script runs the Rascalworks OS session checklist, opens the dashboard in Brave, and launches FORGE (Open Interpreter with maestro profile).
 
 # 1. Run the session checklist
 Write-Host "Running session checklist..."

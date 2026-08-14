@@ -45,10 +45,11 @@ app = Flask(
 
 # --- Flask-Limiter setup with Redis backend ---
 redis_url = os.getenv("REDIS_URL")
+# Fall back to in-memory limiter when Redis is unavailable (local dev)
 limiter = Limiter(
     get_remote_address,
     app=app,
-    storage_uri=redis_url,
+    storage_uri=redis_url if redis_url else "memory://",
     default_limits=["60 per minute"]
 )
 

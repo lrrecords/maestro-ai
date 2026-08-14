@@ -1,6 +1,6 @@
 
 
-# 🎼 Maestro AI — Full Marketing Plan
+# 🎼 Rascalworks OS — Full Marketing Plan
 ### Audience-Segmented, Channel-Mapped, Launch-Ready
 > April 2026 | Complements: `maestro_ai_social_series.md` | By: Brett @ LRRecords
 
@@ -10,7 +10,7 @@
 
 In 2026, the music industry is buzzing with questions—and real concerns—about AI’s impact on creativity, connection, and copyright. Many fear that AI tools are here to replace human artistry, automate away the soul of music, or blur the lines of ownership and originality. Products like SUNO and MIDJOURNEY have sparked debate by generating music and art with little or no human input.
 
-**Maestro AI is not that.**  
+**Rascalworks OS is not that.**  
 Maestro was built with a different philosophy: to empower, not replace, the humans at the heart of music. Maestro does not generate music, lyrics, or art. It does not try to mimic or automate the creative spark. Instead, Maestro is designed to give music professionals, artists, and teams more time and bandwidth to do what only humans can—create, connect, and inspire.
 
 **What Maestro Does:**  
@@ -82,7 +82,7 @@ Use this if you are actively sharing the hosted deployment:
 **Public post CTA (top of funnel):**
 
 ```text
-Learn more about Maestro AI:
+Learn more about Rascalworks OS:
 https://lrrecords.github.io/maestro-ai/
 
 If you want early access to test the live app, DM me "EARLY ACCESS".
@@ -91,7 +91,7 @@ If you want early access to test the live app, DM me "EARLY ACCESS".
 **Warm audience CTA (qualified traffic):**
 
 ```text
-See what Maestro AI does:
+See what Rascalworks OS does:
 https://lrrecords.github.io/maestro-ai/
 
 Want to test the live MVP? Reply "TEST" and I will send the invite flow.
@@ -115,10 +115,10 @@ I will send your login token separately for security.
 ![Founder Story — Brett at LRRecords](assets/founder_story_static.png)
 
 **Hook:**
-I built Maestro AI to run my own label. Here's what happened.
+I built Rascalworks OS to run my own label. Here's what happened.
 
 **Body:**
-Running LRRecords meant I was spending more time on admin than on music. Approvals, release checklists, booking, session tracking, artist comms — all of it. I built Maestro AI to automate the grind for us first. But Maestro doesn’t make music for you—it gives you back the time to make more of your own. Now we're releasing it so other labels and studios don't have to start from scratch. It's open source. It runs locally. It's built by a label, for labels. This is where we are — and where we're heading.
+Running LRRecords meant I was spending more time on admin than on music. Approvals, release checklists, booking, session tracking, artist comms — all of it. I built Rascalworks OS to automate the grind for us first. But Maestro doesn’t make music for you—it gives you back the time to make more of your own. Now we're releasing it so other labels and studios don't have to start from scratch. It's open source. It runs locally. It's built by a label, for labels. This is where we are — and where we're heading.
 
 **CTA:**
 Follow to watch it being built. Link in bio for the full story.
@@ -139,7 +139,7 @@ Follow to watch it being built. Link in bio for the full story.
 I'm building an AI operating system for music labels. In public. No VC. No roadmap deck. Just code.
 
 **Body:**
-Maestro AI is what happens when a label owner gets fed up with bad tools and decides to build their own. Every week I'm shipping new agents, dashboards, and automations — all open source, all built to solve real problems at LRRecords first. This isn’t another AI that tries to write your next song. Maestro handles the business, so you can handle the art. If you're curious about AI, music business, or just like watching real things get built — you're in the right place.
+Rascalworks OS is what happens when a label owner gets fed up with bad tools and decides to build their own. Every week I'm shipping new agents, dashboards, and automations — all open source, all built to solve real problems at LRRecords first. This isn’t another AI that tries to write your next song. Maestro handles the business, so you can handle the art. If you're curious about AI, music business, or just like watching real things get built — you're in the right place.
 
 **CTA:**
 Comment "BUILD" if you want weekly updates on what we're shipping.
@@ -156,7 +156,7 @@ Comment "BUILD" if you want weekly updates on what we're shipping.
 **Hook:**
 Your label's dream team doesn't need a salary.
 
-**Slide 1:** "Meet the Maestro AI Crew"
+**Slide 1:** "Meet the Rascalworks OS Crew"
 **Slide 2:** ATLAS — "Knows every artist. Tracks every metric."
 **Slide 3:** VINYL — "Release checklists that never miss a step."
 **Slide 4:** ECHO — "Keeps your marketing moving without you."
@@ -182,7 +182,7 @@ Which agent would save you the most time? Comment below.
 How many hours did admin cost your label last week?
 
 **Body:**
-Let's be honest. The average indie label spends 15–20 hours a week on tasks that have nothing to do with music. Emails, scheduling, chasing invoices, updating spreadsheets, approving content. That's half a working week. Maestro AI was built to give those hours back — to your creativity, your artists, and your life outside work. Maestro is about protecting your creative time, not replacing it.
+Let's be honest. The average indie label spends 15–20 hours a week on tasks that have nothing to do with music. Emails, scheduling, chasing invoices, updating spreadsheets, approving content. That's half a working week. Rascalworks OS was built to give those hours back — to your creativity, your artists, and your life outside work. Maestro is about protecting your creative time, not replacing it.
 
 **CTA:**
 What would you do with 10 extra hours a week? Drop it in the comments.
@@ -197,10 +197,10 @@ What would you do with 10 extra hours a week? Drop it in the comments.
 ![Tech Stack Diagram](assets/tech_stack_diagram.png)
 
 **Hook:**
-What's actually running under the hood of Maestro AI?
+What's actually running under the hood of Rascalworks OS?
 
 **Body:**
-No mystery. No black box. Maestro AI is built on: Flask (Python web app), CrewAI (multi-agent orchestration), Ollama (local AI — your data stays on your machine), Anthropic API (Claude, for when you want cloud power). Open source on GitHub. No subscription. No lock-in. No generative AI. No black box music. Just tools to help you run your business, your way.
+No mystery. No black box. Rascalworks OS is built on: Flask (Python web app), CrewAI (multi-agent orchestration), Ollama (local AI — your data stays on your machine), Anthropic API (Claude, for when you want cloud power). Open source on GitHub. No subscription. No lock-in. No generative AI. No black box music. Just tools to help you run your business, your way.
 
 **CTA:**
 Star the repo on GitHub → [github.com/lrrecords/maestro-ai]
@@ -212,7 +212,7 @@ Star the repo on GitHub → [github.com/lrrecords/maestro-ai]
 ### 2F. ROADMAP TEASE — Anticipation Builder
 
 **Hook:**
-Here's what's coming to Maestro AI in 2026.
+Here's what's coming to Rascalworks OS in 2026.
 
 **Body:**
 We're just getting started. On the roadmap: advanced analytics across your entire roster, a plugin API for custom agents, Docker deployment, and multi-label SaaS onboarding. Plus some things we haven't announced yet. We're building this for real labels with real problems — so the roadmap is shaped by what actually matters in the trenches, not what looks good on a slide. And always: Maestro will never generate music or art. It’s here to support the humans who do.
@@ -230,7 +230,7 @@ What would you build first? Tell us in comments and we'll add it to the list.
 What's the #1 task killing your creative time?
 
 **Body:**
-We're building new Maestro AI agents and we want to solve real problems. If you run a label, studio, or manage artists — what's the one thing you wish was automated? Drop it below. The top answer from this post becomes the next agent we build. Seriously. And don’t worry—Maestro will never touch your creative process, only the admin.
+We're building new Rascalworks OS agents and we want to solve real problems. If you run a label, studio, or manage artists — what's the one thing you wish was automated? Drop it below. The top answer from this post becomes the next agent we build. Seriously. And don’t worry—Maestro will never touch your creative process, only the admin.
 
 **CTA:**
 Comment your biggest time killer. We're reading every reply.
@@ -245,7 +245,7 @@ Comment your biggest time killer. We're reading every reply.
 ![Outputs Example](assets/MAESTRO_Outputs_Example.jpg)
 
 **Hook:**
-This week Maestro AI saved us [X hours] at LRRecords. Here's exactly what it did.
+This week Rascalworks OS saved us [X hours] at LRRecords. Here's exactly what it did.
 
 **Body:**
 [Fill in: specific example. e.g. "SAGE briefed me in 2 minutes on 3 artists who needed attention. VINYL flagged a release checklist item I'd missed. BOOK queued 2 session confirmations that would have taken 30 emails."] That's the real product. Not the demo. The daily unglamorous time-saving that adds up to getting your life back. Maestro didn’t write a song for us—it made sure we had more time to write our own.
@@ -272,7 +272,7 @@ Hey [first name],
 
 I want to share something we’ve been quietly building at LRRecords — and why it’s different from the AI tools you might be hearing about.
 
-It’s called **Maestro AI**. And before anything else: Maestro does *not* generate music, lyrics, or art. It’s not here to replace artists, producers, or the creative process. Maestro is a tool to protect your creative time by automating the admin, business, and operational grind that gets in the way of making music.
+It’s called **Rascalworks OS**. And before anything else: Maestro does *not* generate music, lyrics, or art. It’s not here to replace artists, producers, or the creative process. Maestro is a tool to protect your creative time by automating the admin, business, and operational grind that gets in the way of making music.
 
 Here’s why I built it:
 
@@ -315,7 +315,7 @@ We’re building the roadmap based on real problems from real people in the indu
 More to come very soon.
 
 Brett
-Founder, LRRecords & Maestro AI
+Founder, LRRecords & Rascalworks OS
 [lrrecords.com.au](https://lrrecords.com.au)
 
 ---
@@ -326,7 +326,7 @@ Founder, LRRecords & Maestro AI
 
 ### 3B. FOLLOW-UP EMAIL — Send 5–7 Days After 3A
 
-**Subject:** What Maestro AI actually does (a real example — and what it never will)
+**Subject:** What Rascalworks OS actually does (a real example — and what it never will)
 
 **Preview text:** No slides. Just what happened this week at LRRecords. And a reminder: Maestro is not generative AI.
 
@@ -334,7 +334,7 @@ Founder, LRRecords & Maestro AI
 
 Hey [first name],
 
-Last week I mentioned Maestro AI — the AI operating system we've built for LRRecords.
+Last week I mentioned Rascalworks OS — the AI operating system we've built for LRRecords.
 
 A few people replied asking: *"Okay, but what does it actually do day to day?"*
 
@@ -365,7 +365,7 @@ Brett
 
 ### 3C. FEATURE SPOTLIGHT — Ongoing Monthly Series
 
-**Subject:** Maestro AI: [Agent Name] — what it does and why we built it
+**Subject:** Rascalworks OS: [Agent Name] — what it does and why we built it
 
 **Template — fill in [AGENT] and [STORY]:**
 
@@ -402,7 +402,7 @@ Use for WhatsApp or SMS. Keep it conversational and short.
 
 Hey [Artist name] — wanted to give you a heads up on something we've been building at LRRecords.
 
-We've launched Maestro AI — it's basically an AI system that runs a lot of the label ops behind the scenes. Release checklists, session bookings, your analytics — all automated.
+We've launched Rascalworks OS — it's basically an AI system that runs a lot of the label ops behind the scenes. Release checklists, session bookings, your analytics — all automated.
 
 For you it means: faster responses from us, nothing falling through the cracks on your releases, and I actually have more time to focus on your music.
 
@@ -414,13 +414,13 @@ More soon. 🎵
 
 ### 4B. ARTIST-FACING ONE-PAGER — PDF or Website Page
 
-**Title:** How LRRecords uses Maestro AI to support your career
+**Title:** How LRRecords uses Rascalworks OS to support your career
 
 **Sections:**
 
 
 **What it means for you as an artist:**
-We use Maestro AI to manage the operational side of your career with us — release planning, session scheduling, analytics tracking, and communications. Maestro does not generate music or art, and never will. It’s not here to replace your creativity or automate the art. Maestro is here to make sure nothing slips through the cracks and you always know what's happening with your project, so you can focus on making music.
+We use Rascalworks OS to manage the operational side of your career with us — release planning, session scheduling, analytics tracking, and communications. Maestro does not generate music or art, and never will. It’s not here to replace your creativity or automate the art. Maestro is here to make sure nothing slips through the cracks and you always know what's happening with your project, so you can focus on making music.
 
 
 **Your data, your control:**
@@ -452,7 +452,7 @@ Add this section near the top of README.md, after the intro paragraph:
 ```markdown
 ## 🆕 Current State — v1.4.0 (April 2026)
 
-Maestro AI is live and running operations at [LRRecords](https://lrrecords.com.au) in Rockingham, Western Australia.
+Rascalworks OS is live and running operations at [LRRecords](https://lrrecords.com.au) in Rockingham, Western Australia.
 
 **What's working now:**
 - CEO Command Centre with mission orchestration and approval queue
@@ -475,7 +475,7 @@ If you're running an independent label, studio, or live music organisation and w
 ---
 
 
-### 5B. BLOG POST / WEBSITE — "Why We Built Maestro AI"
+### 5B. BLOG POST / WEBSITE — "Why We Built Rascalworks OS"
 
 **Publish on:** lrrecords.com.au/blog or as a Medium/Substack post
 
@@ -489,11 +489,11 @@ When you run an independent music label, you wear every hat. A&R, marketing, ope
 
 The reality for most indie label owners is that operations consume 40–60% of working hours. Not creative work. Admin. Emails, spreadsheets, approval chains, release timelines, session scheduling, tour finances. All of it falling through the cracks because the tools built for music businesses were either too generic, too expensive, or too disconnected from how labels actually work.
 
-I'm Brett, founder of LRRecords, an independent label and studio based in Rockingham, Western Australia. I built Maestro AI to solve this problem — first for myself, and now for every other music professional facing the same wall.
+I'm Brett, founder of LRRecords, an independent label and studio based in Rockingham, Western Australia. I built Rascalworks OS to solve this problem — first for myself, and now for every other music professional facing the same wall.
 
-**What Maestro AI actually is (and what it’s not)**
+**What Rascalworks OS actually is (and what it’s not)**
 
-Maestro AI is a multi-agent business operating system. Not a chatbot. Not a productivity plugin. And absolutely not generative AI. Maestro does not generate music, lyrics, or art. It does not try to automate or replace the creative process. Instead, Maestro is a system of specialised AI agents — each one designed for a specific function of a music business — operating under a unified dashboard with a human (you) in the loop for every meaningful decision.
+Rascalworks OS is a multi-agent business operating system. Not a chatbot. Not a productivity plugin. And absolutely not generative AI. Maestro does not generate music, lyrics, or art. It does not try to automate or replace the creative process. Instead, Maestro is a system of specialised AI agents — each one designed for a specific function of a music business — operating under a unified dashboard with a human (you) in the loop for every meaningful decision.
 
 **What Maestro Will Never Do:**
 - Generate music or art in place of humans
@@ -535,7 +535,7 @@ Everything runs through a web dashboard. The CEO approval queue means nothing go
 
 **Why open source?**
 
-Because music tech has spent 20 years building tools for major labels and ignoring independent operators. I wanted to change that. Maestro AI is MIT licensed, free to self-host, and built to be extended. Your data stays on your infrastructure. No subscription. No vendor lock-in.
+Because music tech has spent 20 years building tools for major labels and ignoring independent operators. I wanted to change that. Rascalworks OS is MIT licensed, free to self-host, and built to be extended. Your data stays on your infrastructure. No subscription. No vendor lock-in.
 
 The code is on GitHub: [github.com/lrrecords/maestro-ai](https://github.com/lrrecords/maestro-ai)
 
@@ -553,7 +553,7 @@ But the foundation — autonomous agents, human approval loops, and a dashboard 
 
 **If you're a label owner, studio manager, or artist manager** drowning in admin: this was built for you. Star the repo, open an issue, or reach out directly. We're building from real feedback, from real people in the industry.
 
-[Try Maestro AI →](https://github.com/lrrecords/maestro-ai)
+[Try Rascalworks OS →](https://github.com/lrrecords/maestro-ai)
 
 ---
 
@@ -567,7 +567,7 @@ v1.4.0 is live and running operations at LRRecords right now.
 
 After months of building, I'm ready to talk about what we've been working on at LRRecords.
 
-**Maestro AI** — an open-source, multi-agent business operating system built specifically for independent music labels, studios, and live music organisations.
+**Rascalworks OS** — an open-source, multi-agent business operating system built specifically for independent music labels, studios, and live music organisations.
 
 The why: running a label means wearing every hat. A&R, ops, finance, marketing, logistics. The admin consumed half our week — time we should have been spending on music and artists.
 
@@ -603,7 +603,7 @@ Happy to answer questions in the comments or via DM.
 
 Hey everyone — long-time lurker, first time posting here.
 
-I've been building a multi-agent system for the past few months and just hit a stable release I'm comfortable sharing. It's called **Maestro AI** — a multi-agent business OS for independent music labels.
+I've been building a multi-agent system for the past few months and just hit a stable release I'm comfortable sharing. It's called **Rascalworks OS** — a multi-agent business OS for independent music labels.
 
 **Stack:** Flask · CrewAI · Ollama (Qwen2.5.8 locally) · Anthropic API fallback · Redis job store · n8n for automation
 
@@ -635,7 +635,7 @@ Would love any feedback from folks who've worked with CrewAI at this scale. Spec
 
 **Body:**
 
-I've been building Maestro AI — a multi-agent platform for independent music label operations. Just hit v1.4.0 and wanted to share with this community since the architecture might be interesting.
+I've been building Rascalworks OS — a multi-agent platform for independent music label operations. Just hit v1.4.0 and wanted to share with this community since the architecture might be interesting.
 
 **Why it exists:** I run LRRecords, an independent label in Australia. Admin was consuming 40%+ of our week. Built Maestro to automate it — now open-sourcing so other labels can use it. Maestro does not generate music or art, and never will. It’s not generative AI — it’s admin automation for music businesses.
 
@@ -687,7 +687,7 @@ Happy to answer questions about the architecture. Also curious what patterns oth
 
 | Day | Channel | Content |
 |---|---|---|
-| Day 8 | Blog | 5B: Why We Built Maestro AI |
+| Day 8 | Blog | 5B: Why We Built Rascalworks OS |
 | Day 9 | Instagram | Existing Post 2: Agent Roster |
 | Day 10 | Instagram | Post 2C: Agent Roster Visual (carousel) |
 | Day 11 | Email | 3B: Follow-up "What it actually does" |
@@ -715,11 +715,11 @@ Happy to answer questions about the architecture. Also curious what patterns oth
 
 ---
 
-## Maestro AI Service Tiers
+## Rascalworks OS Service Tiers
 
 ![Service Tiers Overview](assets/service_tiers_static.png)
 
-*Visual summary of Maestro AI's available service tiers and offerings.*
+*Visual summary of Rascalworks OS's available service tiers and offerings.*
 
 ---
 
@@ -729,13 +729,13 @@ Use these consistently across all channels. Same story, different depth.
 
 
 **One sentence (bio, tagline):**
-> Maestro AI is the AI operating system for independent music labels — built to automate admin, not art.
+> Rascalworks OS is the AI operating system for independent music labels — built to automate admin, not art.
 
 **Two sentences (post caption, quick pitch):**
-> Maestro AI automates label, studio, and live music operations with specialised AI agents. It’s not generative AI — Maestro never creates music or art, only frees up your time to do it. Built by LRRecords — runs locally, open source, free.
+> Rascalworks OS automates label, studio, and live music operations with specialised AI agents. It’s not generative AI — Maestro never creates music or art, only frees up your time to do it. Built by LRRecords — runs locally, open source, free.
 
 **One paragraph (email intro, blog opener, LinkedIn):**
-> Maestro AI is a multi-agent business operating system built specifically for independent music labels, studios, and live music organisations. It combines 25+ specialised AI agents with a CEO approval queue and department dashboards — automating the admin so music professionals can focus on what matters. Maestro never generates music or art, and never will. Built at LRRecords in Australia, open source, runs on your own infrastructure.
+> Rascalworks OS is a multi-agent business operating system built specifically for independent music labels, studios, and live music organisations. It combines 25+ specialised AI agents with a CEO approval queue and department dashboards — automating the admin so music professionals can focus on what matters. Maestro never generates music or art, and never will. Built at LRRecords in Australia, open source, runs on your own infrastructure.
 
 **Full story (blog post, community forum, detailed pitch):**
 > Use Section 5B above.
@@ -765,7 +765,7 @@ Use these as copy/paste updates that reflect current state after multi-provider 
 
 ### 10A. DISCORD UPDATE (BUILDER COMMUNITY)
 
-Hey everyone - quick build update from Maestro AI.
+Hey everyone - quick build update from Rascalworks OS.
 
 We just expanded model routing so teams can run the same agent workflows across multiple LLM providers, not just one stack.
 
@@ -797,7 +797,7 @@ Repo: https://github.com/lrrecords/maestro-ai
 
 ### 10B. LINKEDIN UPDATE (PROFESSIONAL / INDUSTRY)
 
-After recent updates to Maestro AI, one of the biggest improvements is now live: flexible LLM provider routing.
+After recent updates to Rascalworks OS, one of the biggest improvements is now live: flexible LLM provider routing.
 
 Maestro can now run the same operational agent workflows across:
 - Ollama (local/private)
@@ -827,7 +827,7 @@ GitHub: https://github.com/lrrecords/maestro-ai
 
 Quick founder update from LRRecords.
 
-I built Maestro AI because label admin was taking too much time away from music.
+I built Rascalworks OS because label admin was taking too much time away from music.
 
 This week we shipped a major upgrade: flexible LLM routing. Maestro now supports Ollama, Anthropic, OpenAI/ChatGPT, DeepSeek, Gemini, OpenAI-compatible endpoints, and LiteLLM.
 
@@ -843,7 +843,7 @@ https://github.com/lrrecords/maestro-ai
 
 ### 10D. ALTERNATE VERSION 2 - DISCORD (TECHNICAL)
 
-Technical update on Maestro AI architecture:
+Technical update on Rascalworks OS architecture:
 
 We added provider-agnostic LLM routing in the runtime layer and Crew orchestration path.
 
@@ -866,7 +866,7 @@ Repo: https://github.com/lrrecords/maestro-ai
 
 ### 10E. ALTERNATE VERSION 3 - NON-TECH MUSIC INDUSTRY GROUPS
 
-We've just updated Maestro AI with more flexibility behind the scenes so labels and studios can choose how they run it.
+We've just updated Rascalworks OS with more flexibility behind the scenes so labels and studios can choose how they run it.
 
 In plain terms: Maestro now works with multiple AI providers, while keeping the same workflow system for release planning, artist comms, scheduling, and operations.
 

@@ -12,7 +12,7 @@ class MultiLabelOnboardingAgent(BaseAgent):
     """Multi-label SaaS onboarding agent.
 
     Generates a structured onboarding checklist and welcome brief for a new
-    label joining the Maestro AI platform. Optionally uses the LLM to
+    label joining the Rascalworks OS platform. Optionally uses the LLM to
     personalise the checklist based on the label's genre and goals.
     """
 
@@ -112,7 +112,7 @@ class MultiLabelOnboardingAgent(BaseAgent):
 
     def _default_welcome(self, label_name: str, owner_name: str) -> str:
         return (
-            f"Welcome to Maestro AI, {owner_name}! "
+            f"Welcome to Rascalworks OS, {owner_name}! "
             f"{label_name} is now set up on the platform. "
             "Work through the onboarding checklist to get your first agents running. "
             "If you need help, see docs/quickstart.md."
@@ -120,7 +120,7 @@ class MultiLabelOnboardingAgent(BaseAgent):
 
     def _generate_welcome(self, label_name: str, owner_name: str, genre: str, artist_count: str) -> str:
         prompt = (
-            f"You are Maestro AI's onboarding assistant. Write a warm, professional, "
+            f"You are Rascalworks OS's onboarding assistant. Write a warm, professional, "
             f"one-paragraph welcome message (max 80 words) for a new label joining the platform.\n\n"
             f"Label: {label_name}\n"
             f"Owner: {owner_name}\n"

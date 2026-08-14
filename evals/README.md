@@ -1,6 +1,6 @@
-# Maestro AI Evals
+# Rascalworks OS Evals
 
-This directory contains offline evaluation assets for Maestro AI agents.
+This directory contains offline evaluation assets for Rascalworks OS agents.
 
 ## Goal
 
