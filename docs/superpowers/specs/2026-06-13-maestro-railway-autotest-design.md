@@ -1,10 +1,10 @@
 # Maestro Railway Automated Test and Debug Loop Design
 
 ## Goal
-Create a repeatable workflow that can test the live Maestro AI Railway deployment, identify regressions, and generate a structured repair prompt for Copilot or another coding agent. The workflow must support production-readiness checks without weakening the CEO approval model or changing public-action safeguards.
+Create a repeatable workflow that can test the live Rascalworks OS Railway deployment, identify regressions, and generate a structured repair prompt for Copilot or another coding agent. The workflow must support production-readiness checks without weakening the CEO approval model or changing public-action safeguards.
 
 ## Problem Statement
-Maestro AI already has a web app, a Railway deployment target, and a mixed set of local and live validation scripts. What is missing is a single, reliable path for:
+Rascalworks OS already has a web app, a Railway deployment target, and a mixed set of local and live validation scripts. What is missing is a single, reliable path for:
 
 - verifying the live Railway deployment behaves as expected,
 - capturing failures in a form that an agent can act on,

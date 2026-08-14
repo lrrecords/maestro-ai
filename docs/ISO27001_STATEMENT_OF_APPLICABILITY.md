@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This Statement of Applicability maps relevant Annex A controls to the current open-core Maestro AI repository state.
+This Statement of Applicability maps relevant Annex A controls to the current open-core Rascalworks OS repository state.
 
 ## Status Legend
 

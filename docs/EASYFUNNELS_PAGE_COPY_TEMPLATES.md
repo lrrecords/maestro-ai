@@ -1,4 +1,4 @@
-# Maestro AI — EasyFunnels Page Copy Templates
+# Rascalworks OS — EasyFunnels Page Copy Templates
 
 **Ready-to-paste content for lrrecords.com.au pages**
 
@@ -20,7 +20,7 @@ If you want the fastest path live, use this structure first:
 **Option A (balanced)**
 
 ```
-Title: Maestro AI
+Title: Rascalworks OS
 
 Description:
 Maestro is the operating system we use at LRRecords to run label admin, release planning, bookings, and communications.
@@ -34,7 +34,7 @@ Link: https://lrrecords.com.au/maestro
 **Option B (short and punchy)**
 
 ```
-Title: Maestro AI
+Title: Rascalworks OS
 
 Description:
 Built at LRRecords to automate the admin side of music operations, from release checklists to approvals and booking workflows.
@@ -48,7 +48,7 @@ Link: https://lrrecords.com.au/maestro
 **Option C (trust-first)**
 
 ```
-Title: Maestro AI
+Title: Rascalworks OS
 
 Description:
 Running live inside LRRecords, Maestro helps us stay on top of releases, comms, and scheduling with human approval built in.
@@ -67,7 +67,7 @@ Use this as your exact `/maestro` page copy in EasyFunnels.
 ### Hero
 
 ```
-Maestro AI
+Rascalworks OS
 The operating system inside LRRecords.
 
 Maestro handles the admin side of running a label, so we can spend more time on artists and music.
@@ -143,7 +143,7 @@ Contact LRRecords -> https://lrrecords.com.au/contact
 ### Hero Section
 
 ```
-MAESTRO AI
+RASCALWORKS OS
 The Operating System Inside LRRecords
 
 Running label operations so we can focus on music.
@@ -158,7 +158,7 @@ Running label operations so we can focus on music.
 ```
 What's Maestro?
 
-Maestro AI is a multi-agent operating system that runs the business side of LRRecords.
+Rascalworks OS is a multi-agent operating system that runs the business side of LRRecords.
 It handles approvals, scheduling, communications, release planning, and artist analytics.
 So I can spend less time in email and spreadsheets, and more time on the creative work that matters.
 
@@ -434,11 +434,11 @@ Saves:
 ## 3. ARTIST FAQ PAGE (`/resources/maestro-faq`)
 
 ```
-Maestro AI — Frequently Asked Questions
+Rascalworks OS — Frequently Asked Questions
 
-What is Maestro AI?
+What is Rascalworks OS?
 
-Maestro AI is an operating system that runs the business side of LRRecords.
+Rascalworks OS is an operating system that runs the business side of LRRecords.
 It automates approvals, scheduling, communications, and planning—so we can respond faster to you,
 catch problems early, and never miss a deadline.
 
@@ -531,7 +531,7 @@ We're transparent about our tools. No hidden processes.
 
 Is Maestro open source?
 
-Yes. Maestro AI is MIT licensed and available on GitHub.
+Yes. Rascalworks OS is MIT licensed and available on GitHub.
 If you run a label, studio, or music business, you can self-host it free.
 
 [GitHub Repository] [Documentation]
@@ -546,7 +546,7 @@ Email: hello@lrrecords.com.au
 
 ---
 
-## 4. BLOG POST: "Why We Built Maestro AI"
+## 4. BLOG POST: "Why We Built Rascalworks OS"
 
 *(See MAESTRO_MARKETING_PLAN.md, Section 5B for full blog post template)*
 
@@ -556,7 +556,7 @@ Email: hello@lrrecords.com.au
 When you run a label, you're supposed to be making music. 
 Instead, you're drowning in email, spreadsheets, approvals, and coordination.
 
-We built Maestro AI to change that.
+We built Rascalworks OS to change that.
 
 Here's why.
 ```
@@ -600,7 +600,7 @@ Just fewer mistakes and more time for music.
 
 ```
 "See how Maestro runs our label operations →"
-"Maestro AI: The operating system inside LRRecords →"
+"Rascalworks OS: The operating system inside LRRecords →"
 "How we use AI to free up time for music →"
 ```
 
@@ -622,7 +622,7 @@ Just fewer mistakes and more time for music.
 ```
 How We Work at LRRecords
 
-We run everything through a system called Maestro AI.
+We run everything through a system called Rascalworks OS.
 It keeps release timelines organized, flags deadlines, ensures nothing gets lost, and helps us respond faster.
 
 For you, this means:
@@ -641,7 +641,7 @@ For you, this means:
 
 ```
 ---
-Maestro AI is the operating system inside LRRecords. 
+Rascalworks OS is the operating system inside LRRecords. 
 It helps us respond faster, catch problems early, and spend less time on admin so we can focus on music.
 
 Learn more: lrrecords.com.au/maestro
@@ -651,7 +651,7 @@ Open source: github.com/lrrecords/maestro-ai
 ### Short Version
 
 ```
-Powered by Maestro AI — the operating system for independent music labels.
+Powered by Rascalworks OS — the operating system for independent music labels.
 github.com/lrrecords/maestro-ai
 ```
 

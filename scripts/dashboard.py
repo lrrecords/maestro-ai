@@ -32,7 +32,7 @@ def get_latest_bridge_data(slug):
 
 def print_dashboard():
     print(f"\n{Fore.CYAN}{'='*60}")
-    print(f"   MAESTRO AI  -  WEEKLY ARTIST DASHBOARD")
+    print(f"   RASCALWORKS OS  -  WEEKLY ARTIST DASHBOARD")
     print(f"{'='*60}{Style.RESET_ALL}\n")
 
     if not ARTISTS_DIR.exists():

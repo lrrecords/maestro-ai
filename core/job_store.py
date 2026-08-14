@@ -1,6 +1,6 @@
 
 """
-Persistent mission/job store for Maestro AI
+Persistent mission/job store for Rascalworks OS
 - Uses Redis for persistence if available, falls back to in-memory for dev/test
 """
 

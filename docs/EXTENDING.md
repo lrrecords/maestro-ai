@@ -1,6 +1,6 @@
-# Extending Maestro AI (Open Core)
+# Extending Rascalworks OS (Open Core)
 
-Maestro AI is designed for easy extension via new agents, plugins, and integrations. This guide covers how to add your own agents (open or premium), and how to contribute plugins or extensions.
+Rascalworks OS is designed for easy extension via new agents, plugins, and integrations. This guide covers how to add your own agents (open or premium), and how to contribute plugins or extensions.
 
 ---
 
@@ -148,7 +148,7 @@ python -m pytest tests/ -v --tb=short
 
 ## 7. Branding & Compliance
 
-- Do not use LRRecords or Maestro AI branding for proprietary/premium features without permission.
+- Do not use LRRecords or Rascalworks OS branding for proprietary/premium features without permission.
 - Open core is MIT licensed; premium code may have additional restrictions.
 
 ---

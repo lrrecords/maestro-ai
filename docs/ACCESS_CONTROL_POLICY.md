@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This policy defines the minimum access-control expectations for Maestro AI in a way that can support ISO 27001 evidence collection.
+This policy defines the minimum access-control expectations for Rascalworks OS in a way that can support ISO 27001 evidence collection.
 
 ## Policy Statements
 

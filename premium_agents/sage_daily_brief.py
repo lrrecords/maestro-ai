@@ -103,7 +103,7 @@ class SageAgent(BaseAgent):
 
     def _build_brief_prompt(self, inputs: dict, scope: str) -> str:
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        return f"""You are SAGE, the intelligence layer for Maestro AI.
+        return f"""You are SAGE, the intelligence layer for Rascalworks OS.
 Today is {today}. Generate a concise {scope} executive brief for the label CEO.
 
 Input Data:

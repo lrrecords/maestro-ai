@@ -1,4 +1,4 @@
-# Dynamic Agent Loader for Maestro AI
+# Dynamic Agent Loader for Rascalworks OS
 
 
 import importlib

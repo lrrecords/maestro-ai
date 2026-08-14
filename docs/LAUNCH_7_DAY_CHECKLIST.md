@@ -1,4 +1,4 @@
-# Maestro AI 7-Day Launch Checklist
+# Rascalworks OS 7-Day Launch Checklist
 
 A practical one-week launch sprint for sharing the live MVP and converting early users.
 

@@ -1,4 +1,4 @@
-# Maestro AI Live User Onboarding Guide
+# Rascalworks OS Live User Onboarding Guide
 
 This guide helps you onboard someone to the live Maestro deployment quickly and safely.
 
@@ -21,7 +21,7 @@ Recommended links to share:
 Send one short onboarding message in this format:
 
 ```text
-Welcome to Maestro AI.
+Welcome to Rascalworks OS.
 
 1) Open: https://maestro-ai.up.railway.app
 2) Enter the login token I sent you separately.

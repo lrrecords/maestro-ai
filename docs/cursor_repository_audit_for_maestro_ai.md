@@ -1,4 +1,4 @@
-# Repository audit for Maestro AI
+# Repository audit for Rascalworks OS
 _Exported on 4/17/2026 at 12:51:56 GMT+8 from Cursor (3.1.15)_
 
 ---
@@ -6,7 +6,7 @@ _Exported on 4/17/2026 at 12:51:56 GMT+8 from Cursor (3.1.15)_
 **User**
 
 ## Context
-You are reviewing the Maestro AI repository — an open-source multi-agent business operating system for independent music labels, built on Flask, CrewAI, Ollama/Anthropic API, and n8n. The platform has four departments (Label, Studio, Live, Platform Ops) with ~25 agents. Current version: v1.4.0. The owner is preparing for MVP deployment on Railway and open-source marketing launch.
+You are reviewing the Rascalworks OS repository — an open-source multi-agent business operating system for independent music labels, built on Flask, CrewAI, Ollama/Anthropic API, and n8n. The platform has four departments (Label, Studio, Live, Platform Ops) with ~25 agents. Current version: v1.4.0. The owner is preparing for MVP deployment on Railway and open-source marketing launch.
 
 ## Task
 Perform a full repository audit and produce a structured report with exactly these five sections:

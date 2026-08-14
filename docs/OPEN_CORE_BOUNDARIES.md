@@ -1,4 +1,4 @@
-# Maestro AI Open Core Boundaries
+# Rascalworks OS Open Core Boundaries
 
 This document defines which modules, agents, and features are part of the open core (open source) and which are premium/proprietary for the Open Core model.
 

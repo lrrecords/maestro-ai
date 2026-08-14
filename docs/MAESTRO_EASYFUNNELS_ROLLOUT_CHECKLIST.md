@@ -1,4 +1,4 @@
-# Maestro AI on lrrecords.com.au — Rollout Checklist (Lean)
+# Rascalworks OS on lrrecords.com.au — Rollout Checklist (Lean)
 
 Start Date: [INSERT DATE]  
 Target Launch: [INSERT DATE]  
@@ -70,7 +70,7 @@ If all boxes are checked, launch is complete.
 - [ ] Add footer link to `/maestro`
 
 ### Content Engine
-- [ ] Publish "Why We Built Maestro AI" blog post
+- [ ] Publish "Why We Built Rascalworks OS" blog post
 - [ ] Use SCRIBE to automate future Maestro posts
 - [ ] Add monthly Maestro update cadence
 

@@ -2,9 +2,9 @@
 
 ## Candidate and Project
 
-Candidate: [Add your name]  
+Candidate: Brett S Caporn  
 Qualification: ICT40120 Certificate IV in Information Technology (Web Development)  
-Primary Project: Maestro AI  
+Primary Project: Rascalworks OS  
 Repository: https://github.com/lrrecords/maestro-ai
 
 This index is designed to be submitted with the RPL package and used as a checklist during assessor review.
@@ -62,17 +62,47 @@ Add one PDF or image set with these captures:
 Template support:
 - Use `docs/RPL_SCREENSHOT_APPENDIX_TEMPLATE.md` for filename conventions, caption text, and assessor-ready packaging.
 
-- [ ] Running app login page and successful login flow.
-- [ ] Hub page and at least one department dashboard.
-- [ ] Agents list page and one executed agent result.
-- [ ] API docs page (`/apidocs/`).
-- [ ] Terminal output showing test execution (for example `pytest`).
-- [ ] Environment configuration example (with secrets redacted).
-- [ ] Git commit history snippet showing your authored changes.
-- [ ] Wayback screenshot showing earliest and latest `lrrecords.com.au` captures.
-- [ ] Live site screenshot showing established branding and current operations.
-- [ ] GitHub profile screenshot showing repository count and contribution activity.
-- [ ] Screenshot of at least 3 representative repositories with short role notes.
+- [x] Running app login page and successful login flow.
+  → `docs/assets/MAESTRO Login.jpg`
+
+- [x] Hub page and at least one department dashboard.
+  → `docs/screenshots/Hub.png`
+  → `docs/assets/Screenshot Departments.jpg`
+  → `docs/assets/STUDIO_Dashboard.jpg`
+  → `docs/assets/LIVE_Dashboard.jpg`
+
+- [x] Agents list page and one executed agent result.
+  → `docs/assets/MAESTRO_Run_Agents.jpg`
+  → `docs/assets/MAESTRO_Outputs_Example.jpg`
+  → `docs/assets/STUDIO_Agents.jpg`
+  → `docs/assets/LIVE_Agents.jpg`
+  → `docs/screenshots/studio-agent-cards.png`
+  → `docs/screenshots/live-book-card.png`
+  → `docs/screenshots/label-nice-card.png`
+
+- [x] API docs page (`/apidocs/`).
+  → Screenshot captured: Swagger UI showing Mission POST endpoint and full API spec.
+
+- [x] Terminal output showing test execution (`pytest`).
+  → 14 passed in 0.42s — screenshot captured from terminal output.
+
+- [x] Environment configuration example (with secrets redacted).
+  → `.env.example` shown in VS Code editor — screenshot captured (no real secrets present, all values are placeholders).
+
+- [x] Git commit history snippet showing your authored changes.
+  → 20 commits captured showing docs, feat, ui, chore entries — screenshot captured from terminal output.
+
+- [x] Wayback screenshot showing earliest and latest `lrrecords.com.au` captures.
+  → Wayback sitemap showing continuous archives from 2002 through 2026 — screenshot captured.
+
+- [x] Live site screenshot showing established branding and current operations.
+  → lrrecords.com.au homepage showing Studio & Label Services, established 2002 — screenshot captured.
+
+- [x] GitHub profile screenshot showing repository count and contribution activity.
+  → github.com/lrrecords showing 35 repositories, 366 contributions, pinned maestro-ai repo — screenshot captured.
+
+- [x] Screenshot of at least 3 representative repositories with short role notes.
+  → GitHub profile shows maestro-ai (Python), doomcharts-number1albums-2025 (HTML), idea-generator (JS), its-mytabs (Vue) — captured in GitHub profile screenshot.
 
 ---
 
@@ -124,11 +154,12 @@ Assessment-relevant SQL features demonstrated:
 - `create policy` with `using` and `with check` owner constraints.
 
 Recommended screenshot set for this supplementary pack:
-- [ ] Supabase SQL editor showing `public.short_links` table and index.
-- [ ] Supabase RLS policy screen for owner read/insert enforcement.
-- [ ] Supabase table view showing seeded artist data rows.
-- [ ] Admin portal save flow writing updated artist profile data.
-- [ ] Public artist page rendering that data from Supabase.
+- [x] Supabase Table Editor showing `public.short_links` table with slug, owner_id, long_url, label, created_at columns — 5 live records confirmed.
+- [x] Supabase RLS Policies screen showing `short_links_owner_insert` (INSERT, authenticated) and `short_links_owner_read` (SELECT, authenticated) policies, plus `artists` table policies (UPDATE/SELECT).
+- [x] Supabase Table Editor showing `public.artists` table with 13 records — JSONB columns (profile, links, musicLinks, gallery) visible with live seeded data.
+- [x] LRRecords Admin Portal showing artist public page URL, section tabs (Profile, Links, Gallery, Videos, Releases/Embeds, News, Gigs, Fan Connect, Web3 Hub), and News save form with "Currently making RPL application" entry dated 10/08/2026 — save button captured.
+- [x] Public artist page (Nova Saint) rendering live data from Supabase — name, bio tagline, genre tags (Alt Pop, Electronic, Indie) and News section showing the saved RPL news item with date 10 Aug 2026.
+- [x] Public artist page embedded on lrrecords.com.au (Spiral Soundsystem) — demonstrates end-to-end deployment from Supabase database through to published production website.
 
 Suggested appendix naming:
 - `08_ArtistPages_Supabase_SQL_Evidence.pdf`
@@ -165,6 +196,6 @@ Suggested appendix naming:
 
 I confirm that the listed artifacts represent work I completed or directly contributed to, and that all submitted evidence is authentic and accurate.
 
-Name: [Add name]  
-Date: [Add date]  
+Name: Brett S Caporn  
+Date: August 2026  
 Signature: [Add signature if required]

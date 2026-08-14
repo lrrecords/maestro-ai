@@ -1,4 +1,4 @@
-# Quickstart: Maestro AI
+# Quickstart: Rascalworks OS
 
 ## Hosted MVP Access (No Local Install)
 
@@ -179,7 +179,7 @@ all network calls are mocked in the test suite.
 
 ## 6b. API Documentation (Swagger/OpenAPI)
 
-Maestro AI ships with full interactive API docs via Flasgger.
+Rascalworks OS ships with full interactive API docs via Flasgger.
 
 Start the dashboard, then visit:
 
@@ -225,7 +225,7 @@ Toggle premium features with `PREMIUM_FEATURES_ENABLED=true/false` in `.env`.
 
 ---
 
-## 9. Extending Maestro AI
+## 9. Extending Rascalworks OS
 
 See [`docs/EXTENDING.md`](EXTENDING.md) for the full guide on adding your own
 agents and plugins.
