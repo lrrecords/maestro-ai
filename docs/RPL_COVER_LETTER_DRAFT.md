@@ -1,15 +1,15 @@
 # RPL Cover Letter Draft - ICT40120
 
-Candidate: [Your full name]
+Candidate: Brett S Caporn
 Qualification: ICT40120 Certificate IV in Information Technology (Web Development)
-Primary project: Maestro AI
+Primary project: Rascalworks OS
 Supplementary project: Artist Pages / Supabase
 
 Dear Program Coordinator / Assessor,
 
 I am submitting this Recognition of Prior Learning application for ICT40120 because my real-world work has already covered a substantial amount of the qualification through practical delivery, maintenance, and documentation.
 
-My strongest evidence comes from Maestro AI, a production-oriented web application I have been building and maintaining since at least December 2025, and possibly earlier. Maestro demonstrates applied backend web development, multi-module application structure, deployment readiness, testing, documentation, and ongoing maintenance. I have also included public corroboration evidence through my live LRRecords website, Wayback history, and GitHub profile to show continuity of published work and version-controlled development practice.
+My strongest evidence comes from Rascalworks OS, a production-oriented web application I have been building and maintaining since at least December 2025, and possibly earlier. Maestro demonstrates applied backend web development, multi-module application structure, deployment readiness, testing, documentation, and ongoing maintenance. I have also included public corroboration evidence through my live LRRecords website, Wayback history, and GitHub profile to show continuity of published work and version-controlled development practice.
 
 I am also including Artist Pages / Supabase as supplementary evidence for relational database, SQL, cloud configuration, and frontend-to-database integration units. That project provides direct evidence of schema design, SQL data operations, row-level security, and cloud service configuration.
 
@@ -21,9 +21,9 @@ Thank you for considering my application.
 
 Sincerely,
 
-[Your full name]
-[Date]
-[Contact details if required]
+Brett S Caporn
+August 2026
+brett@example.com
 
 ---
 
@@ -35,7 +35,7 @@ Primary evidence set:
 - [docs/RPL_SCREENSHOT_APPENDIX_TEMPLATE.md](RPL_SCREENSHOT_APPENDIX_TEMPLATE.md)
 
 Supplementary evidence set:
-- Maestro AI repository and release history
+- Rascalworks OS repository and release history
 - Artist Pages / Supabase evidence pack
 - LRRecords live website and Wayback continuity
 - GitHub profile and representative repositories

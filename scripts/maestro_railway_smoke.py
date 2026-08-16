@@ -1,4 +1,4 @@
-"""Live Railway smoke checks and debug prompt generation for Maestro AI."""
+"""Live Railway smoke checks and debug prompt generation for Rascalworks OS."""
 
 from __future__ import annotations
 
@@ -209,7 +209,7 @@ def format_markdown_report(report: dict[str, Any]) -> str:
 def build_debug_prompt(report: dict[str, Any]) -> str:
     report_markdown = format_markdown_report(report)
     return (
-        "You are a senior Flask/Python engineer fixing the Maestro AI repo toward a functional open-core MVP.\n\n"
+        "You are a senior Flask/Python engineer fixing the Rascalworks OS repo toward a functional open-core MVP.\n\n"
         "Non-negotiable constraints:\n"
         "- Do not weaken, bypass, or auto-approve CEO approval for public-facing actions.\n"
         "- Keep fixes limited to the failures in the report.\n"

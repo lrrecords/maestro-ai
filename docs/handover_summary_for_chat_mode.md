@@ -1,7 +1,7 @@
-# Maestro AI Audit & Handover Summary (v1.4.0)
+# Rascalworks OS Audit & Handover Summary (v1.4.0)
 
 ## Purpose
-This document summarizes the Maestro AI repository audit, MVP deployment readiness, and all actions taken to harden, document, and prepare the project for ongoing work in Chat mode or Copilot.
+This document summarizes the Rascalworks OS repository audit, MVP deployment readiness, and all actions taken to harden, document, and prepare the project for ongoing work in Chat mode or Copilot.
 
 ---
 

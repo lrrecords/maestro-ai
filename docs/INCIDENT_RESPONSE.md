@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This policy defines how Maestro AI should detect, triage, respond to, and document security incidents.
+This policy defines how Rascalworks OS should detect, triage, respond to, and document security incidents.
 
 ## Incident Types
 

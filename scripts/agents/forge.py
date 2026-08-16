@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 FORGE — Development & Automation Agent
-MAESTRO AI · LR Records
+RASCALWORKS OS · LR Records
 
 Ingests artist profile + most recent outputs from all other agents:
   VINYL  — release workflow steps to automate

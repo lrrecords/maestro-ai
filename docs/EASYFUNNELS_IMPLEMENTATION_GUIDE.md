@@ -1,4 +1,4 @@
-# Maestro AI on lrrecords.com.au — EasyFunnels Implementation Guide (Lean)
+# Rascalworks OS on lrrecords.com.au — EasyFunnels Implementation Guide (Lean)
 
 Date: July 2026  
 Status: Launch-first  

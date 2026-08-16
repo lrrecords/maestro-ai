@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 SAGE — Weekly Priority Planner & PA Layer
-MAESTRO AI · LRRecords
+RASCALWORKS OS · LRRecords
 
 Ingests most recent outputs from ALL five other agents:
   VINYL  — release tasks outstanding

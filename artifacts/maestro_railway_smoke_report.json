@@ -28,7 +28,7 @@
       "method": "GET",
       "status_code": 200,
       "location": null,
-      "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>MAESTRO AI \u2014 Login</title> <style> *, *::before, *::after { box-sizing: border-box; margin: ..."
+      "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>RASCALWORKS OS \u2014 Login</title> <style> *, *::before, *::after { box-sizing: border-box; margin: ..."
     },
     {
       "path": "/platform/api/health",

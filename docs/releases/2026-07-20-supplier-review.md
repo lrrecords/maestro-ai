@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This record captures the supplier review for the Maestro AI repository and its documented third-party dependencies.
+This record captures the supplier review for the Rascalworks OS repository and its documented third-party dependencies.
 
 ## Suppliers Reviewed
 

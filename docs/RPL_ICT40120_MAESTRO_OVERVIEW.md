@@ -3,7 +3,7 @@
 ## 1. Purpose of This Document
 
 I prepared this document as a structured project overview for Recognition of Prior Learning (RPL) evidence.
-It explains my work on Maestro AI as a real-world software project and maps that work to the ICT40120 (Web Development) competency context.
+It explains my work on Rascalworks OS as a real-world software project and maps that work to the ICT40120 (Web Development) competency context.
 
 Use this document as:
 - a project summary for assessors,
@@ -14,9 +14,9 @@ This version is written in first person so it can be used directly in my RPL nar
 
 ---
 
-## 2. Project Overview (Maestro AI)
+## 2. Project Overview (Rascalworks OS)
 
-Project name: Maestro AI  
+Project name: Rascalworks OS  
 Repository: https://github.com/lrrecords/maestro-ai  
 Current release context: v1.5.x (2026)  
 Primary domain: operations platform for independent music labels, studios, and live teams.
@@ -275,11 +275,13 @@ Use this checklist when assembling attachments:
 
 Replace bracketed fields with your details before submission.
 
-I, [Candidate Name], contributed to Maestro AI by:
-- [Example: implementing and updating backend routing and authentication controls],
-- [Example: creating and maintaining dashboard templates and user flows],
-- [Example: integrating and testing multi-provider LLM routing],
-- [Example: preparing deployment and onboarding documentation for users].
+I, Brett S Caporn, contributed to Rascalworks OS by:
+- implementing Flask backend routing, session authentication, and API token access controls,
+- building and maintaining multi-department dashboard templates and operational UI workflows,
+- designing and integrating a multi-provider LLM routing layer supporting Anthropic, OpenAI, Ollama, DeepSeek, Gemini, and LiteLLM,
+- implementing a Redis-backed job store with graceful in-memory fallback for development environments,
+- authoring deployment configuration including Dockerfile, Procfile, and Railway hosting documentation,
+- writing onboarding, quickstart, and security documentation for operators and end users.
 
 The evidence in this repository demonstrates practical web development capability across:
 - backend application development,

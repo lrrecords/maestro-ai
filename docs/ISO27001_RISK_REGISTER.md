@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This register captures the core information-security risks visible from the Maestro AI repository and its documented deployment model.
+This register captures the core information-security risks visible from the Rascalworks OS repository and its documented deployment model.
 
 ## Risk Scale
 

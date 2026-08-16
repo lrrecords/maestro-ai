@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 BRIDGE — Artist Relations Intelligence Agent
-MAESTRO AI · LR Records
+RASCALWORKS OS · LR Records
 
 Python-side calculations (no API needed):
   - Health scoring 0-100 (contact recency, frequency, momentum)

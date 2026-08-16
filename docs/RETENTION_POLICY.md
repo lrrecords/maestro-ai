@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This policy defines how Maestro AI handles retention, deletion, and review of operational data.
+This policy defines how Rascalworks OS handles retention, deletion, and review of operational data.
 
 ## Retention Principles
 
