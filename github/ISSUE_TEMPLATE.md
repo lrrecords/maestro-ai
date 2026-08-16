@@ -1,6 +1,6 @@
 ---
 name: Bug or Feature Request
-about: Report a bug or suggest a feature for Maestro AI
+about: Report a bug or suggest a feature for Rascalworks OS
 title: "[Issue]: "
 labels: [bug]
 assignees: ''

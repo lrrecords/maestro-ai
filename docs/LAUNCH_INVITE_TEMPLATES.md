@@ -1,4 +1,4 @@
-# Maestro AI Launch Invite Templates
+# Rascalworks OS Launch Invite Templates
 
 Copy/paste templates for onboarding first users to the live MVP.
 
@@ -9,7 +9,7 @@ Live URL: https://maestro-ai.up.railway.app
 ```text
 Hey [Name] - quick one:
 
-I just launched Maestro AI (the ops system I built for music labels/studios).
+I just launched Rascalworks OS (the ops system I built for music labels/studios).
 It is now live and I would love your feedback.
 
 Try it here:
@@ -28,7 +28,7 @@ If login fails, message me straight away and I will sort it fast.
 ## 2) DM (artist/roster tone)
 
 ```text
-Hey [Artist Name] - I have launched Maestro AI live.
+Hey [Artist Name] - I have launched Rascalworks OS live.
 
 It helps us run label ops faster (without touching the creative side).
 Can you do a quick 5-minute test and tell me what feels useful/confusing?
@@ -47,12 +47,12 @@ Please test:
 
 ## 3) Email Invite (early access)
 
-Subject: Early Access: Maestro AI is now live (5-minute test)
+Subject: Early Access: Rascalworks OS is now live (5-minute test)
 
 ```text
 Hi [First Name],
 
-I have just opened early access to Maestro AI, the system we built to automate label/studio admin so teams can spend more time on music.
+I have just opened early access to Rascalworks OS, the system we built to automate label/studio admin so teams can spend more time on music.
 
 Live app:
 https://maestro-ai.up.railway.app
@@ -76,14 +76,25 @@ Thanks for helping shape this with real-world feedback.
 ## 4) Follow-up Nudge (24 hours later)
 
 ```text
-Hey [Name] - quick follow-up on Maestro AI early access:
+Hey [Name] - quick follow-up on Rascalworks OS early access:
 https://maestro-ai.up.railway.app
 
 Want me to resend your token and walk you through it in 5 minutes?
 Your feedback is directly shaping what we build next.
 ```
 
-## 5) Security note for operators
+## 5) Token delivery (send separately from the app link)
+
+```text
+Hi [Name] - here is your Rascalworks OS login token. Paste this exactly when prompted:
+
+[PASTE TOKEN HERE]
+
+Do not share this with anyone else.
+App link is in my previous message.
+```
+
+## 6) Security note for operators
 
 - Send app URL and token in separate channels/messages.
 - If token is exposed in the wrong place, rotate it immediately.

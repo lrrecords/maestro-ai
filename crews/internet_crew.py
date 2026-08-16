@@ -227,7 +227,7 @@ internet_agent = Agent(
         "Pull analytics, identify opportunities, draft outreach, and surface everything for CEO decision."
     ),
     backstory=(
-        "You are the internet arm of Maestro AI. "
+        "You are the internet arm of Rascalworks OS. "
         "You track Spotify streams, Instagram engagement, Bandcamp sales, and website traffic. "
         "You know the heavy music press scene — Doom Charts is a key target. "
         "You draft content and press pitches but NEVER publish without CEO approval. "

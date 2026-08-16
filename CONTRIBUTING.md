@@ -1,4 +1,4 @@
-# Contributing to Maestro AI (LABEL)
+# Contributing to Rascalworks OS (LABEL)
 
 We 💜 contributions from the label, studio, and indie music tech community!
 
@@ -72,7 +72,7 @@ We 💜 contributions from the label, studio, and indie music tech community!
 ## Open Core & Branding Compliance
 
 - This project is Open Core compliant. Premium/proprietary features are separated and may be disabled via `.env`.
-- Do not use Maestro AI or LRRecords branding for proprietary/premium features without written permission.
+- Do not use Rascalworks OS or LRRecords branding for proprietary/premium features without written permission.
 
 ## Need Help?
 

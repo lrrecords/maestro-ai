@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This policy defines how Maestro AI preserves and restores operational data relevant to availability and integrity.
+This policy defines how Rascalworks OS preserves and restores operational data relevant to availability and integrity.
 
 ## Backup Scope
 

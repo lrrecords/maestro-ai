@@ -73,7 +73,7 @@ class _FakeSession:
         if url.endswith("/"):
             return _FakeResponse(302, "", "/login")
         if url.endswith("/login"):
-            return _FakeResponse(200, "MAESTRO AI Access Token")
+            return _FakeResponse(200, "RASCALWORKS OS Access Token")
         if url.endswith("/platform/api/health"):
             return _FakeResponse(200, '{"status":"ok"}')
         if url.endswith("/hub"):

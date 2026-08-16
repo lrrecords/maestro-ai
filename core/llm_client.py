@@ -1,5 +1,5 @@
 """core/llm_client.py
-MAESTRO AI — LLM provider abstraction.
+RASCALWORKS OS — LLM provider abstraction.
 
 Routes agent prompts to the configured provider, selected via env vars or
 PLATFORM settings.

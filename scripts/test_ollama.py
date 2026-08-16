@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 scripts/test_ollama.py
-MAESTRO AI — LLM provider connectivity checker.
+RASCALWORKS OS — LLM provider connectivity checker.
 
 Verifies that the configured LLM provider is reachable and can respond
 to a simple prompt. Run this after updating your .env file to confirm

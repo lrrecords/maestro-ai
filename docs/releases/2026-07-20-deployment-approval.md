@@ -2,13 +2,13 @@
 
 ## Purpose
 
-This record captures the pre-deployment review of the current Maestro AI release evidence.
+This record captures the pre-deployment review of the current Rascalworks OS release evidence.
 
 It is intended to be signed by the project owner or deployment approver after review. Until signed, this is a review record and not an approval claim.
 
 ## Release Context
 
-- Repository: Maestro AI
+- Repository: Rascalworks OS
 - Release date: 2026-07-20
 - Review scope: ISO 27001-style deployment and operational evidence
 

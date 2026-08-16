@@ -1,4 +1,4 @@
-# Session Checklist for Maestro AI
+# Session Checklist for Rascalworks OS
 
 $projectDir = "C:\Users\brett\Documents\maestro-ai"
 $releasesFile = Join-Path $projectDir "RELEASES.md"

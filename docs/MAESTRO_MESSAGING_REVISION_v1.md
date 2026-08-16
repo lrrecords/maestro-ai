@@ -1,4 +1,4 @@
-# Maestro AI — Messaging Revision (v1)
+# Rascalworks OS — Messaging Revision (v1)
 ### Addressing job-displacement concerns & protecting the LRRecords brand with artists and fans
 > Companion to: `MAESTRO_MARKETING_PLAN.md` and `maestro_ai_social_series.md`
 
@@ -35,7 +35,7 @@ The fix isn't to hide what Maestro does. It's to be specific about **who it's fo
 
 > **Status: not for publishing as part of the launch sequence.** This reads as pre-emptive if posted before anyone's raised the concern — naming a controversy can invite it. Keep this on hand as a ready response if the "is this taking someone's job" question comes up directly in comments, DMs, or conversation. Don't lead with it.
 
-> I know "AI" is a loaded word in music right now, and for good reason — a lot of people have watched AI tools devalue creative work, and a lot of people do the kind of admin work I'm describing here for a living. So I want to be specific: Maestro AI doesn't write, produce, or generate anything creative, and it's not a tool for labels to cut staff. It's something I built because LRRecords has never had a team — it's been me, doing every job, for years. Maestro is the team I couldn't afford to hire. If your label *does* have people doing this work, this probably isn't the tool for you, and that's fine. It's for the rest of us — the solo operators and small studios running on nights, weekends, and good intentions.
+> I know "AI" is a loaded word in music right now, and for good reason — a lot of people have watched AI tools devalue creative work, and a lot of people do the kind of admin work I'm describing here for a living. So I want to be specific: Rascalworks OS doesn't write, produce, or generate anything creative, and it's not a tool for labels to cut staff. It's something I built because LRRecords has never had a team — it's been me, doing every job, for years. Maestro is the team I couldn't afford to hire. If your label *does* have people doing this work, this probably isn't the tool for you, and that's fine. It's for the rest of us — the solo operators and small studios running on nights, weekends, and good intentions.
 
 This single paragraph does a lot of work: it names the concern, doesn't get defensive about it, and narrows the audience honestly — which paradoxically makes the people it *is* for trust it more.
 
@@ -49,7 +49,7 @@ This single paragraph does a lot of work: it names the concern, doesn't get defe
 Run your label alone? Same.
 
 **Body:**
-LRRecords has been a one-person operation since day one — no admin team, no ops department, just me trying to keep releases, bookings, and artist comms from falling through the cracks while also trying to make music. Maestro AI is the system I built to cover that gap. It doesn't write, produce, or create anything — it just keeps the operational side of a one-person (or two-person) label from eating your week. If your label already has people doing this work, Maestro probably isn't for you. If it's just you, this might help.
+LRRecords has been a one-person operation since day one — no admin team, no ops department, just me trying to keep releases, bookings, and artist comms from falling through the cracks while also trying to make music. Rascalworks OS is the system I built to cover that gap. It doesn't write, produce, or create anything — it just keeps the operational side of a one-person (or two-person) label from eating your week. If your label already has people doing this work, Maestro probably isn't for you. If it's just you, this might help.
 
 **CTA:**
 Built for solo and small-team labels. Link in bio.
@@ -67,7 +67,7 @@ Built for solo and small-team labels. Link in bio.
 Not a team replacement. A team you never had.
 
 **Body:**
-Maestro AI runs a set of task-specific systems — handling things like release checklists, scheduling, and CRM follow-ups. These aren't "employees," and they're not standing in for anyone's job — at LRRecords there's never been anyone in those roles to begin with. Every output goes through me before anything is sent, posted, or actioned. Nothing creative, nothing artist-facing, happens without a human decision. It's closer to a very thorough checklist than a colleague.
+Rascalworks OS runs a set of task-specific systems — handling things like release checklists, scheduling, and CRM follow-ups. These aren't "employees," and they're not standing in for anyone's job — at LRRecords there's never been anyone in those roles to begin with. Every output goes through me before anything is sent, posted, or actioned. Nothing creative, nothing artist-facing, happens without a human decision. It's closer to a very thorough checklist than a colleague.
 
 **CTA:**
 Curious how it works day to day? Comment "HOW" below.
@@ -79,7 +79,7 @@ Curious how it works day to day? Comment "HOW" below.
 
 ---
 
-### Revised Post 9 (was: "Manual ops vs Maestro AI: the before/after")
+### Revised Post 9 (was: "Manual ops vs Rascalworks OS: the before/after")
 
 **Hook:**
 What changed at LRRecords (and what didn't)

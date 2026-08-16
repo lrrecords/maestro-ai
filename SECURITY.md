@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in MAESTRO AI, please **do not** open a public GitHub issue.
+If you discover a security vulnerability in RASCALWORKS OS, please **do not** open a public GitHub issue.
 
 Instead, report it privately:
 
@@ -16,7 +16,7 @@ Please include:
 
 ## Scope / Notes
 
-MAESTRO AI is a self-hosted app intended to run locally or in your own infrastructure.
+RASCALWORKS OS is a self-hosted app intended to run locally or in your own infrastructure.
 
 **Never commit secrets** (API keys, tokens, passwords) to this repository.
 Use `.env` (see `.env.example`) and keep your `.env` out of git.

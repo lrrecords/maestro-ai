@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This policy defines the minimum security expectations for third-party suppliers used by Maestro AI.
+This policy defines the minimum security expectations for third-party suppliers used by Rascalworks OS.
 
 ## Supplier Scope
 

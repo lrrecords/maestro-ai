@@ -1,6 +1,6 @@
-# Maestro AI — Open Core Release Guide
+# Rascalworks OS — Open Core Release Guide
 
-This guide covers the steps to publish, announce, and maintain the Open Core version of Maestro AI.
+This guide covers the steps to publish, announce, and maintain the Open Core version of Rascalworks OS.
 
 ---
 

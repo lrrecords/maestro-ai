@@ -12,7 +12,7 @@ Session Log
 Session 003
 Date: 2026-06-13
 Agent or Crew Involved: GitHub Copilot
-Goal: Add a live Railway smoke runner and debug prompt generator for Maestro AI
+Goal: Add a live Railway smoke runner and debug prompt generator for Rascalworks OS
 Completed: Added scripts/maestro_railway_smoke.py plus tests for route order, markdown reporting, prompt generation, and fake-session smoke behavior
 Verification run (e.g., python test_agents.py): pytest tests/test_maestro_railway_smoke.py -q
 Evidence captured (feature_list.json, claude-progress.md, session-handoff.md): Updated all three continuity files

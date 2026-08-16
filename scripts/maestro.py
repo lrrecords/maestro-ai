@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MAESTRO AI - Orchestrator
+RASCALWORKS OS - Orchestrator
 LRRecords
 
 Commands:
@@ -103,7 +103,7 @@ def print_roster():
     if not artists:
         print("\n  No artists found in data/artists/\n")
         return
-    print(f"\n  MAESTRO AI - Artist Roster  ({len(artists)} artists)\n")
+    print(f"\n  RASCALWORKS OS - Artist Roster  ({len(artists)} artists)\n")
     print(f"  {'NAME':<28} {'GENRE':<22} NEXT RELEASE")
     print(f"  {'-'*28} {'-'*22} {'-'*20}")
     for profile, slug in artists:
@@ -365,7 +365,7 @@ def run_report():
     now = datetime.now(timezone.utc).strftime("%d %b %Y  %H:%M UTC")
 
     print(f"\n{Fore.CYAN}{'=' * W}{Style.RESET_ALL}")
-    print(f"{Fore.CYAN}  MAESTRO AI  -  ARTIST HEALTH DASHBOARD{now:>{W - 40}}{Style.RESET_ALL}")
+    print(f"{Fore.CYAN}  RASCALWORKS OS  -  ARTIST HEALTH DASHBOARD{now:>{W - 40}}{Style.RESET_ALL}")
     print(f"{Fore.CYAN}{'=' * W}{Style.RESET_ALL}")
     print(f"  {'ARTIST':<26}  {'SCORE':>7}  {'STATUS':<13}{'TREND':<14}LAST CONTACT")
     print(f"  {'-'*26}  {'-'*7}  {'-'*13}{'-'*14}{'-'*12}")
@@ -426,7 +426,7 @@ def run_report():
 
 BANNER = """
 ==================================================
-      MAESTRO AI  -  LRRecords Orchestrator
+      RASCALWORKS OS  -  LRRecords Orchestrator
 =================================================="""
 
 USAGE = """

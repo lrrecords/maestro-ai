@@ -1,4 +1,4 @@
-# Repository audit for Maestro AI
+# Repository audit for Rascalworks OS
 _Exported on 4/17/2026 at 13:31:41 GMT+8 from Cursor (3.1.15)_
 
 ---
@@ -6,7 +6,7 @@ _Exported on 4/17/2026 at 13:31:41 GMT+8 from Cursor (3.1.15)_
 **User**
 
 ## Context
-You are reviewing the Maestro AI repository — an open-source multi-agent business operating system for independent music labels, built on Flask, CrewAI, Ollama/Anthropic API, and n8n. The platform has four departments (Label, Studio, Live, Platform Ops) with ~25 agents. Current version: v1.4.0. The owner is preparing for MVP deployment on Railway and open-source marketing launch.
+You are reviewing the Rascalworks OS repository — an open-source multi-agent business operating system for independent music labels, built on Flask, CrewAI, Ollama/Anthropic API, and n8n. The platform has four departments (Label, Studio, Live, Platform Ops) with ~25 agents. Current version: v1.4.0. The owner is preparing for MVP deployment on Railway and open-source marketing launch.
 
 ## Task
 Perform a full repository audit and produce a structured report with exactly these five sections:
@@ -171,7 +171,7 @@ Smallest reliable deployable MVP based on current verified code:
 
 **User**
 
-I will get Agent to help work thru 4. Prioritised ToDo List and 5. MVP Scope Recommendation soon - I have exported the transciprt to docs/cursor_repository_audit.md. But first lets do a simple task: Yesterday in VS Code, CoPilot helped me make some edits/updates to docs/index.html (Maestro AI Landing Page html). Can you please guide me to commit and Push to online repo using the terminal here in Cursor.
+I will get Agent to help work thru 4. Prioritised ToDo List and 5. MVP Scope Recommendation soon - I have exported the transciprt to docs/cursor_repository_audit.md. But first lets do a simple task: Yesterday in VS Code, CoPilot helped me make some edits/updates to docs/index.html (Rascalworks OS Landing Page html). Can you please guide me to commit and Push to online repo using the terminal here in Cursor.
 
 ---
 
@@ -589,7 +589,7 @@ If you want, I can now do a **single batch commit** for these SHOULD-item change
 
 Yes Please
 
-Ok I have usuage limit. Will you be able to compile transcript into a handover style document I can pass onto Chat mode or CoPilot chat in VS Code, so I can keep on working on Maestro AI Audit and MVP.
+Ok I have usuage limit. Will you be able to compile transcript into a handover style document I can pass onto Chat mode or CoPilot chat in VS Code, so I can keep on working on Rascalworks OS Audit and MVP.
 
-Ok I have usuage limit. Will you be able to compile transcript into a handover style document I can pass onto Chat mode or CoPilot chat in VS Code, so I can keep on working on Maestro AI Audit and MVP.
+Ok I have usuage limit. Will you be able to compile transcript into a handover style document I can pass onto Chat mode or CoPilot chat in VS Code, so I can keep on working on Rascalworks OS Audit and MVP.
 

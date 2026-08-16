@@ -1,6 +1,6 @@
 # RPL Unit Priority List - ICT40120
 
-This list ranks the units by how strongly the current evidence supports them, based on the current Maestro AI, Artist Pages, public website, GitHub, and documentation pack.
+This list ranks the units by how strongly the current evidence supports them, based on the current Rascalworks OS, Artist Pages, public website, GitHub, and documentation pack.
 
 ## Highest confidence
 
@@ -61,7 +61,7 @@ This list ranks the units by how strongly the current evidence supports them, ba
 ## Lower confidence but still supportable
 
 14. ICTAII401 - Identify opportunities to apply artificial intelligence, machine learning and deep learning
-- Strong evidence: Maestro AI routing, LLM integrations, AI workflow design.
+- Strong evidence: Rascalworks OS routing, LLM integrations, AI workflow design.
 - Why it is lower: this unit may require a clear explanation of how you identified and applied AI opportunities rather than just using AI tools.
 
 15. ICTICT426 - Identify and evaluate emerging technologies and practices

@@ -1,6 +1,6 @@
 # Agents
 
-Maestro AI agents are organized by **department**, mirroring how independent music operations run day-to-day.
+Rascalworks OS agents are organized by **department**, mirroring how independent music operations run day-to-day.
 
 This repo currently includes agents in these locations:
 

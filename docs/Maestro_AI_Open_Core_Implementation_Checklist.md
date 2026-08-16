@@ -1,4 +1,4 @@
-# Maestro AI Open Core Implementation Checklist
+# Rascalworks OS Open Core Implementation Checklist
 
 ## 1. Define & Document Boundaries
 - [ ] List all modules, agents, and features in the codebase.

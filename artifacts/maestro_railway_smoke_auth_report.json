@@ -36,7 +36,7 @@
       "method": "GET",
       "status_code": 200,
       "location": null,
-      "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>MAESTRO AI \u2014 Login</title> <style> *, *::before, *::after { box-sizing: border-box; margin: ..."
+      "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>RASCALWORKS OS \u2014 Login</title> <style> *, *::before, *::after { box-sizing: border-box; margin: ..."
     },
     {
       "path": "/platform/api/health",
@@ -50,14 +50,14 @@
       "method": "GET",
       "status_code": 200,
       "location": null,
-      "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Maestro AI \u2014 Department Hub</title> <style> /* Use consistent styles */ :root { --bg: #0d0d0d; -..."
+      "snippet": "<!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> <title>Rascalworks OS \u2014 Department Hub</title> <style> /* Use consistent styles */ :root { --bg: #0d0d0d; -..."
     },
     {
       "path": "/agents",
       "method": "GET",
       "status_code": 200,
       "location": null,
-      "snippet": "<!-- templates/agents_list.html --> <!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>Agents \u00b7 Maestro AI</title> <style> *, *::before, *::aft..."
+      "snippet": "<!-- templates/agents_list.html --> <!DOCTYPE html> <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>Agents \u00b7 Rascalworks OS</title> <style> *, *::before, *::aft..."
     },
     {
       "path": "/platform",
