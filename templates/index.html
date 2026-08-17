@@ -16,17 +16,29 @@
     }
 
     :root {
-      --bg: #0d0d0d;
-      --surface: #141414;
+      --rw-blue-900: #0a58c2;
+      --rw-blue-500: #43b8ff;
+      --rw-blue-100: #eaf6ff;
+      --rw-orange-100: #ffd9a8;
+      --rw-orange-500: #ff8b2e;
+      --rw-orange-900: #c8460a;
+      --rw-bg-900: #020203;
+      --rw-bg-800: #0e1218;
+      --rw-text-muted: #8fb4d9;
+      --rw-blue-900-rgb: 10 88 194;
+      --rw-blue-500-rgb: 67 184 255;
+      --rw-orange-500-rgb: 255 139 46;
+      --bg: var(--rw-bg-900);
+      --surface: var(--rw-bg-800);
       --surface2: #1c1c1c;
       --border: #2a2a2a;
-      --cyan: #00c8d4;
-      --cyan-dim: #007a82;
+      --cyan: var(--rw-blue-500);
+      --cyan-dim: var(--rw-blue-900);
       --green: #00c97a;
       --yellow: #f5c842;
       --red: #e84545;
-      --white: #f0f0f0;
-      --muted: #555;
+      --white: var(--rw-blue-100);
+      --muted: var(--rw-text-muted);
       --text: #d8d8d8;
       --label: #888;
       --mono: "Courier New", Courier, monospace;
@@ -59,7 +71,7 @@
     }
 
     .back:hover {
-      color: #ff6b6b;
+      color: var(--rw-orange-500);
       /* Optional: Customize hover color */
     }
 
@@ -136,7 +148,7 @@
     }
 
     .nav-btn.active {
-      background: rgba(0, 200, 212, 0.1);
+      background: rgb(var(--rw-blue-500-rgb) / 0.1);
       color: var(--cyan);
     }
 
@@ -187,7 +199,7 @@
     }
 
     .artist-item.active {
-      background: rgba(0, 200, 212, 0.08);
+      background: rgb(var(--rw-blue-500-rgb) / 0.08);
       color: var(--cyan);
       border-left: 2px solid var(--cyan);
       padding-left: 10px;
@@ -332,7 +344,7 @@
     }
 
     .btn-sm.cyan {
-      background: rgba(0, 200, 212, 0.1);
+      background: rgb(var(--rw-blue-500-rgb) / 0.1);
       border-color: var(--cyan-dim);
       color: var(--cyan);
     }
@@ -808,7 +820,7 @@
     .pipeline-btn {
       width: 100%;
       padding: 14px;
-      background: linear-gradient(135deg, rgba(0, 200, 212, 0.12), rgba(0, 122, 130, 0.1));
+      background: linear-gradient(135deg, rgb(var(--rw-blue-500-rgb) / 0.12), rgb(var(--rw-orange-500-rgb) / 0.1));
       border: 1px solid var(--cyan-dim);
       border-radius: 8px;
       color: var(--cyan);
@@ -822,8 +834,8 @@
     }
 
     .pipeline-btn:hover {
-      background: linear-gradient(135deg, rgba(0, 200, 212, 0.22), rgba(0, 122, 130, 0.18));
-      box-shadow: 0 0 20px rgba(0, 200, 212, 0.15);
+      background: linear-gradient(135deg, rgb(var(--rw-blue-500-rgb) / 0.22), rgb(var(--rw-orange-500-rgb) / 0.18));
+      box-shadow: 0 0 20px rgb(var(--rw-blue-500-rgb) / 0.15);
     }
 
     .pipeline-btn:disabled {
@@ -857,13 +869,13 @@
     .agent-btn:hover {
       border-color: var(--cyan-dim);
       color: var(--cyan);
-      background: rgba(0, 200, 212, 0.05);
+      background: rgb(var(--rw-blue-500-rgb) / 0.05);
     }
 
     .agent-btn.running {
       border-color: var(--cyan);
       color: var(--cyan);
-      background: rgba(0, 200, 212, 0.08);
+      background: rgb(var(--rw-blue-500-rgb) / 0.08);
       animation: border-pulse 1s ease-in-out infinite;
     }
 
@@ -1092,7 +1104,7 @@
       font-weight: 700;
       letter-spacing: 0.1em;
       color: var(--cyan);
-      background: rgba(0, 200, 212, 0.08);
+      background: rgb(var(--rw-blue-500-rgb) / 0.08);
       padding: 2px 8px;
       border-radius: 4px;
     }
@@ -1173,7 +1185,7 @@
     .btn-primary {
       flex: 1;
       padding: 11px;
-      background: linear-gradient(135deg, var(--cyan-dim), #005f65);
+      background: linear-gradient(135deg, var(--rw-blue-900), var(--rw-orange-500));
       border: 1px solid var(--cyan-dim);
       border-radius: 8px;
       color: var(--white);
@@ -1187,7 +1199,7 @@
 
     .btn-primary:hover {
       opacity: 0.88;
-      box-shadow: 0 0 20px rgba(0, 200, 212, 0.18);
+      box-shadow: 0 0 20px rgb(var(--rw-blue-500-rgb) / 0.18);
     }
 
     .btn-secondary {
@@ -1593,8 +1605,8 @@
     }
 
     .lm-action-priority {
-      background: rgba(0, 200, 212, .12);
-      border: 1px solid rgba(0, 200, 212, .2);
+      background: rgb(var(--rw-blue-500-rgb) / 0.12);
+      border: 1px solid rgb(var(--rw-blue-500-rgb) / 0.2);
       border-radius: 4px;
       color: var(--cyan);
       font-size: .62rem;
@@ -1672,7 +1684,7 @@
     }
 
     .lm-status-progress {
-      background: rgba(0, 200, 212, .12);
+      background: rgb(var(--rw-blue-500-rgb) / 0.12);
       color: var(--cyan);
     }
 
@@ -1785,7 +1797,7 @@
                        color:var(--white);font-family:var(--mono);font-size:.82rem;padding:10px;"
                 placeholder="artist_slug">
               <button onclick="fireMission()"
-                style="background:linear-gradient(135deg,var(--cyan-dim),#005f65);
+                style="background:linear-gradient(135deg,var(--rw-blue-900),var(--rw-orange-500));
                        border:1px solid var(--cyan-dim);border-radius:8px;color:var(--white);
                        font-family:var(--mono);font-size:.78rem;font-weight:700;
                        padding:0 20px;cursor:pointer;white-space:nowrap;">
@@ -2087,7 +2099,7 @@
 
         <!-- SAGE Daily Brief Section -->
         <div id="sage-brief-container" style="margin-bottom: 24px; display: none;">
-          <div style="background: rgba(0, 200, 212, 0.05); border: 1px solid var(--cyan-dim); border-radius: 10px; padding: 20px;">
+          <div style="background: rgb(var(--rw-blue-500-rgb) / 0.05); border: 1px solid var(--rw-blue-900); border-radius: 10px; padding: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
               <div style="display: flex; align-items: center; gap: 10px;">
                 <span style="font-size: 1.2rem;">🧠</span>
@@ -2459,8 +2471,8 @@
             datasets: [{
               label: "Health Score",
               data: scores,
-              borderColor: "rgba(0,200,212,0.6)",
-              backgroundColor: "rgba(0,200,212,0.05)",
+              borderColor: "rgb(var(--rw-blue-500-rgb) / 0.6)",
+              backgroundColor: "rgb(var(--rw-blue-500-rgb) / 0.05)",
               pointBackgroundColor: ptColors,
               pointBorderColor: ptColors,
               pointRadius: 5,
