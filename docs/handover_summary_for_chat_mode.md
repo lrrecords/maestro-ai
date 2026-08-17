@@ -88,7 +88,7 @@ Remaining gaps:
 
 ### What We Are Working On (April 21, 2026)
 
-### Current Maestro State
+### Current RASCALWORKS OS State
 
 ### Mission Status
 
@@ -119,7 +119,7 @@ Remaining gaps:
 
 ## MVP Launch & Handover Checklist
 
-This section provides a clear, actionable roadmap for finalizing Maestro’s MVP, launching to production, and ensuring a smooth handover for future development or collaborators.
+This section provides a clear, actionable roadmap for finalizing RASCALWORKS OS’s MVP, launching to production, and ensuring a smooth handover for future development or collaborators.
 
 ### 1. Finalize and Polish the MVP
   - Smoke test all API endpoints and UI flows (missions, jobs, approvals, CRUD, etc.)
@@ -160,7 +160,7 @@ A full automated audit of all MUST items was performed against the current `main
 | Auth middleware on all sensitive endpoints | ✅ Confirmed | `label/web.py`, `studio/web.py`, `live/web.py` all have `before_request` guards on `/api/*` paths |
 | Webhook secret validation on all inbound webhooks | ✅ Confirmed | All four routes in `webhook_server.py` call `_webhook_authorized()` before processing; returns 401 if WEBHOOK_SECRET is unset or header doesn't match |
 | Mission execution is not stubbed | ✅ Confirmed | `label/web.py` runs real `build_release_campaign_crew(...).kickoff()` in a background thread |
-| No unsafe hardcoded webhook fallbacks | ✅ Confirmed | Defaults for Ollama/n8n/Maestro base URLs are all localhost only; all overridable via env vars |
+| No unsafe hardcoded webhook fallbacks | ✅ Confirmed | Defaults for Ollama/n8n/RASCALWORKS OS base URLs are all localhost only; all overridable via env vars |
 
 ### How to reproduce verification
 

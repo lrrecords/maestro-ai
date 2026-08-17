@@ -79,7 +79,7 @@ _April 2026 | For: Human or AI agent (Manus, Copilot, etc.)_
 - Review and update marketing plans to reflect the new Open Core model.
 - Design, test, and deploy user-friendly dashboards for premium agents.
 - Prioritize MVP launch to reclaim time for music, creativity, and life—this is a core outcome of Rascalworks OS.
-- Leverage Maestro to boost reputation, income, and satisfaction for your label and career; others will want this, including premium users.
+- Leverage RASCALWORKS OS to boost reputation, income, and satisfaction for your label and career; others will want this, including premium users.
 - Use this project as a launchpad for building more AI-assisted agents, products, and workflows.
 - Review, tweak, and deploy n8n automations and EasyFunnels (lrrecords.com.au) integration.
 - Celebrate educational recognition—your work here supports RPL credits and professional growth.

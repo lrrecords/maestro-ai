@@ -1,0 +1,50 @@
+{
+  "agent": "VINYL",
+  "artist": "Nova Saint",
+  "slug": "nova_saint",
+  "generated_at": "2026-03-10T12:00:00Z",
+  "demo": true,
+  "release": "Soft Machines EP",
+  "release_date": "2026-05-15",
+  "checklist": {
+    "pre_release": {
+      "phase": "Pre-Release",
+      "window": "2026-03-15 to 2026-05-14",
+      "tasks": [
+        {"task": "Finalise EP artwork and assets", "owner": "Artist + Label", "due": "2026-03-20", "status": "pending"},
+        {"task": "Submit 'Glass Horizon' to distributor", "owner": "Label", "due": "2026-03-25", "status": "pending"},
+        {"task": "Create pre-save landing page", "owner": "Label", "due": "2026-03-28", "status": "pending"},
+        {"task": "Submit to playlist pitching (Spotify, Apple Music)", "owner": "Label", "due": "2026-03-28", "status": "pending"},
+        {"task": "Press release draft for EP announcement", "owner": "Label", "due": "2026-04-01", "status": "pending"},
+        {"task": "Release single 1: 'Glass Horizon'", "owner": "Label", "due": "2026-04-10", "status": "pending"},
+        {"task": "Music video shoot for 'Glass Horizon'", "owner": "Artist", "due": "2026-04-12", "status": "pending"},
+        {"task": "Release single 2: 'Neon Therapy'", "owner": "Label", "due": "2026-04-28", "status": "pending"},
+        {"task": "Send advance copies to press and blogs", "owner": "Label", "due": "2026-05-01", "status": "pending"},
+        {"task": "Confirm vinyl pre-order page is live", "owner": "Label", "due": "2026-05-05", "status": "pending"}
+      ]
+    },
+    "launch_week": {
+      "phase": "Launch Week",
+      "window": "2026-05-11 to 2026-05-17",
+      "tasks": [
+        {"task": "EP goes live on all DSPs", "owner": "Distributor", "due": "2026-05-15", "status": "pending"},
+        {"task": "Release day social media blitz", "owner": "Artist + Label", "due": "2026-05-15", "status": "pending"},
+        {"task": "Email blast to mailing list", "owner": "Label", "due": "2026-05-15", "status": "pending"},
+        {"task": "Bandcamp feature / fan pricing event", "owner": "Label", "due": "2026-05-15", "status": "pending"},
+        {"task": "Instagram Live or TikTok Live listening session", "owner": "Artist", "due": "2026-05-16", "status": "pending"},
+        {"task": "Monitor first 48hr streaming numbers", "owner": "Label", "due": "2026-05-17", "status": "pending"}
+      ]
+    },
+    "post_release": {
+      "phase": "Post-Release",
+      "window": "2026-05-18 to 2026-06-15",
+      "tasks": [
+        {"task": "Week 1 performance report", "owner": "Label", "due": "2026-05-22", "status": "pending"},
+        {"task": "Pitch for second-wave playlist adds", "owner": "Label", "due": "2026-05-25", "status": "pending"},
+        {"task": "Release 'Neon Therapy' visualiser", "owner": "Artist", "due": "2026-05-28", "status": "pending"},
+        {"task": "Fan Q&A or behind-the-scenes content series", "owner": "Artist", "due": "2026-06-01", "status": "pending"},
+        {"task": "30-day retrospective and ATLAS analysis", "owner": "Label", "due": "2026-06-15", "status": "pending"}
+      ]
+    }
+  }
+}

@@ -6,16 +6,16 @@
 
 ## Why this revision exists
 
-The original messaging is strong on one front — it repeatedly says Maestro doesn't generate music or art. That's the right instinct and should stay.
+The original messaging is strong on one front — it repeatedly says RASCALWORKS OS doesn't generate music or art. That's the right instinct and should stay.
 
-But there's a second audience whose concerns the original copy doesn't address: **people whose jobs look like "admin."** Label staff, studio managers, artist managers, tour coordinators — anyone who does the work Maestro automates. When the copy says "automate the admin so you can focus on music," a solo founder hears "finally, help." Someone employed to do that admin hears something closer to "you're the thing being optimised away."
+But there's a second audience whose concerns the original copy doesn't address: **people whose jobs look like "admin."** Label staff, studio managers, artist managers, tour coordinators — anyone who does the work RASCALWORKS OS automates. When the copy says "automate the admin so you can focus on music," a solo founder hears "finally, help." Someone employed to do that admin hears something closer to "you're the thing being optimised away."
 
 This matters most for two groups close to you:
 
 - **Your roster (and their fans/teams)** — if any of your artists or their people do label-adjacent admin work, or just generally distrust "AI replacing jobs" narratives, the framing matters a lot.
-- **Other labels with staff** — a meaningful chunk of your potential audience *employs* the people Maestro's copy describes as overworked. You don't want your pitch to sound like a redundancy notice.
+- **Other labels with staff** — a meaningful chunk of your potential audience *employs* the people RASCALWORKS OS's copy describes as overworked. You don't want your pitch to sound like a redundancy notice.
 
-The fix isn't to hide what Maestro does. It's to be specific about **who it's for** (operators who don't have the staff, by choice or by budget — which is most of the indie sector) and to **never use the word "replace,"** even in a sentence defending against it.
+The fix isn't to hide what RASCALWORKS OS does. It's to be specific about **who it's for** (operators who don't have the staff, by choice or by budget — which is most of the indie sector) and to **never use the word "replace,"** even in a sentence defending against it.
 
 ---
 
@@ -24,7 +24,7 @@ The fix isn't to hide what Maestro does. It's to be specific about **who it's fo
 | From (original) | To (revised) |
 |---|---|
 | "Automates the admin so *you* can focus on music" (generic "you") | "Built for the one-person and two-person teams who never had an admin department to begin with" |
-| "Maestro never *replaces* the creative process" | "Maestro doesn't touch the creative side at all — full stop" (no "replace" framing, positive or negative) |
+| "RASCALWORKS OS never *replaces* the creative process" | "RASCALWORKS OS doesn't touch the creative side at all — full stop" (no "replace" framing, positive or negative) |
 | Leads with "AI" / "agents" | Leads with the *outcome* (faster replies, nothing missed, more studio time) — AI is the *how*, mentioned once, plainly |
 | Silent on the "AI taking jobs" conversation | One direct, honest acknowledgment — said once, well, so it doesn't need repeating |
 | Artist-facing copy explains the AI system | Artist-facing copy barely mentions AI — it describes what artists will *notice* |
@@ -35,7 +35,7 @@ The fix isn't to hide what Maestro does. It's to be specific about **who it's fo
 
 > **Status: not for publishing as part of the launch sequence.** This reads as pre-emptive if posted before anyone's raised the concern — naming a controversy can invite it. Keep this on hand as a ready response if the "is this taking someone's job" question comes up directly in comments, DMs, or conversation. Don't lead with it.
 
-> I know "AI" is a loaded word in music right now, and for good reason — a lot of people have watched AI tools devalue creative work, and a lot of people do the kind of admin work I'm describing here for a living. So I want to be specific: Rascalworks OS doesn't write, produce, or generate anything creative, and it's not a tool for labels to cut staff. It's something I built because LRRecords has never had a team — it's been me, doing every job, for years. Maestro is the team I couldn't afford to hire. If your label *does* have people doing this work, this probably isn't the tool for you, and that's fine. It's for the rest of us — the solo operators and small studios running on nights, weekends, and good intentions.
+> I know "AI" is a loaded word in music right now, and for good reason — a lot of people have watched AI tools devalue creative work, and a lot of people do the kind of admin work I'm describing here for a living. So I want to be specific: Rascalworks OS doesn't write, produce, or generate anything creative, and it's not a tool for labels to cut staff. It's something I built because LRRecords has never had a team — it's been me, doing every job, for years. RASCALWORKS OS is the team I couldn't afford to hire. If your label *does* have people doing this work, this probably isn't the tool for you, and that's fine. It's for the rest of us — the solo operators and small studios running on nights, weekends, and good intentions.
 
 This single paragraph does a lot of work: it names the concern, doesn't get defensive about it, and narrows the audience honestly — which paradoxically makes the people it *is* for trust it more.
 
@@ -49,7 +49,7 @@ This single paragraph does a lot of work: it names the concern, doesn't get defe
 Run your label alone? Same.
 
 **Body:**
-LRRecords has been a one-person operation since day one — no admin team, no ops department, just me trying to keep releases, bookings, and artist comms from falling through the cracks while also trying to make music. Rascalworks OS is the system I built to cover that gap. It doesn't write, produce, or create anything — it just keeps the operational side of a one-person (or two-person) label from eating your week. If your label already has people doing this work, Maestro probably isn't for you. If it's just you, this might help.
+LRRecords has been a one-person operation since day one — no admin team, no ops department, just me trying to keep releases, bookings, and artist comms from falling through the cracks while also trying to make music. Rascalworks OS is the system I built to cover that gap. It doesn't write, produce, or create anything — it just keeps the operational side of a one-person (or two-person) label from eating your week. If your label already has people doing this work, RASCALWORKS OS probably isn't for you. If it's just you, this might help.
 
 **CTA:**
 Built for solo and small-team labels. Link in bio.
@@ -85,7 +85,7 @@ Curious how it works day to day? Comment "HOW" below.
 What changed at LRRecords (and what didn't)
 
 **Body:**
-What changed: I reply to artists faster. Release checklists don't get missed. I spend more evenings on music instead of email. What didn't change: every release decision, every artist conversation, every creative call — still me, same as always. Maestro just means the unglamorous stuff doesn't pile up the way it used to.
+What changed: I reply to artists faster. Release checklists don't get missed. I spend more evenings on music instead of email. What didn't change: every release decision, every artist conversation, every creative call — still me, same as always. RASCALWORKS OS just means the unglamorous stuff doesn't pile up the way it used to.
 
 **CTA:**
 Questions about how this runs day to day? Ask away.
@@ -118,7 +118,7 @@ Any questions, just ask, like always.
 | Avoid | Say instead |
 |---|---|
 | "Automates the admin so *labels* can focus on music" (implies labels-with-staff) | "Built for the labels that never had an admin team in the first place" |
-| "Maestro never *replaces* X" (any phrasing with "replace") | State what Maestro *does* and *doesn't touch* — skip the R-word entirely |
+| "RASCALWORKS OS never *replaces* X" (any phrasing with "replace") | State what RASCALWORKS OS *does* and *doesn't touch* — skip the R-word entirely |
 | Leading with agent names/personas (ATLAS, VINYL, etc.) in artist- or public-facing posts | Save personas for technical/builder audiences; describe outcomes for general audiences |
 | Silence on "AI taking jobs" | One direct, calm acknowledgment (see honest paragraph above) — said once, not repeated defensively |
 | "This is for every label" | "This is for solo and small-team operators — if you have staff doing this, it's probably not for you" |

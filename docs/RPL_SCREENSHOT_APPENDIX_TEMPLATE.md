@@ -33,7 +33,7 @@ Examples:
 
 | No. | Evidence Item | What to Capture | Suggested Filename | Caption Template |
 |---|---|---|---|---|
-| 1 | Running app login flow | Login page + successful authenticated transition | `01_maestro_login_success.png` | `Maestro authentication flow showing successful login to the application.` |
+| 1 | Running app login flow | Login page + successful authenticated transition | `01_maestro_login_success.png` | `RASCALWORKS OS authentication flow showing successful login to the application.` |
 | 2 | Hub/department dashboard | Hub page and one department view | `02_hub_dashboard_live.png` | `Main dashboard and department interface demonstrating implemented web UI workflows.` |
 | 3 | Agent execution result | Agents list + one completed task/result | `03_agents_result_example.png` | `Agent execution output demonstrating practical orchestration and result delivery.` |
 | 4 | API docs | `/apidocs/` rendered page | `04_api_docs_apidocs.png` | `Auto-generated API documentation endpoint available in the deployed/local web app.` |

@@ -1,4 +1,4 @@
-# Maestro-AI CI Pipeline for GitHub Actions
+# Rascalworks OS CI Pipeline for GitHub Actions
 # This workflow runs tests and checks artifact freshness on every push and PR.
 
 name: CI

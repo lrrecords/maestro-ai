@@ -66,7 +66,7 @@ If you have 5 minutes, this is the ideal test flow:
 4) Run one agent workflow (e.g. ATLAS or VINYL)
 5) Reply with: one thing you liked, one thing that was unclear
 
-Important: Maestro is human-first and does not generate music/art; it focuses on operations and workflow support.
+Important: RASCALWORKS OS is human-first and does not generate music/art; it focuses on operations and workflow support.
 
 Thanks for helping shape this with real-world feedback.
 

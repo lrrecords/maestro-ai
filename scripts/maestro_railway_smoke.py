@@ -166,7 +166,7 @@ def run_live_smoke_checks(
 
 
 def format_markdown_report(report: dict[str, Any]) -> str:
-    lines = ["# Maestro Railway Smoke Report", "", "## Test Summary"]
+    lines = ["# RASCALWORKS OS Railway Smoke Report", "", "## Test Summary"]
     lines.append(f"- Base URL: {report.get('base_url', '')}")
     lines.append(f"- Tests attempted: {report.get('tests_attempted', 0)}")
     lines.append(f"- Tests completed: {report.get('tests_completed', 0)}")
@@ -234,8 +234,8 @@ def _write_output(path: str | None, content: str) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Run Maestro live Railway smoke checks.")
-    parser.add_argument("--base-url", required=True, help="Live Maestro deployment URL.")
+    parser = argparse.ArgumentParser(description="Run RASCALWORKS OS live Railway smoke checks.")
+    parser.add_argument("--base-url", required=True, help="Live RASCALWORKS OS deployment URL.")
     parser.add_argument("--login-token", help="Optional login token for authenticated checks.")
     parser.add_argument("--report-file", help="Write the markdown report to this path.")
     parser.add_argument("--prompt-file", help="Write the debug prompt to this path.")

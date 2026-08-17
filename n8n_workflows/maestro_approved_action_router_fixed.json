@@ -1,5 +1,5 @@
 {
- "name": "Maestro Approved Action Router",
+ "name": "RASCALWORKS OS Approved Action Router",
  "nodes": [
   {
    "name": "Webhook — Approved Action",
@@ -94,7 +94,7 @@
     "method": "POST",
     "url": "={{ $env.SLACK_WEBHOOK_URL }}",
     "body": {
-     "text": "✅ Maestro executed: {{ $json.workflow }} for {{ $json.payload.artist }}"
+     "text": "✅ RASCALWORKS OS executed: {{ $json.workflow }} for {{ $json.payload.artist }}"
     },
     "options": {},
     "notes": "Optional — set SLACK_WEBHOOK_URL in n8n env vars"

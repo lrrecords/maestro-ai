@@ -6,25 +6,25 @@
 
 ---
 
-## Why Maestro Exists (and What It’s Not)
+## Why RASCALWORKS OS Exists (and What It’s Not)
 
 In 2026, the music industry is buzzing with questions—and real concerns—about AI’s impact on creativity, connection, and copyright. Many fear that AI tools are here to replace human artistry, automate away the soul of music, or blur the lines of ownership and originality. Products like SUNO and MIDJOURNEY have sparked debate by generating music and art with little or no human input.
 
 **Rascalworks OS is not that.**  
-Maestro was built with a different philosophy: to empower, not replace, the humans at the heart of music. Maestro does not generate music, lyrics, or art. It does not try to mimic or automate the creative spark. Instead, Maestro is designed to give music professionals, artists, and teams more time and bandwidth to do what only humans can—create, connect, and inspire.
+RASCALWORKS OS was built with a different philosophy: to empower, not replace, the humans at the heart of music. RASCALWORKS OS does not generate music, lyrics, or art. It does not try to mimic or automate the creative spark. Instead, RASCALWORKS OS is designed to give music professionals, artists, and teams more time and bandwidth to do what only humans can—create, connect, and inspire.
 
-**What Maestro Does:**  
+**What RASCALWORKS OS Does:**  
 - Automates the admin, business, and operational grind—so you can spend more time making music and less time on paperwork.
 - Handles approvals, scheduling, communications, and workflows, freeing you to focus on your craft and your community.
 - Respects the value of human-to-human connection, collaboration, and creativity.
 
-**What Maestro Will Never Do:**  
+**What RASCALWORKS OS Will Never Do:**  
 - Generate music or art in place of humans.
 - Replace the creative process or the relationships that make music meaningful.
 - Compromise on copyright, ownership, or artistic integrity.
 
-**Maestro is the tool for music professionals who want to protect and amplify human creativity—not automate it away.**  
-By design, Maestro leaves the art to you. It’s here to handle the rest.
+**RASCALWORKS OS is the tool for music professionals who want to protect and amplify human creativity—not automate it away.**  
+By design, RASCALWORKS OS leaves the art to you. It’s here to handle the rest.
 
 ---
 
@@ -61,7 +61,7 @@ That's it. Everything else below is the full plan to execute over the coming wee
 Your existing 10-post series covers: agents intro, CEO Command Centre, live ops, studio ops, open source, before/after, and demo CTA.
 
 **What's missing from the series:** the founder voice, the "why it exists," the behind-the-scenes build journey, and community/UGC hooks.  
-**What’s now essential:** clarity that Maestro is not generative AI, but a tool to protect and empower human creativity.
+**What’s now essential:** clarity that RASCALWORKS OS is not generative AI, but a tool to protect and empower human creativity.
 
 These 8 posts fill those gaps. Interleave them with the existing 10 as you see fit.
 
@@ -118,7 +118,7 @@ I will send your login token separately for security.
 I built Rascalworks OS to run my own label. Here's what happened.
 
 **Body:**
-Running LRRecords meant I was spending more time on admin than on music. Approvals, release checklists, booking, session tracking, artist comms — all of it. I built Rascalworks OS to automate the grind for us first. But Maestro doesn’t make music for you—it gives you back the time to make more of your own. Now we're releasing it so other labels and studios don't have to start from scratch. It's open source. It runs locally. It's built by a label, for labels. This is where we are — and where we're heading.
+Running LRRecords meant I was spending more time on admin than on music. Approvals, release checklists, booking, session tracking, artist comms — all of it. I built Rascalworks OS to automate the grind for us first. But RASCALWORKS OS doesn’t make music for you—it gives you back the time to make more of your own. Now we're releasing it so other labels and studios don't have to start from scratch. It's open source. It runs locally. It's built by a label, for labels. This is where we are — and where we're heading.
 
 **CTA:**
 Follow to watch it being built. Link in bio for the full story.
@@ -133,13 +133,13 @@ Follow to watch it being built. Link in bio for the full story.
 
 ### 2B. BUILD IN PUBLIC — Week 1
 
-![Maestro Dashboard Example](assets/Screenshot%20MAESTRO_Dashboard.jpg)
+![RASCALWORKS OS Dashboard Example](assets/Screenshot%20MAESTRO_Dashboard.jpg)
 
 **Hook:**
 I'm building an AI operating system for music labels. In public. No VC. No roadmap deck. Just code.
 
 **Body:**
-Rascalworks OS is what happens when a label owner gets fed up with bad tools and decides to build their own. Every week I'm shipping new agents, dashboards, and automations — all open source, all built to solve real problems at LRRecords first. This isn’t another AI that tries to write your next song. Maestro handles the business, so you can handle the art. If you're curious about AI, music business, or just like watching real things get built — you're in the right place.
+Rascalworks OS is what happens when a label owner gets fed up with bad tools and decides to build their own. Every week I'm shipping new agents, dashboards, and automations — all open source, all built to solve real problems at LRRecords first. This isn’t another AI that tries to write your next song. RASCALWORKS OS handles the business, so you can handle the art. If you're curious about AI, music business, or just like watching real things get built — you're in the right place.
 
 **CTA:**
 Comment "BUILD" if you want weekly updates on what we're shipping.
@@ -164,7 +164,7 @@ Your label's dream team doesn't need a salary.
 **Slide 6:** BOOK — "Books sessions and tours. No emails required."
 **Slide 7:** SAGE — "Your daily label intelligence brief. Every morning."
 **Slide 8:** "All agents. One dashboard. Your label."
-**Slide 9:** "Maestro agents don’t create music—they create space for you to do it."
+**Slide 9:** "RASCALWORKS OS agents don’t create music—they create space for you to do it."
 
 **CTA:**
 Which agent would save you the most time? Comment below.
@@ -182,7 +182,7 @@ Which agent would save you the most time? Comment below.
 How many hours did admin cost your label last week?
 
 **Body:**
-Let's be honest. The average indie label spends 15–20 hours a week on tasks that have nothing to do with music. Emails, scheduling, chasing invoices, updating spreadsheets, approving content. That's half a working week. Rascalworks OS was built to give those hours back — to your creativity, your artists, and your life outside work. Maestro is about protecting your creative time, not replacing it.
+Let's be honest. The average indie label spends 15–20 hours a week on tasks that have nothing to do with music. Emails, scheduling, chasing invoices, updating spreadsheets, approving content. That's half a working week. Rascalworks OS was built to give those hours back — to your creativity, your artists, and your life outside work. RASCALWORKS OS is about protecting your creative time, not replacing it.
 
 **CTA:**
 What would you do with 10 extra hours a week? Drop it in the comments.
@@ -215,7 +215,7 @@ Star the repo on GitHub → [github.com/lrrecords/maestro-ai]
 Here's what's coming to Rascalworks OS in 2026.
 
 **Body:**
-We're just getting started. On the roadmap: advanced analytics across your entire roster, a plugin API for custom agents, Docker deployment, and multi-label SaaS onboarding. Plus some things we haven't announced yet. We're building this for real labels with real problems — so the roadmap is shaped by what actually matters in the trenches, not what looks good on a slide. And always: Maestro will never generate music or art. It’s here to support the humans who do.
+We're just getting started. On the roadmap: advanced analytics across your entire roster, a plugin API for custom agents, Docker deployment, and multi-label SaaS onboarding. Plus some things we haven't announced yet. We're building this for real labels with real problems — so the roadmap is shaped by what actually matters in the trenches, not what looks good on a slide. And always: RASCALWORKS OS will never generate music or art. It’s here to support the humans who do.
 
 **CTA:**
 What would you build first? Tell us in comments and we'll add it to the list.
@@ -230,7 +230,7 @@ What would you build first? Tell us in comments and we'll add it to the list.
 What's the #1 task killing your creative time?
 
 **Body:**
-We're building new Rascalworks OS agents and we want to solve real problems. If you run a label, studio, or manage artists — what's the one thing you wish was automated? Drop it below. The top answer from this post becomes the next agent we build. Seriously. And don’t worry—Maestro will never touch your creative process, only the admin.
+We're building new Rascalworks OS agents and we want to solve real problems. If you run a label, studio, or manage artists — what's the one thing you wish was automated? Drop it below. The top answer from this post becomes the next agent we build. Seriously. And don’t worry—RASCALWORKS OS will never touch your creative process, only the admin.
 
 **CTA:**
 Comment your biggest time killer. We're reading every reply.
@@ -248,7 +248,7 @@ Comment your biggest time killer. We're reading every reply.
 This week Rascalworks OS saved us [X hours] at LRRecords. Here's exactly what it did.
 
 **Body:**
-[Fill in: specific example. e.g. "SAGE briefed me in 2 minutes on 3 artists who needed attention. VINYL flagged a release checklist item I'd missed. BOOK queued 2 session confirmations that would have taken 30 emails."] That's the real product. Not the demo. The daily unglamorous time-saving that adds up to getting your life back. Maestro didn’t write a song for us—it made sure we had more time to write our own.
+[Fill in: specific example. e.g. "SAGE briefed me in 2 minutes on 3 artists who needed attention. VINYL flagged a release checklist item I'd missed. BOOK queued 2 session confirmations that would have taken 30 emails."] That's the real product. Not the demo. The daily unglamorous time-saving that adds up to getting your life back. RASCALWORKS OS didn’t write a song for us—it made sure we had more time to write our own.
 
 **CTA:**
 Want to see how it works for your label? Link in bio.
@@ -264,7 +264,7 @@ Want to see how it works for your label? Link in bio.
 
 **Subject:** Something we've been building at LRRecords (and why it’s not generative AI)
 
-**Preview text:** Built for music people, not to replace them. Maestro is not generative AI.
+**Preview text:** Built for music people, not to replace them. RASCALWORKS OS is not generative AI.
 
 ---
 
@@ -272,20 +272,20 @@ Hey [first name],
 
 I want to share something we’ve been quietly building at LRRecords — and why it’s different from the AI tools you might be hearing about.
 
-It’s called **Rascalworks OS**. And before anything else: Maestro does *not* generate music, lyrics, or art. It’s not here to replace artists, producers, or the creative process. Maestro is a tool to protect your creative time by automating the admin, business, and operational grind that gets in the way of making music.
+It’s called **Rascalworks OS**. And before anything else: RASCALWORKS OS does *not* generate music, lyrics, or art. It’s not here to replace artists, producers, or the creative process. RASCALWORKS OS is a tool to protect your creative time by automating the admin, business, and operational grind that gets in the way of making music.
 
 Here’s why I built it:
 
 *Why was I spending more time running the label than making music?*
 
-Releases, approvals, session bookings, artist communications, tour planning, invoices — it all piles up. Every hour on admin is an hour not in the studio. Maestro was built to give those hours back to the humans who make the music.
+Releases, approvals, session bookings, artist communications, tour planning, invoices — it all piles up. Every hour on admin is an hour not in the studio. RASCALWORKS OS was built to give those hours back to the humans who make the music.
 
-**What Maestro Does:**
+**What RASCALWORKS OS Does:**
 - Automates the admin, business, and operational grind—so you can spend more time making music and less time on paperwork.
 - Handles approvals, scheduling, communications, and workflows, freeing you to focus on your craft and your community.
 - Respects the value of human-to-human connection, collaboration, and creativity.
 
-**What Maestro Will Never Do:**
+**What RASCALWORKS OS Will Never Do:**
 - Generate music or art in place of humans.
 - Replace the creative process or the relationships that make music meaningful.
 - Compromise on copyright, ownership, or artistic integrity.
@@ -320,7 +320,7 @@ Founder, LRRecords & Rascalworks OS
 
 ---
 
-*P.S. If you know another label owner, studio manager, or artist manager who’s drowning in admin — forward this to them. Maestro was built for exactly that person. And just to be clear: Maestro will never generate music or art. That’s your job.*
+*P.S. If you know another label owner, studio manager, or artist manager who’s drowning in admin — forward this to them. RASCALWORKS OS was built for exactly that person. And just to be clear: RASCALWORKS OS will never generate music or art. That’s your job.*
 
 ---
 
@@ -328,7 +328,7 @@ Founder, LRRecords & Rascalworks OS
 
 **Subject:** What Rascalworks OS actually does (a real example — and what it never will)
 
-**Preview text:** No slides. Just what happened this week at LRRecords. And a reminder: Maestro is not generative AI.
+**Preview text:** No slides. Just what happened this week at LRRecords. And a reminder: RASCALWORKS OS is not generative AI.
 
 ---
 
@@ -340,16 +340,16 @@ A few people replied asking: *"Okay, but what does it actually do day to day?"*
 
 Fair question. Here's a real example from this week:
 
-**Monday morning. I open the Maestro dashboard.**
+**Monday morning. I open the RASCALWORKS OS dashboard.**
 
 SAGE (our intelligence agent) has already run overnight. It surfaces:
 - One artist with a release deadline in 9 days and 3 checklist items still open
 - A session booking request that came in via email — unactioned
 - A content gap: ECHO flagged that one artist hasn't had a social post go out in 11 days
 
-Without Maestro: I'd have found all of this across 4 different spreadsheets, 2 email inboxes, and a Notion page I probably haven't opened in a week.
+Without RASCALWORKS OS: I'd have found all of this across 4 different spreadsheets, 2 email inboxes, and a Notion page I probably haven't opened in a week.
 
-With Maestro: It's all in one place, prioritised, and waiting for my decision. I approve, edit, or push back — and the agents handle the execution.
+With RASCALWORKS OS: It's all in one place, prioritised, and waiting for my decision. I approve, edit, or push back — and the agents handle the execution.
 
 That's the real product. Not the AI hype. Just fewer dropped balls and more time for music.
 
@@ -373,7 +373,7 @@ Brett
 
 Hey [first name],
 
-This month I want to walk you through one of Maestro's agents: **[AGENT NAME]**.
+This month I want to walk you through one of RASCALWORKS OS's agents: **[AGENT NAME]**.
 
 **The problem it solves:**
 [2–3 sentences: what was breaking before this agent existed at LRRecords]
@@ -420,11 +420,11 @@ More soon. 🎵
 
 
 **What it means for you as an artist:**
-We use Rascalworks OS to manage the operational side of your career with us — release planning, session scheduling, analytics tracking, and communications. Maestro does not generate music or art, and never will. It’s not here to replace your creativity or automate the art. Maestro is here to make sure nothing slips through the cracks and you always know what's happening with your project, so you can focus on making music.
+We use Rascalworks OS to manage the operational side of your career with us — release planning, session scheduling, analytics tracking, and communications. RASCALWORKS OS does not generate music or art, and never will. It’s not here to replace your creativity or automate the art. RASCALWORKS OS is here to make sure nothing slips through the cracks and you always know what's happening with your project, so you can focus on making music.
 
 
 **Your data, your control:**
-Maestro runs on our own servers. Your music, your data, and your information stay with us — not on some external cloud platform. Maestro is built to protect your creative work, not to use it for training or generation.
+RASCALWORKS OS runs on our own servers. Your music, your data, and your information stay with us — not on some external cloud platform. RASCALWORKS OS is built to protect your creative work, not to use it for training or generation.
 
 **What you'll notice:**
 - Faster responses on bookings and release questions
@@ -434,7 +434,7 @@ Maestro runs on our own servers. Your music, your data, and your information sta
 
 
 **What doesn't change:**
-Our relationship. Maestro handles the admin so I can focus more on the creative partnership. The art always stays in human hands.
+Our relationship. RASCALWORKS OS handles the admin so I can focus more on the creative partnership. The art always stays in human hands.
 
 **Questions?**
 Any time. Just message or email as usual.
@@ -469,7 +469,7 @@ Rascalworks OS is live and running operations at [LRRecords](https://lrrecords.c
 - Docker deployment to Railway
 - Multi-label SaaS onboarding
 
-If you're running an independent label, studio, or live music organisation and want to try Maestro — star the repo and open an issue. We're actively building from real-world feedback.
+If you're running an independent label, studio, or live music organisation and want to try RASCALWORKS OS — star the repo and open an issue. We're actively building from real-world feedback.
 ```
 
 ---
@@ -479,7 +479,7 @@ If you're running an independent label, studio, or live music organisation and w
 
 **Publish on:** lrrecords.com.au/blog or as a Medium/Substack post
 
-**Title:** Why I built an AI operating system for my music label — and why I open-sourced it (and what Maestro will never do)
+**Title:** Why I built an AI operating system for my music label — and why I open-sourced it (and what RASCALWORKS OS will never do)
 
 ---
 
@@ -493,9 +493,9 @@ I'm Brett, founder of LRRecords, an independent label and studio based in Rockin
 
 **What Rascalworks OS actually is (and what it’s not)**
 
-Rascalworks OS is a multi-agent business operating system. Not a chatbot. Not a productivity plugin. And absolutely not generative AI. Maestro does not generate music, lyrics, or art. It does not try to automate or replace the creative process. Instead, Maestro is a system of specialised AI agents — each one designed for a specific function of a music business — operating under a unified dashboard with a human (you) in the loop for every meaningful decision.
+Rascalworks OS is a multi-agent business operating system. Not a chatbot. Not a productivity plugin. And absolutely not generative AI. RASCALWORKS OS does not generate music, lyrics, or art. It does not try to automate or replace the creative process. Instead, RASCALWORKS OS is a system of specialised AI agents — each one designed for a specific function of a music business — operating under a unified dashboard with a human (you) in the loop for every meaningful decision.
 
-**What Maestro Will Never Do:**
+**What RASCALWORKS OS Will Never Do:**
 - Generate music or art in place of humans
 - Replace the creative process or the relationships that make music meaningful
 - Compromise on copyright, ownership, or artistic integrity
@@ -531,7 +531,7 @@ Here's what's running at LRRecords today:
 
 *Platform Ops:* Model configuration, health monitoring, service management.
 
-Everything runs through a web dashboard. The CEO approval queue means nothing goes out — no email, no post, no financial action — without explicit sign-off. Maestro is built around a human-in-the-loop model: you’re always in control, and the art always stays in human hands.
+Everything runs through a web dashboard. The CEO approval queue means nothing goes out — no email, no post, no financial action — without explicit sign-off. RASCALWORKS OS is built around a human-in-the-loop model: you’re always in control, and the art always stays in human hands.
 
 **Why open source?**
 
@@ -541,7 +541,7 @@ The code is on GitHub: [github.com/lrrecords/maestro-ai](https://github.com/lrre
 
 **Where we're heading**
 
-Maestro v1.4.0 is production-ready. The roadmap for 2026 includes: advanced analytics, a plugin API for custom agents, Docker deployment, and eventually a hosted SaaS option for labels that don't want to self-host.
+RASCALWORKS OS v1.4.0 is production-ready. The roadmap for 2026 includes: advanced analytics, a plugin API for custom agents, Docker deployment, and eventually a hosted SaaS option for labels that don't want to self-host.
 
 But the foundation — autonomous agents, human approval loops, and a dashboard that tells you what matters every morning — that's built and working.
 
@@ -571,7 +571,7 @@ After months of building, I'm ready to talk about what we've been working on at 
 
 The why: running a label means wearing every hat. A&R, ops, finance, marketing, logistics. The admin consumed half our week — time we should have been spending on music and artists.
 
-So we built a system to handle it. And to be clear: Maestro does not generate music or art, and never will. It’s not generative AI. It’s a tool to automate the admin, not the art.
+So we built a system to handle it. And to be clear: RASCALWORKS OS does not generate music or art, and never will. It’s not generative AI. It’s a tool to automate the admin, not the art.
 
 25+ specialised AI agents. A CEO approval queue so nothing goes out unreviewed. Department dashboards for Label, Studio, and Live operations. Runs locally on your own infrastructure — your data stays yours.
 
@@ -609,12 +609,12 @@ I've been building a multi-agent system for the past few months and just hit a s
 
 **What it does:** 25+ specialised agents across 4 business departments (Label, Studio, Live, Platform Ops). CEO approval queue for protected actions. Web dashboard with live agent output streaming. Role-based permissions. Full OpenAPI docs.
 
-**What Maestro Will Never Do:**
+**What RASCALWORKS OS Will Never Do:**
 - Generate music or art
 - Replace the creative process
 - Compromise on copyright or ownership
 
-The agents handle the execution. The humans handle the art and the decisions. Maestro is not generative AI — it’s admin automation for music, not art automation.
+The agents handle the execution. The humans handle the art and the decisions. RASCALWORKS OS is not generative AI — it’s admin automation for music, not art automation.
 
 **The interesting parts architecturally:**
 - Agents are modular CrewAI crews, composable per workflow
@@ -637,7 +637,7 @@ Would love any feedback from folks who've worked with CrewAI at this scale. Spec
 
 I've been building Rascalworks OS — a multi-agent platform for independent music label operations. Just hit v1.4.0 and wanted to share with this community since the architecture might be interesting.
 
-**Why it exists:** I run LRRecords, an independent label in Australia. Admin was consuming 40%+ of our week. Built Maestro to automate it — now open-sourcing so other labels can use it. Maestro does not generate music or art, and never will. It’s not generative AI — it’s admin automation for music businesses.
+**Why it exists:** I run LRRecords, an independent label in Australia. Admin was consuming 40%+ of our week. Built RASCALWORKS OS to automate it — now open-sourcing so other labels can use it. RASCALWORKS OS does not generate music or art, and never will. It’s not generative AI — it’s admin automation for music businesses.
 
 **Tech stack:**
 - Flask + modular blueprints per business department
@@ -652,7 +652,7 @@ I've been building Rascalworks OS — a multi-agent platform for independent mus
 - Hot-swap inference backend: same agent logic, switch between Ollama and Anthropic via env var
 - Stepwise mission runner: multi-step campaigns with instant cancellation at any step
 
-**What Maestro Will Never Do:**
+**What RASCALWORKS OS Will Never Do:**
 - Generate music or art
 - Replace the creative process
 - Compromise on copyright or ownership
@@ -723,7 +723,7 @@ Happy to answer questions about the architecture. Also curious what patterns oth
 
 ---
 
-## 8. MESSAGING HIERARCHY — What Maestro Is, At Every Level
+## 8. MESSAGING HIERARCHY — What RASCALWORKS OS Is, At Every Level
 
 Use these consistently across all channels. Same story, different depth.
 
@@ -732,10 +732,10 @@ Use these consistently across all channels. Same story, different depth.
 > Rascalworks OS is the AI operating system for independent music labels — built to automate admin, not art.
 
 **Two sentences (post caption, quick pitch):**
-> Rascalworks OS automates label, studio, and live music operations with specialised AI agents. It’s not generative AI — Maestro never creates music or art, only frees up your time to do it. Built by LRRecords — runs locally, open source, free.
+> Rascalworks OS automates label, studio, and live music operations with specialised AI agents. It’s not generative AI — RASCALWORKS OS never creates music or art, only frees up your time to do it. Built by LRRecords — runs locally, open source, free.
 
 **One paragraph (email intro, blog opener, LinkedIn):**
-> Rascalworks OS is a multi-agent business operating system built specifically for independent music labels, studios, and live music organisations. It combines 25+ specialised AI agents with a CEO approval queue and department dashboards — automating the admin so music professionals can focus on what matters. Maestro never generates music or art, and never will. Built at LRRecords in Australia, open source, runs on your own infrastructure.
+> Rascalworks OS is a multi-agent business operating system built specifically for independent music labels, studios, and live music organisations. It combines 25+ specialised AI agents with a CEO approval queue and department dashboards — automating the admin so music professionals can focus on what matters. RASCALWORKS OS never generates music or art, and never will. Built at LRRecords in Australia, open source, runs on your own infrastructure.
 
 **Full story (blog post, community forum, detailed pitch):**
 > Use Section 5B above.
@@ -755,7 +755,7 @@ Avoid these — they undermine credibility with music industry and tech audience
 | Overpromising on automation | "Agents handle the execution, you make the decisions" |
 | "We" when it's "I" (you're solo) | Be honest — "I built this at LRRecords" |
 
-The human-in-the-loop approval model is your biggest differentiator. Lead with it. It's what separates Maestro from "AI just doing stuff."
+The human-in-the-loop approval model is your biggest differentiator. Lead with it. It's what separates RASCALWORKS OS from "AI just doing stuff."
 
 ---
 
@@ -778,7 +778,7 @@ Current support includes:
 - OpenAI-compatible endpoints
 - LiteLLM routing
 
-Maestro is still focused on music-business operations, not generative art/music:
+RASCALWORKS OS is still focused on music-business operations, not generative art/music:
 - Multi-agent orchestration for Label, Studio, Live, and Platform Ops
 - Human approval queue for protected actions
 - Redis-backed job/mission persistence
@@ -799,7 +799,7 @@ Repo: https://github.com/lrrecords/maestro-ai
 
 After recent updates to Rascalworks OS, one of the biggest improvements is now live: flexible LLM provider routing.
 
-Maestro can now run the same operational agent workflows across:
+RASCALWORKS OS can now run the same operational agent workflows across:
 - Ollama (local/private)
 - Anthropic
 - OpenAI/ChatGPT
@@ -810,7 +810,7 @@ Maestro can now run the same operational agent workflows across:
 
 This mattered to us because every label, studio, or ops team has different requirements around cost, latency, privacy, and deployment model.
 
-Maestro remains purpose-built for music operations and human-in-the-loop execution:
+RASCALWORKS OS remains purpose-built for music operations and human-in-the-loop execution:
 - It automates admin and workflow load
 - It does not generate music or art
 - It keeps decisions and creative control with people
@@ -829,11 +829,11 @@ Quick founder update from LRRecords.
 
 I built Rascalworks OS because label admin was taking too much time away from music.
 
-This week we shipped a major upgrade: flexible LLM routing. Maestro now supports Ollama, Anthropic, OpenAI/ChatGPT, DeepSeek, Gemini, OpenAI-compatible endpoints, and LiteLLM.
+This week we shipped a major upgrade: flexible LLM routing. RASCALWORKS OS now supports Ollama, Anthropic, OpenAI/ChatGPT, DeepSeek, Gemini, OpenAI-compatible endpoints, and LiteLLM.
 
 The goal is simple: one multi-agent operating layer, with freedom to choose the inference backend that fits your workflow, budget, and privacy needs.
 
-Maestro still does what it was built for: automate admin, not art. It does not generate music or replace creative work.
+RASCALWORKS OS still does what it was built for: automate admin, not art. It does not generate music or replace creative work.
 
 If you're an indie label, studio, or live ops team and want early access feedback loops, I'd love to connect.
 
@@ -868,14 +868,14 @@ Repo: https://github.com/lrrecords/maestro-ai
 
 We've just updated Rascalworks OS with more flexibility behind the scenes so labels and studios can choose how they run it.
 
-In plain terms: Maestro now works with multiple AI providers, while keeping the same workflow system for release planning, artist comms, scheduling, and operations.
+In plain terms: RASCALWORKS OS now works with multiple AI providers, while keeping the same workflow system for release planning, artist comms, scheduling, and operations.
 
 What has not changed:
-- Maestro does not create music or art
+- RASCALWORKS OS does not create music or art
 - your team remains in control of decisions
 - the platform is built to give you more time for creativity, not replace it
 
-If you run an independent label or studio and admin is eating your week, this is exactly what Maestro is built for.
+If you run an independent label or studio and admin is eating your week, this is exactly what RASCALWORKS OS is built for.
 
 Learn more: https://github.com/lrrecords/maestro-ai
 

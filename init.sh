@@ -1,5 +1,5 @@
 #!/bin/bash
-# Maestro-AI startup script: installs dependencies, verifies baseline, prints start command
+# Rascalworks OS startup script: installs dependencies, verifies baseline, prints start command
 
 # === EDIT THESE VARIABLES FOR YOUR PROJECT ===
 INSTALL_CMD="pip install -r requirements.txt"

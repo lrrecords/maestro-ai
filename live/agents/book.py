@@ -66,7 +66,7 @@ class BookAgent(BaseAgent):
 
         # LLM recommendations (Ollama/Anthropic via core.llm_client)
         prompt = f"""
-You are MAESTRO BOOK, a live music booking agent.
+You are RASCALWORKS OS BOOK, a live music booking agent.
 
 Return JSON only with keys:
 - recommendations: array of 4-8 actionable bullets

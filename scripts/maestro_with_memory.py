@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum
 
 class AgentType(Enum):
-    MAESTRO = "maestro"
+    RASCALWORKS_OS = "RASCALWORKS OS"
     BRIDGE = "bridge"
     VINYL = "vinyl"
     ECHO = "echo"
@@ -44,7 +44,7 @@ Reference actual data. Give next steps. Celebrate progress."""
         
         return response['message']['content']
 
-class MaestroCore:
+class RascalworksOSCore:
     def __init__(self):
         self.context = self._load_context()
         self.brett_profile = self._load_brett_profile()
@@ -136,10 +136,10 @@ class MaestroCore:
         relevant_agents = self.route_task(user_message)
         context_str = json.dumps(self.context, indent=2)
         
-        if len(relevant_agents) > 0 and AgentType.MAESTRO not in relevant_agents:
+        if len(relevant_agents) > 0 and AgentType.RASCALWORKS_OS not in relevant_agents:
             responses = {}
             for agent_type in relevant_agents:
-                if agent_type != AgentType.MAESTRO:
+                if agent_type != AgentType.RASCALWORKS_OS:
                     agent = self.agents[agent_type]
                     response = agent.process(user_message, context_str)
                     responses[agent_type.value] = response
@@ -153,13 +153,13 @@ class MaestroCore:
         if 'briefing' in user_message.lower() or 'morning' in user_message.lower():
             return self._morning_briefing()
         
-        return self._maestro_response(user_message)
+        return self._rascalworks_os_response(user_message)
     
     def _morning_briefing(self):
         """Generate morning briefing"""
         context_str = json.dumps(self.context, indent=2)
         
-        briefing = "🎵 MAESTRO MORNING BRIEFING\n"
+        briefing = "🎵 RASCALWORKS OS MORNING BRIEFING\n"
         briefing += f"📅 {datetime.now().strftime('%A, %B %d, %Y')}\n"
         briefing += "=" * 70 + "\n\n"
         
@@ -180,14 +180,14 @@ class MaestroCore:
         briefing += "=" * 70
         return briefing
     
-    def _maestro_response(self, message):
-        """MAESTRO's direct response"""
+    def _rascalworks_os_response(self, message):
+        """RASCALWORKS OS's direct response"""
         context_str = json.dumps(self.context, indent=2)
         
         response = ollama.chat(
             model='llama3.1:8b',
             messages=[
-                {"role": "system", "content": f"""You are MAESTRO, Brett's AI business partner for LRRecords.
+                {"role": "system", "content": f"""You are RASCALWORKS OS, Brett's AI business partner for LRRecords.
 
 BRETT'S PROFILE:
 {self.brett_profile}
@@ -216,7 +216,7 @@ Team responses:
         response = ollama.chat(
             model='llama3.1:8b',
             messages=[
-                {"role": "system", "content": "You are MAESTRO synthesizing for Brett."},
+                {"role": "system", "content": "You are RASCALWORKS OS synthesizing for Brett."},
                 {"role": "user", "content": synthesis_prompt}
             ]
         )
@@ -225,29 +225,29 @@ Team responses:
 
 def main():
     print("=" * 70)
-    print("🎵 MAESTRO v0.5 - Memory-Enhanced Business OS")
+    print("🎵 RASCALWORKS OS v0.5 - Memory-Enhanced Business OS")
     print("=" * 70)
     
-    maestro = MaestroCore()
+    rascalworks_os = RascalworksOSCore()
     
     print("\n📊 LRRECORDS STATUS")
-    print(f"Artists: {len(maestro.context.get('artists', []))}")
-    print(f"Upcoming Releases: {len(maestro.context.get('upcoming_releases', []))}")
-    print(f"Communication Profile: {'✅ Loaded' if 'brett' in maestro.brett_profile.lower() else '⚠️ Using default'}")
+    print(f"Artists: {len(rascalworks_os.context.get('artists', []))}")
+    print(f"Upcoming Releases: {len(rascalworks_os.context.get('upcoming_releases', []))}")
+    print(f"Communication Profile: {'✅ Loaded' if 'brett' in rascalworks_os.brett_profile.lower() else '⚠️ Using default'}")
     
-    print("\n💡 MAESTRO now understands your communication style!")
+    print("\n💡 RASCALWORKS OS now understands your communication style!")
     print("Type 'exit' to end\n")
     
     while True:
         user_input = input("Brett: ")
         
         if user_input.lower() in ['exit', 'quit', 'bye']:
-            print("\n🎵 MAESTRO: Talk tomorrow, Brett!")
+            print("\n🎵 RASCALWORKS OS: Talk tomorrow, Brett!")
             break
         
         print("\n⏳ Processing...\n")
-        response = maestro.process_message(user_input)
-        print(f"🎵 MAESTRO:\n{response}\n")
+        response = rascalworks_os.process_message(user_input)
+        print(f"🎵 RASCALWORKS OS:\n{response}\n")
         print("-" * 70 + "\n")
 
 if __name__ == "__main__":

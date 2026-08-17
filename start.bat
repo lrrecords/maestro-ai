@@ -1,6 +1,6 @@
 @echo off
 echo =============================
-echo   MAESTRO Service Launcher
+echo   RASCALWORKS OS Service Launcher
 echo =============================
 echo 1. Start Dashboard (dashboard/app.py)
 echo 2. Start Webhook Server (scripts/webhook_server.py)

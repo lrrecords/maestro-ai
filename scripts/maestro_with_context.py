@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum
 
 class AgentType(Enum):
-    MAESTRO = "maestro"
+    RASCALWORKS_OS = "RASCALWORKS OS"
     BRIDGE = "bridge"
     VINYL = "vinyl"
     ECHO = "echo"
@@ -40,7 +40,7 @@ Be specific and reference actual artists, projects, and metrics when relevant.""
         
         return response['message']['content']
 
-class MaestroCore:
+class RascalworksOSCore:
     def __init__(self):
         self.agents = self._initialize_agents()
         self.context = self._load_context()
@@ -117,10 +117,10 @@ class MaestroCore:
         relevant_agents = self.route_task(user_message)
         context_str = json.dumps(self.context, indent=2)
         
-        if len(relevant_agents) > 0 and AgentType.MAESTRO not in relevant_agents:
+        if len(relevant_agents) > 0 and AgentType.RASCALWORKS_OS not in relevant_agents:
             responses = {}
             for agent_type in relevant_agents:
-                if agent_type != AgentType.MAESTRO:
+                if agent_type != AgentType.RASCALWORKS_OS:
                     agent = self.agents[agent_type]
                     response = agent.process(user_message, context_str)
                     responses[agent_type.value] = response
@@ -134,13 +134,13 @@ class MaestroCore:
         if 'briefing' in user_message.lower() or 'morning' in user_message.lower():
             return self._morning_briefing()
         
-        return self._maestro_response(user_message)
+        return self._rascalworks_os_response(user_message)
     
     def _morning_briefing(self):
         """Generate morning briefing from all agents"""
         context_str = json.dumps(self.context, indent=2)
         
-        briefing = "🎵 MAESTRO MORNING BRIEFING\n"
+        briefing = "🎵 RASCALWORKS OS MORNING BRIEFING\n"
         briefing += f"📅 {datetime.now().strftime('%A, %B %d, %Y')}\n"
         briefing += "=" * 70 + "\n\n"
         
@@ -161,14 +161,14 @@ class MaestroCore:
         briefing += "=" * 70
         return briefing
     
-    def _maestro_response(self, message):
-        """MAESTRO's direct response"""
+    def _rascalworks_os_response(self, message):
+        """RASCALWORKS OS's direct response"""
         context_str = json.dumps(self.context, indent=2)
         
         response = ollama.chat(
             model='llama3.1:8b',
             messages=[
-                {"role": "system", "content": f"""You are MAESTRO, the central AI business partner for LR Records.
+                {"role": "system", "content": f"""You are RASCALWORKS OS, the central AI business partner for LR Records.
 
 BUSINESS CONTEXT:
 {context_str}
@@ -180,7 +180,7 @@ You orchestrate specialist agents and provide strategic guidance based on real d
         return response['message']['content']
     
     def _synthesize_responses(self, original_message, agent_responses):
-        """MAESTRO combines multiple agent inputs"""
+        """RASCALWORKS OS combines multiple agent inputs"""
         synthesis_prompt = f"""User asked: "{original_message}"
 
 Team responses:
@@ -194,7 +194,7 @@ Team responses:
         response = ollama.chat(
             model='llama3.1:8b',
             messages=[
-                {"role": "system", "content": "You are MAESTRO, synthesizing team input."},
+                {"role": "system", "content": "You are RASCALWORKS OS, synthesizing team input."},
                 {"role": "user", "content": synthesis_prompt}
             ]
         )
@@ -203,19 +203,19 @@ Team responses:
 
 def main():
     print("=" * 70)
-    print("🎵 MAESTRO v0.4 - Personalized Business Operating System")
+    print("🎵 RASCALWORKS OS v0.4 - Personalized Business Operating System")
     print("=" * 70)
     
-    maestro = MaestroCore()
+    rascalworks_os = RascalworksOSCore()
     
     # Show quick stats from real data
     print("\n📊 LR RECORDS OVERVIEW")
-    print(f"Label: {maestro.context.get('label_info', {}).get('name', 'LR Records')}")
-    print(f"Artists: {len(maestro.context.get('artists', []))}")
-    print(f"Upcoming Releases: {len(maestro.context.get('upcoming_releases', []))}")
+    print(f"Label: {rascalworks_os.context.get('label_info', {}).get('name', 'LR Records')}")
+    print(f"Artists: {len(rascalworks_os.context.get('artists', []))}")
+    print(f"Upcoming Releases: {len(rascalworks_os.context.get('upcoming_releases', []))}")
     
     print("\n👥 Active Agents:")
-    print("  • MAESTRO - Orchestration & Strategy")
+    print("  • RASCALWORKS OS - Orchestration & Strategy")
     print("  • BRIDGE - Artist Relations & A&R")
     print("  • VINYL - Music Operations & Distribution")
     print("  • ECHO - Content & Marketing")
@@ -230,12 +230,12 @@ def main():
         user_input = input("You: ")
         
         if user_input.lower() in ['exit', 'quit', 'bye']:
-            print("\n🎵 MAESTRO: All agents standing by. Talk tomorrow!")
+            print("\n🎵 RASCALWORKS OS: All agents standing by. Talk tomorrow!")
             break
         
         print("\n⏳ Processing...\n")
-        response = maestro.process_message(user_input)
-        print(f"🎵 MAESTRO:\n{response}\n")
+        response = rascalworks_os.process_message(user_input)
+        print(f"🎵 RASCALWORKS OS:\n{response}\n")
         print("-" * 70 + "\n")
 
 if __name__ == "__main__":

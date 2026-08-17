@@ -1,5 +1,5 @@
 # start_maestro_session.ps1
-# This script runs the Rascalworks OS session checklist, opens the dashboard in Brave, and launches FORGE (Open Interpreter with maestro profile).
+# This script runs the Rascalworks OS session checklist, opens the dashboard in Brave, and launches FORGE (Open Interpreter with RASCALWORKS OS profile).
 
 # 1. Run the session checklist
 Write-Host "Running session checklist..."
@@ -14,7 +14,7 @@ $braveFound = $false
 foreach ($path in $bravePaths) {
     if (Test-Path $path) {
         Start-Process -FilePath $path -ArgumentList 'http://127.0.0.1:8080'
-        Write-Host "Opened Maestro-AI dashboard in Brave browser."
+        Write-Host "Opened Rascalworks OS dashboard in Brave browser."
         $braveFound = $true
         break
     }
@@ -26,5 +26,5 @@ if (-not $braveFound) {
 # 3. Wait for user confirmation before launching FORGE
 Read-Host "Press Enter to launch FORGE (Open Interpreter)..."
 
-# 4. Launch FORGE (Open Interpreter with maestro profile, local Ollama)
-Start-Process "D:\oi-env\Scripts\interpreter.exe" -ArgumentList "--profile maestro --local"
+# 4. Launch FORGE (Open Interpreter with RASCALWORKS OS profile, local Ollama)
+Start-Process "D:\oi-env\Scripts\interpreter.exe" -ArgumentList "--profile RASCALWORKS OS --local"

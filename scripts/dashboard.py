@@ -80,7 +80,7 @@ def print_dashboard():
         print(f"{name:<25} {score_str:<20} {trend:<10} {status}")
 
     print(f"\n{'-'*60}")
-    print(f"Run {Fore.CYAN}python scripts/maestro.py checkin \"Name\"{Style.RESET_ALL} to draft emails.")
+    print(f"Run {Fore.CYAN}python scripts/RASCALWORKS OS.py checkin \"Name\"{Style.RESET_ALL} to draft emails.")
     print(f"{'='*60}\n")
 
 if __name__ == "__main__":

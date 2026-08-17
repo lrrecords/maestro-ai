@@ -27,14 +27,14 @@ class JobStore:
 
     def add_job(self, job_id, job_data):
         if USE_REDIS:
-            _redis.set(f"maestro:job:{job_id}", json.dumps(job_data))
-            _redis.sadd("maestro:jobs", job_id)
+            _redis.set(f"RASCALWORKS OS:job:{job_id}", json.dumps(job_data))
+            _redis.sadd("RASCALWORKS OS:jobs", job_id)
         else:
             self._jobs[job_id] = job_data
 
     def get_job(self, job_id):
         if USE_REDIS:
-            data = _redis.get(f"maestro:job:{job_id}")
+            data = _redis.get(f"RASCALWORKS OS:job:{job_id}")
             if data:
                 return json.loads(data)
             return None
@@ -42,10 +42,10 @@ class JobStore:
 
     def all_jobs(self):
         if USE_REDIS:
-            job_ids = list(_redis.smembers("maestro:jobs"))
+            job_ids = list(_redis.smembers("RASCALWORKS OS:jobs"))
             jobs = []
             for job_id in job_ids:
-                data = _redis.get(f"maestro:job:{job_id}")
+                data = _redis.get(f"RASCALWORKS OS:job:{job_id}")
                 if data:
                     jobs.append(json.loads(data))
             return jobs
@@ -53,8 +53,8 @@ class JobStore:
 
     def delete_job(self, job_id):
         if USE_REDIS:
-            _redis.delete(f"maestro:job:{job_id}")
-            _redis.srem("maestro:jobs", job_id)
+            _redis.delete(f"RASCALWORKS OS:job:{job_id}")
+            _redis.srem("RASCALWORKS OS:jobs", job_id)
         else:
             self._jobs.pop(job_id, None)
 

@@ -447,12 +447,12 @@ Commands:
   full    "Artist Name"      VINYL > ECHO > ATLAS > FORGE > SAGE
 
 Examples:
-  python scripts\\maestro.py report
-  python scripts\\maestro.py artists
-  python scripts\\maestro.py bridge "Brendananis Monster"
-  python scripts\\maestro.py full "Brendananis Monster"
-  python scripts\\maestro.py sage --all
-  python scripts\\maestro.py bridge --all
+  python scripts\\RASCALWORKS OS.py report
+  python scripts\\RASCALWORKS OS.py artists
+  python scripts\\RASCALWORKS OS.py bridge "Brendananis Monster"
+  python scripts\\RASCALWORKS OS.py full "Brendananis Monster"
+  python scripts\\RASCALWORKS OS.py sage --all
+  python scripts\\RASCALWORKS OS.py bridge --all
 """
 
 
@@ -512,7 +512,7 @@ def main():
     # ── all other commands need an artist name ─────────────────────────────────
     if not has_arg:
         print(f"\n  WARNING: '{command}' requires an artist name.")
-        print(f'  Example: python scripts\\maestro.py {command} "Brendananis Monster"\n')
+        print(f'  Example: python scripts\\RASCALWORKS OS.py {command} "Brendananis Monster"\n')
         return
 
     print(f"\n  Loading: {arg}")
@@ -520,7 +520,7 @@ def main():
 
     if not result:
         print(f"\n  ERROR: Artist '{arg}' not found.")
-        print("  Run: python scripts\\maestro.py artists\n")
+        print("  Run: python scripts\\RASCALWORKS OS.py artists\n")
         return
 
     artist_data, slug = result
@@ -555,7 +555,7 @@ def main():
         run_id  = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         divider = "-" * 52
 
-        print(f"\n  MAESTRO - Full Pipeline - {name}")
+        print(f"\n  RASCALWORKS OS - Full Pipeline - {name}")
         print(f"  {divider}")
         print(f"  Order: VINYL > ECHO > ATLAS > FORGE > SAGE")
         print(f"  Tip: run bridge \"{name}\" first for richer output")

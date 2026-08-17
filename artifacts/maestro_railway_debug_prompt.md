@@ -7,7 +7,7 @@ Non-negotiable constraints:
 
 Use this live smoke report as ground truth:
 
-# Maestro Railway Smoke Report
+# RASCALWORKS OS Railway Smoke Report
 
 ## Test Summary
 - Base URL: https://maestro-ai.up.railway.app

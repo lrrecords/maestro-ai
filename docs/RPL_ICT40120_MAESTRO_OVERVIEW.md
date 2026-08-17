@@ -217,7 +217,7 @@ Security capabilities I implemented and validated:
 
 The table below shows likely relevance. Final evidence sufficiency is determined by your assessor and your personal contribution scope.
 
-| Unit | Relevance in Maestro | Suggested Evidence |
+| Unit | Relevance in RASCALWORKS OS | Suggested Evidence |
 |---|---|---|
 | ICTICT426 Identify and evaluate emerging technologies and practices | Evaluated and integrated multi-provider LLM routing and local-first vs cloud options | `core/llm_client.py`, release notes, architecture notes |
 | ICTPRG302 Apply introductory programming techniques | Python scripting, functions, control flow, data structures in Flask/agent code | `dashboard/app.py`, `core/base_agent.py`, commit history |
@@ -241,7 +241,7 @@ The table below shows likely relevance. Final evidence sufficiency is determined
 | ICTCLD401 Configure cloud services | Environment configuration, cloud deployment settings, token/secret management | Railway/deploy docs, `.env.example`, runbooks |
 
 Note on SQL/relational units:
-- Maestro is strong in web app architecture, deployment, and operations.
+- RASCALWORKS OS is strong in web app architecture, deployment, and operations.
 - SQL/relational-specific units may require supplementary evidence beyond this repository.
 
 Supplementary evidence plan:

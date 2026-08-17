@@ -8,26 +8,26 @@ Owner: Brett
 
 ## Launch Objective
 
-Ship a clear Maestro website presence without overbuilding.
+Ship a clear RASCALWORKS OS website presence without overbuilding.
 
 Success =
-- Maestro card appears in homepage services section
-- Card links to `/maestro`
-- `/maestro` explains what Maestro is and is not
-- `/maestro` includes GitHub CTA + Contact CTA
+- RASCALWORKS OS card appears in homepage services section
+- Card links to `/RASCALWORKS OS`
+- `/RASCALWORKS OS` explains what RASCALWORKS OS is and is not
+- `/RASCALWORKS OS` includes GitHub CTA + Contact CTA
 
 ---
 
 ## Phase 1: Core Launch (Do This First)
 
 ### A) Homepage services card
-- [ ] Add Maestro card/column to `/#services`
+- [ ] Add RASCALWORKS OS card/column to `/#services`
 - [ ] Use one approved description from `docs/EASYFUNNELS_PAGE_COPY_TEMPLATES.md`
-- [ ] Set button text (See Maestro / How Maestro Works / Visit Maestro Hub)
-- [ ] Set button URL to `https://lrrecords.com.au/maestro`
+- [ ] Set button text (See RASCALWORKS OS / How RASCALWORKS OS Works / Visit RASCALWORKS OS Hub)
+- [ ] Set button URL to `https://lrrecords.com.au/RASCALWORKS OS`
 - [ ] Check visual consistency with adjacent service cards
 
-### B) Maestro hub page (`/maestro`)
+### B) RASCALWORKS OS hub page (`/RASCALWORKS OS`)
 - [ ] Create page with compact template from `docs/EASYFUNNELS_PAGE_COPY_TEMPLATES.md`
 - [ ] Include these sections:
   - [ ] Hero
@@ -42,20 +42,20 @@ Success =
 
 ### C) Publish and verify
 - [ ] Publish homepage changes
-- [ ] Publish `/maestro`
+- [ ] Publish `/RASCALWORKS OS`
 - [ ] Test on desktop + mobile
 - [ ] Verify no broken links
-- [ ] Confirm copy includes: "Maestro does not generate music or art"
+- [ ] Confirm copy includes: "RASCALWORKS OS does not generate music or art"
 
 ---
 
 ## Go-Live Acceptance Criteria
 
-- [ ] Homepage services shows Maestro card
-- [ ] Maestro card CTA opens `/maestro`
-- [ ] `/maestro` page is public and readable
-- [ ] GitHub CTA works from `/maestro`
-- [ ] Contact CTA works from `/maestro`
+- [ ] Homepage services shows RASCALWORKS OS card
+- [ ] RASCALWORKS OS card CTA opens `/RASCALWORKS OS`
+- [ ] `/RASCALWORKS OS` page is public and readable
+- [ ] GitHub CTA works from `/RASCALWORKS OS`
+- [ ] Contact CTA works from `/RASCALWORKS OS`
 - [ ] Mobile layout is acceptable
 
 If all boxes are checked, launch is complete.
@@ -66,29 +66,29 @@ If all boxes are checked, launch is complete.
 
 ### Content/Trust
 - [ ] Create `/resources/maestro-faq`
-- [ ] Add Maestro mention on About page
-- [ ] Add footer link to `/maestro`
+- [ ] Add RASCALWORKS OS mention on About page
+- [ ] Add footer link to `/RASCALWORKS OS`
 
 ### Content Engine
 - [ ] Publish "Why We Built Rascalworks OS" blog post
-- [ ] Use SCRIBE to automate future Maestro posts
-- [ ] Add monthly Maestro update cadence
+- [ ] Use SCRIBE to automate future RASCALWORKS OS posts
+- [ ] Add monthly RASCALWORKS OS update cadence
 
 ### Technical Automation
-- [ ] Validate EasyFunnels -> Maestro inbound webhooks (CRM/order/appointment)
+- [ ] Validate EasyFunnels -> RASCALWORKS OS inbound webhooks (CRM/order/appointment)
 - [ ] Validate n8n social dispatch from approved actions
-- [ ] Add GA4 event tracking for Maestro CTAs
+- [ ] Add GA4 event tracking for RASCALWORKS OS CTAs
 
 ---
 
 ## 30-Day Metrics (Simple)
 
-- [ ] `/maestro` page views tracked
+- [ ] `/RASCALWORKS OS` page views tracked
 - [ ] GitHub CTA clicks tracked (manual or analytics)
-- [ ] Contact inquiries mentioning Maestro tracked
+- [ ] Contact inquiries mentioning RASCALWORKS OS tracked
 
 Targets (starter):
-- 100+ views on `/maestro`
+- 100+ views on `/RASCALWORKS OS`
 - 20+ GitHub referrals
 - 5+ direct inquiries
 

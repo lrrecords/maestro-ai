@@ -1,5 +1,5 @@
 """
-MAESTRO Response Tracker
+RASCALWORKS OS Response Tracker
 Logs artist responses and analyzes them for follow-up actions
 """
 
@@ -119,7 +119,7 @@ def log_response(artist, artist_file, channel, response_text, analysis):
     print(f"\n✅ Response logged to {artist_file.name}")
 
 def main():
-    print("🎵 MAESTRO Response Tracker")
+    print("🎵 RASCALWORKS OS Response Tracker")
     print("=" * 70)
     
     # Load artists

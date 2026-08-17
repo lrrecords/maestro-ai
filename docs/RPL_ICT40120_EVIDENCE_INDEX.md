@@ -63,7 +63,7 @@ Template support:
 - Use `docs/RPL_SCREENSHOT_APPENDIX_TEMPLATE.md` for filename conventions, caption text, and assessor-ready packaging.
 
 - [x] Running app login page and successful login flow.
-  → `docs/assets/MAESTRO Login.jpg`
+  → `docs/assets/RASCALWORKS OS Login.jpg`
 
 - [x] Hub page and at least one department dashboard.
   → `docs/screenshots/Hub.png`

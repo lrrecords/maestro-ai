@@ -1,5 +1,5 @@
 {
-  "name": "EasyFunnels Appointment → Maestro SESSION",
+  "name": "EasyFunnels Appointment → RASCALWORKS OS SESSION",
   "nodes": [
     {
       "name": "Webhook — Appointment Booked",
@@ -12,7 +12,7 @@
       "position": [250, 300]
     },
     {
-      "name": "HTTP Request — Create Maestro Session",
+      "name": "HTTP Request — Create RASCALWORKS OS Session",
       "type": "n8n-nodes-base.httpRequest",
       "parameters": {
         "method": "POST",
@@ -24,7 +24,7 @@
   ],
   "connections": {
     "Webhook — Appointment Booked": {
-      "main": [[ { "node": "HTTP Request — Create Maestro Session", "type": "main", "index": 0 } ]]
+      "main": [[ { "node": "HTTP Request — Create RASCALWORKS OS Session", "type": "main", "index": 0 } ]]
     }
   }
 }

@@ -29,7 +29,7 @@ def parse_list_field(value, delimiter=";"):
 
 
 def create_artist_profile(row):
-    """Convert a CSV row dict into a full MAESTRO artist JSON profile"""
+    """Convert a CSV row dict into a full RASCALWORKS OS artist JSON profile"""
     name = row.get("name", "").strip()
 
     profile = {
@@ -117,7 +117,7 @@ def import_from_csv(csv_path):
         reader = csv.DictReader(f)
         rows = list(reader)
 
-    print(f"\n🎵 MAESTRO Artist Import")
+    print(f"\n🎵 RASCALWORKS OS Artist Import")
     print(f"   Found {len(rows)} rows in CSV...\n")
 
     for i, row in enumerate(rows, 1):
@@ -168,7 +168,7 @@ def list_artists():
         return
 
     files = [f for f in os.listdir(ARTISTS_DIR) if f.endswith(".json")]
-    print(f"\n🎵 {len(files)} artists in MAESTRO:\n")
+    print(f"\n🎵 {len(files)} artists in RASCALWORKS OS:\n")
 
     for fname in sorted(files):
         fpath = os.path.join(ARTISTS_DIR, fname)
@@ -191,7 +191,7 @@ def list_artists():
 # ─── CLI Entry Point ───────────────────────────────────────────────────────────
 
 USAGE = """
-MAESTRO Artist Population Tool
+RASCALWORKS OS Artist Population Tool
 ===============================
 Commands:
   python scripts/populate_artists.py template              → Generate blank CSV template

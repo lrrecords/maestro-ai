@@ -20,14 +20,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from llm.client import call_llm, get_provider
 
-TEST_PROMPT = 'Return this exact JSON and nothing else: {"status": "ok", "agent": "MAESTRO"}'
+TEST_PROMPT = 'Return this exact JSON and nothing else: {"status": "ok", "agent": "RASCALWORKS OS"}'
 
 
 def main():
     provider = get_provider()
 
     print("=" * 60)
-    print("🎵 MAESTRO — LLM Provider Connectivity Check")
+    print("🎵 RASCALWORKS OS — LLM Provider Connectivity Check")
     print("=" * 60)
     print(f"  Provider : {provider.upper()}")
 
@@ -56,7 +56,7 @@ def main():
     print(f"    {response.strip()}")
     print()
     print("=" * 60)
-    print(f"🎉  {provider.upper()} is working — MAESTRO is ready!")
+    print(f"🎉  {provider.upper()} is working — RASCALWORKS OS is ready!")
     print("=" * 60)
 
 

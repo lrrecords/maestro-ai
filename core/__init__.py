@@ -1,1 +1,1 @@
-"""MAESTRO shared core package."""
+"""RASCALWORKS OS shared core package."""

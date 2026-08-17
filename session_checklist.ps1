@@ -37,14 +37,14 @@ if (Test-Path $releasesFile) {
 }
 
 
-# Open Maestro-AI dashboard in Brave browser
+# Open Rascalworks OS dashboard in Brave browser
 $bravePath = "$Env:ProgramFiles\BraveSoftware\Brave-Browser\Application\brave.exe"
 if (-Not (Test-Path $bravePath)) {
     $bravePath = "$Env:ProgramFiles(x86)\BraveSoftware\Brave-Browser\Application\brave.exe"
 }
 if (Test-Path $bravePath) {
     Start-Process -FilePath $bravePath -ArgumentList 'http://127.0.0.1:8080'
-    Write-Host "Opened Maestro-AI dashboard in Brave browser."
+    Write-Host "Opened Rascalworks OS dashboard in Brave browser."
 } else {
     Write-Host "Brave browser not found. Please open http://127.0.0.1:8080 manually."
 }

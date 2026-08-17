@@ -18,7 +18,7 @@ def _webhook_authorized() -> bool:
         return True
     return header_secret == secret
 
-# ── Inbound: EasyFunnels → n8n → Maestro ──────────────────────────────────────
+# ── Inbound: EasyFunnels → n8n → RASCALWORKS OS ──────────────────────────────────────
 
 @app.route("/webhook/easyfunnels/crm-update", methods=["POST"])
 def ef_crm_update():
@@ -76,7 +76,7 @@ def handle_approved_action():
     # n8n handles the actual EasyFunnels API call after receiving this
     return jsonify({"executing": workflow, "payload": payload})
 
-# ── Outbound helper: Maestro → n8n ────────────────────────────────────────────
+# ── Outbound helper: RASCALWORKS OS → n8n ────────────────────────────────────────────
 def trigger_n8n_workflow(workflow_name: str, payload: dict) -> dict:
     """Fire an n8n workflow by name. Returns n8n response."""
     n8n_base = os.getenv("N8N_BASE_URL", "http://localhost:5678")

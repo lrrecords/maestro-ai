@@ -27,14 +27,14 @@ Future candidates may include:
 ## Principles
 
 - No production dependency: evals do not affect Flask app startup, routing, or deployment.
-- Sidecar only: eval code lives under `evals/` and calls existing Maestro agent code through thin runners.
+- Sidecar only: eval code lives under `evals/` and calls existing RASCALWORKS OS agent code through thin runners.
 - Small, curated fixtures first: start with a stable hand-written eval set before expanding.
 - Deterministic checks before judge models: schema and policy checks should run before LLM-based scoring.
 
 ## Layout
 
 - `fixtures/` — eval inputs and schemas
-- `runners/` — scripts that invoke existing Maestro agent methods
+- `runners/` — scripts that invoke existing RASCALWORKS OS agent methods
 - `judges/` — scoring and rule-based evaluation logic
 - `results/` — generated eval artifacts
 

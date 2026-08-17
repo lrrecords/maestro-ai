@@ -36,7 +36,7 @@ Success criteria:
 ## Day 3 - Social proof and educational content
 
 - Post one "build in public" update with a real screenshot.
-- Post one short explanation: "what Maestro does / does not do".
+- Post one short explanation: "what RASCALWORKS OS does / does not do".
 - Publish one user-friendly thread/carousel about first-run workflow.
 
 Success criteria:
@@ -71,7 +71,7 @@ Success criteria:
 
 - Identify 1-2 users with meaningful early outcomes.
 - Capture mini case snippets:
-  - Problem before Maestro
+  - Problem before RASCALWORKS OS
   - Workflow tested
   - Result/benefit observed
 - Draft a short "results" post.

@@ -25,7 +25,7 @@ google-analytics-data>=0.18.0
 ```python
 """
 Rascalworks OS — CrewAI integration layer.
-Maps existing Maestro agents to CrewAI role-based crews.
+Maps existing RASCALWORKS OS agents to CrewAI role-based crews.
 DO NOT import from here at app startup — import inside route handlers to avoid circular deps.
 """
 ```
@@ -127,8 +127,8 @@ def _save_queue(queue: list):
 # crews/label_crew.py
 """
 CrewAI crew for the Label department.
-Wraps existing Maestro agents (BRIDGE, VINYL, ECHO, SAGE) as CrewAI role-playing agents.
-Each agent's tools call the existing Maestro Flask endpoints — no duplication of logic.
+Wraps existing RASCALWORKS OS agents (BRIDGE, VINYL, ECHO, SAGE) as CrewAI role-playing agents.
+Each agent's tools call the existing RASCALWORKS OS Flask endpoints — no duplication of logic.
 """
 from crewai import Agent, Task, Crew, Process
 from crewai.tools import tool
@@ -983,7 +983,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 import requests as _req
 
-# ── Inbound: EasyFunnels → n8n → Maestro ──────────────────────────────────────
+# ── Inbound: EasyFunnels → n8n → RASCALWORKS OS ──────────────────────────────────────
 
 @app.route("/webhook/easyfunnels/crm-update", methods=["POST"])
 def ef_crm_update():
@@ -1037,7 +1037,7 @@ def handle_approved_action():
     return jsonify({"executing": workflow, "payload": payload})
 
 
-# ── Outbound helper: Maestro → n8n ────────────────────────────────────────────
+# ── Outbound helper: RASCALWORKS OS → n8n ────────────────────────────────────────────
 
 def trigger_n8n_workflow(workflow_name: str, payload: dict) -> dict:
     """Fire an n8n workflow by name. Returns n8n response."""

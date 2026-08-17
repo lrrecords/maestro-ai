@@ -21,7 +21,7 @@ This list ranks the units by how strongly the current evidence supports them, ba
 - Why it is strong: direct SQL usage is explicit and practical.
 
 5. ICTWEB434 - Transfer content to websites
-- Strong evidence: live LRRecords site, Maestro docs and updates, public website continuity, GitHub release/repository publishing.
+- Strong evidence: live LRRecords site, RASCALWORKS OS docs and updates, public website continuity, GitHub release/repository publishing.
 - Why it is strong: you have real ongoing content publishing and maintenance evidence.
 
 6. ICTWEB450 - Evaluate and select a web hosting service
@@ -31,7 +31,7 @@ This list ranks the units by how strongly the current evidence supports them, ba
 ## Medium confidence
 
 7. ICTPRG302 - Apply introductory programming techniques
-- Strong evidence: Maestro backend code, tests, agent orchestration, Python/Flask code.
+- Strong evidence: RASCALWORKS OS backend code, tests, agent orchestration, Python/Flask code.
 - Why it is medium: the work is stronger than introductory level, but the unit can still be supported by core coding evidence.
 
 8. ICTWEB431 - Create and style simple markup language documents
@@ -39,7 +39,7 @@ This list ranks the units by how strongly the current evidence supports them, ba
 - Why it is medium: clear frontend implementation evidence exists, though the unit is relatively basic.
 
 9. ICTWEB432 - Design website layouts
-- Strong evidence: Maestro UI templates, LRRecords website pages, Artist Pages public views.
+- Strong evidence: RASCALWORKS OS UI templates, LRRecords website pages, Artist Pages public views.
 - Why it is medium: layout work is visible, but you should attach screenshots and a short explanation.
 
 10. ICTICT451 - Comply with IP, ethics and privacy policies in ICT environments
@@ -95,4 +95,4 @@ These units may need the most careful wording or extra artifacts:
 Lead with the strongest units in your narrative and appendix, then use the lower-confidence units only where you can honestly explain the evidence.
 - If you can add a referee letter, do it.
 - If you can add more screenshots of actual work in production, do it.
-- If you can provide a short project timeline for Maestro and Artist Pages, do it.
+- If you can provide a short project timeline for RASCALWORKS OS and Artist Pages, do it.

@@ -1,6 +1,6 @@
 # Memory
 
-**Long-term memory storage for MAESTRO.**
+**Long-term memory storage for RASCALWORKS OS.**
 
 **Will contain:**
 - Conversation histories

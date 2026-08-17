@@ -1,5 +1,5 @@
 """
-MAESTRO Artist Check-In Workflow
+RASCALWORKS OS Artist Check-In Workflow
 Hour 3: First Automation - Artist Relations
 """
 
@@ -115,7 +115,7 @@ Return JSON:
         """
         Analyze ALL artists and generate check-in recommendations
         """
-        print("🎵 MAESTRO Artist Check-In Workflow")
+        print("🎵 RASCALWORKS OS Artist Check-In Workflow")
         print("=" * 60)
         print(f"Analyzing {len(self.artists)} artists...\n")
         

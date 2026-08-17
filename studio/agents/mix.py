@@ -97,7 +97,7 @@ class MixAgent(BaseAgent):
 
     def _generate_strategy(self, record: dict) -> dict:
         prompt = f"""
-You are MAESTRO MIX — a senior studio strategy synthesiser coordinating session planning,
+You are RASCALWORKS OS MIX — a senior studio strategy synthesiser coordinating session planning,
 pricing, marketing, and operations for a professional recording studio.
 
 Produce a concise strategic plan for the following project.

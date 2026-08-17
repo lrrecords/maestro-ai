@@ -9,7 +9,7 @@ The IWAI survey of 200+ high-performance professionals mirrors exactly what an i
 
 | Survey Theme | Brett's Reality |
 |---|---|
-| "I know what to do — I just can't get it all done" | Running a label, studio, live ops + building Maestro |
+| "I know what to do — I just can't get it all done" | Running a label, studio, live ops + building RASCALWORKS OS |
 | Capacity & throughput dominate short-term pain | Release cycles, artist comms, session scheduling, admin |
 | Quality pressure never goes away | "Faster with AI — but will the work stay excellent?" |
 | Personal life taking silent hits | Nights, weekends, creative energy drained by admin |
@@ -18,15 +18,15 @@ The IWAI survey of 200+ high-performance professionals mirrors exactly what an i
 **The insight that hits hardest:**
 > *"The real ROI often comes from back-office and operational improvements — not flashy front-of-house demos."*
 
-That is Maestro's core value proposition, stated externally, validated by 200+ peers. This is your positioning language.
+That is RASCALWORKS OS's core value proposition, stated externally, validated by 200+ peers. This is your positioning language.
 
 ---
 
-## 1. IWAI Insights → Maestro Feature Map
+## 1. IWAI Insights → RASCALWORKS OS Feature Map
 
 ### 1A. Immediate (0–3 Months): "Keep the wheels from coming off"
 
-| Survey Want | Maestro Now | Maestro Enhancement |
+| Survey Want | RASCALWORKS OS Now | RASCALWORKS OS Enhancement |
 |---|---|---|
 | Focus & Productivity Flow | Hub navigation | **FOCUS Agent** — weekly priority brief, "your 3 most important things today" |
 | Decision Support Dashboard | CEO Approval Queue | **Decision Inbox** — pending decisions surfaced with context, not just raw approvals |
@@ -36,7 +36,7 @@ That is Maestro's core value proposition, stated externally, validated by 200+ p
 
 ### 1B. Medium-Term (3–12 Months): "Systemize my value"
 
-| Survey Want | Maestro Now | Maestro Enhancement |
+| Survey Want | RASCALWORKS OS Now | RASCALWORKS OS Enhancement |
 |---|---|---|
 | Strategic Planning | CEO Command Centre | **CEO Mission Templates** — pre-built missions for release campaigns, quarter planning |
 | Market Intelligence | ECHO | **ECHO Market Pulse** — weekly genre/streaming trend brief relevant to label roster |
@@ -46,9 +46,9 @@ That is Maestro's core value proposition, stated externally, validated by 200+ p
 
 ### 1C. Long-Term (1–3 Years): "Become a better human"
 
-| Survey Want | Maestro Opportunity |
+| Survey Want | RASCALWORKS OS Opportunity |
 |---|---|
-| Innovation & Transformation | Maestro IS this — dog-food it for LRRecords first, then SaaS |
+| Innovation & Transformation | RASCALWORKS OS IS this — dog-food it for LRRecords first, then SaaS |
 | Leadership & Skill Development | **MENTOR Mode** — weekly CEO reflection prompts, goal check-ins |
 | Personal Growth & Mastery | **Life Tab** in Hub — energy, creative output tracking, non-work wins |
 | Legacy & Culture Building | **FORGE Culture** — artist onboarding, label values, brand voice docs |
@@ -151,9 +151,9 @@ Inspired by the survey's "become a better human" theme.
 A lightweight personal layer for the CEO:
 - Weekly creative output log (tracks what music you actually made)
 - Energy check-in (1–5 scale, stored in Redis)
-- "Hours saved by Maestro this week" counter (gamification)
+- "Hours saved by RASCALWORKS OS this week" counter (gamification)
 - Upcoming personal milestones (not just label milestones)
-**This is low-code, high-meaning.** It makes Maestro feel like a partner, not just a tool.
+**This is low-code, high-meaning.** It makes RASCALWORKS OS feel like a partner, not just a tool.
 
 ---
 
@@ -219,7 +219,7 @@ Implement a new FOCUS agent endpoint and Hub widget for Rascalworks OS.
    - Shows: pending approval count (badge), FOCUS brief headline, "View Brief" expandable panel
    - Fetches /label/api/focus/brief on page load via fetch()
    - Renders priority_actions as ranked cards (rank, action, urgency colour: red/amber/green)
-   - Graceful degradation: if API call fails, show "Brief unavailable — check Maestro logs"
+   - Graceful degradation: if API call fails, show "Brief unavailable — check RASCALWORKS OS logs"
 
 3. File scope: touch ONLY these files
    - dashboard/label/routes.py (add route)
@@ -281,7 +281,7 @@ Stop and ask before: modifying shows.json or any artist data files, changing aut
 ```
 You are the Rascalworks OS mission planning system. Your job is to generate CEO Mission briefs for an independent music label.
 
-A CEO Mission is a structured multi-step workflow that Maestro will orchestrate across agents. It must be specific, achievable, and map to real agent capabilities.
+A CEO Mission is a structured multi-step workflow that RASCALWORKS OS will orchestrate across agents. It must be specific, achievable, and map to real agent capabilities.
 
 Available agents: ATLAS (artist analytics), VINYL (release planning), ECHO (content/social), FORGE (brand/creative), BRIDGE (communications), SAGE (intelligence), BOOK (live booking), ROUTE (tour routing), SETTLE (financial settlement), MERCH (merchandise), PROMO (promotion), CLIENT (studio client management), SESSION (studio scheduling).
 
@@ -324,7 +324,7 @@ Based on the survey's "operational back-office" insight, these n8n workflows wil
 | Tour Settlement | SETTLE agent completes | Generate PDF → save to Drive | 30 min/show |
 | Artist Analytics Alert | ATLAS flags anomaly | Alert to Brett via email | Catch issues early |
 
-All of these are webhook-driven from existing Maestro endpoints — no new backend work required.
+All of these are webhook-driven from existing RASCALWORKS OS endpoints — no new backend work required.
 
 ---
 
@@ -379,7 +379,7 @@ Given crewai dependency issue is the current blocker:
 The survey said it best:
 > *"You're not asking AI to make you capable. You're asking AI to help you stay excellent without sacrificing your health, relationships, and sense of self."*
 
-Maestro's job — for you personally, before any SaaS — is to:
+RASCALWORKS OS's job — for you personally, before any SaaS — is to:
 - **Save 2+ hours/day** of label admin (approvals, comms, scheduling, reporting)
 - **Protect creative time** — block it, don't let admin bleed into it
 - **Surface what matters** — SAGE brief means no more "where was I?" mornings

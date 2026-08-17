@@ -115,7 +115,7 @@ Just update local repo, install any new dependencies, and copy `.env.example` to
 - Platform Ops: Integrated admin, model config, and health checks for a system overview.
 - **LLM Agent Runner Overhaul (NEW):** Reliable agent output streaming and validation, persistent JSON file writing, improved error handling, and schema-first agent output.
 
-- Departmental structuring: MAESTRO split into 3 business domains (Label, Studio, Live), each with specialized agent suites and dashboards.
+- Departmental structuring: RASCALWORKS OS split into 3 business domains (Label, Studio, Live), each with specialized agent suites and dashboards.
 - Pluggable agent framework: Python base class (`core/base_agent.py`); over 16 agents for client, studio, and live operations.
 - Flask blueprint system for clean, modular, and extensible routing.
 - Unified error handling, live output streaming, and UI improvements.

@@ -1,4 +1,4 @@
-# MAESTRO Project Structure
+# RASCALWORKS OS Project Structure
 
 ## Current Structure
 

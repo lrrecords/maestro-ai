@@ -1,5 +1,5 @@
 """
-MAESTRO Artist Check-In Workflow with EXECUTION
+RASCALWORKS OS Artist Check-In Workflow with EXECUTION
 Hour 4: Adding message sending capability
 """
 
@@ -200,7 +200,7 @@ Return ONLY valid JSON:
         new_entry = {
             "date": datetime.now().strftime('%Y-%m-%d'),
             "channel": channel,
-            "topic": "Check-in via MAESTRO",
+            "topic": "Check-in via RASCALWORKS OS",
             "message_sent": message,
             "outcome": outcome,
             "follow_up_needed": False,
@@ -309,7 +309,7 @@ Return ONLY valid JSON:
     
     def run_full_workflow(self):
         """Run complete workflow with execution"""
-        print("🎵 MAESTRO Artist Check-In Workflow (WITH EXECUTION)")
+        print("🎵 RASCALWORKS OS Artist Check-In Workflow (WITH EXECUTION)")
         print("=" * 70)
         print(f"Analyzing {len(self.artists)} artists...\n")
         
@@ -364,7 +364,7 @@ Return ONLY valid JSON:
 
 # Main execution
 if __name__ == "__main__":
-    print("🚀 Starting MAESTRO Artist Relations Workflow with EXECUTION...\n")
+    print("🚀 Starting RASCALWORKS OS Artist Relations Workflow with EXECUTION...\n")
     
     # Check for .env file
     if not Path('.env').exists():

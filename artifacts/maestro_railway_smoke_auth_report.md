@@ -1,4 +1,4 @@
-# Maestro Railway Smoke Report
+# RASCALWORKS OS Railway Smoke Report
 
 ## Test Summary
 - Base URL: https://maestro-ai.up.railway.app

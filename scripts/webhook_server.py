@@ -69,7 +69,7 @@ def health_update():
       <tr><td style='padding:8px;border:1px solid #ddd'><strong>Suggested Check-in</strong></td>
           <td style='padding:8px;border:1px solid #ddd'>{data.get('check_in_message', 'N/A')}</td></tr>
     </table>
-    <p style='color:#888;font-size:12px'>Sent by MAESTRO BRIDGE — {data.get('timestamp', '')}</p>
+    <p style='color:#888;font-size:12px'>Sent by RASCALWORKS OS BRIDGE — {data.get('timestamp', '')}</p>
     """
 
     send_email(subject, html)

@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum
 
 class AgentType(Enum):
-    MAESTRO = "maestro"
+    RASCALWORKS_OS = "RASCALWORKS OS"
     BRIDGE = "bridge"
     VINYL = "vinyl"
     ECHO = "echo"
@@ -40,7 +40,7 @@ Be specific and practical."""
         
         return response['message']['content']
 
-class MaestroCore:
+class RascalworksOSCore:
     def __init__(self):
         self.conversation_history = []
         self.agents = self._initialize_agents()
@@ -115,7 +115,7 @@ class MaestroCore:
         if any(word in message_lower for word in ['briefing', 'morning', 'update me', 'status', 'overview']):
             return list(AgentType)
         
-        # If no specific match, MAESTRO handles it
+        # If no specific match, RASCALWORKS OS handles it
         return relevant_agents if relevant_agents else []
     
     def process_message(self, user_message):
@@ -123,15 +123,15 @@ class MaestroCore:
         relevant_agents = self.route_task(user_message)
         
         # If specific agents identified, delegate
-        if len(relevant_agents) > 0 and AgentType.MAESTRO not in relevant_agents:
+        if len(relevant_agents) > 0 and AgentType.RASCALWORKS_OS not in relevant_agents:
             responses = {}
             for agent_type in relevant_agents:
-                if agent_type != AgentType.MAESTRO:
+                if agent_type != AgentType.RASCALWORKS_OS:
                     agent = self.agents[agent_type]
                     response = agent.process(user_message, str(self.context))
                     responses[agent_type.value] = response
             
-            # MAESTRO synthesizes if multiple agents responded
+            # RASCALWORKS OS synthesizes if multiple agents responded
             if len(responses) > 1:
                 return self._synthesize_responses(user_message, responses)
             elif len(responses) == 1:
@@ -142,12 +142,12 @@ class MaestroCore:
         if 'briefing' in user_message.lower() or 'morning' in user_message.lower():
             return self._morning_briefing()
         
-        # Otherwise MAESTRO handles directly
-        return self._maestro_response(user_message)
+        # Otherwise RASCALWORKS OS handles directly
+        return self._rascalworks_os_response(user_message)
     
     def _morning_briefing(self):
         """Generate morning briefing from all agents"""
-        briefing = "🎵 MAESTRO MORNING BRIEFING\n"
+        briefing = "🎵 RASCALWORKS OS MORNING BRIEFING\n"
         briefing += "=" * 70 + "\n\n"
         
         # Each agent reports
@@ -168,12 +168,12 @@ class MaestroCore:
         briefing += "=" * 70
         return briefing
     
-    def _maestro_response(self, message):
-        """MAESTRO's direct response"""
+    def _rascalworks_os_response(self, message):
+        """RASCALWORKS OS's direct response"""
         response = ollama.chat(
             model='llama3.1:8b',
             messages=[
-                {"role": "system", "content": f"""You are MAESTRO, the central AI business partner for LR Records.
+                {"role": "system", "content": f"""You are RASCALWORKS OS, the central AI business partner for LR Records.
 
 You orchestrate multiple specialist agents and provide high-level strategic guidance.
 You're the conductor of the business symphony.
@@ -195,7 +195,7 @@ You're professional but friendly, strategic but practical."""},
         return response['message']['content']
     
     def _synthesize_responses(self, original_message, agent_responses):
-        """MAESTRO combines multiple agent inputs into coherent response"""
+        """RASCALWORKS OS combines multiple agent inputs into coherent response"""
         synthesis_prompt = f"""The user asked: "{original_message}"
 
 Here's what my specialist team reported:
@@ -209,7 +209,7 @@ Here's what my specialist team reported:
         response = ollama.chat(
             model='llama3.1:8b',
             messages=[
-                {"role": "system", "content": "You are MAESTRO, synthesizing team input into clear guidance."},
+                {"role": "system", "content": "You are RASCALWORKS OS, synthesizing team input into clear guidance."},
                 {"role": "user", "content": synthesis_prompt}
             ]
         )
@@ -218,11 +218,11 @@ Here's what my specialist team reported:
 
 def main():
     print("=" * 70)
-    print("🎵 MAESTRO v0.3 - Multi-Agent Business Operating System")
+    print("🎵 RASCALWORKS OS v0.3 - Multi-Agent Business Operating System")
     print("=" * 70)
     print("\nYour AI Business Partner for LR Records")
     print("\n👥 Active Agents:")
-    print("  • MAESTRO - Orchestration & Strategy")
+    print("  • RASCALWORKS OS - Orchestration & Strategy")
     print("  • BRIDGE - Artist Relations & A&R")
     print("  • VINYL - Music Operations & Distribution")
     print("  • ECHO - Content & Marketing")
@@ -239,18 +239,18 @@ def main():
     print("  - 'Remind me about Nanna's birthday'")
     print("\nType 'exit' to end\n")
     
-    maestro = MaestroCore()
+    rascalworks_os = RascalworksOSCore()
     
     while True:
         user_input = input("You: ")
         
         if user_input.lower() in ['exit', 'quit', 'bye']:
-            print("\n🎵 MAESTRO: All agents standing by. See you tomorrow!")
+            print("\n🎵 RASCALWORKS OS: All agents standing by. See you tomorrow!")
             break
         
         print("\n⏳ Processing...\n")
-        response = maestro.process_message(user_input)
-        print(f"🎵 MAESTRO:\n{response}\n")
+        response = rascalworks_os.process_message(user_input)
+        print(f"🎵 RASCALWORKS OS:\n{response}\n")
         print("-" * 70 + "\n")
 
 if __name__ == "__main__":

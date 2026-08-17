@@ -254,7 +254,7 @@ For local development, set `MAESTRO_DEV_MODE=1` to bypass strict token matching 
 
 ### Rotating the login token
 
-Maestro currently uses one shared login token (`MAESTRO_TOKEN`) for app access.
+RASCALWORKS OS currently uses one shared login token (`MAESTRO_TOKEN`) for app access.
 
 **Local/self-host:**
 

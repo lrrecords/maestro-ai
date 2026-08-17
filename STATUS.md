@@ -1,4 +1,4 @@
-# Maestro-AI Status Badge (Markdown)
+# Rascalworks OS Status Badge (Markdown)
 
 ![CI](https://github.com/your-org/maestro-ai/actions/workflows/ci.yml/badge.svg)
 

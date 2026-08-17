@@ -1,4 +1,4 @@
-# Maestro Railway Automated Test and Debug Loop Design
+# RASCALWORKS OS Railway Automated Test and Debug Loop Design
 
 ## Goal
 Create a repeatable workflow that can test the live Rascalworks OS Railway deployment, identify regressions, and generate a structured repair prompt for Copilot or another coding agent. The workflow must support production-readiness checks without weakening the CEO approval model or changing public-action safeguards.
@@ -128,5 +128,5 @@ Validate the workflow itself with three layers:
 - A single documented deployment path is defined and referenced consistently.
 - The smoke-test workflow can run against the live deployment and produce a structured report.
 - The report can be turned into a repair prompt without manual rewriting.
-- The workflow preserves Maestro’s approval-gated action model.
+- The workflow preserves RASCALWORKS OS’s approval-gated action model.
 - A future agent can repeat the process with minimal setup.

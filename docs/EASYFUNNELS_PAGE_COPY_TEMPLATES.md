@@ -10,10 +10,10 @@ All copy follows the brand voice: honest, grounded in real label experience, hum
 
 If you want the fastest path live, use this structure first:
 
-1. Home services card: add Maestro column/card.
-2. Card CTA: link to `/maestro`.
-3. Maestro hub page: short trust page with one primary story and two CTAs.
-4. GitHub: linked from `/maestro` for technical users.
+1. Home services card: add RASCALWORKS OS column/card.
+2. Card CTA: link to `/RASCALWORKS OS`.
+3. RASCALWORKS OS hub page: short trust page with one primary story and two CTAs.
+4. GitHub: linked from `/RASCALWORKS OS` for technical users.
 
 ### Home Services Card (Ready to Paste)
 
@@ -23,12 +23,12 @@ If you want the fastest path live, use this structure first:
 Title: Rascalworks OS
 
 Description:
-Maestro is the operating system we use at LRRecords to run label admin, release planning, bookings, and communications.
+RASCALWORKS OS is the operating system we use at LRRecords to run label admin, release planning, bookings, and communications.
 It saves hours each week so we can focus on artists and music.
-Maestro never generates music or art. It supports the humans who do.
+RASCALWORKS OS never generates music or art. It supports the humans who do.
 
-Button: See Maestro
-Link: https://lrrecords.com.au/maestro
+Button: See RASCALWORKS OS
+Link: https://lrrecords.com.au/RASCALWORKS OS
 ```
 
 **Option B (short and punchy)**
@@ -41,8 +41,8 @@ Built at LRRecords to automate the admin side of music operations, from release 
 More time for creativity, fewer dropped balls.
 No AI-generated music, ever.
 
-Button: How Maestro Works
-Link: https://lrrecords.com.au/maestro
+Button: How RASCALWORKS OS Works
+Link: https://lrrecords.com.au/RASCALWORKS OS
 ```
 
 **Option C (trust-first)**
@@ -51,18 +51,18 @@ Link: https://lrrecords.com.au/maestro
 Title: Rascalworks OS
 
 Description:
-Running live inside LRRecords, Maestro helps us stay on top of releases, comms, and scheduling with human approval built in.
+Running live inside LRRecords, RASCALWORKS OS helps us stay on top of releases, comms, and scheduling with human approval built in.
 It is open source, transparent, and designed to protect creative time, not replace creativity.
 
-Button: Visit Maestro Hub
-Link: https://lrrecords.com.au/maestro
+Button: Visit RASCALWORKS OS Hub
+Link: https://lrrecords.com.au/RASCALWORKS OS
 ```
 
 ---
 
-## 0A. COMPACT MAESTRO HUB PAGE (SINGLE-PAGE FORMAT)
+## 0A. COMPACT RASCALWORKS OS HUB PAGE (SINGLE-PAGE FORMAT)
 
-Use this as your exact `/maestro` page copy in EasyFunnels.
+Use this as your exact `/RASCALWORKS OS` page copy in EasyFunnels.
 
 ### Hero
 
@@ -70,7 +70,7 @@ Use this as your exact `/maestro` page copy in EasyFunnels.
 Rascalworks OS
 The operating system inside LRRecords.
 
-Maestro handles the admin side of running a label, so we can spend more time on artists and music.
+RASCALWORKS OS handles the admin side of running a label, so we can spend more time on artists and music.
 It does not generate music or art, and never will.
 
 [See How It Works] [View on GitHub]
@@ -79,7 +79,7 @@ It does not generate music or art, and never will.
 ### Section 1: What It Does
 
 ```
-What Maestro Does at LRRecords
+What RASCALWORKS OS Does at LRRecords
 
 - Tracks releases, deadlines, and checklist progress
 - Manages approvals so nothing goes out unreviewed
@@ -92,13 +92,13 @@ This is not AI hype. It is practical operations support used every week at LRRec
 ### Section 2: What It Never Does
 
 ```
-What Maestro Will Never Do
+What RASCALWORKS OS Will Never Do
 
 - Generate music, lyrics, or artwork
 - Replace artists, producers, or creative decisions
 - Compromise ownership, copyright, or artistic integrity
 
-The art stays human. Maestro handles the admin.
+The art stays human. RASCALWORKS OS handles the admin.
 ```
 
 ### Section 3: Proof Block
@@ -106,7 +106,7 @@ The art stays human. Maestro handles the admin.
 ```
 Built by a label. Running at a label.
 
-Maestro is actively used inside LRRecords for release planning, communications, and workflow coordination.
+RASCALWORKS OS is actively used inside LRRecords for release planning, communications, and workflow coordination.
 It helps us reduce dropped tasks, respond faster, and protect creative time.
 
 If you are an artist working with LRRecords, this means better communication, clearer timelines, and fewer delays.
@@ -115,10 +115,10 @@ If you are an artist working with LRRecords, this means better communication, cl
 ### CTA Block
 
 ```
-Want to explore Maestro?
+Want to explore RASCALWORKS OS?
 
 For artists and managers:
-[Read the Maestro FAQ]
+[Read the RASCALWORKS OS FAQ]
 
 For developers and technical teams:
 [View GitHub Repository]
@@ -132,13 +132,13 @@ Questions:
 ```
 See How It Works -> #what-it-does
 View on GitHub -> https://github.com/lrrecords/maestro-ai
-Read the Maestro FAQ -> https://lrrecords.com.au/resources/maestro-faq
+Read the RASCALWORKS OS FAQ -> https://lrrecords.com.au/resources/maestro-faq
 Contact LRRecords -> https://lrrecords.com.au/contact
 ```
 
 ---
 
-## 1. MAESTRO HUB PAGE (`/maestro`)
+## 1. RASCALWORKS OS HUB PAGE (`/RASCALWORKS OS`)
 
 ### Hero Section
 
@@ -156,13 +156,13 @@ Running label operations so we can focus on music.
 ### Subheader + Value Prop
 
 ```
-What's Maestro?
+What's RASCALWORKS OS?
 
 Rascalworks OS is a multi-agent operating system that runs the business side of LRRecords.
 It handles approvals, scheduling, communications, release planning, and artist analytics.
 So I can spend less time in email and spreadsheets, and more time on the creative work that matters.
 
-Maestro does not generate music or art, and never will.
+RASCALWORKS OS does not generate music or art, and never will.
 Your data stays on our servers. We don't sell it, train on it, or lock you in.
 It's built to protect your creative work, not exploit it.
 ```
@@ -172,7 +172,7 @@ It's built to protect your creative work, not exploit it.
 ### How It Works (Visual Section)
 
 ```
-Maestro in 60 Seconds
+RASCALWORKS OS in 60 Seconds
 
 [Icon: Dashboard] 
 DASHBOARD
@@ -237,9 +237,9 @@ I see it all in 5 minutes. No more surprise deadlines.
 ```
 Built by LRRecords. Running at LRRecords. Proven by real use.
 
-Maestro isn't a beta, a proof of concept, or a nice-to-have.
+RASCALWORKS OS isn't a beta, a proof of concept, or a nice-to-have.
 It's running label operations right now at LRRecords, handling real releases, real artists, real money.
-Everything we do here is automated and handled by Maestro.
+Everything we do here is automated and handled by RASCALWORKS OS.
 
 That's how we know it works.
 ```
@@ -249,15 +249,15 @@ That's how we know it works.
 ### CTA Section
 
 ```
-Interested in Maestro?
+Interested in RASCALWORKS OS?
 
 For Artists & Managers:
-If you work with LRRecords, Maestro is already working behind the scenes to make sure 
+If you work with LRRecords, RASCALWORKS OS is already working behind the scenes to make sure 
 we respond faster, catch issues early, and never miss a deadline. 
-[Read: How Maestro Affects Your Work]
+[Read: How RASCALWORKS OS Affects Your Work]
 
 For Developers & Independent Labels:
-Maestro is open source and free to self-host. 
+RASCALWORKS OS is open source and free to self-host. 
 [GitHub Repository] [Quick Start Guide]
 
 Questions?
@@ -266,14 +266,14 @@ Questions?
 
 ---
 
-## 2. MAESTRO AGENT DIRECTORY (`/maestro/agents`)
+## 2. RASCALWORKS OS AGENT DIRECTORY (`/RASCALWORKS OS/agents`)
 
 ### Overview Section
 
 ```
-Maestro Agents — What Each One Does
+RASCALWORKS OS Agents — What Each One Does
 
-Maestro isn't a single AI—it's 25+ specialized agents, each built for a specific job.
+RASCALWORKS OS isn't a single AI—it's 25+ specialized agents, each built for a specific job.
 Here's what's running right now at LRRecords.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -446,27 +446,27 @@ It's not a product we're selling. It's how we run our label.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Does Maestro generate music or art?
+Does RASCALWORKS OS generate music or art?
 
 No. Never.
 
-Maestro automates the business and operational side of the label: 
+RASCALWORKS OS automates the business and operational side of the label: 
 approvals, bookings, communications, analytics, planning. 
 It does not write songs, create lyrics, generate beats, or touch your creative work in any way.
 
-Your art is yours. Maestro just keeps the business side from getting in the way.
+Your art is yours. RASCALWORKS OS just keeps the business side from getting in the way.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-What data does Maestro have access to?
+What data does RASCALWORKS OS have access to?
 
-Maestro has access to:
+RASCALWORKS OS has access to:
 - Your release information (dates, artwork, credits, links)
 - Your session/booking information (dates, notes, any agreed details)
 - Communications between us (emails, messages related to your work)
 - Analytics about your releases (streams, playlist adds, engagement)
 
-Maestro does NOT:
+RASCALWORKS OS does NOT:
 - Have access to your personal data (SSN, home address, financial info)
 - Sell or share your data with anyone
 - Train AI models on your music or information
@@ -474,7 +474,7 @@ Maestro does NOT:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-How does Maestro affect my workflow with LRRecords?
+How does RASCALWORKS OS affect my workflow with LRRecords?
 
 For you, it means:
 - Faster responses from us (we see your requests immediately)
@@ -494,33 +494,33 @@ Only LRRecords staff with a business need:
 - Studio (for session coordination)
 - Marketing (for release planning and promotion)
 
-Maestro is not connected to external platforms. Your information doesn't go to the cloud.
+RASCALWORKS OS is not connected to external platforms. Your information doesn't go to the cloud.
 It stays on LRRecords' servers, encrypted, and access is role-restricted.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Can I opt out of Maestro?
+Can I opt out of RASCALWORKS OS?
 
-Maestro is how we run the label. You can't opt out of better service.
+RASCALWORKS OS is how we run the label. You can't opt out of better service.
 
 But you can choose what data you share:
 - If you prefer not to see release checklists, let us know
 - If you have privacy concerns, email [security contact]
 - If you don't want certain communications logged, we can discuss
 
-In practice: Maestro makes us better at what we do.
+In practice: RASCALWORKS OS makes us better at what we do.
 You benefit from it whether or not you interact with it directly.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Is Maestro a subscription?
+Is RASCALWORKS OS a subscription?
 
-No. Maestro is not a separate product. It's part of how we operate LRRecords.
+No. RASCALWORKS OS is not a separate product. It's part of how we operate LRRecords.
 You don't pay for it. There's no signup. It's already working for you.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Can I see Maestro?
+Can I see RASCALWORKS OS?
 
 Yes. If you're interested in seeing the dashboards or learning more:
 [Contact us] and we can show you how it works, what it sees, and what it does.
@@ -529,7 +529,7 @@ We're transparent about our tools. No hidden processes.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Is Maestro open source?
+Is RASCALWORKS OS open source?
 
 Yes. Rascalworks OS is MIT licensed and available on GitHub.
 If you run a label, studio, or music business, you can self-host it free.
@@ -563,20 +563,20 @@ Here's why.
 
 ---
 
-## 5. BLOG POST: "How Maestro Saved Us [X] Hours This Week"
+## 5. BLOG POST: "How RASCALWORKS OS Saved Us [X] Hours This Week"
 
 **Template for weekly/monthly wins:**
 
 ```
-Maestro Agents at Work: A Real Week at LRRecords
+RASCALWORKS OS Agents at Work: A Real Week at LRRecords
 
-Monday morning. Opened Maestro dashboard. SAGE briefed me:
+Monday morning. Opened RASCALWORKS OS dashboard. SAGE briefed me:
 - Nova Saint's EP drops in 9 days. 2 checklist items open.
 - A new session inquiry from a producer I haven't worked with.
 - Aria Velvet's remix is ready for upload.
 
 Normally, I'd find all of this across 4 different apps by 10 AM.
-With Maestro: context in 5 minutes, prioritized, actionable.
+With RASCALWORKS OS: context in 5 minutes, prioritized, actionable.
 
 Here's what happened next.
 
@@ -589,7 +589,7 @@ Time spent: [X hours]. Time saved vs. manual workflow: [Y hours].
 That's the real product: not the demo, not the hype. 
 Just fewer mistakes and more time for music.
 
-[Link back to Maestro hub / agents / contact]
+[Link back to RASCALWORKS OS hub / agents / contact]
 ```
 
 ---
@@ -599,7 +599,7 @@ Just fewer mistakes and more time for music.
 ### Short Versions (1 line)
 
 ```
-"See how Maestro runs our label operations →"
+"See how RASCALWORKS OS runs our label operations →"
 "Rascalworks OS: The operating system inside LRRecords →"
 "How we use AI to free up time for music →"
 ```
@@ -607,10 +607,10 @@ Just fewer mistakes and more time for music.
 ### Button Text
 
 ```
-[Learn About Maestro]
-[See Maestro in Action]
+[Learn About RASCALWORKS OS]
+[See RASCALWORKS OS in Action]
 [How We Automate Our Label]
-[Maestro Hub]
+[RASCALWORKS OS Hub]
 ```
 
 ---
@@ -630,7 +630,7 @@ For you, this means:
 ✓ Clear release checklists you can track
 ✓ No surprises about what's coming next
 
-[Learn more about how Maestro works] (link to /resources/maestro-faq)
+[Learn more about how RASCALWORKS OS works] (link to /resources/maestro-faq)
 ```
 
 ---
@@ -644,7 +644,7 @@ For you, this means:
 Rascalworks OS is the operating system inside LRRecords. 
 It helps us respond faster, catch problems early, and spend less time on admin so we can focus on music.
 
-Learn more: lrrecords.com.au/maestro
+Learn more: lrrecords.com.au/RASCALWORKS OS
 Open source: github.com/lrrecords/maestro-ai
 ```
 
@@ -662,9 +662,9 @@ github.com/lrrecords/maestro-ai
 - **Tone:** Honest, grounded, no corporate language
 - **Audience:** Artists, producers, music professionals, developers
 - **CTA priority:** GitHub for devs, FAQ for artists, Hub for general interest
-- **Key message:** "Maestro automates the business so humans can focus on music"
+- **Key message:** "RASCALWORKS OS automates the business so humans can focus on music"
 - **Never claim:** "Revolutionary," "game-changing," "AI-powered everything"
-- **Always include:** "Maestro does not generate music or art"
+- **Always include:** "RASCALWORKS OS does not generate music or art"
 
 ---
 

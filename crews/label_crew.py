@@ -1,8 +1,8 @@
 # crews/label_crew.py
 """
 CrewAI crew for the Label department.
-Wraps existing Maestro agents (BRIDGE, VINYL, ECHO, SAGE) as CrewAI role-playing agents.
-Each agent's tools call the existing Maestro Flask endpoints — no duplication of logic.
+Wraps existing RASCALWORKS OS agents (BRIDGE, VINYL, ECHO, SAGE) as CrewAI role-playing agents.
+Each agent's tools call the existing RASCALWORKS OS Flask endpoints — no duplication of logic.
 """
 from crewai import Agent, Task, Crew, Process, LLM
 from crewai.tools import tool

@@ -1,5 +1,5 @@
 {
-  "name": "EasyFunnels CRM → Maestro BRIDGE",
+  "name": "EasyFunnels CRM → RASCALWORKS OS BRIDGE",
   "nodes": [
     {
       "name": "Webhook — EasyFunnels CRM Event",
@@ -12,7 +12,7 @@
       "position": [250, 300]
     },
     {
-      "name": "HTTP Request — Notify Maestro",
+      "name": "HTTP Request — Notify RASCALWORKS OS",
       "type": "n8n-nodes-base.httpRequest",
       "parameters": {
         "method": "POST",
@@ -27,7 +27,7 @@
   ],
   "connections": {
     "Webhook — EasyFunnels CRM Event": {
-      "main": [[ { "node": "HTTP Request — Notify Maestro", "type": "main", "index": 0 } ]]
+      "main": [[ { "node": "HTTP Request — Notify RASCALWORKS OS", "type": "main", "index": 0 } ]]
     }
   }
 }

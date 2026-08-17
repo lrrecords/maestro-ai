@@ -16,7 +16,7 @@ Step 2: Open and read:
 
 That file gives you:
    - Current system status (as of Feb 28, 2026)
-   - How to run MAESTRO (commands + scripts)
+   - How to run RASCALWORKS OS (commands + scripts)
    - What’s working, what’s pending
    - Next steps before going to production
 
@@ -24,7 +24,7 @@ Step 3: When you want the bigger picture (vision, agents, product idea), read:
    MAESTRO_Full_context_HANDOVER.txt
 
 That file gives you:
-   - The origin story of MAESTRO
+   - The origin story of RASCALWORKS OS
    - The 6-agent architecture (BRIDGE, VINYL, ECHO, ATLAS, FORGE, SAGE)
    - LRRecords business context
    - Productization and roadmap
@@ -133,7 +133,7 @@ Remember:
 6. MENTAL MODEL REMINDER
 --------------------------------------------
 
-MAESTRO is:
+RASCALWORKS OS is:
 - BRIDGE + Autopilot + Command Center working together
 - An assistant for artist relationships and operations
 - Not just a chatbot – it can watch, decide, and act (safely)

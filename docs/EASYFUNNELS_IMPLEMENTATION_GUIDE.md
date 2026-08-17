@@ -8,26 +8,26 @@ Owner: Brett (LRRecords)
 
 ## Goal
 
-Launch Maestro on the LRRecords website with the smallest setup that still feels professional and clear.
+Launch RASCALWORKS OS on the LRRecords website with the smallest setup that still feels professional and clear.
 
 Default approach:
-1. Add Maestro as a services card on the homepage.
-2. Link that card to `/maestro`.
-3. Use `/maestro` as the trust page with two CTA paths:
+1. Add RASCALWORKS OS as a services card on the homepage.
+2. Link that card to `/RASCALWORKS OS`.
+3. Use `/RASCALWORKS OS` as the trust page with two CTA paths:
 - Artists/managers: FAQ or contact
 - Developers/technical teams: GitHub
 
-This keeps the story simple: Maestro is how LRRecords runs operations, not a separate product funnel.
+This keeps the story simple: RASCALWORKS OS is how LRRecords runs operations, not a separate product funnel.
 
 ---
 
 ## Lean Architecture (Recommended)
 
 ### Primary path
-- Home services section -> Maestro card -> `/maestro`
+- Home services section -> RASCALWORKS OS card -> `/RASCALWORKS OS`
 
 ### Secondary path
-- `/maestro` -> GitHub repository
+- `/RASCALWORKS OS` -> GitHub repository
 
 ### Optional support page
 - `/resources/maestro-faq`
@@ -42,21 +42,21 @@ This keeps the story simple: Maestro is how LRRecords runs operations, not a sep
 ## What to Create (Minimum Viable Website Update)
 
 ### 1) Homepage services card
-Add one Maestro column/card in the services section.
+Add one RASCALWORKS OS column/card in the services section.
 
 Use copy from:
 - `docs/EASYFUNNELS_PAGE_COPY_TEMPLATES.md` (Section "0. LEAN LAUNCH VERSION")
 
 Required settings:
-- Button URL: `https://lrrecords.com.au/maestro`
+- Button URL: `https://lrrecords.com.au/RASCALWORKS OS`
 - Button text: choose one of:
-  - See Maestro
-  - How Maestro Works
-  - Visit Maestro Hub
+  - See RASCALWORKS OS
+  - How RASCALWORKS OS Works
+  - Visit RASCALWORKS OS Hub
 
-### 2) Maestro hub page (`/maestro`)
+### 2) RASCALWORKS OS hub page (`/RASCALWORKS OS`)
 Create one compact page using:
-- `docs/EASYFUNNELS_PAGE_COPY_TEMPLATES.md` (Section "0A. COMPACT MAESTRO HUB PAGE")
+- `docs/EASYFUNNELS_PAGE_COPY_TEMPLATES.md` (Section "0A. COMPACT RASCALWORKS OS HUB PAGE")
 
 Required sections:
 - Hero
@@ -85,18 +85,18 @@ Use GitHub as a secondary destination, not the primary services CTA.
 Reason:
 - Homepage traffic is mixed (artists, local clients, general visitors).
 - Most visitors need plain-language trust and context before technical docs.
-- `/maestro` does the framing; GitHub does technical depth.
+- `/RASCALWORKS OS` does the framing; GitHub does technical depth.
 
 Recommended pattern:
-- Home card -> `/maestro`
-- `/maestro` CTA -> GitHub
+- Home card -> `/RASCALWORKS OS`
+- `/RASCALWORKS OS` CTA -> GitHub
 
 ---
 
 ## 60-Minute Launch Runbook
 
-1. Add Maestro card in homepage services section (10-15 min).
-2. Create and publish `/maestro` using compact template (20-30 min).
+1. Add RASCALWORKS OS card in homepage services section (10-15 min).
+2. Create and publish `/RASCALWORKS OS` using compact template (20-30 min).
 3. Add GitHub + Contact CTA buttons (5 min).
 4. Verify mobile layout and links (10 min).
 
@@ -106,9 +106,9 @@ Done.
 
 ## Quality Checks Before Publish
 
-- Maestro card appears with consistent spacing/style in services row.
-- Card CTA opens `/maestro`.
-- `/maestro` clearly states "does not generate music or art".
+- RASCALWORKS OS card appears with consistent spacing/style in services row.
+- Card CTA opens `/RASCALWORKS OS`.
+- `/RASCALWORKS OS` clearly states "does not generate music or art".
 - GitHub CTA works.
 - Contact CTA works.
 - Page looks clean on mobile.
@@ -118,7 +118,7 @@ Done.
 ## Optional Add-Ons (Phase 2, Only If Needed)
 
 Add these later, not before launch:
-- Dedicated `/maestro/agents` page
+- Dedicated `/RASCALWORKS OS/agents` page
 - Blog automation via SCRIBE + n8n
 - EasyFunnels inbound webhooks (CRM/order/appointment)
 - GA4 event tracking by CTA

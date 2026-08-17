@@ -1,5 +1,5 @@
 """
-🤖 MAESTRO AUTOPILOT - Autonomous Artist Relations System
+🤖 RASCALWORKS OS AUTOPILOT - Autonomous Artist Relations System
 """
 
 import json
@@ -58,7 +58,7 @@ class AutopilotEngine:
         self.bridge = BridgeIntelligence()
         self.action_queue = self._load_queue()
         self.email_count = {"hour": 0, "day": 0, "last_reset": datetime.now()}
-        print("🤖 MAESTRO AUTOPILOT initializing...")
+        print("🤖 RASCALWORKS OS AUTOPILOT initializing...")
         self._log_action("SYSTEM", "Autopilot engine started")
     
     def _load_config(self):
@@ -119,7 +119,7 @@ class AutopilotEngine:
             msg = MIMEMultipart()
             msg["From"] = os.getenv("EMAIL_ADDRESS")
             msg["To"] = recipient
-            msg["Subject"] = f"🤖 MAESTRO: {subject}"
+            msg["Subject"] = f"🤖 RASCALWORKS OS: {subject}"
             msg.attach(MIMEText(body, "plain"))
             server = smtplib.SMTP_SSL(
                 os.getenv("EMAIL_SMTP_SERVER", "smtp.gmail.com"),
@@ -290,7 +290,7 @@ class AutopilotEngine:
             json.dump(artist_data, f, indent=2)
     
     def _format_briefing_email(self, briefing):
-        body = f"🌉 MAESTRO DAILY BRIEFING\n{'='*60}\n📅 {briefing['date']}\n\n"
+        body = f"🌉 RASCALWORKS OS DAILY BRIEFING\n{'='*60}\n📅 {briefing['date']}\n\n"
         summary = briefing["roster_summary"]
         body += f"📊 ROSTER HEALTH:\n   Total: {summary['total_artists']} artists\n"
         body += f"   🟢 Healthy: {summary['healthy']}\n   🟡 At Risk: {summary['at_risk']}\n   🔴 Critical: {summary['critical']}\n\n"
@@ -390,7 +390,7 @@ def view_queue():
 def main():
     import sys
     if len(sys.argv) < 2:
-        print("\n🤖 MAESTRO AUTOPILOT\n" + "="*60)
+        print("\n🤖 RASCALWORKS OS AUTOPILOT\n" + "="*60)
         print("Usage:\n  python maestro_autopilot.py run\n  python maestro_autopilot.py queue\n  python maestro_autopilot.py test\n  python maestro_autopilot.py briefing\n")
         return
     command = sys.argv[1].lower()

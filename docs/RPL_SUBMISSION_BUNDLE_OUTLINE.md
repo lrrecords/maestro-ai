@@ -6,7 +6,7 @@ Use this as the final packaging order when sending your RPL application to Upski
 
 1. `01_RPL_Cover_Letter.pdf`
 - Export from [docs/RPL_COVER_LETTER_DRAFT.md](RPL_COVER_LETTER_DRAFT.md).
-- Purpose: frames your application, explains why Maestro and Artist Pages are relevant, and sets the assessor context.
+- Purpose: frames your application, explains why RASCALWORKS OS and Artist Pages are relevant, and sets the assessor context.
 
 2. `02_RPL_Evidence_Index.pdf`
 - Export from [docs/RPL_ICT40120_EVIDENCE_INDEX.md](RPL_ICT40120_EVIDENCE_INDEX.md).
@@ -53,7 +53,7 @@ Create one folder containing the exported PDFs in the same order:
 ## What To Check Before Sending
 
 - Confirm your name, dates, and contact details are filled in.
-- Confirm Maestro start date wording is accurate: at least Dec 2025, possibly earlier.
+- Confirm RASCALWORKS OS start date wording is accurate: at least Dec 2025, possibly earlier.
 - Confirm all screenshots are readable and captions are short and specific.
 - Confirm private tokens, email addresses, and sensitive data are redacted.
 - Confirm forked repositories are clearly labeled as fork/evaluation evidence.
@@ -67,7 +67,7 @@ Subject: ICT40120 RPL Application Submission
 
 Hi [Program Coordinator Name],
 
-Please find attached my ICT40120 RPL application bundle, including my cover letter, evidence index, Maestro and Artist Pages overviews, screenshot appendix, referee template, and supporting unit priority list.
+Please find attached my ICT40120 RPL application bundle, including my cover letter, evidence index, RASCALWORKS OS and Artist Pages overviews, screenshot appendix, referee template, and supporting unit priority list.
 
 Kind regards,
 [Your Name]

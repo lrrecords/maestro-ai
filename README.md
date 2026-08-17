@@ -203,7 +203,7 @@ FOCUS_DATA_SOURCES = [
 
 ## 📝 SCRIBE Agent (Blog + Social Content)
 
-SCRIBE is Maestro's content strategy and publishing pipeline.
+SCRIBE is RASCALWORKS OS's content strategy and publishing pipeline.
 
 ### SCRIBE environment setup
 

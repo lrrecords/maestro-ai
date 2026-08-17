@@ -1,5 +1,5 @@
 """
-🎛️ MAESTRO COMMAND CENTER 2.0
+🎛️ RASCALWORKS OS COMMAND CENTER 2.0
 Mission Control Dashboard with BRIDGE Intelligence Integration
 
 Now powered by 5-layer AI intelligence system
@@ -127,7 +127,7 @@ def get_recent_activity(artists: List[Dict], days: int = 7) -> List[Dict]:
 def print_header():
     """Print dashboard header"""
     print("\n" + "="*70)
-    print("🎛️  MAESTRO COMMAND CENTER 2.0 - BRIDGE INTELLIGENCE INTEGRATED")
+    print("🎛️  RASCALWORKS OS COMMAND CENTER 2.0 - BRIDGE INTELLIGENCE INTEGRATED")
     print("="*70)
     print(f"📅 {datetime.now().strftime('%A, %B %d, %Y at %I:%M %p')}")
     print("="*70 + "\n")

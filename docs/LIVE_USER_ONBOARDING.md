@@ -1,6 +1,6 @@
 # Rascalworks OS Live User Onboarding Guide
 
-This guide helps you onboard someone to the live Maestro deployment quickly and safely.
+This guide helps you onboard someone to the live RASCALWORKS OS deployment quickly and safely.
 
 ## 1. Before you invite someone
 
@@ -53,7 +53,7 @@ A new user is onboarded successfully when they can:
 - Log in without help.
 - Reach `/hub` and `/agents`.
 - Run at least one agent and understand output basics.
-- Name one workflow they want Maestro to automate next.
+- Name one workflow they want RASCALWORKS OS to automate next.
 
 ## 5. Troubleshooting login quickly
 
@@ -73,7 +73,7 @@ If a user cannot log in:
 
 ## 7. Token rotation (shared login model)
 
-Maestro currently uses one shared app login token (`MAESTRO_TOKEN`) for hosted access.
+RASCALWORKS OS currently uses one shared app login token (`MAESTRO_TOKEN`) for hosted access.
 
 When to rotate:
 
