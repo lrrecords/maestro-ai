@@ -1,5 +1,19 @@
 # 🎼 RASCALWORKS OS — Release History
 
+## v1.5.2 (August 2026) — Branding Completion + Palette Refresh
+
+**Highlights:**
+- **Landing-page branding completion:** Final legacy footer and pricing/waitlist naming on the docs landing page were aligned to Rascalworks naming (including brand-mark glyph and tier copy updates).
+- **Rascalworks palette rollout:** App-facing UI styling now uses a centralized Rascalworks token palette (`--rw-*`) for primary headers, buttons, active states, links, and brand accents.
+- **Blue-to-orange brand direction applied:** Primary interactions now follow the logo-aligned metallic blue-to-orange gradient treatment across key templates.
+- **Semantic status colors preserved:** Success/approved (green), warning/pending (amber), and destructive/error (red) indicators were intentionally left unchanged.
+- **Styling-only scope:** Updates were constrained to templates and stylesheet token usage; no application logic, route behavior, or workflow changes were introduced.
+
+**Migration:**
+- No database migration required.
+- Clear browser cache (or hard refresh) if old CSS appears after deploy.
+- If you maintain custom theme overrides, update them to reference the new `--rw-*` custom properties to stay aligned with core styling.
+
 ## v1.5.1 (August 2026) — Multi-Provider LLM Routing + Marketing Update Pack
 
 **Highlights:**
