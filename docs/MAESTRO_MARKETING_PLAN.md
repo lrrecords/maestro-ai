@@ -124,7 +124,7 @@ Running LRRecords meant I was spending more time on admin than on music. Approva
 Follow to watch it being built. Link in bio for the full story.
 
 **Hashtags:**
-#buildinpublic #indielabel #musictech #maestroai #musicops #lrrecords #opensource #musicbusiness #humanfirst
+#buildinpublic #indielabel #musictech #rascalworksos #musicops #lrrecords #opensource #musicbusiness #humanfirst
 
 **Format:** Static image (logo + 1-sentence hook overlay) or 30-sec talking head reel
 
