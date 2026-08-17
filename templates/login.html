@@ -8,15 +8,27 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #0d0d0d;
-      --surface:  #141414;
+      --rw-blue-900: #0a58c2;
+      --rw-blue-500: #43b8ff;
+      --rw-blue-100: #eaf6ff;
+      --rw-orange-100: #ffd9a8;
+      --rw-orange-500: #ff8b2e;
+      --rw-orange-900: #c8460a;
+      --rw-bg-900: #020203;
+      --rw-bg-800: #0e1218;
+      --rw-text-muted: #8fb4d9;
+      --rw-blue-900-rgb: 10 88 194;
+      --rw-blue-500-rgb: 67 184 255;
+      --rw-orange-500-rgb: 255 139 46;
+      --bg:       var(--rw-bg-900);
+      --surface:  var(--rw-bg-800);
       --border:   #2a2a2a;
-      --cyan:     #00c8d4;
-      --cyan-dim: #007a82;
+      --cyan:     var(--rw-blue-500);
+      --cyan-dim: var(--rw-blue-900);
       --green:    #00c97a;
       --red:      #e84545;
-      --white:    #f0f0f0;
-      --muted:    #555;
+      --white:    var(--rw-blue-100);
+      --muted:    var(--rw-text-muted);
       --text:     #d8d8d8;
       --mono:     "Courier New", Courier, monospace;
       --sans:     "Segoe UI", system-ui, sans-serif;
@@ -35,8 +47,8 @@
       position: fixed;
       inset: 0;
       background-image:
-        linear-gradient(rgba(0,200,212,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,200,212,0.03) 1px, transparent 1px);
+        linear-gradient(rgb(var(--rw-blue-500-rgb) / 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(var(--rw-blue-500-rgb) / 0.03) 1px, transparent 1px);
       background-size: 40px 40px;
       pointer-events: none;
       z-index: 0;
@@ -51,7 +63,7 @@
       transform: translateX(-50%);
       width: 600px;
       height: 600px;
-      background: radial-gradient(circle, rgba(0,200,212,0.06) 0%, transparent 70%);
+      background: radial-gradient(circle, rgb(var(--rw-blue-500-rgb) / 0.06) 0%, transparent 70%);
       pointer-events: none;
       z-index: 0;
     }
@@ -75,7 +87,7 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 40px;
-      box-shadow: 0 0 60px rgba(0,200,212,0.05);
+      box-shadow: 0 0 60px rgb(var(--rw-blue-500-rgb) / 0.05);
     }
 
     /* ── Logo ── */
@@ -93,7 +105,7 @@
       font-size: 2.4rem;
       margin-bottom: 12px;
       display: block;
-      filter: drop-shadow(0 0 12px rgba(0,200,212,0.5));
+      filter: drop-shadow(0 0 12px rgb(var(--rw-blue-500-rgb) / 0.5));
     }
 
     .logo-text {
@@ -164,7 +176,7 @@
 
     input[type="password"]:focus {
       border-color: var(--cyan-dim);
-      box-shadow: 0 0 0 3px rgba(0,200,212,0.08);
+      box-shadow: 0 0 0 3px rgb(var(--rw-blue-500-rgb) / 0.08);
     }
 
     /* Toggle visibility button */
@@ -208,7 +220,7 @@
     .btn-login {
       width: 100%;
       padding: 13px;
-      background: linear-gradient(135deg, var(--cyan-dim), #005f65);
+      background: linear-gradient(135deg, var(--rw-blue-900), var(--rw-orange-500));
       border: 1px solid var(--cyan-dim);
       border-radius: 8px;
       color: var(--white);
@@ -223,8 +235,8 @@
     }
 
     .btn-login:hover {
-      background: linear-gradient(135deg, #00a0aa, var(--cyan-dim));
-      box-shadow: 0 0 20px rgba(0,200,212,0.2);
+      background: linear-gradient(135deg, var(--rw-blue-500), var(--rw-orange-500));
+      box-shadow: 0 0 20px rgb(var(--rw-blue-500-rgb) / 0.2);
     }
 
     .btn-login:active { transform: scale(0.98); }

@@ -4,13 +4,23 @@
 
 /* ── Design tokens ───────────────────────────────────────────────────────── */
 :root {
-    --rc-bg:      #1a1a2e;
-    --rc-surface: #252540;
+    --rw-blue-900: #0a58c2;
+    --rw-blue-500: #43b8ff;
+    --rw-blue-100: #eaf6ff;
+    --rw-orange-100: #ffd9a8;
+    --rw-orange-500: #ff8b2e;
+    --rw-orange-900: #c8460a;
+    --rw-bg-900: #020203;
+    --rw-bg-800: #0e1218;
+    --rw-text-muted: #8fb4d9;
+    --rw-blue-500-rgb: 67 184 255;
+    --rc-bg:      var(--rw-bg-900);
+    --rc-surface: var(--rw-bg-800);
     --rc-border:  #35355a;
-    --rc-accent:  #7c6af7;
-    --rc-hi:      #a99ff8;
-    --rc-text:    #ddddf0;
-    --rc-muted:   #7777aa;
+    --rc-accent:  var(--rw-blue-500);
+    --rc-hi:      var(--rw-orange-100);
+    --rc-text:    var(--rw-blue-100);
+    --rc-muted:   var(--rw-text-muted);
     --rc-green:   #4caf7d;
     --rc-red:     #e06c75;
     --rc-r:       8px;
@@ -178,7 +188,7 @@
 }
 
 .line-items-table tbody tr:last-child td { border-bottom: none; }
-.line-items-table tbody tr:hover td      { background: rgba(124,106,247,0.05); }
+.line-items-table tbody tr:hover td      { background: rgb(var(--rw-blue-500-rgb) / 0.05); }
 
 .li-desc  { width: 45%; }
 .li-num   { text-align: right; }

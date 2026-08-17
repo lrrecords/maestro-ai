@@ -7,12 +7,21 @@
   <style>
     /* Use consistent styles */
     :root {
-      --bg: #0d0d0d;
+      --rw-blue-900: #0a58c2;
+      --rw-blue-500: #43b8ff;
+      --rw-blue-100: #eaf6ff;
+      --rw-orange-100: #ffd9a8;
+      --rw-orange-500: #ff8b2e;
+      --rw-orange-900: #c8460a;
+      --rw-bg-900: #020203;
+      --rw-bg-800: #0e1218;
+      --rw-text-muted: #8fb4d9;
+      --bg: var(--rw-bg-900);
       --card-bg: #1a1a1a;
       --card-border: #333;
       --text: #eaeaea;
       --muted: #bbb;
-      --accent: #00e5b0;
+      --accent: var(--rw-blue-500);
     }
     body {
       margin: 0;
@@ -192,7 +201,7 @@
         }
         content.innerHTML = html;
       } catch (e) {
-        content.innerHTML = `<span style='color:#e57373;'>Could not load FOCUS brief: ${e.message}</span>`;
+        content.innerHTML = `<span style='color:var(--rw-orange-500);'>Could not load FOCUS brief: ${e.message}</span>`;
       }
     }
     fetchFocusBrief();

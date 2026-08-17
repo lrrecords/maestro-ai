@@ -6,6 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LIVE — MAESTRO Ecosystem</title>
   <style>
+    :root {
+      --rw-blue-900: #0a58c2;
+      --rw-blue-500: #43b8ff;
+      --rw-blue-100: #eaf6ff;
+      --rw-orange-100: #ffd9a8;
+      --rw-orange-500: #ff8b2e;
+      --rw-orange-900: #c8460a;
+      --rw-bg-900: #020203;
+      --rw-bg-800: #0e1218;
+      --rw-text-muted: #8fb4d9;
+      --rw-blue-500-rgb: 67 184 255;
+    }
+
     *,
     *::before,
     *::after {
@@ -15,14 +28,14 @@
     }
 
     body {
-      background: #0d0d0d;
+      background: var(--rw-bg-900);
       color: #d8d8d8;
       font-family: system-ui, "Segoe UI", sans-serif;
     }
 
     /* ── Header ── */
     .header {
-      background: #141414;
+      background: var(--rw-bg-800);
       border-bottom: 1px solid #2a2a2a;
       padding: 14px 32px;
       display: flex;
@@ -37,7 +50,7 @@
     }
 
     .back:hover {
-      color: #00e5b0;
+      color: var(--rw-blue-500);
     }
 
     .dept-name {
@@ -50,8 +63,8 @@
       font-size: .65rem;
       letter-spacing: .12em;
       text-transform: uppercase;
-      color: #00e5b0;
-      border: 1px solid rgba(0, 229, 176, .3);
+      color: var(--rw-blue-500);
+      border: 1px solid rgb(var(--rw-blue-500-rgb) / .3);
       padding: 2px 8px;
       border-radius: 999px;
     }
@@ -236,7 +249,7 @@
       background: transparent;
       border: 1px solid #2a2a2a;
       border-radius: 6px;
-      color: #00e5b0;
+      color: var(--rw-blue-500);
       font-size: .78rem;
       font-weight: 600;
       letter-spacing: .06em;
@@ -245,8 +258,8 @@
     }
 
     .run-btn:hover {
-      background: rgba(0, 229, 176, .07);
-      border-color: #00e5b0;
+      background: rgb(var(--rw-blue-500-rgb) / .07);
+      border-color: var(--rw-blue-500);
     }
 
     .run-btn:disabled {
@@ -257,7 +270,7 @@
     .agent-icon {
       width: 36px;
       height: 36px;
-      color: #00e5b0;
+      color: var(--rw-blue-500);
       display: block;
       margin-bottom: 2px;
       opacity: 0.85;
@@ -393,7 +406,7 @@
     }
 
     .field-input:focus {
-      border-color: #00e5b0;
+      border-color: var(--rw-blue-500);
     }
 
     .field-input.field-error {
@@ -465,7 +478,7 @@
       font-weight: 800;
       letter-spacing: .12em;
       text-transform: uppercase;
-      color: #00e5b0;
+      color: var(--rw-blue-500);
       margin-bottom: 10px;
     }
 
@@ -560,7 +573,7 @@
       font-weight: 800;
       letter-spacing: .12em;
       text-transform: uppercase;
-      color: #00e5b0;
+      color: var(--rw-blue-500);
       margin-bottom: 10px;
     }
 
@@ -680,10 +693,10 @@
     }
 
     .btn-primary {
-      background: rgba(0, 229, 176, .1);
-      border: 1px solid #00e5b0;
+      background: rgb(var(--rw-blue-500-rgb) / .1);
+      border: 1px solid var(--rw-blue-500);
       border-radius: 6px;
-      color: #00e5b0;
+      color: var(--rw-blue-500);
       padding: 6px 18px;
       font-size: .82rem;
       font-weight: 600;
@@ -693,7 +706,7 @@
     }
 
     .btn-primary:hover {
-      background: rgba(0, 229, 176, .2);
+      background: rgb(var(--rw-blue-500-rgb) / .2);
     }
 
     .btn-primary:disabled {
