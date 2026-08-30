@@ -6,10 +6,10 @@ python-dotenv==1.2.2
 requests==2.32.5
 colorama==0.4.6
 pydantic==2.12.5
-crewai>=0.80.0
-litellm>=1.0.0
-playwright>=1.40.0
-google-analytics-data>=0.18.0
-redis>=5.0.0
-flask-limiter>=2.0.0
-flask-cors>=3.0.0
+crewai==1.15.18
+litellm==1.98.0
+playwright==1.62.0
+google-analytics-data==0.23.0
+redis==8.1.0
+flask-limiter==4.1.1
+flask-cors==6.0.5
