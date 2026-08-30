@@ -44,9 +44,13 @@ class ScribeAgent(BaseAgent):
         self.llm_provider = llm_provider
     # Add any SCRIBE-specific initialization here
 
-    def llm(self, prompt, system=None):
-        from core.llm_client import call_llm
-        return call_llm(prompt)
+    # NOTE: this class used to override llm() with `return call_llm(prompt)`,
+    # which silently discarded the `system` argument on every call — meaning
+    # SCRIBE_SYSTEM_PROMPT's domain restrictions were never actually sent to
+    # the model (Only Institute review: "System prompts silently dropped").
+    # BaseAgent.llm() now forwards `system` (or self.system_prompt, set via
+    # super().__init__ above) to call_llm() natively, so the override is
+    # removed and this class inherits BaseAgent.llm() as-is.
 
     def run(self, context: dict) -> dict:
         """Stub run method for Agent Loader compatibility."""

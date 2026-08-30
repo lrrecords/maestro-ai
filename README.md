@@ -56,7 +56,8 @@ For the full changelog and release history, see [RELEASES.md](RELEASES.md).
    source venv/bin/activate
    # Windows PowerShell
    # .\venv\Scripts\Activate.ps1
-   pip install -r requirements.txt
+   pip install -r requirements.lock   # exact, reproducible (recommended)
+   # pip install -r requirements.txt  # top-level pins only, lets pip resolve the rest
    ```
 
 2. **Create your environment file**
