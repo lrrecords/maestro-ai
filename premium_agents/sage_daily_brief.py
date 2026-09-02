@@ -9,6 +9,14 @@ class SageAgent(BaseAgent):
     name = "SAGE"
     department = "label"
     description = "Daily intelligence brief and executive summary."
+    REQUIRED_KEYS = [
+        "date",
+        "headline",
+        "priority_actions",
+        "flags",
+        "upcoming_in_7_days",
+        "one_win",
+    ]
 
     FIELDS = [
         {"key": "scope", "label": "Brief Scope", "type": "select", "options": ["daily", "weekly", "artist_specific"], "default": "daily"},
@@ -34,8 +42,7 @@ class SageAgent(BaseAgent):
 
         # 3. Call LLM
         try:
-            llm_response = self.llm(prompt)
-            brief_data = self.parse_json(llm_response)
+            brief_data = self.call_llm_json(prompt, required_keys=self.REQUIRED_KEYS)
         except Exception as e:
             return {
                 "agent": self.name,

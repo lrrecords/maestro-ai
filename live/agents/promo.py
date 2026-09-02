@@ -8,6 +8,14 @@ class PromoAgent(BaseAgent):
     department = "live"
     name = "PROMO"
     description = "Marketing and promotional strategy."
+    REQUIRED_KEYS = [
+        "highlights",
+        "priority_channels",
+        "action_items",
+        "budget_breakdown",
+        "risk_notes",
+        "strategy_notes",
+    ]
 
     FIELDS = [
         {"key": "artist",          "label": "Artist",               "type": "text",     "placeholder": "e.g. Bicep", "required": True},
@@ -22,8 +30,7 @@ class PromoAgent(BaseAgent):
     def run(self, context: dict) -> dict:
         prompt = self.build_prompt(context)
         try:
-            llm_result = self.llm(prompt)
-            structured = self.parse_json(llm_result)
+            structured = self.call_llm_json(prompt, required_keys=self.REQUIRED_KEYS)
         except Exception as e:
             return {
                 "agent": self.name,
@@ -36,7 +43,7 @@ class PromoAgent(BaseAgent):
             "agent": self.name,
             "department": self.department,
             "status": "complete",
-            "message": llm_result,
+            "message": self._last_llm_json_raws[-1],
             "data": structured,
             "context": context,
         }

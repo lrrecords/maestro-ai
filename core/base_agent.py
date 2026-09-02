@@ -158,6 +158,27 @@ class BaseAgent:
 
         return parsed
 
+    def call_llm_json(
+        self,
+        prompt: str,
+        required_keys: list[str],
+        system: str | None = None,
+        retry_note: str | None = None,
+    ):
+        raw = self.llm(prompt, system=system)
+        self._last_llm_json_raws = [raw]
+        try:
+            return self.parse_json(raw, required_keys=required_keys)
+        except ValueError as exc:
+            correction = retry_note or (
+                f"Your previous response was invalid: {exc}. "
+                f"Return valid JSON with ALL of these keys: {required_keys}."
+            )
+            retry_prompt = f"{prompt}\n\n{correction}"
+            retry_raw = self.llm(retry_prompt, system=system)
+            self._last_llm_json_raws.append(retry_raw)
+            return self.parse_json(retry_raw, required_keys=required_keys)
+
     def save_output(self, result: dict, slug: str | None = None) -> str:
         ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         safe_slug = (slug or "run").strip().replace(" ", "-")
