@@ -18,10 +18,13 @@ These evals are designed to help catch regressions in:
 This eval harness is currently focused on:
 - SCRIBE
   - method: `propose_topics`
+- SETTLE
+  - method: `run`
+- BOOK
+  - method: `run`
 
 Future candidates may include:
 - ATLAS
-- BOOK
 - TOUR
 
 ## Principles
@@ -38,7 +41,7 @@ Future candidates may include:
 - `judges/` — scoring and rule-based evaluation logic
 - `results/` — generated eval artifacts
 
-## Current SCRIBE coverage
+## Current coverage
 
 SCRIBE evals currently target `propose_topics()` and test:
 - allowed topic domains
@@ -46,6 +49,16 @@ SCRIBE evals currently target `propose_topics()` and test:
 - normalization to `blogTopics`
 - expected topic count
 - refusal behavior for out-of-scope prompts
+
+SETTLE evals currently target `run()` and test:
+- exact split arithmetic after deductible expenses
+- no-op behavior when the deal summary has no parseable split
+- zero-value settlement math
+
+BOOK evals currently target `run()` and test:
+- structured output for a complete booking request
+- required-field validation failures
+- capacity and territory risk surfacing
 
 ## Example workflow
 
