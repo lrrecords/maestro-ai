@@ -1,0 +1,31 @@
+{
+  "case_id": "001_complete_valid_booking_request",
+  "agent": "BOOK",
+  "method": "run",
+  "input": {
+    "artist": "Bicep",
+    "dates": [
+      "2026-04-02",
+      "2026-04-15"
+    ],
+    "capacity": 1800,
+    "territory": "UK",
+    "deal_type": "versus",
+    "notes": "Prioritize London or Manchester holds."
+  },
+  "expected": {
+    "status": "ok",
+    "action": "created",
+    "required_booking_fields": [
+      "artist",
+      "dates",
+      "capacity",
+      "territory",
+      "deal_type",
+      "notes"
+    ],
+    "min_recommendations": 1,
+    "min_next_actions": 1
+  },
+  "notes": "Valid booking requests should be persisted and return structured recommendations."
+}
