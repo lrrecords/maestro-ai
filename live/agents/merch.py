@@ -4,6 +4,12 @@ class MerchAgent(BaseAgent):
     department = "live"
     name = "MERCH"
     description = "Merchandise planning, inventory, and settlement."
+    REQUIRED_KEYS = [
+        "order_quantities",
+        "settlement_estimate",
+        "inventory_warnings",
+        "strategy_notes",
+    ]
 
     FIELDS = [
         {"key": "artist",              "label": "Artist",              "type": "text",     "placeholder": "e.g. Bicep",                  "required": True},
@@ -16,8 +22,7 @@ class MerchAgent(BaseAgent):
     def run(self, context: dict) -> dict:
         prompt = self.build_prompt(context)
         try:
-            llm_result = self.llm(prompt)
-            structured = self.parse_json(llm_result)
+            structured = self.call_llm_json(prompt, required_keys=self.REQUIRED_KEYS)
         except Exception as e:
             return {
                 "agent": self.name,
@@ -30,7 +35,7 @@ class MerchAgent(BaseAgent):
             "agent": self.name,
             "department": self.department,
             "status": "complete",
-            "message": llm_result,
+            "message": self._last_llm_json_raws[-1],
             "data": structured,
             "context": context,
         }

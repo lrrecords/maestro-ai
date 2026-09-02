@@ -105,6 +105,12 @@ class RouteAgent(BaseAgent):
     department = "live"
     name = "ROUTE"
     description = "Tour routing and travel optimisation."
+    REQUIRED_KEYS = [
+        "route_plan",
+        "total_km",
+        "estimated_travel_time_hr",
+        "overall_notes",
+    ]
 
     FIELDS = [
         {"key": "cities",         "label": "Cities",          "type": "tags",   "placeholder": "e.g. London, Manchester, Glasgow", "required": True},
@@ -117,8 +123,7 @@ class RouteAgent(BaseAgent):
     def run(self, context: dict) -> dict:
         prompt = self.build_prompt(context)
         try:
-            llm_result = self.llm(prompt)
-            structured = self.parse_json(llm_result)
+            structured = self.call_llm_json(prompt, required_keys=self.REQUIRED_KEYS)
             structured = patch_route_with_real_distance(structured, context)
         except Exception as e:
             return {
@@ -132,7 +137,7 @@ class RouteAgent(BaseAgent):
             "agent": self.name,
             "department": self.department,
             "status": "complete",
-            "message": llm_result,
+            "message": self._last_llm_json_raws[-1],
             "data": structured,
             "context": context,
         }
