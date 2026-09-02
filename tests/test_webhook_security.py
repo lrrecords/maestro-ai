@@ -92,6 +92,71 @@ class TestWebhookSecretValidation:
         assert resp.status_code != 403, f"{route} should not return 403 with correct Bearer token"
 
 
+    @pytest.mark.parametrize("route", WEBHOOK_ROUTES)
+    def test_current_secret_still_accepted_when_next_secret_unset(self, client, monkeypatch, route):
+        """Requests with WEBHOOK_SECRET still work when WEBHOOK_SECRET_NEXT is unset."""
+        monkeypatch.setenv("WEBHOOK_SECRET", "current-secret")
+        monkeypatch.delenv("WEBHOOK_SECRET_NEXT", raising=False)
+        monkeypatch.setenv("MAESTRO_BASE_URL", "http://localhost:8080")
+        monkeypatch.setenv("N8N_BASE_URL", "http://localhost:5678")
+        with patch("webhook_server._req.post") as mock_post:
+            mock_post.return_value.json.return_value = {}
+            resp = client.post(
+                route,
+                json={"workflow": "noop", "payload": {}},
+                headers={"X-WEBHOOK-SECRET": "current-secret"},
+            )
+        assert resp.status_code != 401, f"{route} should not return 401 with the current secret"
+
+    @pytest.mark.parametrize("route", WEBHOOK_ROUTES)
+    def test_old_secret_accepted_during_rotation_and_logged(self, client, monkeypatch, route, caplog):
+        """Requests matching WEBHOOK_SECRET stay accepted during rotation."""
+        monkeypatch.setenv("WEBHOOK_SECRET", "current-secret")
+        monkeypatch.setenv("WEBHOOK_SECRET_NEXT", "next-secret")
+        monkeypatch.setenv("MAESTRO_BASE_URL", "http://localhost:8080")
+        monkeypatch.setenv("N8N_BASE_URL", "http://localhost:5678")
+        with patch("webhook_server._req.post") as mock_post:
+            mock_post.return_value.json.return_value = {}
+            with caplog.at_level("WARNING"):
+                resp = client.post(
+                    route,
+                    json={"workflow": "noop", "payload": {}},
+                    headers={"X-WEBHOOK-SECRET": "current-secret"},
+                )
+        assert resp.status_code != 401, f"{route} should not return 401 with the old secret during rotation"
+        assert "Webhook authorized using WEBHOOK_SECRET while WEBHOOK_SECRET_NEXT is configured" in caplog.text
+
+    @pytest.mark.parametrize("route", WEBHOOK_ROUTES)
+    def test_next_secret_accepted_during_rotation_and_logged(self, client, monkeypatch, route, caplog):
+        """Requests matching WEBHOOK_SECRET_NEXT are accepted during rotation."""
+        monkeypatch.setenv("WEBHOOK_SECRET", "current-secret")
+        monkeypatch.setenv("WEBHOOK_SECRET_NEXT", "next-secret")
+        monkeypatch.setenv("MAESTRO_BASE_URL", "http://localhost:8080")
+        monkeypatch.setenv("N8N_BASE_URL", "http://localhost:5678")
+        with patch("webhook_server._req.post") as mock_post:
+            mock_post.return_value.json.return_value = {}
+            with caplog.at_level("INFO"):
+                resp = client.post(
+                    route,
+                    json={"workflow": "noop", "payload": {}},
+                    headers={"Authorization": "Bearer " + "next-secret"},
+                )
+        assert resp.status_code != 401, f"{route} should not return 401 with the next secret during rotation"
+        assert "Webhook authorized using WEBHOOK_SECRET_NEXT" in caplog.text
+
+    @pytest.mark.parametrize("route", WEBHOOK_ROUTES)
+    def test_neither_secret_is_rejected_during_rotation(self, client, monkeypatch, route):
+        """Requests matching neither active secret are still rejected during rotation."""
+        monkeypatch.setenv("WEBHOOK_SECRET", "current-secret")
+        monkeypatch.setenv("WEBHOOK_SECRET_NEXT", "next-secret")
+        resp = client.post(
+            route,
+            json={"workflow": "noop", "payload": {}},
+            headers={"X-WEBHOOK-SECRET": "wrong-secret"},
+        )
+        assert resp.status_code == 401, f"{route} should return 401 with neither rotation secret"
+
+
 class TestBearerTokenAuth:
     """Label API routes must accept Bearer token in addition to session auth."""
 

@@ -9,14 +9,28 @@ app = Flask(__name__)
 load_dotenv()
 
 def _webhook_authorized() -> bool:
-    secret = (os.getenv("WEBHOOK_SECRET") or "").strip()
-    if not secret:
+    current_secret = (os.getenv("WEBHOOK_SECRET") or "").strip()
+    next_secret = (os.getenv("WEBHOOK_SECRET_NEXT") or "").strip()
+    if not current_secret:
         return False
     header_secret = (request.headers.get("X-WEBHOOK-SECRET") or "").strip()
     bearer = (request.headers.get("Authorization") or "").strip()
-    if bearer.startswith("Bearer ") and bearer[7:].strip() == secret:
+    provided_secret = ""
+    if bearer.startswith("Bearer "):
+        provided_secret = bearer[7:].strip()
+    if not provided_secret:
+        provided_secret = header_secret
+
+    if provided_secret == current_secret:
+        if next_secret:
+            app.logger.warning("Webhook authorized using WEBHOOK_SECRET while WEBHOOK_SECRET_NEXT is configured")
+        else:
+            app.logger.info("Webhook authorized using WEBHOOK_SECRET")
         return True
-    return header_secret == secret
+    if next_secret and provided_secret == next_secret:
+        app.logger.info("Webhook authorized using WEBHOOK_SECRET_NEXT")
+        return True
+    return False
 
 # ── Inbound: EasyFunnels → n8n → Maestro ──────────────────────────────────────
 
