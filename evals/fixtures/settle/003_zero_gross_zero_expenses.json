@@ -1,0 +1,25 @@
+{
+  "case_id": "003_zero_gross_zero_expenses",
+  "agent": "SETTLE",
+  "method": "run",
+  "input": {
+    "gross_box_office": 0,
+    "deal_memo": "70/30 split after deductible expenses.",
+    "expenses": 0,
+    "currency": "GBP"
+  },
+  "expected": {
+    "status": "complete",
+    "exact_values": {
+      "gross_box_office": 0,
+      "deductible_expenses": 0,
+      "net_box_office": 0,
+      "artist_share": 0,
+      "promoter_share": 0
+    },
+    "deal_summary_must_include": [
+      "70/30"
+    ]
+  },
+  "notes": "Zero gross and expenses should yield zero settlement shares."
+}

@@ -1,0 +1,23 @@
+{
+  "case_id": "002_flat_guarantee_no_parseable_split",
+  "agent": "SETTLE",
+  "method": "run",
+  "input": {
+    "gross_box_office": 5000,
+    "deal_memo": "Flat guarantee of £2,500 against net receipts after taxes.",
+    "expenses": 500,
+    "currency": "GBP"
+  },
+  "expected": {
+    "status": "complete",
+    "no_split_expected": true,
+    "preserved_fields": [
+      "gross_box_office",
+      "deductible_expenses",
+      "net_box_office",
+      "artist_share",
+      "promoter_share"
+    ]
+  },
+  "notes": "Guarantee language without an X/Y split should leave share fields untouched."
+}

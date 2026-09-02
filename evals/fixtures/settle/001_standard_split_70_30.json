@@ -1,0 +1,25 @@
+{
+  "case_id": "001_standard_split_70_30",
+  "agent": "SETTLE",
+  "method": "run",
+  "input": {
+    "gross_box_office": 10000,
+    "deal_memo": "70/30 split after deductible expenses.",
+    "expenses": 1000,
+    "currency": "GBP"
+  },
+  "expected": {
+    "status": "complete",
+    "exact_values": {
+      "gross_box_office": 10000,
+      "deductible_expenses": 1000,
+      "net_box_office": 9000,
+      "artist_share": 6300,
+      "promoter_share": 2700
+    },
+    "deal_summary_must_include": [
+      "70/30"
+    ]
+  },
+  "notes": "Standard split deal should be recomputed exactly after expenses."
+}

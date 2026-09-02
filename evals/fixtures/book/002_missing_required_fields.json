@@ -1,0 +1,20 @@
+{
+  "case_id": "002_missing_required_fields",
+  "agent": "BOOK",
+  "method": "run",
+  "input": {
+    "capacity": 500,
+    "territory": "Germany",
+    "notes": "Need a fast validation failure."
+  },
+  "expected": {
+    "status": "error",
+    "action": "error",
+    "missing_fields": [
+      "artist",
+      "dates",
+      "deal_type"
+    ]
+  },
+  "notes": "Missing required fields should return the existing validation error path."
+}
