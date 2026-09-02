@@ -1,0 +1,36 @@
+{
+  "case_id": "003_capacity_risk_flag",
+  "agent": "BOOK",
+  "method": "run",
+  "input": {
+    "artist": "Newcomer Duo",
+    "dates": [
+      "2026-06-12"
+    ],
+    "capacity": 15000,
+    "territory": "Faroe Islands",
+    "deal_type": "guarantee",
+    "notes": "First headline show in the market."
+  },
+  "expected": {
+    "status": "ok",
+    "action": "created",
+    "required_booking_fields": [
+      "artist",
+      "dates",
+      "capacity",
+      "territory",
+      "deal_type",
+      "notes"
+    ],
+    "risk_keywords": [
+      "capacity",
+      "market",
+      "territory",
+      "demand",
+      "sell-through",
+      "oversized"
+    ]
+  },
+  "notes": "Oversized capacity for a tiny territory should surface a demand or capacity risk."
+}

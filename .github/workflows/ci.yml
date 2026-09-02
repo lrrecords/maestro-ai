@@ -3,11 +3,15 @@
 
 name: CI
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -38,3 +42,38 @@ jobs:
         run: |
           git diff --exit-code feature_list.json || (echo "feature_list.json was not updated!" && exit 1)
           git diff --exit-code claude-progress.md || (echo "claude-progress.md was not updated!" && exit 1)
+
+  evals:
+    if: github.event_name == 'workflow_dispatch'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run SETTLE evals
+        env:
+          LLM_PROVIDER: anthropic
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          for fixture in evals/fixtures/settle/*.json; do
+            python evals/runners/run_settle_case.py "$fixture"
+          done
+
+      - name: Run BOOK evals
+        env:
+          LLM_PROVIDER: anthropic
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          for fixture in evals/fixtures/book/*.json; do
+            python evals/runners/run_book_case.py "$fixture"
+          done
