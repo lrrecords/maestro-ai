@@ -4,6 +4,14 @@ class RiderAgent(BaseAgent):
     department = "live"
     name = "RIDER"
     description = "Technical, hospitality, guest list, security, and logistics rider management."
+    REQUIRED_KEYS = [
+        "technical_rider",
+        "hospitality_rider",
+        "guest_list",
+        "security",
+        "logistics",
+        "overall_notes",
+    ]
 
     FIELDS = [
         {"key": "artist",                   "label": "Artist",              "type": "text",     "placeholder": "e.g. Bicep",           "required": True},
@@ -18,8 +26,7 @@ class RiderAgent(BaseAgent):
     def run(self, context: dict) -> dict:
         prompt = self.build_prompt(context)
         try:
-            llm_result = self.llm(prompt)
-            structured = self.parse_json(llm_result)
+            structured = self.call_llm_json(prompt, required_keys=self.REQUIRED_KEYS)
         except Exception as e:
             return {
                 "agent": self.name,
@@ -32,7 +39,7 @@ class RiderAgent(BaseAgent):
             "agent": self.name,
             "department": self.department,
             "status": "complete",
-            "message": llm_result,
+            "message": self._last_llm_json_raws[-1],
             "data": structured,
             "context": context,
         }

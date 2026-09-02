@@ -5,6 +5,13 @@ class TourAgent(BaseAgent):
     department  = "live"
     name        = "TOUR"
     description = "Strategy synthesiser — coordinates all LIVE agents."
+    REQUIRED_KEYS = [
+        "summary",
+        "recommended_agents",
+        "agent_tasks",
+        "milestones",
+        "overall_notes",
+    ]
 
     SUB_AGENTS = ["book", "route", "settle", "rider", "merch", "promo"]
 
@@ -20,8 +27,7 @@ class TourAgent(BaseAgent):
     def run(self, context: dict) -> dict:
         prompt = self.build_prompt(context)
         try:
-            llm_result = self.llm(prompt)
-            structured = self.parse_json(llm_result)
+            structured = self.call_llm_json(prompt, required_keys=self.REQUIRED_KEYS)
         except Exception as e:
             return {
                 "agent": self.name,
@@ -35,7 +41,7 @@ class TourAgent(BaseAgent):
             "agent": self.name,
             "department": self.department,
             "status": "complete",
-            "message": llm_result,
+            "message": self._last_llm_json_raws[-1],
             "sub_agents": self.SUB_AGENTS,
             "data": structured,
             "context": context,
