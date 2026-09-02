@@ -7,6 +7,7 @@ class BookAgent(BaseAgent):
     department  = "live"
     name        = "BOOK"
     description = "Venues, holds, deal negotiation, contract tracking."
+    REQUIRED_KEYS = ["recommendations", "next_actions", "risks"]
 
     FIELDS = [
         {"key": "artist",    "label": "Artist",        "type": "text",   "placeholder": "e.g. Bicep",               "required": True},
@@ -81,8 +82,7 @@ Recent audit trail (last 5 bookings):
 """.strip()
 
         try:
-            raw = self.llm(prompt)
-            llm_obj = self.parse_json(raw)
+            llm_obj = self.call_llm_json(prompt, required_keys=self.REQUIRED_KEYS)
 
             recommendations = llm_obj.get("recommendations") or []
             next_actions = llm_obj.get("next_actions") or []

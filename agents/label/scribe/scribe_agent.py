@@ -32,6 +32,9 @@ class ScribeAgent(BaseAgent):
     PREMIUM AGENT — requires subscription
     """
     premium = True
+    BLOG_VERSION_KEYS = ["easyfunnels_version", "google_business_version"]
+    SOCIAL_CAMPAIGN_KEYS = ["social_posts"]
+
     def __init__(self, job_store: JobStore, llm_provider="anthropic"):
         super().__init__(
             name="SCRIBE",
@@ -167,14 +170,14 @@ class ScribeAgent(BaseAgent):
             "Strictly follow the LRRecords brand voice: authoritative but accessible, music-industry focus, human-first, no AI hype.\n\n"
             f"Approved topic: {approved_topic}"
         )
-        response = self.llm(prompt, system=SCRIBE_SYSTEM_PROMPT)
         try:
-            parsed_output = self.parse_json(response)
-            if isinstance(parsed_output, dict):
-                output = parsed_output
-            else:
-                output = {"easyfunnels_version": response, "google_business_version": response}
-        except Exception:
+            output = self.call_llm_json(
+                prompt,
+                required_keys=self.BLOG_VERSION_KEYS,
+                system=SCRIBE_SYSTEM_PROMPT,
+            )
+        except ValueError:
+            response = self._last_llm_json_raws[0]
             output = {"easyfunnels_version": response, "google_business_version": response}
         output["claims_to_verify"] = self._extract_claims_to_verify(output)
         job_id = str(uuid.uuid4())
@@ -231,10 +234,14 @@ class ScribeAgent(BaseAgent):
             "Telegram, and Mastodon. Keep the LRRecords brand voice.\n\n"
             f"Blog content: {approved_blog}"
         )
-        response = self.llm(prompt, system=SCRIBE_SYSTEM_PROMPT)
         try:
-            output = self.parse_json(response)
-        except Exception:
+            output = self.call_llm_json(
+                prompt,
+                required_keys=self.SOCIAL_CAMPAIGN_KEYS,
+                system=SCRIBE_SYSTEM_PROMPT,
+            )
+        except ValueError:
+            response = self._last_llm_json_raws[0]
             output = {"social_posts": response}
         job_id = str(uuid.uuid4())
         job_data = {

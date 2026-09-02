@@ -38,6 +38,15 @@ class SettleAgent(BaseAgent):
     department = "live"
     name = "SETTLE"
     description = "Financial settlement and reconciliation."
+    REQUIRED_KEYS = [
+        "gross_box_office",
+        "deductible_expenses",
+        "net_box_office",
+        "deal_summary",
+        "artist_share",
+        "promoter_share",
+        "explanation",
+    ]
 
     FIELDS = [
         {"key": "gross_box_office", "label": "Gross Box Office (£)", "type": "number",   "placeholder": "e.g. 12000", "required": True},
@@ -71,8 +80,7 @@ class SettleAgent(BaseAgent):
     def run(self, context: dict) -> dict:
         prompt = self.build_prompt(context)
         try:
-            llm_result = self.llm(prompt)
-            structured = self.parse_json(llm_result)
+            structured = self.call_llm_json(prompt, required_keys=self.REQUIRED_KEYS)
             structured = apply_deal_calculation(structured)
         except Exception as e:
             return {
@@ -86,7 +94,7 @@ class SettleAgent(BaseAgent):
             "agent": self.name,
             "department": self.department,
             "status": "complete",
-            "message": llm_result,
+            "message": self._last_llm_json_raws[-1],
             "data": structured,
             "context": context,
         }
