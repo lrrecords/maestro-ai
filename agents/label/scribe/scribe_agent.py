@@ -169,9 +169,14 @@ class ScribeAgent(BaseAgent):
         )
         response = self.llm(prompt, system=SCRIBE_SYSTEM_PROMPT)
         try:
-            output = self.parse_json(response)
+            parsed_output = self.parse_json(response)
+            if isinstance(parsed_output, dict):
+                output = parsed_output
+            else:
+                output = {"easyfunnels_version": response, "google_business_version": response}
         except Exception:
             output = {"easyfunnels_version": response, "google_business_version": response}
+        output["claims_to_verify"] = self._extract_claims_to_verify(output)
         job_id = str(uuid.uuid4())
         job_data = {
             "id": job_id,
@@ -184,6 +189,37 @@ class ScribeAgent(BaseAgent):
         }
         self.job_store.add_job(job_id, job_data)
         return output
+
+    def _extract_claims_to_verify(self, blog_output):
+        easyfunnels_version = str(blog_output.get("easyfunnels_version", ""))
+        google_business_version = str(blog_output.get("google_business_version", ""))
+        claims_prompt = (
+            "Extract factual claims from the draft content below. Include only statements that can be "
+            "fact-checked (prices, specs, named products/companies, statistics, or historical/industry claims). "
+            "If there are no factual claims, return an empty list.\n\n"
+            'Return JSON only in this exact shape: {"claims_to_verify": ["claim 1", "claim 2"]}\n\n'
+            f"EasyFunnels version:\n{easyfunnels_version}\n\n"
+            f"Google Business version:\n{google_business_version}\n"
+        )
+        try:
+            raw = self.llm(claims_prompt, system=SCRIBE_SYSTEM_PROMPT)
+            parsed = self.parse_json(raw, required_keys=["claims_to_verify"])
+            claims = parsed.get("claims_to_verify", [])
+            if not isinstance(claims, list):
+                return []
+            cleaned_claims = []
+            for claim in claims:
+                if isinstance(claim, str):
+                    normalized = claim.strip()
+                elif claim is None:
+                    normalized = ""
+                else:
+                    normalized = str(claim).strip()
+                if normalized:
+                    cleaned_claims.append(normalized)
+            return cleaned_claims
+        except Exception:
+            return []
 
     def generate_social_campaign(self, approved_blog):
         """Step 3: Generate social posts for all platforms, submit for CEO approval."""

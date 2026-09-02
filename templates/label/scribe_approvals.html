@@ -318,6 +318,27 @@
                 {% endif %}
               </div>
             {% endfor %}
+          {% elif job.get('type') == 'blog_versions' and job.get('output') %}
+            <div class="topic-block">
+              <div class="topic-title">Claims to Verify</div>
+              {% if job['output'].get('claims_to_verify') %}
+                <ul style="margin-left:18px; line-height:1.6;">
+                  {% for claim in job['output'].get('claims_to_verify', []) %}
+                    <li>{{ claim }}</li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <div class="topic-rationale">No factual claims extracted.</div>
+              {% endif %}
+            </div>
+            <div class="topic-block">
+              <div class="topic-title">EasyFunnels Version</div>
+              <pre style="font-family:var(--mono);font-size:.82rem;color:var(--text);white-space:pre-wrap;word-break:break-word;">{{ job['output'].get('easyfunnels_version') or '(no output)' }}</pre>
+            </div>
+            <div class="topic-block">
+              <div class="topic-title">Google Business Profile Version</div>
+              <pre style="font-family:var(--mono);font-size:.82rem;color:var(--text);white-space:pre-wrap;word-break:break-word;">{{ job['output'].get('google_business_version') or '(no output)' }}</pre>
+            </div>
           {% else %}
             <pre style="font-family:var(--mono);font-size:.82rem;color:var(--text);white-space:pre-wrap;word-break:break-word;">{{ job.get('output') | tojson(indent=2) if job.get('output') else '(no output)' }}</pre>
           {% endif %}

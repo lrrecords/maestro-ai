@@ -10,6 +10,7 @@ from unittest.mock import patch, MagicMock
 
 from dashboard.app import app
 from agents.label.scribe.scribe_agent import ScribeAgent
+from core.job_store import JobStore
 
 
 @pytest.fixture
@@ -40,6 +41,24 @@ def _make_propose_topics_job(job_id="test-job-001", status="pending_approval"):
                 {"title": "Mixing for Home Studios", "rationale": "High demand from indie producers."},
                 {"title": "Record Label Business Models", "rationale": "Evergreen music business topic."},
             ]
+        },
+        "timestamp": "2026-05-01T10:00:00Z",
+    }
+
+
+def _make_blog_versions_job(job_id="test-blog-job-001", status="pending_approval", claims_to_verify=None):
+    if claims_to_verify is None:
+        claims_to_verify = []
+    return {
+        "id": job_id,
+        "agent": "SCRIBE",
+        "type": "blog_versions",
+        "status": status,
+        "input": {"approved_topic": "Studio monitor buying guide"},
+        "output": {
+            "easyfunnels_version": "The Yamaha HS8 has an 8-inch woofer and retails around $400.",
+            "google_business_version": "Yamaha HS8 is a trusted studio monitor for home producers.",
+            "claims_to_verify": claims_to_verify,
         },
         "timestamp": "2026-05-01T10:00:00Z",
     }
@@ -150,6 +169,22 @@ class TestScribeApprovals:
             assert "High demand from indie producers" in html
         finally:
             _remove_job("approval-rationale-001")
+
+    def test_approvals_shows_claims_checklist_for_blog_versions(self, client):
+        job = _make_blog_versions_job(
+            "approval-claims-001",
+            claims_to_verify=["Yamaha HS8 has an 8-inch woofer.", "Yamaha HS8 costs around $400."],
+        )
+        _seed_job(client, job)
+        _login(client)
+        try:
+            resp = client.get("/label/scribe/approvals")
+            html = resp.data.decode()
+            assert "Claims to Verify" in html
+            assert "Yamaha HS8 has an 8-inch woofer." in html
+            assert "EasyFunnels Version" in html
+        finally:
+            _remove_job("approval-claims-001")
 
 
 # ---------------------------------------------------------------------------
@@ -604,3 +639,52 @@ class TestTriggerWorkflow:
             assert result.get("n8n_status") == 200
         finally:
             _remove_job("trigger-n8n-001")
+
+
+class TestScribeGenerateBlogVersionsClaims:
+    def test_generate_blog_versions_extracts_non_empty_claims(self):
+        job_store = JobStore()
+        agent = ScribeAgent(job_store)
+        blog_response = json.dumps({
+            "easyfunnels_version": "The Yamaha HS8 has an 8-inch woofer and costs $400.",
+            "google_business_version": "The HS8 is widely used in project studios.",
+        })
+        claims_response = json.dumps({
+            "claims_to_verify": [
+                "Yamaha HS8 has an 8-inch woofer.",
+                "Yamaha HS8 costs $400.",
+            ]
+        })
+        with patch.object(ScribeAgent, "llm", side_effect=[blog_response, claims_response]):
+            output = agent.generate_blog_versions("Studio monitor buyer's guide")
+
+        assert output["claims_to_verify"]
+        assert output["claims_to_verify"][0] == "Yamaha HS8 has an 8-inch woofer."
+        saved_job = job_store.get_job(job_store.all_jobs()[0]["id"])
+        assert saved_job["output"]["claims_to_verify"] == output["claims_to_verify"]
+
+    def test_generate_blog_versions_extracts_empty_claims_list(self):
+        job_store = JobStore()
+        agent = ScribeAgent(job_store)
+        blog_response = json.dumps({
+            "easyfunnels_version": "Trust your ears and learn your room over time.",
+            "google_business_version": "Great mixes start with practice and consistency.",
+        })
+        claims_response = json.dumps({"claims_to_verify": []})
+        with patch.object(ScribeAgent, "llm", side_effect=[blog_response, claims_response]):
+            output = agent.generate_blog_versions("How to build listening discipline")
+
+        assert output["claims_to_verify"] == []
+
+    def test_generate_blog_versions_handles_malformed_claims_response(self):
+        job_store = JobStore()
+        agent = ScribeAgent(job_store)
+        blog_response = json.dumps({
+            "easyfunnels_version": "The Neumann TLM 103 has a cardioid polar pattern.",
+            "google_business_version": "Popular vocals often use cardioid condenser mics.",
+        })
+        malformed_claims_response = '{"claims":[]}'
+        with patch.object(ScribeAgent, "llm", side_effect=[blog_response, malformed_claims_response]):
+            output = agent.generate_blog_versions("Microphone patterns for vocal recording")
+
+        assert output["claims_to_verify"] == []
