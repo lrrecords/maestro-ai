@@ -247,13 +247,18 @@
     }
 
     .brand-logo {
-      width: 28px;
-      height: 28px;
+      width: 36px;
+      height: 36px;
       object-fit: contain;
-      border-radius: 8px;
-      border: 1px solid rgba(80, 184, 248, .25);
-      background: rgba(80, 184, 248, .06);
-      padding: 4px;
+      display: block;
+      flex: 0 0 auto;
+    }
+
+    .foot-lockup {
+      display: block;
+      width: 280px;
+      max-width: 100%;
+      height: auto;
     }
 
     .brand-mark {
@@ -1468,8 +1473,9 @@
       .nav-ctas { gap: 8px; }
       .nav-ctas .btn { padding: 8px 10px; font-size: .8rem; }
       .nav-inner { gap: 8px; }
-      .brand-logo { width: 24px; height: 24px; }
-      .brand-name { font-size: .9rem; }
+      .brand-logo { width: 26px; height: 26px; }
+      .brand-name { font-size: .82rem; letter-spacing: .08em; }
+      .nav .brand { gap: 8px !important; min-width: 0; }
       .pill { white-space: normal; max-width: 100%; }
       .hero-sub, .hero h1 { overflow-wrap: anywhere; }
       pre, .term, .terminal, code { max-width: 100%; overflow-x: auto; }
@@ -1486,7 +1492,7 @@
       <div class="container">
         <div class="nav-inner">
           <a class="brand" href="#top" aria-label="Rascalworks OS home" style="display:flex;align-items:center;gap:10px;">
-            <img class="brand-logo" src="/static/assets/landing/rascalworks_os_logo_96.png" srcset="/static/assets/landing/rascalworks_os_logo_96.png 1x, /static/assets/landing/rascalworks_os_logo_192.png 2x" width="28" height="28" alt="Rascalworks OS logo" />
+            <img class="brand-logo" src="/static/assets/landing/rascalworks_os_mark_64.png" srcset="/static/assets/landing/rascalworks_os_mark_64.png 1x, /static/assets/landing/rascalworks_os_mark_128.png 2x" width="36" height="36" alt="" aria-hidden="true" />
             <div class="brand-name" style="margin-left:0;">RASCALWORKS <span>OS</span></div>
           </a>
 
@@ -2442,8 +2448,7 @@
       <div class="foot-grid">
         <div>
           <div class="foot-brand">
-            <div class="brand-mark" aria-hidden="true" style="width:32px;height:32px;border-radius:10px;">R</div>
-            <p class="foot-title">RASCALWORKS OS</p>
+            <img class="foot-lockup" src="/static/assets/landing/rascalworks_os_lockup_320.png" srcset="/static/assets/landing/rascalworks_os_lockup_320.png 1x, /static/assets/landing/rascalworks_os_lockup_640.png 2x" width="280" height="54" alt="Rascalworks OS — Operating system for music labels" loading="lazy" />
           </div>
           <p class="foot-note" style="margin-top:10px;">
             Rascalworks OS is an open-source multi-agent business operating system for independent music operators.
