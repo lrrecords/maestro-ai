@@ -2412,7 +2412,7 @@
       </div>
 
       <div class="form-card">
-        <form id="waitlistForm" action="mailto:hello@lrrecords.com.au" method="post" enctype="text/plain">
+        <form id="waitlistForm" action="#waitlist" method="get">
           <label class="sr-only" for="email">Email address</label>
           <div class="form-row">
             <input class="input" id="email" name="email" type="email" placeholder="you@label.com" required />
@@ -2538,6 +2538,7 @@
     const waitlistForm = document.getElementById('waitlistForm');
     if (waitlistForm) {
       waitlistForm.addEventListener('submit', (e) => {
+        e.preventDefault();
         // Let mailto work normally, but add context if possible
         const email = (document.getElementById('email')?.value || '').trim();
         const interest = (document.getElementById('interest')?.value || '').trim();
@@ -2548,7 +2549,7 @@
           `Please add me to the Rascalworks OS waitlist.\n\nEmail: ${email}\nInterest: ${interest || '(not specified)'}\n`
         );
 
-        waitlistForm.action = `mailto:hello@lrrecords.com.au?subject=${subject}&body=${body}`;
+        window.location.href = `mailto:hello@lrrecords.com.au?subject=${subject}&body=${body}`;
         const btn = document.getElementById('waitlistBtn');
         if (btn) {
           btn.textContent = 'Opening email…';
