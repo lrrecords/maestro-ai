@@ -4,20 +4,85 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rascalworks OS — The AI Operating System for Independent Music</title>
-  <meta name="description"
-    content="Rascalworks OS is an open-source multi-agent AI business operating system for independent music labels, studios, managers, touring operators, and indie artists." />
-  <link rel="icon" type="image/png" href="assets/rascalworks_os_icon_32.png" />
+  <title>Rascalworks OS | AI Operating System for Independent Music Labels</title>
+  <meta name="description" content="Rascalworks OS is an open-source, multi-agent AI operating system for independent labels, studios, managers and touring teams. Built at LRRecords, Rockingham WA." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://rascalworks.lrrecords.com.au/" />
+  <meta name="theme-color" content="#0d0d0d" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/assets/landing/icon_32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/static/assets/landing/icon_192.png" />
+  <link rel="apple-touch-icon" href="/static/assets/landing/icon_180.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Rascalworks OS" />
+  <meta property="og:title" content="Rascalworks OS | AI Operating System for Independent Music Labels" />
+  <meta property="og:description" content="Rascalworks OS is an open-source, multi-agent AI operating system for independent labels, studios, managers and touring teams. Built at LRRecords, Rockingham WA." />
   <meta property="og:url" content="https://rascalworks.lrrecords.com.au/" />
   <meta property="og:image" content="https://rascalworks.lrrecords.com.au/static/assets/landing/og-rascalworks-os.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Rascalworks OS logo on a waveform background" />
+  <meta property="og:locale" content="en_AU" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rascalworks OS | AI Operating System for Independent Music Labels" />
+  <meta name="twitter:description" content="Rascalworks OS is an open-source, multi-agent AI operating system for independent labels, studios, managers and touring teams. Built at LRRecords, Rockingham WA." />
+  <meta name="twitter:image" content="https://rascalworks.lrrecords.com.au/static/assets/landing/og-rascalworks-os.jpg" />
+  <link rel="preload" as="image" href="/static/assets/landing/waveform-bg.jpg" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://rascalworks.lrrecords.com.au/#software",
+      "name": "Rascalworks OS",
+      "alternateName": "Maestro AI",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web, Windows, macOS, Linux",
+      "description": "Rascalworks OS is an open-source, multi-agent AI operating system for independent labels, studios, managers and touring teams. Built at LRRecords, Rockingham WA.",
+      "url": "https://rascalworks.lrrecords.com.au/",
+      "image": "https://rascalworks.lrrecords.com.au/static/assets/landing/og-rascalworks-os.jpg",
+      "license": "https://opensource.org/licenses/MIT",
+      "isAccessibleForFree": true,
+      "codeRepository": "https://github.com/lrrecords/maestro-ai",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "AUD",
+        "description": "Open-source edition (MIT)"
+      },
+      "publisher": {
+        "@id": "https://lrrecords.com.au/#organization"
+      },
+      "creator": {
+        "@id": "https://lrrecords.com.au/#organization"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://rascalworks.lrrecords.com.au/#website",
+      "url": "https://rascalworks.lrrecords.com.au/",
+      "name": "Rascalworks OS",
+      "publisher": {
+        "@id": "https://lrrecords.com.au/#organization"
+      }
+    },
+    {
+      "@type": "MusicGroup",
+      "@id": "https://lrrecords.com.au/#organization",
+      "name": "Little Rascal Records",
+      "alternateName": "LRRecords",
+      "url": "https://lrrecords.com.au/"
+    }
+  ]
+}
+  </script>
   <style>
             /* FORCE background everywhere, with fallback color and image */
             html, body {
               height: 100%;
               margin: 0;
               background-color: #0d0d0d !important;
-              background-image: url('assets/waveform-bg.jpg') !important;
+              background-image: url('/static/assets/landing/waveform-bg.jpg') !important;
               background-repeat: no-repeat !important;
               background-position: center center !important;
               background-attachment: fixed !important;
@@ -74,7 +139,7 @@
       overflow-x: hidden;
       /* Full-page background image with fallback dark color */
       background-color: var(--bg);
-      background-image: url('assets/waveform-bg.jpg');
+      background-image: url('/static/assets/landing/waveform-bg.jpg');
       background-repeat: no-repeat;
       background-position: center center;
       background-attachment: fixed;
@@ -473,7 +538,7 @@
 
     .term-line {
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 2px;
     }
 
     .tok-key {
@@ -1396,6 +1461,20 @@
         animation: none !important;
       }
     }
+    /* Small screens: keep the header and hero inside the viewport */
+    @media (max-width: 739px) {
+      .nav-ctas .btn-cloud { display: none; }
+      .nav-ctas .btn-oss small { display: none; }
+      .nav-ctas { gap: 8px; }
+      .nav-ctas .btn { padding: 8px 10px; font-size: .8rem; }
+      .nav-inner { gap: 8px; }
+      .brand-logo { width: 24px; height: 24px; }
+      .brand-name { font-size: .9rem; }
+      .pill { white-space: normal; max-width: 100%; }
+      .hero-sub, .hero h1 { overflow-wrap: anywhere; }
+      pre, .term, .terminal, code { max-width: 100%; overflow-x: auto; }
+      img { max-width: 100%; height: auto; }
+    }
   </style>
 </head>
 
@@ -1407,7 +1486,7 @@
       <div class="container">
         <div class="nav-inner">
           <a class="brand" href="#top" aria-label="Rascalworks OS home" style="display:flex;align-items:center;gap:10px;">
-            <img class="brand-logo" src="assets/rascalworks_os_logo.png" alt="Rascalworks OS logo" />
+            <img class="brand-logo" src="/static/assets/landing/rascalworks_os_logo_96.png" srcset="/static/assets/landing/rascalworks_os_logo_96.png 1x, /static/assets/landing/rascalworks_os_logo_192.png 2x" width="28" height="28" alt="Rascalworks OS logo" />
             <div class="brand-name" style="margin-left:0;">RASCALWORKS <span>OS</span></div>
           </a>
 
@@ -1416,6 +1495,7 @@
             <a href="#agents">Agents</a>
             <a href="#pricing">Pricing</a>
             <a href="https://github.com/lrrecords/maestro-ai" target="_blank" rel="noopener">GitHub</a>
+            <a href="/login" rel="nofollow">Log in</a>
           </nav>
 
           <div class="nav-ctas">
@@ -1438,6 +1518,7 @@
           <a href="#pricing">Pricing</a>
           <a href="https://github.com/lrrecords/maestro-ai" target="_blank" rel="noopener">GitHub</a>
           <a href="#waitlist">Cloud Waitlist</a>
+          <a href="/login" rel="nofollow">Log in</a>
         </div>
       </div>
     </header>
@@ -1493,41 +1574,7 @@
               <div>BRIDGE · artist_relations.health_check.json</div>
             </div>
 
-            <div class="term-body" id="heroTerm">
-              <span class="term-line"><span class="tok-accent">maestro</span> run bridge --artist "Nova Saint" --mode
-                health_check</span>
-              <span class="term-line">{</span>
-              <span class="term-line"> <span class="tok-key">"agent"</span>: <span
-                  class="tok-str">"BRIDGE"</span>,</span>
-              <span class="term-line"> <span class="tok-key">"department"</span>: <span
-                  class="tok-str">"label"</span>,</span>
-              <span class="term-line"> <span class="tok-key">"status"</span>: <span class="tok-str">"ok"</span>,</span>
-              <span class="term-line"> <span class="tok-key">"artist"</span>: {</span>
-              <span class="term-line"> <span class="tok-key">"name"</span>: <span class="tok-str">"Nova
-                  Saint"</span>,</span>
-              <span class="term-line"> <span class="tok-key">"last_contacted"</span>: <span
-                  class="tok-str">"2026-03-28"</span>,</span>
-              <span class="term-line"> <span class="tok-key">"risk_level"</span>: <span
-                  class="tok-str">"medium"</span>,</span>
-              <span class="term-line"> <span class="tok-key">"signals"</span>: [<span
-                  class="tok-str">"needs_release_date_lock"</span>, <span
-                  class="tok-str">"missing_assets"</span>]</span>
-              <span class="term-line"> },</span>
-              <span class="term-line"> <span class="tok-key">"recommendations"</span>: [</span>
-              <span class="term-line"> <span class="tok-str">"Schedule a 10-min check-in and confirm next release
-                  milestone."</span>,</span>
-              <span class="term-line"> <span class="tok-str">"Request final artwork + masters by Friday for
-                  distribution lead time."</span>,</span>
-              <span class="term-line"> <span class="tok-str">"Draft a 2-week content plan (TikTok/Reels/Shorts)
-                  aligned to the drop."</span></span>
-              <span class="term-line"> ],</span>
-              <span class="term-line"> <span class="tok-key">"next_actions"</span>: [</span>
-              <span class="term-line"> <span class="tok-str">"Send recap email + checklist"</span>,</span>
-              <span class="term-line"> <span class="tok-str">"Create release task board"</span>,</span>
-              <span class="term-line"> <span class="tok-str">"Assign socials to ECHO"</span></span>
-              <span class="term-line"> ]</span>
-              <span class="term-line">}</span>
-            </div>
+            <div class="term-body" id="heroTerm"><span class="term-line"><span class="tok-accent">maestro</span> run bridge --artist "Nova Saint" --mode health_check</span><span class="term-line">{</span><span class="term-line"> <span class="tok-key">"agent"</span>: <span class="tok-str">"BRIDGE"</span>,</span><span class="term-line"> <span class="tok-key">"department"</span>: <span class="tok-str">"label"</span>,</span><span class="term-line"> <span class="tok-key">"status"</span>: <span class="tok-str">"ok"</span>,</span><span class="term-line"> <span class="tok-key">"artist"</span>: {</span><span class="term-line"> <span class="tok-key">"name"</span>: <span class="tok-str">"Nova Saint"</span>,</span><span class="term-line"> <span class="tok-key">"last_contacted"</span>: <span class="tok-str">"2026-03-28"</span>,</span><span class="term-line"> <span class="tok-key">"risk_level"</span>: <span class="tok-str">"medium"</span>,</span><span class="term-line"> <span class="tok-key">"signals"</span>: [<span class="tok-str">"needs_release_date_lock"</span>, <span class="tok-str">"missing_assets"</span>]</span><span class="term-line"> },</span><span class="term-line"> <span class="tok-key">"recommendations"</span>: [</span><span class="term-line"> <span class="tok-str">"Schedule a 10-min check-in and confirm next release milestone."</span>,</span><span class="term-line"> <span class="tok-str">"Request final artwork + masters by Friday for distribution lead time."</span>,</span><span class="term-line"> <span class="tok-str">"Draft a 2-week content plan (TikTok/Reels/Shorts) aligned to the drop."</span></span><span class="term-line"> ],</span><span class="term-line"> <span class="tok-key">"next_actions"</span>: [</span><span class="term-line"> <span class="tok-str">"Send recap email + checklist"</span>,</span><span class="term-line"> <span class="tok-str">"Create release task board"</span>,</span><span class="term-line"> <span class="tok-str">"Assign socials to ECHO"</span></span><span class="term-line"> ]</span><span class="term-line">}</span></div>
 
             <div class="term-foot">
               <span class="muted">Tip: run agents from the dashboard, review output, then apply changes.</span>
@@ -1962,7 +2009,7 @@
         </div>
         <p style="margin-top:8px; font-size:.8rem; color:#555;">
           Premium agents require <code style="font-family:var(--mono); background:rgba(255,255,255,.05); padding:1px 6px; border-radius:4px; font-size:.85em; color:var(--accent);">PREMIUM_FEATURES_ENABLED=true</code> in <code style="font-family:var(--mono); background:rgba(255,255,255,.05); padding:1px 6px; border-radius:4px; font-size:.85em; color:var(--accent);">.env</code>.
-          See <a href="quickstart.md" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">docs/quickstart.md</a> for setup.
+          See <a href="https://github.com/lrrecords/maestro-ai/blob/main/docs/quickstart.md" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">docs/quickstart.md</a> for setup.
         </p>
       </div>
     </div>
@@ -2287,7 +2334,7 @@
           <span class="plan-badge" style="border-color:rgba(255,180,0,.28); color:var(--amber); font-size:.68rem;">QUICKSTART</span>
         </div>
         <p style="color:var(--muted); font-size:.9rem; margin-bottom:10px;">
-          See <a href="quickstart.md" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">docs/quickstart.md</a> for full setup instructions including env configuration, LLM provider options (Ollama / Anthropic / OpenAI), running agents via CLI or dashboard, Docker, and the open-core vs premium feature table.
+          See <a href="https://github.com/lrrecords/maestro-ai/blob/main/docs/quickstart.md" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">docs/quickstart.md</a> for full setup instructions including env configuration, LLM provider options (Ollama / Anthropic / OpenAI), running agents via CLI or dashboard, Docker, and the open-core vs premium feature table.
         </p>
         <div style="font-family:var(--mono); font-size:.8rem; color:#888; background:rgba(0,0,0,.3); border:1px solid #222; border-radius:8px; padding:10px 14px; line-height:1.6;">
           <span style="color:var(--accent);"># .env — enable premium agents</span><br>
@@ -2340,17 +2387,7 @@
             </div>
             <div>terminal · quickstart</div>
           </div>
-          <div class="term-body">
-            <span class="term-line"><span class="tok-accent">$</span> git clone
-              https://github.com/lrrecords/maestro-ai.git</span>
-            <span class="term-line"><span class="tok-accent">$</span> cd maestro-ai</span>
-            <span class="term-line"><span class="tok-accent">$</span> python -m venv venv</span>
-            <span class="term-line"><span class="tok-accent">$</span> pip install -r requirements.txt</span>
-            <span class="term-line"><span class="tok-accent">$</span> cp .env.example .env</span>
-            <span class="term-line"><span class="tok-accent">$</span> python dashboard/app.py</span>
-            <span class="term-line"></span>
-            <span class="term-line"><span class="tok-key">#</span> then open: http://127.0.0.1:8080</span>
-          </div>
+          <div class="term-body"><span class="term-line"><span class="tok-accent">$</span> git clone https://github.com/lrrecords/maestro-ai.git</span><span class="term-line"><span class="tok-accent">$</span> cd maestro-ai</span><span class="term-line"><span class="tok-accent">$</span> python -m venv venv</span><span class="term-line"><span class="tok-accent">$</span> pip install -r requirements.txt</span><span class="term-line"><span class="tok-accent">$</span> cp .env.example .env</span><span class="term-line"><span class="tok-accent">$</span> python dashboard/app.py</span><span class="term-line"></span><span class="term-line"><span class="tok-key">#</span> then open: http://127.0.0.1:8080</span></div>
           <div class="term-foot">
             <span class="muted">Tip: Use <span class="kbd">LLM_PROVIDER=ollama</span> for local inference.</span>
             <span class="kbd">maestro-ai</span>
@@ -2384,8 +2421,7 @@
             <button class="btn btn-cloud" type="submit" id="waitlistBtn">Join Waitlist</button>
           </div>
           <div class="fine">
-            This form uses <span class="muted">mailto</span> as a placeholder and does not store submissions.
-            For production, connect this to your CRM or email provider.
+            Submitting opens your email app with your details filled in. We only use your address to contact you about early access.
           </div>
         </form>
       </div>
@@ -2429,7 +2465,7 @@
             Open Source is available now.
           </p>
           <p class="foot-note" style="margin-top:10px;">
-            © <span id="year"></span> © YEAR Rascalworks OS · MIT-licensed codebase.
+            © <span id="year">2026</span> Rascalworks OS · a <a href="https://lrrecords.com.au/" style="color:inherit;text-decoration:underline;">Little Rascal Records</a> project · MIT-licensed codebase.
           </p>
         </div>
       </div>

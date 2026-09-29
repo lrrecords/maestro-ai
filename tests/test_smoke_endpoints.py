@@ -65,10 +65,15 @@ class TestLoginFlow:
 
 
 class TestRootAndHub:
-    def test_root_unauthenticated_redirects_to_login(self, client):
+    def test_root_unauthenticated_serves_public_landing(self, client):
         resp = client.get("/")
-        assert resp.status_code == 302
-        assert "/login" in resp.headers.get("Location", "")
+        assert resp.status_code == 200
+        html = resp.get_data(as_text=True)
+        assert "<h1>The AI Operating System for Independent Music</h1>" in html
+        assert 'rel="canonical" href="https://rascalworks.lrrecords.com.au/"' in html
+        assert '"@type": "SoftwareApplication"' in html
+        assert 'href="/login"' in html
+        assert "X-Robots-Tag" not in resp.headers
 
     def test_root_authenticated_redirects_to_hub(self, client):
         _login(client)
@@ -85,6 +90,44 @@ class TestRootAndHub:
         resp = client.get("/hub")
         assert resp.status_code == 302
         assert "/login" in resp.headers.get("Location", "")
+
+
+class TestPublicSEO:
+    def test_robots_txt(self, client):
+        resp = client.get("/robots.txt")
+        assert resp.status_code == 200
+        body = resp.get_data(as_text=True)
+        assert "Disallow: /hub" in body
+        assert "Sitemap: https://rascalworks.lrrecords.com.au/sitemap.xml" in body
+
+    def test_sitemap_xml(self, client):
+        resp = client.get("/sitemap.xml")
+        assert resp.status_code == 200
+        assert resp.mimetype == "application/xml"
+        assert "<loc>https://rascalworks.lrrecords.com.au/</loc>" in resp.get_data(as_text=True)
+
+    def test_llms_txt_and_favicon(self, client):
+        assert client.get("/llms.txt").status_code == 200
+        assert client.get("/favicon.ico").status_code == 200
+
+    def test_login_is_noindex(self, client):
+        resp = client.get("/login")
+        assert resp.status_code == 200
+        assert resp.headers.get("X-Robots-Tag") == "noindex, nofollow"
+        assert 'name="robots" content="noindex, nofollow"' in resp.get_data(as_text=True)
+
+    def test_app_routes_are_noindex(self, client):
+        resp = client.get("/hub")
+        assert resp.headers.get("X-Robots-Tag") == "noindex, nofollow"
+
+    def test_legacy_host_get_redirects_301(self, client):
+        resp = client.get("/login?next=/hub", headers={"Host": "maestro-ai.up.railway.app"})
+        assert resp.status_code == 301
+        assert resp.headers["Location"] == "https://rascalworks.lrrecords.com.au/login?next=/hub"
+
+    def test_legacy_host_post_is_not_redirected(self, client):
+        resp = client.post("/login", data={"token": "x"}, headers={"Host": "maestro-ai.up.railway.app"})
+        assert resp.status_code != 301
 
 
 # ---------------------------------------------------------------------------
