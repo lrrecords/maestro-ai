@@ -112,11 +112,108 @@ app.register_blueprint(scribe_bp,  url_prefix="/label/scribe")
 app.config["LABEL_URL_PREFIX"] = "/label"
 app.register_blueprint(focus_bp,   url_prefix="/label")
 
+# --- Public site / SEO -------------------------------------------------------
+# The root URL serves a public landing page for search engines and new
+# visitors. Everything else (dashboard, APIs, login) stays out of search.
+CANONICAL_HOST = os.getenv("CANONICAL_HOST", "rascalworks.lrrecords.com.au").strip()
+LEGACY_HOSTS = {
+    h.strip().lower()
+    for h in os.getenv("LEGACY_HOSTS", "maestro-ai.up.railway.app").split(",")
+    if h.strip()
+}
+PUBLIC_INDEXABLE_PATHS = {"/", "/robots.txt", "/sitemap.xml", "/llms.txt", "/favicon.ico"}
+
+
+@app.before_request
+def redirect_legacy_host():
+    """301 GET/HEAD requests on the old Railway hostname to the canonical domain.
+
+    Only GET/HEAD are redirected so webhooks and API POSTs to the old
+    hostname keep working.
+    """
+    host = (request.host or "").split(":")[0].lower()
+    if CANONICAL_HOST and host in LEGACY_HOSTS and request.method in ("GET", "HEAD"):
+        qs = request.query_string.decode("utf-8", "ignore")
+        target = f"https://{CANONICAL_HOST}{request.path}" + (f"?{qs}" if qs else "")
+        return redirect(target, code=301)
+    return None
+
+
+@app.after_request
+def add_robots_header(response):
+    """Keep app screens, APIs and the login page out of search results."""
+    path = request.path or "/"
+    if path not in PUBLIC_INDEXABLE_PATHS and not path.startswith("/static/"):
+        response.headers.setdefault("X-Robots-Tag", "noindex, nofollow")
+    return response
+
+
+def _site_url() -> str:
+    return f"https://{CANONICAL_HOST}" if CANONICAL_HOST else request.url_root.rstrip("/")
+
+
 @app.route("/")
 def index():
-    if not session.get("authenticated"):
-        return redirect(url_for("login_page", next=request.path))
-    return redirect(url_for("hub"))
+    if session.get("authenticated"):
+        return redirect(url_for("hub"))
+    return render_template("landing.html")
+
+
+@app.route("/robots.txt")
+def robots_txt():
+    body = "\n".join([
+        "User-agent: *",
+        "Allow: /$",
+        "Allow: /static/",
+        "Allow: /llms.txt",
+        "Disallow: /hub",
+        "Disallow: /agents",
+        "Disallow: /label",
+        "Disallow: /live",
+        "Disallow: /studio",
+        "Disallow: /platform",
+        "Disallow: /apidocs",
+        "Disallow: /apispec_1.json",
+        "Disallow: /flasgger_static",
+        "Disallow: /api",
+        "",
+        f"Sitemap: {_site_url()}/sitemap.xml",
+        "",
+    ])
+    return app.response_class(body, mimetype="text/plain")
+
+
+@app.route("/sitemap.xml")
+def sitemap_xml():
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"  <url><loc>{_site_url()}/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>\n"
+        "</urlset>\n"
+    )
+    return app.response_class(xml, mimetype="application/xml")
+
+
+@app.route("/llms.txt")
+def llms_txt():
+    body = "\n".join([
+        "# Rascalworks OS",
+        "",
+        "> Open-source, multi-agent AI operating system for independent music labels, studios, "
+        "managers and touring teams. Built at LRRecords (Little Rascal Records), Rockingham, Western Australia.",
+        "",
+        f"- [Product overview]({_site_url()}/): what Rascalworks OS does, departments, agents and pricing tiers",
+        "- [Source code (MIT)](https://github.com/lrrecords/maestro-ai)",
+        "- [Quickstart](https://github.com/lrrecords/maestro-ai/blob/main/docs/quickstart.md)",
+        "- [LRRecords](https://lrrecords.com.au/rascalworks-os)",
+        "",
+    ])
+    return app.response_class(body, mimetype="text/plain")
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return app.send_static_file("favicon.ico")
 
 @app.route("/label")
 @login_required
