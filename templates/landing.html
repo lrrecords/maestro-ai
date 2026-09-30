@@ -1480,6 +1480,8 @@
       .hero-sub, .hero h1 { overflow-wrap: anywhere; }
       pre, .term, .terminal, code { max-width: 100%; overflow-x: auto; }
       img { max-width: 100%; height: auto; }
+      [class*="grid"] { grid-template-columns: minmax(0, 1fr) !important; }
+      .card, [class*="grid"] > * { min-width: 0; overflow-wrap: anywhere; }
     }
   </style>
 </head>
@@ -1570,7 +1572,7 @@
             </div>
           </div>
 
-          <div class="terminal" aria-label="Agent output preview">
+          <div class="terminal" role="region" aria-label="Agent output preview" tabindex="0">
             <div class="term-head">
               <div class="term-dots" aria-hidden="true">
                 <span class="term-dot red"></span>
@@ -1589,7 +1591,6 @@
           </div>
 
         </div>
-  </div>
   </section>
 
   <!-- 3) PAIN / PROBLEM STRIP -->
