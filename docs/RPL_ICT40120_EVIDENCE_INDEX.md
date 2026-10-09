@@ -44,10 +44,10 @@ This index is designed to be submitted with the RPL package and used as a checkl
 | ICTWEB432 | layout templates | screenshots and UI walkthrough |
 | ICTWEB431 | template markup and style assets | rendered pages |
 | ICTWEB434 | deployed content changes and release updates | hosted docs/workflows, live site publishing evidence, Wayback timeline continuity |
-| ICTWEB433 | documented UI states and validation support | test and QA notes |
+| ICTWEB433 | `docs/ACCESSIBILITY_AUDIT.md` (WCAG 2.1 AA audit: Lighthouse 100/100, axe 0 issues, manual checks); remediation commit c096cd4 | `docs/audits/` Lighthouse reports and axe/reduced-motion screenshots |
 | ICTWEB450 | hosting strategy in README/quickstart | Procfile and deployment docs |
 | ICTWEB452 | authored template/pages | page-level changes |
-| ICTWEB443 | public-facing page optimization evidence (if available) | supplementary landing-page work |
+| ICTWEB443 | public SEO landing page for rascalworks.lrrecords.com.au (commit e0d3599) | live site at rascalworks.lrrecords.com.au |
 | ICTDBS416 | `supabase-short-links.sql`, `SET_UP_GUIDE.md` (Artist-Pages) | `supabase-seed.sql`, `SUPABASE_SCHEMA.md` |
 | ICTWEB451 | `supabase-seed.sql`, `supabase-short-links.sql` (Artist-Pages) | `artist-page.js` data read patterns |
 | ICTICT435 | `README.md`, `docs/*`, `RELEASES.md` | this RPL evidence pack, GitHub profile/repository portfolio |
