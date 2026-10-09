@@ -58,27 +58,27 @@ This list ranks the units by how strongly the current evidence supports them, ba
 - Strong evidence: GitHub activity, releases, documentation, public repo history.
 - Why it is medium: collaboration is visible, but a referee letter would help.
 
+14. ICTWEB433 - Confirm accessibility of websites
+- Strong evidence: documented WCAG 2.1 AA audit of the public site (`docs/ACCESSIBILITY_AUDIT.md`), remediation commit c096cd4 (ARIA labels, aria-expanded, aria-hidden on decorative icons, sr-only form labels, alt text, keyboard-accessible scroll region, h1→h2→h3 hierarchy, lang="en", prefers-reduced-motion), Lighthouse 13.4.1 reports at 100/100 on landing and login (desktop and mobile), axe DevTools 0 issues on both pages, manual keyboard/zoom/reduced-motion checks (raw evidence in `docs/audits/`).
+- Why it is medium: the full confirm-and-remediate cycle is documented for the public site. The audit is scoped to public pages; the authenticated dashboard (hub.html, dept_*.html) and a screen reader pass are logged as follow-ups, so state that scope in the narrative.
+
+15. ICTWEB443 - Implement search engine optimisations
+- Strong evidence: public SEO landing page for rascalworks.lrrecords.com.au (commit e0d3599), live site visibility, public content, metadata and publishing practices.
+- Why it is medium: explicit SEO implementation work is now in the repo history; reference the commit and live page in the narrative.
+
 ## Lower confidence but still supportable
 
-14. ICTAII401 - Identify opportunities to apply artificial intelligence, machine learning and deep learning
+16. ICTAII401 - Identify opportunities to apply artificial intelligence, machine learning and deep learning
 - Strong evidence: Rascalworks OS routing, LLM integrations, AI workflow design.
 - Why it is lower: this unit may require a clear explanation of how you identified and applied AI opportunities rather than just using AI tools.
 
-15. ICTICT426 - Identify and evaluate emerging technologies and practices
+17. ICTICT426 - Identify and evaluate emerging technologies and practices
 - Strong evidence: multi-provider LLM support, hosting patterns, cloud tooling, platform evolution.
 - Why it is lower: you should explain why you chose particular technologies and how you evaluated them.
 
-16. BSBCRT404 - Apply advanced critical thinking to work processes
+18. BSBCRT404 - Apply advanced critical thinking to work processes
 - Strong evidence: design trade-offs, fallback strategies, architecture notes, release decisions.
 - Why it is lower: needs reflective narrative about decisions, alternatives, and trade-offs.
-
-17. ICTWEB443 - Implement search engine optimisations
-- Strong evidence: live site visibility, public content, metadata and publishing practices.
-- Why it is lower: this one usually needs explicit SEO tasks, so add examples if possible.
-
-18. ICTWEB433 - Confirm accessibility of websites
-- Strong evidence: responsive pages, structured markup, user-facing screens.
-- Why it is lower: add accessibility screenshots, checks, or notes if you have them.
 
 ## Evidence gap watchlist
 
@@ -87,8 +87,8 @@ These units may need the most careful wording or extra artifacts:
 - ICTICT426
 - ICTAII401
 - BSBCRT404
-- ICTWEB443
-- ICTWEB433
+
+ICTWEB443 and ICTWEB433 were removed from this list on 2026-10-09 after the SEO landing page (e0d3599), accessibility remediation (c096cd4) and documented accessibility audit (`docs/ACCESSIBILITY_AUDIT.md`) were added.
 
 ## Recommendation
 
