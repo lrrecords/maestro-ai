@@ -30,13 +30,57 @@ class EchoAgent:
 
     def _extract_artist_info(self, artist_data):
         """Safely extract all relevant info for content planning"""
-        artist_info = artist_data.get("artist_info", {})
-        project = artist_data.get("current_project", {})
-        platforms = artist_data.get("platforms", {})
+        artist_info = artist_data.get("artist_info") or {}
+        project = artist_data.get("current_project") or {}
+        platforms = artist_data.get("platforms") or {}
+        musical_identity = artist_data.get("musical_identity") or {}
+        upcoming_release = artist_data.get("upcoming_release") or {}
+        audience = artist_data.get("audience") or {}
+        catalogue = artist_data.get("catalogue") or []
+
+        if not isinstance(artist_info, dict):
+            artist_info = {}
+        if not isinstance(project, dict):
+            project = {}
+        if not isinstance(platforms, dict):
+            platforms = {}
+        if not isinstance(musical_identity, dict):
+            musical_identity = {}
+        if not isinstance(upcoming_release, dict):
+            upcoming_release = {}
+        if not isinstance(audience, dict):
+            audience = {}
+        if not isinstance(catalogue, list):
+            catalogue = []
+
+        members = artist_info.get("members") or []
+        if not isinstance(members, list):
+            members = []
+
+        catalogue_tracks = [
+            {
+                "release": item.get("title") or item.get("name") or "[placeholder]",
+                "tracks": item.get("tracks") or "[placeholder]",
+            }
+            for item in catalogue
+            if isinstance(item, dict)
+        ]
 
         return {
             "artist_name": artist_info.get("name", "Unknown Artist"),
             "genres": artist_info.get("genres", []),
+            "members": members,
+            "location": artist_info.get("location") or "[placeholder]",
+            "voice_description": musical_identity.get("voice_description") or "[placeholder]",
+            "influences": musical_identity.get("influences") or [],
+            "catalogue_tracks": catalogue_tracks,
+            "title_meaning": upcoming_release.get("title_meaning") or "[placeholder]",
+            "listener_profile": audience.get("listener_profile") or "[placeholder]",
+            "audience_timezone": (
+                artist_data.get("audience_timezone")
+                or audience.get("audience_timezone")
+                or "Australia/Perth"
+            ),
             "project_name": project.get("name", "Current Release"),
             "project_type": project.get("type", "Release"),
             "target_date": project.get("target_date", "TBD"),
@@ -54,6 +98,18 @@ class EchoAgent:
         today = datetime.now()
         start_date = today.strftime("%Y-%m-%d")
         end_date = (today + timedelta(days=days - 1)).strftime("%Y-%m-%d")
+        members = ", ".join(
+            f"{member.get('name') or '[placeholder]'} ({member.get('role') or '[placeholder]'})"
+            if isinstance(member, dict)
+            else str(member)
+            for member in info["members"]
+        ) or "[placeholder]"
+        influences = ", ".join(info["influences"]) if info["influences"] else "[placeholder]"
+        catalogue_tracks = (
+            json.dumps(info["catalogue_tracks"], ensure_ascii=False)
+            if info["catalogue_tracks"]
+            else "[placeholder]"
+        )
 
         prompt = f"""You are ECHO, a creative content and marketing specialist at LRRecords, \
 an independent label in Rockingham, Western Australia.
@@ -64,6 +120,14 @@ ARTIST        : {info['artist_name']}
 PROJECT       : {info['project_name']} ({info['project_type']})
 RELEASE DATE  : {info['target_date']}
 GENRES        : {', '.join(info['genres']) if info['genres'] else 'Not specified'}
+MEMBERS       : {members}
+LOCATION      : {info['location']}
+VOICE          : {info['voice_description']}
+INFLUENCES    : {influences}
+CATALOGUE TRACKS: {catalogue_tracks}
+TITLE MEANING : {info['title_meaning']}
+LISTENER PROFILE: {info['listener_profile']}
+AUDIENCE TIMEZONE: {info['audience_timezone']}
 
 PLATFORMS:
   Instagram   : {info['instagram']}
@@ -94,7 +158,7 @@ Return a JSON content calendar using EXACTLY this structure:
           "hashtags": ["tag1", "tag2", "tag3"],
           "call_to_action": "What you want the audience to do",
           "visual_direction": "Specific description of what to film or photograph",
-          "best_time_awst": "Best posting time in AWST"
+          "best_time": "Best posting time in {info['audience_timezone']}"
         }}
       ]
     }}
@@ -115,11 +179,13 @@ GUIDELINES:
 - Captions should feel authentic to an independent label, not like a press release
 - Mix content types across the 2 weeks
 - Hashtags relevant to: {', '.join(info['genres']) if info['genres'] else 'electronic music'}
-- All times in AWST (Australian Western Standard Time)
+- Give all posting times in {info['audience_timezone']}
+- If TITLE MEANING is provided, describe the title only using that meaning; never add a dictionary definition
+- Never invent facts, including runtime, gear, quotes, or fan comments; use [placeholder] for anything missing
 
 Return ONLY valid JSON — no other text, no markdown fences."""
 
-        plan = self._parse_json(call_llm(prompt, max_tokens=3500))
+        plan = self._parse_json(call_llm(prompt, max_tokens=8000))
 
         # Save
         slug = info["artist_name"].lower().replace(" ", "_")
@@ -187,7 +253,7 @@ Return ONLY valid JSON — no other text, no markdown fences."""
 
                 lines.append(f"  CTA     : {post.get('call_to_action', '')}")
                 lines.append(f"  Visual  : {post.get('visual_direction', '')}")
-                lines.append(f"  Time    : {post.get('best_time_awst', '')}")
+                lines.append(f"  Time    : {post.get('best_time', post.get('best_time_awst', ''))}")
 
         if plan.get("content_notes"):
             lines.append(f"\n📝  NOTES: {plan['content_notes']}")
