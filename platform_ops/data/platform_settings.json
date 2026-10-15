@@ -1,0 +1,14 @@
+{
+  "llm": {
+    "provider": "anthropic",
+    "base_url": "http://127.0.0.1:11434",
+    "model": "claude-sonnet-4-6",
+    "temperature": 0.2,
+    "num_ctx": 8192,
+    "timeout_seconds": 900
+  },
+  "integrations": {
+    "n8n_base_url": null,
+    "webhook_url": "http://127.0.0.1:5678/webhook/health-update"
+  }
+}
