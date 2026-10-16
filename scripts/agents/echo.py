@@ -74,7 +74,7 @@ class EchoAgent:
             "voice_description": musical_identity.get("voice_description") or "[placeholder]",
             "influences": musical_identity.get("influences") or [],
             "catalogue_tracks": catalogue_tracks,
-            "title_meaning": upcoming_release.get("title_meaning") or "[placeholder]",
+            "title_meaning": self._find_title_meaning(project, upcoming_release, catalogue),
             "listener_profile": audience.get("listener_profile") or "[placeholder]",
             "audience_timezone": (
                 artist_data.get("audience_timezone")
@@ -90,6 +90,40 @@ class EchoAgent:
         }
 
     # ── Core method ──────────────────────────────────────────────
+
+    @staticmethod
+    def _find_title_meaning(project, upcoming_release, catalogue):
+        """Return the artist-supplied meaning of the release title, or [placeholder].
+
+        Checks upcoming_release first, then the catalogue entry whose title
+        matches the current project or upcoming release.
+        """
+        meaning = upcoming_release.get("title_meaning")
+        if meaning:
+            return meaning
+        wanted = {
+            str(name).strip().lower()
+            for name in (project.get("name"), upcoming_release.get("title"))
+            if name
+        }
+        for item in catalogue:
+            if not isinstance(item, dict):
+                continue
+            title = str(item.get("title") or item.get("name") or "").strip().lower()
+            if title in wanted and item.get("title_meaning"):
+                return item["title_meaning"]
+        return "[placeholder]"
+
+    @staticmethod
+    def _release_status(target_date, today):
+        """Describe whether the release is upcoming or already out."""
+        try:
+            release = datetime.strptime(str(target_date), "%Y-%m-%d").date()
+        except (TypeError, ValueError):
+            return "Unknown release date - do not write countdown or 'out now' copy"
+        if release <= today.date():
+            return f"ALREADY RELEASED on {target_date} - write 'out now' copy, never countdown or pre-release copy"
+        return f"UPCOMING on {target_date} - build anticipation toward the release date"
 
     def generate_content_plan(self, artist_data, days=14):
         """Generate a 2-week content plan for an artist"""
@@ -111,6 +145,8 @@ class EchoAgent:
             else "[placeholder]"
         )
 
+        release_status = self._release_status(info["target_date"], today)
+
         prompt = f"""You are ECHO, a creative content and marketing specialist at LRRecords, \
 an independent label in Rockingham, Western Australia.
 
@@ -125,6 +161,7 @@ LOCATION      : {info['location']}
 VOICE          : {info['voice_description']}
 INFLUENCES    : {influences}
 CATALOGUE TRACKS: {catalogue_tracks}
+RELEASE STATUS: {release_status}
 TITLE MEANING : {info['title_meaning']}
 LISTENER PROFILE: {info['listener_profile']}
 AUDIENCE TIMEZONE: {info['audience_timezone']}
@@ -181,6 +218,8 @@ GUIDELINES:
 - Hashtags relevant to: {', '.join(info['genres']) if info['genres'] else 'electronic music'}
 - Give all posting times in {info['audience_timezone']}
 - If TITLE MEANING is provided, describe the title only using that meaning; never add a dictionary definition
+- If TITLE MEANING is [placeholder], do not define, translate or explain the title at all
+- Follow RELEASE STATUS: an already-released or re-released project is promoted as out now
 - Never invent facts, including runtime, gear, quotes, or fan comments; use [placeholder] for anything missing
 
 Return ONLY valid JSON — no other text, no markdown fences."""
