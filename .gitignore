@@ -45,9 +45,12 @@ data/**
 !data/**/
 !data/**/.gitkeep
 
-# Allow demo artist profiles + demo BRIDGE snapshots
-!data/artists/*.json
-!data/bridge/*.json
+!data/artists/aria_velvet.json
+!data/artists/king_juno.json
+!data/artists/nova_saint.json
+!data/bridge/aria_velvet_*.json
+!data/bridge/king_juno_*.json
+!data/bridge/nova_saint_*.json
 
 # Optional: allow demo metrics
 !data/metrics/**
@@ -114,3 +117,6 @@ logs/.env
 # Contains raw prompts/responses; already covered by the blanket
 # data/** rule above, listed explicitly here for clarity.
 data/llm_audit/
+
+Claude outputs/
+*.patch
