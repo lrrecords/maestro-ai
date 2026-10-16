@@ -1,6 +1,7 @@
 """ECHO content-plan prompt: uses the full artist profile and guards against
 invented facts. No real LLM calls — call_llm is patched."""
 
+import importlib.util
 import json
 import sys
 from datetime import datetime
@@ -9,9 +10,15 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "scripts"))
 
-from agents.echo import EchoAgent  # noqa: E402
+# Load scripts/agents/echo.py by path: the repo also has a top-level
+# `agents` package, so `import agents.echo` can resolve to the wrong one.
+_spec = importlib.util.spec_from_file_location(
+    "echo_agent_under_test", ROOT / "scripts" / "agents" / "echo.py"
+)
+echo_module = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(echo_module)
+EchoAgent = echo_module.EchoAgent
 
 FAKE_PLAN = {"artist": "Test", "content_plan": []}
 
@@ -37,7 +44,7 @@ def _fictional_artist(**overrides):
 
 def _run(artist, tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
-    with patch("agents.echo.call_llm", return_value=json.dumps(FAKE_PLAN)) as mock_llm:
+    with patch.object(echo_module, "call_llm", return_value=json.dumps(FAKE_PLAN)) as mock_llm:
         plan, saved = EchoAgent().generate_content_plan(artist)
     prompt = mock_llm.call_args[0][0]
     return plan, saved, prompt
