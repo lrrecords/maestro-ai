@@ -152,6 +152,12 @@ def _site_url() -> str:
     return f"https://{CANONICAL_HOST}" if CANONICAL_HOST else request.url_root.rstrip("/")
 
 
+@app.route("/healthz")
+@limiter.exempt
+def healthz():
+    return jsonify({"status": "ok"}), 200
+
+
 @app.route("/")
 def index():
     if session.get("authenticated"):
