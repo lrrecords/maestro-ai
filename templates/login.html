@@ -330,7 +330,7 @@
   <div class="field">
     <label for="token">Access Token</label>
           <div class="input-wrap">
-            <span class="input-icon">🔑</span>
+            <span class="input-icon" aria-hidden="true">🔑</span>
             <input
               type="password"
               id="token"
@@ -339,7 +339,7 @@
               autocomplete="current-password"
               autofocus
             />
-            <button type="button" class="toggle-vis" id="toggleBtn" title="Show/hide token">
+            <button type="button" class="toggle-vis" id="toggleBtn" title="Show/hide token" aria-label="Show access token" aria-pressed="false">
               👁
             </button>
           </div>
@@ -381,6 +381,8 @@
       const isHidden = tokenInput.type === "password";
       tokenInput.type  = isHidden ? "text" : "password";
       toggleBtn.textContent = isHidden ? "🙈" : "👁";
+      toggleBtn.setAttribute("aria-pressed", String(isHidden));
+      toggleBtn.setAttribute("aria-label", isHidden ? "Hide access token" : "Show access token");
     });
 
     // Loading state on submit

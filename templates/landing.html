@@ -855,8 +855,8 @@
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
       line-clamp: 2;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
     }
 
@@ -1594,7 +1594,7 @@
   </section>
 
   <!-- 3) PAIN / PROBLEM STRIP -->
-  <div class="strip" aria-label="Problems">
+  <div class="strip" role="region" aria-label="Problems">
     <div class="container">
       <div class="pain">
         <div class="pain-grid">
@@ -1880,7 +1880,7 @@
       </div>
 
       <!-- Premium agents -->
-      <div style="margin-top:18px;" aria-label="Premium agents">
+      <div style="margin-top:18px;" role="group" aria-label="Premium agents">
         <div style="font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#888; margin-bottom:10px; padding-left:2px;">
           Premium Agents — <span style="color:var(--amber);">shipped &amp; enabled via PREMIUM_FEATURES_ENABLED=true</span>
         </div>
@@ -1956,7 +1956,7 @@
   </div>
   <div class="agent-preview"><strong>output</strong>: blogTopics · approval_queue · publish_workflow · LLM_choice</div>
 </div>
-    <div style="margin-top:18px;" aria-label="All agents">
+    <div style="margin-top:18px;" role="group" aria-label="All agents">
       <div class="card">
         <div class="dept-top" style="margin-bottom:8px;">
           <div class="dept-name">All Agents</div>
@@ -2141,7 +2141,7 @@
           </p>
         </div>
 
-        <div class="case-metrics" aria-label="Outcomes">
+        <div class="case-metrics" role="group" aria-label="Outcomes">
           <div class="metric">
             <div class="k">Artist health monitoring</div>
             <p class="v">Automated check-ins &amp; risk flags</p>
@@ -2365,7 +2365,7 @@
             If you’re technical, you can be running in minutes.
           </p>
 
-          <div class="gh-meta" aria-label="GitHub stats placeholders">
+          <div class="gh-meta" role="group" aria-label="GitHub stats">
             <div class="statline" title="placeholder">
               ★ <span id="stars">—</span> stars
             </div>
@@ -2385,7 +2385,7 @@
           </div>
         </div>
 
-        <div class="gh-term terminal" aria-label="GitHub terminal block">
+        <div class="gh-term terminal" role="region" aria-label="GitHub quick-start terminal" tabindex="0">
           <div class="term-head">
             <div class="term-dots" aria-hidden="true">
               <span class="term-dot red"></span>
